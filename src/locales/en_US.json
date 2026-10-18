@@ -24,6 +24,13 @@
     "TrackCount": "{count} Track | {count} Tracks"
   },
   "ArtistView": {
+    "EditPhoto": "Edit photo",
+    "PhotoRefetched": "Automatic photo restored",
+    "PhotoUpdated": "Artist photo updated",
+    "RefetchPhoto": "Fetch automatic photo again",
+    "RefetchPhotoConfirm": "Replace the photo",
+    "RefetchPhotoWarning": "This replaces your manual photo",
+    "UploadPhoto": "Upload from computer",
     "LoadMore": "Load More",
     "NoTracks": "No tracks",
     "RepeatOptions": {

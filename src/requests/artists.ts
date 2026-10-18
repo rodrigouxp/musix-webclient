@@ -61,6 +61,41 @@ export const getArtistAlbums = async (hash: string, limit = 6, all = false) => {
     return data as ArtistAlbums
 }
 
+/**
+ * Sends a photo of the artist chosen on this computer.
+ * On failure returns `{ error }` with the message of the server.
+ */
+export async function uploadArtistImage(hash: string, file: File) {
+    const form = new FormData()
+    form.append('image', file)
+
+    const { data, error } = await useAxios({
+        method: 'POST',
+        url: paths.api.artist + `/${hash}/image`,
+        props: form as any,
+    })
+
+    return error ? { error: (data?.error as string) || error } : (data as ArtistImageResult)
+}
+
+/**
+ * Downloads the automatic photo of the artist again, replacing the current one.
+ */
+export async function refetchArtistImage(hash: string) {
+    const { data, error } = await useAxios({
+        method: 'POST',
+        url: paths.api.artist + `/${hash}/image/refetch`,
+    })
+
+    return error ? { error: (data?.error as string) || error } : (data as ArtistImageResult)
+}
+
+export interface ArtistImageResult {
+    ok: boolean
+    image: string
+    source: 'upload' | 'deezer'
+}
+
 export const getArtistTracks = async (hash: string) => {
     const { data, error } = await useAxios({
         method: 'GET',

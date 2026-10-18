@@ -26,8 +26,13 @@ export default defineStore('artistPage', {
             btn: '',
         },
         fetched_similar_hash: '',
+        // set after the photo is replaced, so the browser loads the new one
+        photoVersion: 0,
         stats: <StatItem[]>[],
     }),
+    getters: {
+        photoQuery: state => (state.photoVersion ? `?v=${state.photoVersion}` : ''),
+    },
     actions: {
         async getData(hash: string) {
             const settings = useSettingsStore()
@@ -36,6 +41,10 @@ export default defineStore('artistPage', {
                 settings.artist_top_tracks_count,
                 maxAbumCards.value
             )
+
+            if (this.info.artisthash !== artist.artisthash) {
+                this.photoVersion = 0
+            }
 
             this.info = artist
             this.tracks = tracks
@@ -64,8 +73,12 @@ export default defineStore('artistPage', {
             this.similar_artists = await getSimilarArtists(this.info.artisthash, maxAbumCards.value)
         },
         extractColors() {
-            const url = paths.images.artist.large + this.info.image
+            const url = paths.images.artist.large + this.info.image + this.photoQuery
             setColorsToStore(this, url, true)
+        },
+        bumpPhoto() {
+            this.photoVersion = Date.now()
+            this.extractColors()
         },
         setBgColor() {
             const colors = this.info.color

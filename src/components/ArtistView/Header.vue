@@ -23,7 +23,41 @@
                     height: containerHeight,
                 }"
             >
-                <img id="artist-avatar" :src="paths.images.artist.large + artist.image" @load="store.setBgColor" />
+                <div class="photo-wrap">
+                    <img
+                        id="artist-avatar"
+                        :src="paths.images.artist.large + artist.image + store.photoQuery"
+                        @load="store.setBgColor"
+                    />
+                    <div v-if="canEditPhoto" ref="photoMenuParent" class="photo-edit">
+                        <button
+                            class="photo-edit-btn"
+                            :title="$t('ArtistView.EditPhoto')"
+                            :aria-label="$t('ArtistView.EditPhoto')"
+                            :disabled="busy"
+                            @click="menuOpen = !menuOpen"
+                            v-html="EditIcon"
+                        ></button>
+                        <div v-if="menuOpen" class="photo-menu rounded shadow-sm">
+                            <template v-if="!askingRefetch">
+                                <button @click="chooseFile">{{ $t('ArtistView.UploadPhoto') }}</button>
+                                <button @click="askingRefetch = true">{{ $t('ArtistView.RefetchPhoto') }}</button>
+                            </template>
+                            <template v-else>
+                                <div class="warn">{{ $t('ArtistView.RefetchPhotoWarning') }}</div>
+                                <button class="danger" @click="refetchPhoto">{{ $t('ArtistView.RefetchPhotoConfirm') }}</button>
+                                <button @click="closeMenu">{{ $t('ConfirmModal.Cancel') }}</button>
+                            </template>
+                        </div>
+                        <input
+                            ref="fileInput"
+                            type="file"
+                            accept="image/jpeg,image/png,image/webp"
+                            hidden
+                            @change="onFileChosen"
+                        />
+                    </div>
+                </div>
             </div>
             <div
                 v-if="!useCircularImage"
@@ -47,9 +81,15 @@ import useSettingsStore from '@/stores/settings'
 import { useElementSize } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { Ref, computed, onMounted, ref } from 'vue'
+import { onClickOutside } from '@vueuse/core'
 import { onBeforeRouteUpdate } from 'vue-router'
 
 import { paths } from '@/config'
+import { EditIcon } from '@/icons'
+import { refetchArtistImage, uploadArtistImage } from '@/requests/artists'
+import useAuth from '@/stores/auth'
+import { NotifType, useToast } from '@/stores/notification'
+import { useT } from '@/i18n'
 import updatePageTitle from '@/utils/updatePageTitle'
 
 import { isSmall } from '@/stores/content-width'
@@ -64,7 +104,63 @@ const props = defineProps<{
     on_sidebar?: boolean
 }>()
 
+const { t } = useT()
 const { info: artist, colors } = storeToRefs(store)
+
+// the photo can be changed by admins, on the artist page only (not in the sidebar)
+const canEditPhoto = computed(() => !props.on_sidebar && useAuth().is_admin)
+const menuOpen = ref(false)
+const askingRefetch = ref(false)
+const busy = ref(false)
+const fileInput: Ref<HTMLInputElement | null> = ref(null)
+const photoMenuParent: Ref<HTMLElement | null> = ref(null)
+
+onClickOutside(photoMenuParent, () => closeMenu())
+
+function closeMenu() {
+    menuOpen.value = false
+    askingRefetch.value = false
+}
+
+function chooseFile() {
+    fileInput.value?.click()
+    closeMenu()
+}
+
+async function finishPhotoChange(result: { error: string } | { ok: boolean }, message: string) {
+    const toast = useToast()
+
+    if ('error' in result) {
+        toast.showNotification(result.error, NotifType.Error)
+        return
+    }
+
+    store.bumpPhoto()
+    toast.showNotification(message, NotifType.Success)
+}
+
+async function onFileChosen(event: Event) {
+    const input = event.target as HTMLInputElement
+    const file = input.files?.[0]
+    input.value = ''
+
+    if (!file) return
+
+    busy.value = true
+    const result = await uploadArtistImage(artist.value.artisthash, file)
+    busy.value = false
+
+    await finishPhotoChange(result, t('ArtistView.PhotoUpdated'))
+}
+
+async function refetchPhoto() {
+    closeMenu()
+    busy.value = true
+    const result = await refetchArtistImage(artist.value.artisthash)
+    busy.value = false
+
+    await finishPhotoChange(result, t('ArtistView.PhotoRefetched'))
+}
 
 function updateTitle() {
     props.on_sidebar ? () => {} : updatePageTitle(artist.value.name)
@@ -110,6 +206,74 @@ const containerHeight = computed(() => {
     display: grid;
     grid-template-columns: 1fr 450px;
     position: relative;
+
+    .photo-wrap {
+        position: relative;
+        display: flex;
+        align-items: flex-end;
+        height: 100%;
+        width: 100%;
+    }
+
+    .photo-edit {
+        position: absolute;
+        right: 1rem;
+        bottom: 1rem;
+        z-index: 20;
+
+        .photo-edit-btn {
+            height: 2.25rem;
+            width: 2.25rem;
+            padding: 0;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.15s ease;
+
+            svg {
+                height: 1rem;
+                width: 1rem;
+            }
+        }
+
+        .photo-menu {
+            position: absolute;
+            right: 0;
+            bottom: 2.75rem;
+            min-width: 15rem;
+            padding: $small;
+            display: grid;
+            gap: $smaller;
+            background-color: $black;
+            text-align: left;
+
+            .warn {
+                padding: $small;
+                font-size: 0.9rem;
+            }
+
+            button {
+                width: 100%;
+                text-align: left;
+            }
+
+            .danger {
+                background: $red;
+            }
+        }
+    }
+
+    &:hover .photo-edit .photo-edit-btn,
+    .photo-edit:focus-within .photo-edit-btn {
+        opacity: 1;
+    }
+
+    @media (hover: none) {
+        .photo-edit .photo-edit-btn {
+            opacity: 1;
+        }
+    }
 
     .artist-img {
         display: flex;
