@@ -27,3 +27,15 @@ export { default as RefreshIcon } from "@/assets/icons/refresh.svg?raw";
 export { default as ArrowRightIcon } from "@/assets/icons/arrow-right.svg?raw";
 export { default as SaveIcon } from "@/assets/icons/save.svg?raw";
 export { default as EditIcon } from "@/assets/icons/pencil.svg?raw";
+
+// icons of the album menu (prototype from Figma); they use currentColor
+export { default as MenuPlayNextIcon } from "@/assets/icons/menu/play-next.svg?raw";
+export { default as MenuAddToQueueIcon } from "@/assets/icons/menu/add-to-queue.svg?raw";
+export { default as MenuAddToPlaylistIcon } from "@/assets/icons/menu/add-to-playlist.svg?raw";
+export { default as MenuAddToCollectionIcon } from "@/assets/icons/menu/add-to-collection.svg?raw";
+export { default as MenuUpdateCoverIcon } from "@/assets/icons/menu/update-album-cover.svg?raw";
+export { default as MenuEpsSinglesIcon } from "@/assets/icons/menu/mark-eps-singles.svg?raw";
+export { default as MenuSoundtrackIcon } from "@/assets/icons/menu/mark-soundtrack.svg?raw";
+export { default as MenuLiveIcon } from "@/assets/icons/menu/mark-live.svg?raw";
+export { default as MenuSearchOnIcon } from "@/assets/icons/menu/search-on.svg?raw";
+export { default as MenuSubmenuIcon } from "@/assets/icons/menu/submenu-indicator.svg?raw";

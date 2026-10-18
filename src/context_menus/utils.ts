@@ -13,6 +13,12 @@ export const separator: Option = {
     type: 'separator',
 }
 
+/** a thin separator the width of the items, used by the album menu */
+export const insetSeparator: Option = {
+    type: 'separator',
+    inset: true,
+}
+
 export function get_new_playlist_option(new_playlist_modal_props: any = {}): Option {
     return {
         label: t('Menus.Utils.NewPlaylist'),

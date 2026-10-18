@@ -12,32 +12,47 @@ import { askConfirm } from '@/stores/confirm'
 import { addOrRemoveItemFromCollection } from '@/requests/collections'
 import { addAlbumToPlaylist } from '@/requests/playlists'
 
-import { AddToQueueIcon, ArrowRightIcon, DeleteIcon, PlayNextIcon, PlusIcon, RefreshIcon, SaveIcon } from '@/icons'
+import {
+    DeleteIcon,
+    MenuAddToCollectionIcon,
+    MenuAddToPlaylistIcon,
+    MenuAddToQueueIcon,
+    MenuEpsSinglesIcon,
+    MenuLiveIcon,
+    MenuPlayNextIcon,
+    MenuSearchOnIcon,
+    MenuSoundtrackIcon,
+    MenuUpdateCoverIcon,
+    SaveIcon,
+} from '@/icons'
 import { Album, Collection, Option, Playlist, Track } from '@/interfaces'
-import { get_find_on_social, getAddToCollectionOptions, getAddToPlaylistOptions } from './utils'
+import { get_find_on_social, getAddToCollectionOptions, getAddToPlaylistOptions, insetSeparator } from './utils'
 import { NotifType, useToast } from '@/stores/notification'
 import { useT } from '@/i18n'
 
 const { t } = useT();
 
-const albumKinds: { kind: AlbumKind; mark: string; remove: string; name: string }[] = [
+const albumKinds: { kind: AlbumKind; mark: string; remove: string; name: string; icon: string }[] = [
     {
         kind: 'ep',
         mark: 'Menus.Album.MarkAsEps',
         remove: 'Menus.Album.RemoveFromEps',
         name: 'EPs & Singles',
+        icon: MenuEpsSinglesIcon,
     },
     {
         kind: 'soundtrack',
         mark: 'Menus.Album.MarkAsSoundtrack',
         remove: 'Menus.Album.RemoveFromSoundtrack',
         name: 'Soundtrack',
+        icon: MenuSoundtrackIcon,
     },
     {
         kind: 'live album',
         mark: 'Menus.Album.MarkAsLive',
         remove: 'Menus.Album.RemoveFromLive',
         name: 'Live album',
+        icon: MenuLiveIcon,
     },
 ]
 
@@ -78,7 +93,8 @@ export default async (album?: Album) => {
 
             useTracklist().insertAfterCurrent(tracks)
         },
-        icon: PlayNextIcon,
+        icon: MenuPlayNextIcon,
+        menuIcon: true,
     }
 
     const add_to_queue = <Option>{
@@ -94,7 +110,8 @@ export default async (album?: Album) => {
 
             useTracklist().addTracks(tracks)
         },
-        icon: AddToQueueIcon,
+        icon: MenuAddToQueueIcon,
+        menuIcon: true,
     }
 
     // Action for each playlist option
@@ -109,7 +126,8 @@ export default async (album?: Album) => {
                 albumhash: album.albumhash,
                 playlist_name: album.title,
             }),
-        icon: PlusIcon,
+        icon: MenuAddToPlaylistIcon,
+        menuIcon: true,
     }
 
     const addToPageAction = (page: Collection) => {
@@ -125,7 +143,8 @@ export default async (album?: Album) => {
                 type: 'album',
                 extra: {},
             }),
-        icon: PlusIcon,
+        icon: MenuAddToCollectionIcon,
+        menuIcon: true,
     }
 
     const remove_from_page: Option = {
@@ -143,6 +162,7 @@ export default async (album?: Album) => {
             }
         },
         icon: DeleteIcon,
+        menuIcon: true,
     }
 
     const update_cover = <Option>{
@@ -168,16 +188,18 @@ export default async (album?: Album) => {
         },
     }
 
-    update_cover.icon = RefreshIcon
+    update_cover.icon = MenuUpdateCoverIcon
+    update_cover.menuIcon = true
 
     const currentKind = album.album_type ?? album.type
     const markOptions: Option[] = useAuth().is_admin
-        ? albumKinds.map(({ kind, mark, remove, name }) => {
+        ? albumKinds.map(({ kind, mark, remove, name, icon }) => {
               const marked = currentKind === kind
 
               return <Option>{
                   label: t(marked ? remove : mark),
-                  icon: ArrowRightIcon,
+                  icon,
+                  menuIcon: true,
                   action: async () => {
                       const toast = useToast()
                       const result = await setAlbumType(album.albumhash, marked ? null : kind)
@@ -206,6 +228,7 @@ export default async (album?: Album) => {
               <Option>{
                   label: t('Menus.Album.EmbedCover'),
                   icon: SaveIcon,
+                  menuIcon: true,
                   action: async () => {
                       const toast = useToast()
                       const count = album.trackcount
@@ -238,14 +261,25 @@ export default async (album?: Album) => {
           ]
         : []
 
-    return [
-        play_next,
-        add_to_queue,
-        add_to_playlist,
-        ...[router.currentRoute.value.name === Routes.Page ? remove_from_page : add_to_page],
-        get_find_on_social('album', '', album),
-        update_cover,
-        ...markOptions,
-        ...embed_cover,
-    ]
+    const find_on_social = {
+        ...get_find_on_social('album', '', album),
+        icon: MenuSearchOnIcon,
+        menuIcon: true,
+    }
+
+    // the groups of the menu; the empty ones (the admin ones for other users) are left
+    // out and the separators only go between the groups that are there
+    const groups: Option[][] = [
+        [
+            play_next,
+            add_to_queue,
+            add_to_playlist,
+            router.currentRoute.value.name === Routes.Page ? remove_from_page : add_to_page,
+        ],
+        [update_cover, ...embed_cover],
+        markOptions,
+        [find_on_social],
+    ].filter(group => group.length)
+
+    return groups.flatMap((group, index) => (index ? [insetSeparator, ...group] : group))
 }

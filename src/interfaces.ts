@@ -127,6 +127,10 @@ export interface Option {
     action?: () => void
     children?: () => Promise<Option[] | false>
     icon?: string
+    /** icon and spacing of the album menu prototype (18px icon, 37px item) */
+    menuIcon?: boolean
+    /** separator the width of the items (not edge to edge) */
+    inset?: boolean
     critical?: Boolean
     singleChild?: boolean
 }

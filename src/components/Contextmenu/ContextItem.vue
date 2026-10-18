@@ -9,7 +9,7 @@
     >
         <div class="icon image" v-html="option.icon"></div>
         <div class="label ellip">{{ option.label }}</div>
-        <div v-if="hasChildren && !option.singleChild" class="more" v-html="ExpandIcon"></div>
+        <div v-if="hasChildren && !option.singleChild" class="more" v-html="MenuSubmenuIcon"></div>
         <div v-if="children" ref="childRef" class="children rounded shadow-sm">
             <div className="wrapper">
                 <div
@@ -33,7 +33,7 @@ import { createPopper, Instance, Modifier, Placement, Rect } from '@popperjs/cor
 import { computed, ref } from 'vue'
 
 import { contextChildrenShowMode } from '@/enums'
-import { ExpandIcon } from '@/icons'
+import { MenuSubmenuIcon } from '@/icons'
 import { Option } from '@/interfaces'
 
 const props = defineProps<{
@@ -185,13 +185,20 @@ function runChildAction(action: () => void) {
     border-radius: $small;
     transition: background-color 0.2s ease-out;
 
+    // the arrow of the items that open a submenu: 8 x 12, 10px from the right edge
     .more {
-        height: 1.5rem;
-        width: 1.5rem;
+        height: 12px;
+        width: 8px;
         position: absolute;
-        right: 2px;
-        bottom: 6px;
-        transform: scale(0.65);
+        right: 10px;
+        top: 50%;
+        margin-top: -6px;
+        color: #b8b8b8;
+
+        svg {
+            height: 100%;
+            width: 100%;
+        }
     }
 
     .children {
@@ -252,9 +259,42 @@ function runChildAction(action: () => void) {
         }
     }
 
-    // add to queue icon
-    &:nth-child(2) .icon > svg {
+    // add to queue icon (the old one: the new icons are already the right size)
+    &:nth-child(2):not(.menu-icon) .icon > svg {
         transform: scale(0.85);
+    }
+
+    // items with the icons of the album menu prototype
+    &.menu-icon {
+        min-height: 37px;
+        padding: 0 10px;
+        border-radius: 8px;
+        color: #ececec;
+
+        .icon {
+            height: 18px;
+            width: 18px;
+            margin-right: 12px;
+            color: #b8b8b8;
+            flex-shrink: 0;
+        }
+
+        &:hover .icon {
+            color: #ececec;
+        }
+
+        .label {
+            padding-right: 0;
+        }
+
+        &:has(.more) .label {
+            padding-right: 1.25rem;
+        }
+
+        // no arrow: give the text the room of the arrow too ("Remove from EPs & Singles")
+        &:not(:has(.more)) {
+            padding-right: 2px;
+        }
     }
 
     .label {

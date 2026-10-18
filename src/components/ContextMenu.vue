@@ -3,16 +3,17 @@
     id="context-menu"
     ref="contextMenuRef"
     class="context-menu rounded shadow-lg no-select"
+    :class="{ wide: context.options.some(o => o.menuIcon) }"
     :style="{
       visibility: context.visible ? 'visible' : 'hidden',
       opacity: context.visible ? '1' : '0',
     }"
   >
     <ContextItem
-      v-for="option in context.options"
-      :key="option.label"
+      v-for="(option, index) in context.options"
+      :key="`${option.type ?? 'item'}-${index}-${option.label ?? ''}`"
       class="context-item"
-      :class="[{ critical: option.critical }, option.type]"
+      :class="[{ critical: option.critical, 'menu-icon': option.menuIcon, inset: option.inset }, option.type]"
       :option="option"
       :children-show-mode="settings.contextChildrenShowMode"
       @hideContextMenu="context.hideContextMenu()"
@@ -78,12 +79,31 @@ context.$subscribe((mutation, state) => {
   visibility: hidden;
   transition: opacity 0.25s ease-out, visibility 0.25s ease-out;
 
+  // the album menu of the prototype is 232px wide; the other menus keep 13rem
+  &.wide {
+    width: 232px;
+    padding: 10px 8px;
+  }
+
   .separator {
     height: 1px;
     padding: 0;
     margin-left: -$medium;
     width: calc(100% + $medium * 2);
     pointer-events: none;
+  }
+
+  // the thin separator of the album menu: the width of the items, no extra height
+  .separator.inset {
+    height: 0;
+    min-height: 0;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    overflow: hidden;
+    border-top: 0.8px solid rgba(255, 255, 255, 0.15);
+    border-radius: 0;
+    box-sizing: content-box;
   }
 
   .critical {
