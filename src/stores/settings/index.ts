@@ -7,7 +7,6 @@ import { pluginSetActive, updatePluginSettings } from '@/requests/plugins'
 import { updateConfig } from '@/requests/settings'
 import { usePlayer } from '@/stores/player'
 import { content_width } from '../content-width'
-import { getLastFmApiSig } from '@/context_menus/hashing'
 import useAxios from '@/requests/useAxios'
 import { paths } from '@/config'
 import { router } from '@/router'
@@ -57,11 +56,6 @@ export default defineStore('settings', {
             auto_download: false,
             overide_unsynced: false,
         },
-        lasftfm_token: '',
-        lastfm_api_key: '',
-        lastfm_api_secret: '',
-        lastfm_session_key: '',
-        lastfm_integration_started: false,
 
         // audio
         use_silence_skip: true,
@@ -101,9 +95,6 @@ export default defineStore('settings', {
             this.periodicInterval = settings.scanInterval
             this.enableWatchDog = settings.enableWatchDog
 
-            this.lastfm_api_key = settings.lastfmApiKey
-            this.lastfm_api_secret = settings.lastfmApiSecret
-            this.lastfm_session_key = settings.lastfmSessionKey
             this.use_lyrics_plugin = settings.plugins.find(p => p.name === 'lyrics_finder')?.active
 
             if (this.use_lyrics_plugin) {
@@ -325,64 +316,6 @@ export default defineStore('settings', {
                 !this.show_playlists_in_folders,
                 'show_playlists_in_folders'
             )
-        },
-        async setLastfmApiKey(key: string) {
-            return await this.genericToggleSetting('lastfmApiKey', key, 'lastfm_api_key')
-        },
-        async setLastfmApiSecret(key: string) {
-            return await this.genericToggleSetting('lastfmApiSecret', key, 'lastfm_api_secret')
-        },
-        async authorizeLastfmApiKey() {
-            const getTokenUrl =
-                'http://ws.audioscrobbler.com/2.0/?format=json&method=auth.getToken&api_key=' +
-                this.lastfm_api_key +
-                '&api_sig=' +
-                getLastFmApiSig({ api_key: this.lastfm_api_key }, this.lastfm_api_secret)
-
-            const data = await useAxios(
-                {
-                    url: getTokenUrl,
-                    method: 'POST',
-                },
-                false
-            )
-
-            if (data.status !== 200) {
-                return
-            }
-
-            this.lasftfm_token = data.data.token
-            const url = 'https://www.last.fm/api/auth/?api_key=' + this.lastfm_api_key + '&token=' + this.lasftfm_token
-            window.open(url, '_blank')
-            this.lastfm_integration_started = true
-        },
-        async finishLastfmAuth() {
-            const res = await useAxios({
-                url: paths.api.plugins + '/lastfm/session/create',
-                method: 'POST',
-                props: {
-                    token: this.lasftfm_token,
-                },
-            })
-
-            if (res.status !== 200) {
-                return
-            }
-
-            this.lastfm_session_key = res.data.session_key
-            this.lastfm_integration_started = false
-        },
-        async disconnectLastfm() {
-            const res = await useAxios({
-                url: paths.api.plugins + '/lastfm/session/delete',
-                method: 'POST',
-            })
-
-            if (res.status !== 200) {
-                return
-            }
-
-            this.lastfm_session_key = ''
         },
         setStreamingQuality(quality: string) {
             this.streaming_quality = quality

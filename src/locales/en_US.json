@@ -627,22 +627,6 @@
       "Updated": "Updated"
     },
     "Plugins": {
-      "LastFM": {
-        "ApiKey": {
-          "Description": "instead of the MUSIX default to authenticate with Last.fm",
-          "Title": "Use custom API Key"
-        },
-        "ApiSecret": {
-          "Description": "instead of the MUSIX default to sign your scrobble submission",
-          "Title": "Use custom API Secret"
-        },
-        "Authorize": {
-          "Description": "Allow MUSIX to access your Last.fm account",
-          "Title": "Connect your account"
-        },
-        "Description": "Scrobble your music to Last.fm",
-        "Title": "Last.fm"
-      },
       "Lyrics": {
         "AutoDownload": {
           "Description": "Automatically download missing lyrics when you are on the lyrics page",

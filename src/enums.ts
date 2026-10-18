@@ -100,9 +100,6 @@ export interface DBSettings {
   plugins: Plugin[];
   version: string;
   serverId: string;
-  lastfmApiKey: string;
-  lastfmApiSecret: string;
-  lastfmSessionKey: string;
   showPlaylistsInFolderView: boolean;
   artistArticleAwareSorting: boolean;
 }
