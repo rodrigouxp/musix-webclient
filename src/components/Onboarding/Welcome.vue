@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import LogoSvg from '@/assets/icons/logos/logo-fill.light.svg'
+import LogoSvg from '@/assets/icons/logos/note.svg'
 
 const emit = defineEmits(['continue'])
 </script>
@@ -31,6 +31,11 @@ const emit = defineEmits(['continue'])
     .logo {
         width: 100%;
         height: 100%;
+
+        svg {
+            width: 5rem;
+            height: 5rem;
+        }
     }
 
     .appname {

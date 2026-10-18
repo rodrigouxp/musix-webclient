@@ -37,7 +37,7 @@ import { content_width } from '@/stores/content-width'
 import useSettings from '@/stores/settings'
 import { xl } from './../../composables/useBreakpoints'
 
-import LogoSvg from '@/assets/icons/logos/logo-fill.light.svg'
+import LogoSvg from '@/assets/icons/logos/note.svg'
 import SearchInput from '../RightSideBar/SearchInput.vue'
 import NavButtons from './NavButtons.vue'
 import NavLinks from './NavLinks.vue'
@@ -110,6 +110,11 @@ function toggleSidenav() {
         display: flex;
         align-items: center;
         justify-content: center;
+
+        svg {
+            width: 2rem;
+            height: 2rem;
+        }
     }
 
     .right {

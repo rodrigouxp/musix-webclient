@@ -1,13 +1,13 @@
 <template>
-  <router-link class="swing-logo rounded-md" :to="{ name: 'Home' }"> <LogoSvg /> <span>Swing Music</span> </router-link>
+  <router-link class="musix-logo rounded-md" :to="{ name: 'Home' }"> <LogoSvg /> <span>MUSIX</span> </router-link>
 </template>
 
 <script setup lang="ts">
-import LogoSvg from "@/assets/icons/logos/logo-fill.light.svg";
+import LogoSvg from "@/assets/icons/logos/note.svg";
 </script>
 
 <style lang="scss">
-.swing-logo {
+.musix-logo {
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -18,7 +18,8 @@ import LogoSvg from "@/assets/icons/logos/logo-fill.light.svg";
   transition: background-color 0.2s ease-out;
 
   svg {
-    transform: scale(1.25);
+    width: 2rem;
+    height: 2rem;
   }
 
   &:hover {

@@ -20,14 +20,16 @@
                 <span>{{ link.name }}</span>
             </RouterLink>
         </div>
-        <div class="sidenav_footer">Swing Music - v</div>
+        <div class="sidenav_footer">MUSIX - v{{ settings.version }}</div>
     </div>
 </template>
 
 <script setup lang="ts">
-import LogoSvg from '@/assets/icons/logos/logo-fill.light.svg'
+import LogoSvg from '@/assets/icons/logos/note.svg'
 import { useNavItems } from "../LeftSidebar/navitems";
+import useSettings from '@/stores/settings'
 const { topnavitems } = useNavItems();
+const settings = useSettings()
 
 const emit = defineEmits(['close'])
 
@@ -97,6 +99,11 @@ function closeSidenav() {
                 display: flex;
                 align-items: center;
                 gap: 1rem;
+
+                .art svg {
+                    width: 2rem;
+                    height: 2rem;
+                }
 
                 .title {
                     font-size: 1rem;

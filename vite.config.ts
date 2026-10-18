@@ -23,9 +23,9 @@ export default defineConfig({
         enabled: true,
       },
       manifest: {
-        name: "Swing Music",
-        short_name: "Swing Music",
-        description: "Swing Music",
+        name: "MUSIX",
+        short_name: "MUSIX",
+        description: "MUSIX",
         theme_color: "#111",
         icons: [
           {
@@ -45,7 +45,7 @@ export default defineConfig({
             purpose: "any",
           },
           {
-            src: "pwa-512x512.png",
+            src: "maskable-icon-512x512.png",
             sizes: "512x512",
             type: "image/png",
             purpose: "maskable",
