@@ -264,6 +264,12 @@ const containerHeight = computed(() => {
         }
     }
 
+    // the round photo sits on the left edge, so the menu opens to the right
+    &.useCircularImage .photo-menu {
+        left: 0;
+        right: auto;
+    }
+
     &:hover .photo-edit .photo-edit-btn,
     .photo-edit:focus-within .photo-edit-btn {
         opacity: 1;

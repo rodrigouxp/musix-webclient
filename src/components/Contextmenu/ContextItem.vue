@@ -258,7 +258,11 @@ function runChildAction(action: () => void) {
     }
 
     .label {
-        width: 9rem;
+        // takes what is left, so longer labels (like "Remove from EPs & Singles") fit;
+        // the padding keeps clear of the arrow of the items with a submenu
+        flex: 1;
+        min-width: 0;
+        padding-right: 1rem;
     }
 }
 
