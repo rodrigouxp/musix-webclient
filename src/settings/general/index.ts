@@ -10,7 +10,6 @@ import contextChildrenShowMode from './context-children-show-mode'
 import extendWidth from './extend-width'
 import folderlistmode from './folderlistmode'
 import layout from './layout'
-import language from './language'
 import nowPlaying from './now-playing-group'
 import { SettingType } from '../enums'
 import rootDirSettings from './root-dirs'
@@ -39,7 +38,6 @@ export const general = {
             desc: t("Settings.General.MainSettingsDescription"),
             icon: AppearanceSvg,
             settings: [
-                ...language,
                 ...layout,
                 ...extendWidth,
                 ...sidebarSettings,

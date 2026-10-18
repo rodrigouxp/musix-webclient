@@ -246,12 +246,6 @@
     "NextPanel": "Next cover panel",
     "PrevPanel": "Previous cover panel"
   },
-  "Languages": {
-    "en_US": "English",
-    "it_IT": "Italiano",
-    "ko": "한국어",
-    "zh_CN": "中文（简体）"
-  },
   "LeftSidebar": {
     "FileTypeBitrate": "file type • bitrate",
     "NavItems": {
@@ -524,9 +518,6 @@
     "Experimental": "experimental",
     "General": {
       "AlbumInfoSettingsDesc": "Settings relating to album information",
-      "Language": {
-        "Title": "Language"
-      },
       "Albums": {
         "AlbumAsSingles": {
           "Description": "Require an album to have at least two tracks",

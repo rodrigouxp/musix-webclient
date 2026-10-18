@@ -18,7 +18,6 @@ export default defineStore('settings', {
         version: '',
         public_key: '',
         extend_width: false,
-        locale: '',
         contextChildrenShowMode: contextChildrenShowMode.hover,
         artist_top_tracks_count: 5,
         // repeat_all: true,
@@ -136,9 +135,6 @@ export default defineStore('settings', {
         },
         toggleExtendWidth() {
             this.extend_width = !this.extend_width
-        },
-        setLocale(locale: string) {
-            this.locale = locale
         },
         // context menu 👇
         setContextChildrenShowMode(mode: contextChildrenShowMode) {
