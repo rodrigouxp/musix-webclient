@@ -36,6 +36,7 @@ const imageRoutes = {
 export const paths = {
     api: {
         onboardingData: '/onboarding-data',
+        track: '/track',
         favorites: '/favorites',
         get favAlbums() {
             return this.favorites + '/albums'

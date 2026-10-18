@@ -7,11 +7,12 @@ import useAuth from '@/stores/auth'
 import useCollection from '@/stores/pages/collections'
 import useTracklist from '@/stores/queue/tracklist'
 
-import { AlbumKind, getAlbumTracks, refreshAlbumCover, setAlbumType } from '@/requests/album'
+import { AlbumKind, embedAlbumCover, getAlbumTracks, refreshAlbumCover, setAlbumType } from '@/requests/album'
+import { askConfirm } from '@/stores/confirm'
 import { addOrRemoveItemFromCollection } from '@/requests/collections'
 import { addAlbumToPlaylist } from '@/requests/playlists'
 
-import { AddToQueueIcon, ArrowRightIcon, DeleteIcon, PlayNextIcon, PlusIcon, RefreshIcon } from '@/icons'
+import { AddToQueueIcon, ArrowRightIcon, DeleteIcon, PlayNextIcon, PlusIcon, RefreshIcon, SaveIcon } from '@/icons'
 import { Album, Collection, Option, Playlist, Track } from '@/interfaces'
 import { get_find_on_social, getAddToCollectionOptions, getAddToPlaylistOptions } from './utils'
 import { NotifType, useToast } from '@/stores/notification'
@@ -200,6 +201,43 @@ export default async (album?: Album) => {
           })
         : []
 
+    const embed_cover: Option[] = useAuth().is_admin
+        ? [
+              <Option>{
+                  label: t('Menus.Album.EmbedCover'),
+                  icon: SaveIcon,
+                  action: async () => {
+                      const toast = useToast()
+                      const count = album.trackcount
+
+                      const yes = await askConfirm(
+                          t('Menus.Album.ConfirmEmbedCover', { count }),
+                          t('Menus.Album.EmbedCoverConfirm')
+                      )
+
+                      if (!yes) return
+
+                      const result = await embedAlbumCover(album.albumhash)
+
+                      if ('error' in result) {
+                          toast.showNotification(result.error || t('Requests.Album.EmbedCoverError'), NotifType.Error)
+                          return
+                      }
+
+                      toast.showNotification(
+                          result.tracks_failed.length
+                              ? t('Requests.Album.CoverEmbeddedPartial', {
+                                    ok: result.tracks_ok,
+                                    failed: result.tracks_failed.length,
+                                })
+                              : t('Requests.Album.CoverEmbedded', { count: result.tracks_ok }),
+                          result.tracks_failed.length ? NotifType.Error : NotifType.Success
+                      )
+                  },
+              },
+          ]
+        : []
+
     return [
         play_next,
         add_to_queue,
@@ -208,5 +246,6 @@ export default async (album?: Album) => {
         get_find_on_social('album', '', album),
         update_cover,
         ...markOptions,
+        ...embed_cover,
     ]
 }

@@ -132,6 +132,30 @@ export async function refreshAlbumCover(albumhash: string): Promise<{ ok: boolea
     return data
 }
 
+export interface EmbedCoverResult {
+    ok: boolean
+    tracks_ok: number
+    tracks_failed: string[]
+    errors?: { [path: string]: string }
+}
+
+/**
+ * Writes the cover of the album folder into the tags of every file of the album.
+ * On failure returns `{ error }` with the message of the server.
+ */
+export async function embedAlbumCover(albumhash: string): Promise<EmbedCoverResult | { error: string }> {
+    const { data, error } = await useAxios({
+        url: albumUrl + `/${albumhash}/embed-cover`,
+        method: 'POST',
+    })
+
+    if (error) {
+        return { error: (data?.error as string) || error }
+    }
+
+    return data as EmbedCoverResult
+}
+
 export type AlbumKind = 'ep' | 'soundtrack' | 'live album'
 
 /**

@@ -6,7 +6,12 @@ import { Option } from '@/interfaces'
 import { openInFiles } from '@/requests/folders'
 import { addTracksToPlaylist, removeTracks } from '@/requests/playlists'
 
-import { AddToQueueIcon, AlbumIcon, ArtistIcon, DeleteIcon, FolderIcon, PlayNextIcon, PlusIcon } from '@/icons'
+import { AddToQueueIcon, AlbumIcon, ArtistIcon, DeleteIcon, EditIcon, FolderIcon, PlayNextIcon, PlusIcon } from '@/icons'
+import { renameTrack } from '@/requests/tracks'
+import useAuth from '@/stores/auth'
+import { NotifType, useToast } from '@/stores/notification'
+import { askText } from '@/stores/prompt'
+import { patchTrackEverywhere } from '@/utils/patchTrack'
 import usePlaylistStore from '@/stores/pages/playlist'
 import useQueueStore from '@/stores/queue'
 import useTracklist from '@/stores/queue/tracklist'
@@ -135,6 +140,30 @@ export default async (track: Track): Promise<Option[]> => {
         icon: AlbumIcon,
     }
 
+    const rename: Option = {
+        label: t('Menus.Track.Rename'),
+        icon: EditIcon,
+        action: () => {
+            const oldFilepath = track.filepath
+
+            // starts with the title as it is on the screen
+            askText(t('Menus.Track.RenameTitle'), track.title.trim(), t('Menus.Track.RenameSave'), async title => {
+                const toast = useToast()
+                const result = await renameTrack(oldFilepath, title)
+
+                if ('error' in result) {
+                    toast.showNotification(result.error || t('Menus.Track.RenameError'), NotifType.Error)
+                    return false
+                }
+
+                // the queue and the lists on screen use the new file path and title from now on
+                patchTrackEverywhere(oldFilepath, result.track)
+                toast.showNotification(t('Menus.Track.Renamed'), NotifType.Success)
+                return true
+            })
+        },
+    }
+
     // const del_track: Option = {
     //   label: t('Menus.Track.DeleteTrack'),
     //   action: () => console.log("Delete Track"),
@@ -169,6 +198,10 @@ export default async (track: Track): Promise<Option[]> => {
         get_find_on_social('track', `${track.title} ${track.artists[0].name}`),
         // del_track,
     ]
+
+    if (useAuth().is_admin) {
+        options.push(rename)
+    }
 
     if (route.name === Routes.playlist && on_playlist) {
         options.splice(0, 0, getRemoveFromPlaylistOption())
