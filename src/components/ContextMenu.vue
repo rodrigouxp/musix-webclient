@@ -13,7 +13,7 @@
       v-for="(option, index) in context.options"
       :key="`${option.type ?? 'item'}-${index}-${option.label ?? ''}`"
       class="context-item"
-      :class="[{ critical: option.critical, 'menu-icon': option.menuIcon, inset: option.inset }, option.type]"
+      :class="[{ critical: option.critical, 'menu-icon': option.menuIcon, icon18: option.icon18, inset: option.inset }, option.type]"
       :option="option"
       :children-show-mode="settings.contextChildrenShowMode"
       @hideContextMenu="context.hideContextMenu()"

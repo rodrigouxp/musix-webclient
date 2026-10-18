@@ -232,8 +232,8 @@ const containerHeight = computed(() => {
             transition: opacity 0.15s ease;
 
             svg {
-                height: 1rem;
-                width: 1rem;
+                height: 18px;
+                width: 18px;
             }
         }
 

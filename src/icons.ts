@@ -26,7 +26,7 @@ export {default as SettingsIcon } from "@/assets/icons/settings.svg?raw";
 export { default as RefreshIcon } from "@/assets/icons/refresh.svg?raw";
 export { default as ArrowRightIcon } from "@/assets/icons/arrow-right.svg?raw";
 export { default as SaveIcon } from "@/assets/icons/save.svg?raw";
-export { default as EditIcon } from "@/assets/icons/pencil.svg?raw";
+export { default as EditIcon } from "@/assets/icons/menu/edit.svg?raw";
 
 // icons of the album menu (prototype from Figma); they use currentColor
 export { default as MenuPlayNextIcon } from "@/assets/icons/menu/play-next.svg?raw";

@@ -143,6 +143,7 @@ export default async (track: Track): Promise<Option[]> => {
     const rename: Option = {
         label: t('Menus.Track.Rename'),
         icon: EditIcon,
+        icon18: true,
         action: () => {
             const oldFilepath = track.filepath
 
