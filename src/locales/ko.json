@@ -44,7 +44,7 @@
   "BottomBar": {
     "Favorite": "즐겨찾기",
     "GoToNowPlaying": "현재 재생으로 이동",
-    "PlaceholderArtist": "Swing Music에 오신 것을 환영합니다",
+    "PlaceholderArtist": "MUSIX에 오신 것을 환영합니다",
     "PlaceholderTitle": "반가워요",
     "RepeatOptions": {
       "All": "전체 반복",
@@ -89,7 +89,7 @@
     "Album": "앨범",
     "AlbumArtist": "앨범 아티스트",
     "All": "전체",
-    "AppTitle": "Swing Music",
+    "AppTitle": "MUSIX",
     "Appearance": "외관",
     "Appearances": "참여 작품",
     "Artist": "아티스트",
@@ -97,7 +97,6 @@
     "Autodetect": "자동 감지",
     "Backup": "백업",
     "Bitrate": "비트레이트",
-    "BuiltBy": "@cwilvx 제작 ↗",
     "Change": "변경",
     "Compilations": "컴필레이션",
     "Configure": "구성",
@@ -163,7 +162,6 @@
     "Settings": "설정",
     "SimilarArtists": "유사한 아티스트",
     "Singles": "EP 및 싱글",
-    "SwingMusic": "Swing Music",
     "Title": "제목",
     "TopResult": "최고 결과",
     "Track": "트랙",
@@ -344,7 +342,7 @@
     },
     "Finish": {
       "ConfirmButton": "아래 버튼을 눌러 라이브러리로 이동하세요.",
-      "Processing": "Swing Music이 음악 폴더를 스캔하고 있어요. 잠시만 기다려 주세요...",
+      "Processing": "MUSIX이 음악 폴더를 스캔하고 있어요. 잠시만 기다려 주세요...",
       "TitleAlmostDone": "거의 다 됐어요!",
       "TitleDone": "모든 준비가 끝났어요! 🎉"
     },
@@ -357,7 +355,7 @@
       "HomeDirDesc": "다음 위치의 모든 폴더 스캔: ",
       "SpecificFolder": "특정 디렉토리",
       "Title": "음악 폴더 구성",
-      "TitleDesc": "Swing Music이 어디에서 음악을 찾을까요?"
+      "TitleDesc": "MUSIX이 어디에서 음악을 찾을까요?"
     },
     "Welcome": {
       "GetStarted": "시작하기",
@@ -367,7 +365,7 @@
   },
   "Pairing": {
     "ErrorPairingCode": "페어링 코드를 가져오지 못했어요. 오류 코드: {res}",
-    "ScanQRCode": "Swing Music 앱에서 QR 코드를 스캔해 이 서버와 페어링하세요."
+    "ScanQRCode": "MUSIX 앱에서 QR 코드를 스캔해 이 서버와 페어링하세요."
   },
   "PlaylistView": {
     "AllTracks": "모든 트랙",
@@ -463,15 +461,7 @@
   },
   "Settings": {
     "About": {
-      "Developer": "Swing Music은 GitHub의 {link}가 사랑을 담아 제작했습니다. 이 소프트웨어가 마음에 드신다면, GitHub에서 Star를 남겨 주세요. 저도 개발하는 것을 즐기는 만큼 여러분도 즐겨주시면 좋겠어요. 😁🤗",
-      "GetInTouchDescription": "제 작업이 마음에 드시고 인사하고 싶으시다면, 연락을 기다리겠습니다.",
-      "GetInTouchTitle": "연락하기",
-      "LinksContribute": "기여하기",
-      "LinksDocs": "문서",
-      "LinksGitHub": "GitHub에서 Star 남기기",
-      "LinksIssue": "문제 보고",
-      "LinksTitle": "링크",
-      "SendEmail": "이메일 보내기",
+      "Origin": "Baseado no Swing Music (github.com/swingmx/swingmusic), AGPL-3.0, com modificações.",
       "Title": "정보"
     },
     "Accounts": {
@@ -523,7 +513,6 @@
       "RestoreBackup": "백업 복원",
       "RestoreButton": "복원",
       "ScrobbleCount": "{count} 개의 스크로블",
-      "ThankYouMessage": "Swing Music을 후원해 주셔서 감사해요!",
       "Title": "백업"
     },
     "Cancel": "취소",
@@ -565,7 +554,7 @@
           "Title": "자동 백업"
         },
         "BackupNow": {
-          "Description": "백업 디렉토리: ~/swingmusic.backups",
+          "Description": "백업 디렉토리: ~/musix.backup",
           "Title": "지금 백업"
         }
       },
@@ -654,15 +643,15 @@
     "Plugins": {
       "LastFM": {
         "ApiKey": {
-          "Description": "Swing Music 기본값 대신 사용해 Last.fm에 인증해요",
+          "Description": "MUSIX 기본값 대신 사용해 Last.fm에 인증해요",
           "Title": "사용자 지정 API 키 사용"
         },
         "ApiSecret": {
-          "Description": "Swing Music 기본값 대신 사용해 스크로블 제출에 서명해요",
+          "Description": "MUSIX 기본값 대신 사용해 스크로블 제출에 서명해요",
           "Title": "사용자 지정 API 시크릿 사용"
         },
         "Authorize": {
-          "Description": "Swing Music이 Last.fm 계정에 접근하도록 허용해요",
+          "Description": "MUSIX이 Last.fm 계정에 접근하도록 허용해요",
           "Title": "계정 연결"
         },
         "Description": "음악을 Last.fm에 스크로블해요",

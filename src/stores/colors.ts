@@ -25,7 +25,7 @@ async function getImageColor(url: string) {
     }
 }
 
-export default defineStore('SwingMusicColors', {
+export default defineStore('MusixColors', {
     state: () => ({
         lightMuted: '',
         darkMuted: '',

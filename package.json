@@ -1,12 +1,12 @@
 {
-  "name": "swing_music_client",
+  "name": "musix-webclient",
   "version": "0.1.0.alpha",
   "private": true,
   "scripts": {
     "dev": "vite",
     "serve": "vite preview",
     "build": "vite build",
-    "generate-pwa-assets": "pwa-assets-generator --preset minimal public/logo-fill.light.svg",
+    "generate-pwa-assets": "pwa-assets-generator --preset minimal public/icon.svg",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src"
   },
   "dependencies": {

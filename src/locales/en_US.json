@@ -45,7 +45,7 @@
     "VolumeLabel": "Volume {percent} percent",
     "Favorite": "Favorite",
     "GoToNowPlaying": "Go to Now Playing",
-    "PlaceholderArtist": "Welcome to Swing Music",
+    "PlaceholderArtist": "Welcome to MUSIX",
     "PlaceholderTitle": "Hello there",
     "RepeatOptions": {
       "All": "Repeat all",
@@ -89,7 +89,7 @@
     "Album": "Album | Albums",
     "AlbumArtist": "Album Artist",
     "All": "All",
-    "AppTitle": "Swing Music",
+    "AppTitle": "MUSIX",
     "Appearance": "Appearance",
     "Appearances": "Appearances",
     "Artist": "Artist | Artists",
@@ -97,7 +97,6 @@
     "Autodetect": "autodetect",
     "Backup": "Backup",
     "Bitrate": "Bitrate",
-    "BuiltBy": "built by @cwilvx ↗",
     "Change": "Change",
     "Compilations": "Compilation | Compilations",
     "Configure": "Configure",
@@ -163,7 +162,6 @@
     "Settings": "Settings",
     "SimilarArtists": "Similar artists",
     "Singles": "EP & Singles",
-    "SwingMusic": "Swing Music",
     "Title": "Title",
     "TopResult": "Top Result",
     "Track": "Track | Tracks",
@@ -346,7 +344,7 @@
     },
     "Finish": {
       "ConfirmButton": "Click the button below to continue to your library.",
-      "Processing": "Swing Music is scanning your music folders. Please wait ...",
+      "Processing": "MUSIX is scanning your music folders. Please wait ...",
       "TitleAlmostDone": "You're almost there!",
       "TitleDone": "You're all set! 🎉"
     },
@@ -359,7 +357,7 @@
       "HomeDirDesc": "Scan all folders in ",
       "SpecificFolder": "Specific directory",
       "Title": "Configure music folders",
-      "TitleDesc": "Where do you want Swing Music to look for music?"
+      "TitleDesc": "Where do you want MUSIX to look for music?"
     },
     "Welcome": {
       "GetStarted": "Get Started",
@@ -369,7 +367,7 @@
   },
   "Pairing": {
     "ErrorPairingCode": "Error fetching pairing code. Error code: {res}",
-    "ScanQRCode": "Scan the QR code from the Swing Music app to pair with this server."
+    "ScanQRCode": "Scan the QR code from the MUSIX app to pair with this server."
   },
   "PlaylistView": {
     "AllTracks": "All Tracks",
@@ -465,15 +463,7 @@
   },
   "Settings": {
     "About": {
-      "Developer": "Swing Music is a labor of love developed by {link} on GitHub. If you like this software, a star on GitHub would be nice. Hope you enjoy using it as much as I enjoy building it. 😁🤗",
-      "GetInTouchDescription": "If you like my work, and would like to say hi, I'd like to hear from you.",
-      "GetInTouchTitle": "Get in touch",
-      "LinksContribute": "Contribute",
-      "LinksDocs": "Docs",
-      "LinksGitHub": "Star on GitHub",
-      "LinksIssue": "Report an issue",
-      "LinksTitle": "Links",
-      "SendEmail": "Send Email",
+      "Origin": "Baseado no Swing Music (github.com/swingmx/swingmusic), AGPL-3.0, com modificações.",
       "Title": "About"
     },
     "Accounts": {
@@ -525,7 +515,6 @@
       "RestoreBackup": "Restore Backup",
       "RestoreButton": "Restore",
       "ScrobbleCount": "{count} scrobble | {count} scrobbles",
-      "ThankYouMessage": "Thank you for sponsoring Swing Music!",
       "Title": "Backup"
     },
     "Cancel": "Cancel",
@@ -570,7 +559,7 @@
           "Title": "Automatic backups"
         },
         "BackupNow": {
-          "Description": "Backup directory: ~/swingmusic.backups",
+          "Description": "Backup directory: ~/musix.backup",
           "Title": "Backup now"
         }
       },
@@ -656,15 +645,15 @@
     "Plugins": {
       "LastFM": {
         "ApiKey": {
-          "Description": "instead of the Swing Music default to authenticate with Last.fm",
+          "Description": "instead of the MUSIX default to authenticate with Last.fm",
           "Title": "Use custom API Key"
         },
         "ApiSecret": {
-          "Description": "instead of the Swing Music default to sign your scrobble submission",
+          "Description": "instead of the MUSIX default to sign your scrobble submission",
           "Title": "Use custom API Secret"
         },
         "Authorize": {
-          "Description": "Allow Swing Music to access your Last.fm account",
+          "Description": "Allow MUSIX to access your Last.fm account",
           "Title": "Connect your account"
         },
         "Description": "Scrobble your music to Last.fm",

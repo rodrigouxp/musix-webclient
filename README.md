@@ -1,44 +1,34 @@
-### Swing music client
+### MUSIX (cliente web)
 
-This repo contains the client code for the [swing music player](https://github.com/geoffrey45/swingmusic).
+Cliente web do [MUSIX](https://github.com/rodrigouxp/musix), um player de música para rodar em casa. Este repositório é baseado no cliente do Swing Music, com modificações.
 
 ### Setup
 
-This project requires `Node v14` or newer and `yarn@1.22.19`. Install them first.
-
-- [NodeJS](https://nodejs.org/en/)
-- [Yarn](https://yarnpkg.com)
-
-Clone the repository and install the dependencies.
+Requer `Node v14` ou mais novo e `yarn@1.22.19`.
 
 ```bash
-git clone https://github.com/geoffrey45/swing-client.git
+git clone https://github.com/rodrigouxp/musix-webclient.git
 
-cd swing-client
+cd musix-webclient
 
-# Install dependencies
+# Instala as dependências
 yarn install
 
-# Start the development server
+# Servidor de desenvolvimento
 yarn dev
 
-# Build the project
+# Build
 yarn build
 ```
 
 ---
-### Generating PWA favicons
+### Gerando os ícones do PWA
 
 ```sh
 yarn generate-pwa-assets
 ```
 ---
 
+### Licença
 
-### Contributing
-
-If you want to contribute to this project, feel free to open a pull request with you changes. All bug reports and contributions are welcome.
-
----
-
-**[MIT License](https://opensource.org/licenses/MIT) | Copyright (c) 2023 Mungai Njoroge**
+[MIT](LICENSE). O aviso de copyright original (Mungai Njoroge) é mantido no arquivo `LICENSE`.

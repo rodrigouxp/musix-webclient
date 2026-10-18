@@ -45,7 +45,7 @@
     "VolumeLabel": "Volume {percent} percento",
     "Favorite": "Preferita",
     "GoToNowPlaying": "Vai a in riproduzione",
-    "PlaceholderArtist": "Benvenuto a Swing Music",
+    "PlaceholderArtist": "Benvenuto a MUSIX",
     "PlaceholderTitle": "Benvenuto",
     "RepeatOptions": {
       "All": "Ripeti tutte",
@@ -89,7 +89,7 @@
     "Album": "Album | Album",
     "AlbumArtist": "Artista Album",
     "All": "Tutte",
-    "AppTitle": "Swing Music",
+    "AppTitle": "MUSIX",
     "Appearance": "Aspetto",
     "Appearances": "Comparse",
     "Artist": "Artista | Artisti",
@@ -97,7 +97,6 @@
     "Autodetect": "autorileva",
     "Backup": "Backup",
     "Bitrate": "Bitrate",
-    "BuiltBy": "creato da @cwilvx ↗",
     "Change": "Cambia",
     "Compilations": "Raccolta | Raccolte",
     "Configure": "Configura",
@@ -163,7 +162,6 @@
     "Settings": "Impostazioni",
     "SimilarArtists": "Artisti simili",
     "Singles": "EP & Singles",
-    "SwingMusic": "Swing Music",
     "Title": "Titolo",
     "TopResult": "Risultati migliori",
     "Track": "Traccia | Tracce",
@@ -344,7 +342,7 @@
     },
     "Finish": {
       "ConfirmButton": "Clicca il pulsante sotto per proseguire nella tua libreria.",
-      "Processing": "Swing Music sta scansionando le tue cartelle selezionate. Attendi ...",
+      "Processing": "MUSIX sta scansionando le tue cartelle selezionate. Attendi ...",
       "TitleAlmostDone": "Ci sei quasi!",
       "TitleDone": "Hai finito! 🎉"
     },
@@ -357,7 +355,7 @@
       "HomeDirDesc": "Scansiona tutte le cartelle in ",
       "SpecificFolder": "Cartella specifica",
       "Title": "Configura cartelle musicali",
-      "TitleDesc": "Dove vuoi che Swing Music cerchi le tue tracce musicali?"
+      "TitleDesc": "Dove vuoi che MUSIX cerchi le tue tracce musicali?"
     },
     "Welcome": {
       "GetStarted": "Iniziamo",
@@ -367,7 +365,7 @@
   },
   "Pairing": {
     "ErrorPairingCode": "Errore nel recupero del codice di pairing. Codice di errore: {res}",
-    "ScanQRCode": "Scansiona il QRCode con l'app Swing Music per accedere automaticamente a questo server."
+    "ScanQRCode": "Scansiona il QRCode con l'app MUSIX per accedere automaticamente a questo server."
   },
   "PlaylistView": {
     "AllTracks": "Tutte le tracce",
@@ -463,15 +461,7 @@
   },
   "Settings": {
     "About": {
-      "Developer": "Swing Music è un atto d'amore sviluppato su GitHub all'indirizzo {link}. Se questo software ti piace, una stellina sul progetto sarebbe molto apprezzata. Spero tu l'apprezzi tanto quanto mi son divertito a scriverla da zero. 😁🤗",
-      "GetInTouchDescription": "Se apprezzi il mio lavoro, e ti piacerebbe salutarmi, mi farebbe piacere un contatto (in inglese).",
-      "GetInTouchTitle": "Rimani in contatto",
-      "LinksContribute": "Contribuisci",
-      "LinksDocs": "Docs",
-      "LinksGitHub": "Stellina su GitHub",
-      "LinksIssue": "Segnala un problema (in inglese)",
-      "LinksTitle": "Links",
-      "SendEmail": "Manda Email",
+      "Origin": "Baseado no Swing Music (github.com/swingmx/swingmusic), AGPL-3.0, com modificações.",
       "Title": "Riguardo a"
     },
     "Accounts": {
@@ -523,7 +513,6 @@
       "RestoreBackup": "Ripristina Backup",
       "RestoreButton": "Ripristina",
       "ScrobbleCount": "{count} scrobble | {count} scrobbles",
-      "ThankYouMessage": "Ti ringrazio per aver sponsorizzato Swing Music!",
       "Title": "Backup"
     },
     "Cancel": "Annulla",
@@ -568,7 +557,7 @@
           "Title": "Backup automatici"
         },
         "BackupNow": {
-          "Description": "Directory di backup: ~/swingmusic.backups",
+          "Description": "Directory di backup: ~/musix.backup",
           "Title": "Esegui backup"
         }
       },
@@ -654,15 +643,15 @@
     "Plugins": {
       "LastFM": {
         "ApiKey": {
-          "Description": "invece di quella usata di default da Swing Music per autenticarsi a Last.fm",
+          "Description": "invece di quella usata di default da MUSIX per autenticarsi a Last.fm",
           "Title": "Usa key API personalizzata"
         },
         "ApiSecret": {
-          "Description": "invece di quella usata di default da Swing Music per firmare i tuoi invii scrobble",
+          "Description": "invece di quella usata di default da MUSIX per firmare i tuoi invii scrobble",
           "Title": "Usa segreto API personalizzato"
         },
         "Authorize": {
-          "Description": "Connetti il tuo account Last.fm a Swing Music ",
+          "Description": "Connetti il tuo account Last.fm a MUSIX ",
           "Title": "Collega il tuo account"
         },
         "Description": "Condividi la tua musica su Last.fm",

@@ -10,9 +10,6 @@
                     :artists="queue.currenttrack?.artists || null"
                     :albumartists="queue.currenttrack?.albumartists || ''"
                 />
-                <span v-else class="artist author">
-                    <a href="https://github.com/cwilvx" target="_blank">{{ $t('Common.BuiltBy')}}</a>
-                </span>
             </div>
         </div>
         <!-- <div class="actions">
@@ -93,12 +90,6 @@ function showMenu(e: MouseEvent) {
 
         &:hover {
             background-color: $gray4;
-        }
-    }
-
-    .author {
-        & > * {
-            color: $gray1 !important;
         }
     }
 }
