@@ -200,7 +200,7 @@ onMounted(async () => {
             settings.mapDbSettings(data)
         })
         .then(() => {
-            if (queue.currenttrack && !settings.use_lyrics_plugin) {
+            if (queue.currenttrack?.filepath && queue.currenttrack?.trackhash && !settings.use_lyrics_plugin) {
                 lyrics.checkExists(queue.currenttrack.filepath, queue.currenttrack.trackhash)
             }
         })

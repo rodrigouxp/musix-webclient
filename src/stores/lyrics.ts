@@ -102,6 +102,8 @@ export default defineStore('lyrics', {
             }
         },
         checkExists(filepath: string, trackhash: string) {
+            if (!filepath || !trackhash) return
+
             if (!this.onLyricsPage) {
                 this.lyrics = <LyricsLine[]>[]
             }
