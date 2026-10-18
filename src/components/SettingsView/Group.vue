@@ -91,7 +91,6 @@
                 <Profile v-if="setting.type === SettingType.profile" />
                 <Accounts v-if="setting.type === SettingType.accounts" />
                 <About v-if="setting.type === SettingType.about" />
-                <Pairing v-if="setting.type === SettingType.pairing" />
                 <DropDown
                     v-if="setting.type === SettingType.streaming_quality"
                     :items="(setting.options ?? [] as any)"
@@ -126,7 +125,6 @@ import Switch from './Components/Switch.vue'
 
 import Profile from '../modals/settings/Profile.vue'
 import Accounts from '../modals/settings/custom/Accounts.vue'
-import Pairing from '../modals/settings/custom/Pairing.vue'
 import DropDown from '../shared/DropDown.vue'
 import About from './About.vue'
 import BackupRestore from './Components/BackupRestore.vue'

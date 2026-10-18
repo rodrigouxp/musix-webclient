@@ -186,9 +186,6 @@ export const paths = {
             get deleteUser() {
                 return this.base + '/profile/delete'
             },
-            get pair() {
-                return this.base + '/getpaircode'
-            },
         },
         backups: {
             base: '/backup',

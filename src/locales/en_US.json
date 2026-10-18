@@ -359,10 +359,6 @@
       "Title": "Welcome to"
     }
   },
-  "Pairing": {
-    "ErrorPairingCode": "Error fetching pairing code. Error code: {res}",
-    "ScanQRCode": "Scan the QR code from the MUSIX app to pair with this server."
-  },
   "PlaylistView": {
     "AllTracks": "All Tracks",
     "Edit": "Edit",
@@ -629,9 +625,6 @@
       "InvalidNumber": "Invalid number",
       "UpdateFailed": "Failed to update",
       "Updated": "Updated"
-    },
-    "Pairing": {
-      "Title": "Pair device"
     },
     "Plugins": {
       "LastFM": {

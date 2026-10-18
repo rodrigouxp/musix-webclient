@@ -97,13 +97,6 @@ export async function deleteUser(username: string) {
     })
 }
 
-export async function sendPairRequest() {
-    return await useAxios({
-        url: paths.api.auth.pair,
-        method: 'GET',
-    })
-}
-
 export async function getOnboardingData() {
     const res = await useAxios({
         url: paths.api.onboardingData,

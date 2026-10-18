@@ -12,7 +12,6 @@ export enum SettingType {
   quick_actions,
   profile,
   accounts,
-  pairing,
   about,
   streaming_quality,
   backup,
