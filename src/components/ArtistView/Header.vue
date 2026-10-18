@@ -16,7 +16,7 @@
                 height: `${isSmallPhone ? '25rem' : containerHeight}`,
             }"
         >
-            <Info :artist="artist" :use-circular-image="useCircularImage" />
+            <Info :artist="artist" :use-circular-image="useCircularImage" :can-rename="canEditPhoto" />
             <div
                 class="artist-img no-select"
                 :style="{

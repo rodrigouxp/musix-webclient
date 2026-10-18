@@ -136,3 +136,98 @@ export async function saveArtistAsPlaylist(name: string, hash: string) {
 
     return data
 }
+
+export interface RenamePreview {
+    artist: { artisthash: string; name: string | null }
+    new_name: string
+    new_artisthash: string
+    tracks_in_artist_tag: number
+    albums_in_artist_tag: number
+    tracks_as_participant: number
+    tracks_title_only: number
+    files_to_rename: number
+    files_to_rewrite: number
+    files_total: number
+    unsupported_count: number
+    unsupported_formats: { filepath: string; error: string }[]
+    name_conflicts_count: number
+    name_conflicts: { filepath: string; name: string }[]
+    not_writable_count: number
+    not_writable: string[]
+    other_errors: { filepath: string; error: string }[]
+    merge: { name: string; artisthash: string; trackcount: number } | null
+    samples: RenameSample[]
+    participant_count: number
+    same_tag_collapses_count: number
+    same_tag_collapses: RenameSample[]
+    no_albumartist_count: number
+    no_albumartist: RenameSample[]
+    warning: string
+}
+
+export interface RenameSample {
+    filepath: string
+    title: string
+    album: string
+    artist_before: string | null
+    artist_after: string | null
+    albumartist_before: string | null
+    albumartist_after: string | null
+    participant: boolean
+}
+
+export interface RenameStatus {
+    running: boolean
+    artisthash: string
+    old_name: string
+    new_name: string
+    done: number
+    total: number
+    current: string | null
+    errors: { [filepath: string]: string }
+    finished: boolean
+    new_artisthash: string | null
+    result: {
+        error?: string
+        files_ok?: number
+        files_failed?: { [filepath: string]: string }
+        artist_moved?: boolean
+        new_artisthash?: string | null
+    } | null
+}
+
+/**
+ * What renaming the artist in all the files would do. Writes nothing.
+ * On failure returns `{ error }` with the message of the server.
+ */
+export async function previewArtistRename(hash: string, name: string): Promise<RenamePreview | { error: string }> {
+    const { data, error } = await useAxios({
+        method: 'POST',
+        url: paths.api.artist + `/${hash}/rename/preview`,
+        props: { name },
+    })
+
+    return error ? { error: (data?.error as string) || error } : (data as RenamePreview)
+}
+
+/**
+ * Starts the rename, which runs in the background (see `getArtistRenameStatus`).
+ */
+export async function startArtistRename(hash: string, name: string): Promise<{ ok: boolean } | { error: string }> {
+    const { data, error } = await useAxios({
+        method: 'POST',
+        url: paths.api.artist + `/${hash}/rename`,
+        props: { name, confirm: true },
+    })
+
+    return error ? { error: (data?.error as string) || error } : (data as { ok: boolean })
+}
+
+export async function getArtistRenameStatus(): Promise<RenameStatus | null> {
+    const { data, error } = await useAxios({
+        method: 'GET',
+        url: paths.api.artist + '/rename/status',
+    })
+
+    return error ? null : (data as RenameStatus)
+}
