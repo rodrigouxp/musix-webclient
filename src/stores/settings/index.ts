@@ -39,7 +39,6 @@ export default defineStore('settings', {
         clean_titles: true,
         hide_remaster: true,
         merge_albums: false,
-        show_albums_as_singles: false,
         separators: <string[]>[],
         show_playlists_in_folders: false,
         article_aware_sorting: false,
@@ -87,7 +86,6 @@ export default defineStore('settings', {
             this.hide_remaster = settings.removeRemasterInfo
             this.merge_albums = settings.mergeAlbums
             this.separators = settings.artistSeparators
-            this.show_albums_as_singles = settings.showAlbumsAsSingles
             this.show_playlists_in_folders = settings.showPlaylistsInFolderView
             this.article_aware_sorting = settings.artistArticleAwareSorting
 
@@ -162,9 +160,6 @@ export default defineStore('settings', {
         },
         toggleCleanTrackTitles() {
             this.clean_titles = !this.clean_titles
-        },
-        toggleShowAlbumAsSingle() {
-            this.show_albums_as_singles = !this.show_albums_as_singles
         },
         // volume 👇
         // takes a slider position, 0 to 1
@@ -303,13 +298,6 @@ export default defineStore('settings', {
             )
         },
 
-        async toggleShowAlbumsAsSingles() {
-            return await this.genericToggleSetting(
-                'showAlbumsAsSingles',
-                !this.show_albums_as_singles,
-                'show_albums_as_singles'
-            )
-        },
         async toggleShowPlaylistsInFolders() {
             return await this.genericToggleSetting(
                 'showPlaylistsInFolderView',

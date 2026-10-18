@@ -13,6 +13,8 @@ export const getArtistData = async (hash: string, limit: number = 15, albumlimit
         albums: {
             albums: Album[]
             singles_and_eps: Album[]
+            soundtracks: Album[]
+            live_albums: Album[]
             appearances: Album[]
             compilations: Album[]
         }
@@ -41,6 +43,8 @@ export const getArtistAlbums = async (hash: string, limit = 6, all = false) => {
         artistname: string
         albums: Album[]
         singles_and_eps: Album[]
+        soundtracks: Album[]
+        live_albums: Album[]
         appearances: Album[]
         compilations: Album[]
     }

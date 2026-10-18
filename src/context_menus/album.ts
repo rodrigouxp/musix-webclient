@@ -1,20 +1,61 @@
 import { router, Routes } from '@/router'
 
 import useAlbum from '@/stores/pages/album'
+import useArtistPage from '@/stores/pages/artist'
+import useArtistDiscography from '@/stores/pages/artistDiscog'
+import useAuth from '@/stores/auth'
 import useCollection from '@/stores/pages/collections'
 import useTracklist from '@/stores/queue/tracklist'
 
-import { getAlbumTracks, refreshAlbumCover } from '@/requests/album'
+import { AlbumKind, getAlbumTracks, refreshAlbumCover, setAlbumType } from '@/requests/album'
 import { addOrRemoveItemFromCollection } from '@/requests/collections'
 import { addAlbumToPlaylist } from '@/requests/playlists'
 
-import { AddToQueueIcon, DeleteIcon, PlayNextIcon, PlusIcon } from '@/icons'
+import { AddToQueueIcon, ArrowRightIcon, DeleteIcon, PlayNextIcon, PlusIcon, RefreshIcon } from '@/icons'
 import { Album, Collection, Option, Playlist, Track } from '@/interfaces'
 import { get_find_on_social, getAddToCollectionOptions, getAddToPlaylistOptions } from './utils'
 import { NotifType, useToast } from '@/stores/notification'
 import { useT } from '@/i18n'
 
 const { t } = useT();
+
+const albumKinds: { kind: AlbumKind; mark: string; remove: string; name: string }[] = [
+    {
+        kind: 'ep',
+        mark: 'Menus.Album.MarkAsEps',
+        remove: 'Menus.Album.RemoveFromEps',
+        name: 'EPs & Singles',
+    },
+    {
+        kind: 'soundtrack',
+        mark: 'Menus.Album.MarkAsSoundtrack',
+        remove: 'Menus.Album.RemoveFromSoundtrack',
+        name: 'Soundtrack',
+    },
+    {
+        kind: 'live album',
+        mark: 'Menus.Album.MarkAsLive',
+        remove: 'Menus.Album.RemoveFromLive',
+        name: 'Live album',
+    },
+]
+
+/**
+ * Loads the page that is on screen again, so the album shows up in (or leaves)
+ * the right section without reloading the whole app.
+ */
+async function refreshCurrentPage(album: Album) {
+    const route = router.currentRoute.value
+    const hash = route.params.hash as string
+
+    if (route.name === Routes.artist && hash) {
+        await useArtistPage().getData(hash)
+    } else if (route.name === Routes.artistDiscography && hash) {
+        useArtistDiscography().fetchAlbums(hash)
+    } else if (useAlbum().info.albumhash === album.albumhash) {
+        await useAlbum().fetchTracksAndArtists(album.albumhash)
+    }
+}
 
 export default async (album?: Album) => {
     const albumStore = useAlbum()
@@ -126,6 +167,39 @@ export default async (album?: Album) => {
         },
     }
 
+    update_cover.icon = RefreshIcon
+
+    const currentKind = album.album_type ?? album.type
+    const markOptions: Option[] = useAuth().is_admin
+        ? albumKinds.map(({ kind, mark, remove, name }) => {
+              const marked = currentKind === kind
+
+              return <Option>{
+                  label: t(marked ? remove : mark),
+                  icon: ArrowRightIcon,
+                  action: async () => {
+                      const toast = useToast()
+                      const result = await setAlbumType(album.albumhash, marked ? null : kind)
+
+                      if (result === null) {
+                          toast.showNotification(t('Requests.Album.TypeError'), NotifType.Error)
+                          return
+                      }
+
+                      album.album_type = result.kind ?? 'album'
+                      toast.showNotification(
+                          result.kind
+                              ? t('Requests.Album.TypeMarked', { type: name })
+                              : t('Requests.Album.TypeRemoved'),
+                          NotifType.Success
+                      )
+
+                      await refreshCurrentPage(album)
+                  },
+              }
+          })
+        : []
+
     return [
         play_next,
         add_to_queue,
@@ -133,5 +207,6 @@ export default async (album?: Album) => {
         ...[router.currentRoute.value.name === Routes.Page ? remove_from_page : add_to_page],
         get_find_on_social('album', '', album),
         update_cover,
+        ...markOptions,
     ]
 }

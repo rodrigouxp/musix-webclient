@@ -132,6 +132,28 @@ export async function refreshAlbumCover(albumhash: string): Promise<{ ok: boolea
     return data
 }
 
+export type AlbumKind = 'ep' | 'soundtrack' | 'live album'
+
+/**
+ * Marks the album as an EP, a soundtrack or a live album. `null` removes the mark.
+ * Returns `null` if the server refused.
+ */
+export async function setAlbumType(albumhash: string, kind: AlbumKind | null): Promise<{ ok: boolean; kind: AlbumKind | null } | null> {
+    const { data, error } = await useAxios({
+        url: albumUrl + `/${albumhash}/type`,
+        method: 'POST',
+        props: {
+            kind,
+        },
+    })
+
+    if (error) {
+        return null
+    }
+
+    return data
+}
+
 export async function getSimilarAlbums(artisthash: string, limit: number = 5): Promise<Album[]> {
     const { data } = await useAxios({
         url: albumUrl + '/similar?' + 'artisthash=' + artisthash + '&albumlimit=' + limit,

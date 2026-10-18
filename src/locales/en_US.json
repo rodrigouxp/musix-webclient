@@ -161,7 +161,9 @@
     "SeeAll": "See All",
     "Settings": "Settings",
     "SimilarArtists": "Similar artists",
+    "Live": "Live",
     "Singles": "EP & Singles",
+    "Soundtracks": "Soundtracks",
     "Title": "Title",
     "TopResult": "Top Result",
     "Track": "Track | Tracks",
@@ -262,6 +264,12 @@
   },
   "Menus": {
     "Album": {
+      "MarkAsEps": "Mark as EPs & Singles",
+      "MarkAsLive": "Mark as Live album",
+      "MarkAsSoundtrack": "Mark as Soundtrack",
+      "RemoveFromEps": "Remove from EPs & Singles",
+      "RemoveFromLive": "Remove from Live album",
+      "RemoveFromSoundtrack": "Remove from Soundtrack"
     },
     "Artist": {
       "ThisIsPlaylist": "This is {artist}",
@@ -383,6 +391,9 @@
       "AlbumNotCreatedYet": "Album not created yet!",
       "CoverUpdated": "Album cover updated",
       "NoCoverFound": "No cover found for this album",
+      "TypeError": "Could not change the album type",
+      "TypeMarked": "Album marked as {type}",
+      "TypeRemoved": "Album mark removed",
       "UpdateAllCoversError": "Could not start the cover update",
       "UpdateCoverError": "Could not update the album cover",
       "UpdatingAllCovers": "Updating covers in the background"
@@ -515,10 +526,6 @@
     "General": {
       "AlbumInfoSettingsDesc": "Settings relating to album information",
       "Albums": {
-        "AlbumAsSingles": {
-          "Description": "Require an album to have at least two tracks",
-          "Title": "Mark albums with one track as singles"
-        },
         "CleanTitles": {
           "Description": "Remove bracketed text from titles and process it separately if possible",
           "Title": "Clean album titles"

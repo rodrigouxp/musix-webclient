@@ -91,6 +91,8 @@ const similar_artists_fetcher: ScrollerItem = {
 enum AlbumType {
     ALBUMS = 'Albums',
     SINGLES = 'EP & Singles',
+    SOUNDTRACKS = 'Soundtracks',
+    LIVE = 'Live',
     APPEARANCES = 'Appearances',
     COMPILATIONS = 'Compilations',
 }
@@ -105,6 +107,10 @@ function resolveTitleFromEnum(type: AlbumType): string {
             return t('Common.Compilations', 2);
         case AlbumType.SINGLES:
             return t('Common.Singles');
+        case AlbumType.SOUNDTRACKS:
+            return t('Common.Soundtracks');
+        case AlbumType.LIVE:
+            return t('Common.Live');
         default:
             return '';
     }
@@ -119,6 +125,12 @@ function createAbumComponent(title: AlbumType, albums: Album[], show_date = true
             break
         case AlbumType.SINGLES:
             albumType = discographyAlbumTypes.EPs_and_singles
+            break
+        case AlbumType.SOUNDTRACKS:
+            albumType = discographyAlbumTypes.soundtracks
+            break
+        case AlbumType.LIVE:
+            albumType = discographyAlbumTypes.live
             break
         case AlbumType.COMPILATIONS:
             albumType = discographyAlbumTypes.compilations
@@ -196,6 +208,14 @@ const scrollerItems = computed(() => {
     if (store.singles.length > 0) {
         const singles = createAbumComponent(AlbumType.SINGLES, store.singles)
         components.push(singles)
+    }
+
+    if (store.soundtracks.length > 0) {
+        components.push(createAbumComponent(AlbumType.SOUNDTRACKS, store.soundtracks))
+    }
+
+    if (store.live_albums.length > 0) {
+        components.push(createAbumComponent(AlbumType.LIVE, store.live_albums))
     }
 
     if (store.compilations.length > 0) {

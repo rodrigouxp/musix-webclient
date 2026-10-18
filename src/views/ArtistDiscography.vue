@@ -18,7 +18,7 @@
     </GenericHeader>
     <GenericTabs
       :items="
-        Object.values(discographyAlbumTypes).map((type) => ({
+        Object.values(discographyAlbumTypes).filter(showTab).map((type) => ({
           title: type,
           params: {
             hash: route.params.hash,
@@ -78,6 +78,14 @@ function getTypeString(type: string) {
   return getTypeName(type);
 }
 
+// the soundtracks and live tabs only exist while the artist has albums marked as such
+function showTab(type: string) {
+  if (type === route.params.type) return true;
+  if (type === discographyAlbumTypes.soundtracks) return artist.soundtracks.length > 0;
+  if (type === discographyAlbumTypes.live) return artist.live.length > 0;
+  return true;
+}
+
 function getTypeName(type: string | string[]) {
   switch (type) {
     case "all":
@@ -86,6 +94,10 @@ function getTypeName(type: string | string[]) {
       return t('Common.Album', 2);
     case discographyAlbumTypes.EPs_and_singles:
       return t('Common.Singles');
+    case discographyAlbumTypes.soundtracks:
+      return t('Common.Soundtracks');
+    case discographyAlbumTypes.live:
+      return t('Common.Live');
     case discographyAlbumTypes.appearances:
       return t('Common.Appearances');
     case discographyAlbumTypes.compilations:

@@ -14,6 +14,8 @@ export default defineStore("artistDiscography", {
 
     albums: <Album[]>[],
     singles: <Album[]>[],
+    soundtracks: <Album[]>[],
+    live: <Album[]>[],
     appearances: <Album[]>[],
     compilations: <Album[]>[],
   }),
@@ -32,6 +34,12 @@ export default defineStore("artistDiscography", {
         case discographyAlbumTypes.EPs_and_singles:
           this.toShow = this.singles;
           break;
+        case discographyAlbumTypes.soundtracks:
+          this.toShow = this.soundtracks;
+          break;
+        case discographyAlbumTypes.live:
+          this.toShow = this.live;
+          break;
         case discographyAlbumTypes.appearances:
           this.toShow = this.appearances;
           break;
@@ -41,6 +49,8 @@ export default defineStore("artistDiscography", {
         default:
           this.toShow = this.albums.concat(
             this.singles,
+            this.soundtracks,
+            this.live,
             this.appearances,
             this.compilations
           );
@@ -57,6 +67,8 @@ export default defineStore("artistDiscography", {
         .then((data) => {
           this.albums = data.albums;
           this.singles = data.singles_and_eps;
+          this.soundtracks = data.soundtracks ?? [];
+          this.live = data.live_albums ?? [];
           this.appearances = data.appearances;
           this.artistname = data.artistname;
           this.compilations = data.compilations;
@@ -66,6 +78,8 @@ export default defineStore("artistDiscography", {
     resetStore() {
       this.albums = [];
       this.singles = [];
+      this.soundtracks = [];
+      this.live = [];
       this.appearances = [];
 
       this.toShow = [];

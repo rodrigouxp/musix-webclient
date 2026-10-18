@@ -57,6 +57,8 @@ export const discographyAlbumTypes = {
   all: "all",
   albums: "albums",
   EPs_and_singles: "EP & singles",
+  soundtracks: "soundtracks",
+  live: "live",
   appearances: "appearances",
   compilations: "compilations",
 };
@@ -94,7 +96,6 @@ export interface DBSettings {
   cleanAlbumTitle: boolean;
   removeRemasterInfo: boolean;
   mergeAlbums: boolean;
-  showAlbumsAsSingles: boolean;
   enablePeriodicScans: boolean
   scanInterval: number
   plugins: Plugin[];

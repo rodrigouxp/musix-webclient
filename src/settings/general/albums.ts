@@ -29,14 +29,6 @@ const merge_album_versions: Setting = {
     inactive: () => !settings().clean_titles,
 }
 
-const show_albums_as_singles: Setting = {
-    title: t('Settings.General.Albums.AlbumAsSingles.Title'),
-    desc: t("Settings.General.Albums.AlbumAsSingles.Description"),
-    type: SettingType.binary,
-    state: () => settings().show_albums_as_singles,
-    action: () => settings().toggleShowAlbumsAsSingles(),
-}
-
 const update_all_covers: Setting = {
     title: t('Settings.General.Albums.UpdateAllCovers.Title'),
     desc: t('Settings.General.Albums.UpdateAllCovers.Description'),
@@ -46,4 +38,4 @@ const update_all_covers: Setting = {
     action: () => refreshAllCovers(),
 }
 
-export default [clean_album_titles, merge_album_versions, show_albums_as_singles, update_all_covers]
+export default [clean_album_titles, merge_album_versions, update_all_covers]

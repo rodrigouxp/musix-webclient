@@ -69,6 +69,8 @@ export interface Album {
     artistimg: string
     albumhash: string
     type?: string
+    /** the real type of the album: a manual mark ("ep", "soundtrack", "live album"), "compilation" or "album" */
+    album_type?: string
 
     color?: string
     blurhash?: string

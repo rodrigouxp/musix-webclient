@@ -23,3 +23,7 @@ export { default as PlaylistIcon } from "@/assets/icons/playlist.svg?raw";
 export { default as GridIcon } from "@/assets/icons/grid.svg?raw";
 export { default as ReloadIcon } from "@/assets/icons/reload.svg?raw";
 export {default as SettingsIcon } from "@/assets/icons/settings.svg?raw";
+export { default as RefreshIcon } from "@/assets/icons/refresh.svg?raw";
+export { default as ArrowRightIcon } from "@/assets/icons/arrow-right.svg?raw";
+export { default as SaveIcon } from "@/assets/icons/save.svg?raw";
+export { default as EditIcon } from "@/assets/icons/pencil.svg?raw";

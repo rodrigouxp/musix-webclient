@@ -17,6 +17,8 @@ export default defineStore('artistPage', {
         eps: <Album[]>[],
         compilations: <Album[]>[],
         singles: <Album[]>[],
+        soundtracks: <Album[]>[],
+        live_albums: <Album[]>[],
         appearances: <Album[]>[],
         similar_artists: <Artist[]>[],
         colors: {
@@ -43,10 +45,12 @@ export default defineStore('artistPage', {
             this.extractColors()
         },
         setAlbums(srcalbums: { [key: string]: Album[] }) {
-            const { albums, singles_and_eps, appearances, compilations } = srcalbums
+            const { albums, singles_and_eps, soundtracks, live_albums, appearances, compilations } = srcalbums
 
             this.albums = albums
             this.singles = singles_and_eps
+            this.soundtracks = soundtracks ?? []
+            this.live_albums = live_albums ?? []
             this.appearances = appearances
             this.compilations = compilations
         },
@@ -72,6 +76,8 @@ export default defineStore('artistPage', {
             this.albums = []
             this.eps = []
             this.singles = []
+            this.soundtracks = []
+            this.live_albums = []
         },
         resetSimilarArtists() {
             this.similar_artists = []
