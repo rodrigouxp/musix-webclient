@@ -1,0 +1,64 @@
+// MUSIX design tokens
+//
+// Fonte da verdade: arquivo do Figma "App-MUSIX" (estilos de cor e de texto, e o
+// protótipo "Album context menu"). Não edite os valores à mão: peça para atualizar
+// a partir do Figma. Nomes seguem o Figma, com "/" virando "-".
+//
+// Ainda NÃO é usado pelo app inteiro. Hoje só o menu de contexto usa estes tokens;
+// o resto migra aos poucos.
+
+:root {
+  // Cores (estilos de cor do Figma)
+  --color-neutral-white: #ffffff;
+  --color-neutral-100: #ececec;
+  --color-neutral-300: #b8b8b8;
+  --color-neutral-500: #909090;
+  --color-neutral-900: #222222;
+  --color-neutral-black: #000000;
+
+  --color-primary-300: #76afe4;
+  --color-primary-500: #1267b7;
+  --color-primary-700: #002c56;
+
+  --color-secondary-300: #ed84da;
+  --color-secondary-500: #b71299;
+  --color-secondary-700: #6a0357;
+
+  --color-success-300: #6ce9a6;
+  --color-success-500: #12b76a;
+  --color-success-700: #027a48;
+
+  --color-warning-300: #fec84b;
+  --color-warning-500: #f79009;
+  --color-warning-700: #b54708;
+
+  --color-error-300: #ff7676;
+  --color-error-500: #fc0404;
+  --color-error-700: #860000;
+
+  // Divisor: branco com 15% de opacidade (ainda sem estilo de cor no Figma)
+  --color-divider: rgba(255, 255, 255, 0.15);
+
+  // Menu de contexto (protótipo "Album context menu")
+  --menu-bg: var(--color-neutral-900);
+  --menu-radius: 10px;
+  --menu-padding-y: 10px;
+  --menu-padding-x: 8px;
+  --menu-gap: 10px; // entre grupos, em volta de cada divisor
+  --menu-shadow: 0 5px 16px rgba(0, 0, 0, 0.4);
+  --menu-width: 232px;
+
+  --menu-item-height: 37px;
+  --menu-item-radius: 8px;
+  --menu-item-padding-x: 10px;
+  --menu-item-gap: 12px; // entre o ícone e o texto
+  --menu-item-text: var(--color-neutral-100);
+  --menu-item-icon: var(--color-neutral-300);
+  --menu-item-bg-selected: var(--color-primary-500);
+  --menu-item-text-selected: var(--color-neutral-white);
+  --menu-item-icon-selected: var(--color-neutral-300); // no Figma o ícone não muda no item selecionado
+
+  --menu-icon-size: 18px;
+  --menu-divider: var(--color-divider);
+  --menu-divider-width: 0.8px;
+}
