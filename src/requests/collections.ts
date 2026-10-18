@@ -1,5 +1,5 @@
 import { paths } from '@/config'
-import { Album, Artist, Collection, Mix, Playlist } from '@/interfaces'
+import { Album, Artist, Collection, Playlist } from '@/interfaces'
 import { Notification, NotifType } from '@/stores/notification'
 import useAxios from './useAxios'
 import { useT } from '@/i18n'
@@ -71,7 +71,7 @@ export async function updateCollection(collection: Collection, name: string, des
 
 export async function addOrRemoveItemFromCollection(
     collection_id: number,
-    item: Album | Artist | Mix | Playlist,
+    item: Album | Artist | Playlist,
     type: string,
     command: 'add' | 'remove'
 ) {
@@ -87,9 +87,6 @@ export async function addOrRemoveItemFromCollection(
             break
         case 'artist':
             payload.hash = (item as Artist).artisthash
-            break
-        case 'mix':
-            payload.hash = (item as Mix).sourcehash
             break
         case 'playlist':
             payload.hash = (item as Playlist).id.toString()

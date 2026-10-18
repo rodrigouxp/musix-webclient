@@ -1,11 +1,10 @@
 import { paths } from '@/config'
-import { Album, ClassicalWork, StatItem, Track } from '@/interfaces'
+import { Album, StatItem, Track } from '@/interfaces'
 import { NotifType, useToast } from '@/stores/notification'
 import useAxios from './useAxios'
 import { useT } from '@/i18n'
 
 const { t } = useT();
-import useSettingsStore from '@/stores/settings'
 
 const {
     album: albumUrl,
@@ -16,11 +15,9 @@ const {
 } = paths.api
 
 const getAlbumData = async (albumhash: string, albumlimit: number) => {
-    const settings = useSettingsStore()
     interface AlbumData {
         info: Album
         tracks: Track[]
-        works: ClassicalWork[]
         copyright: string
         extra: {
             track_total: number
@@ -38,7 +35,6 @@ const getAlbumData = async (albumhash: string, albumlimit: number) => {
         props: {
             albumhash,
             albumlimit,
-            classical_view: settings.classical_enabled,
         },
     })
 
@@ -114,24 +110,13 @@ export const getAlbumVersions = async (og_album_title: string, albumhash: string
     return []
 }
 
-export async function getAlbumTracks(albumhash: string): Promise<Track[] | ClassicalWork[]> {
-    const settings = useSettingsStore()
+export async function getAlbumTracks(albumhash: string): Promise<Track[]> {
     const { data } = await useAxios({
-        url: albumUrl + `/${albumhash}/` + 'tracks' + `?classical_view=${settings.classical_enabled}`,
+        url: albumUrl + `/${albumhash}/` + 'tracks',
         method: 'GET',
     })
 
     return data
-}
-
-// the tracks endpoint returns works for classical albums
-export function normalizeAlbumTracks(data: Track[] | ClassicalWork[]): { tracks: Track[]; works?: ClassicalWork[] } {
-    if (data.length && 'movements' in data[0]) {
-        const works = data as ClassicalWork[]
-        return { tracks: works.flatMap(work => work.movements), works }
-    }
-
-    return { tracks: data as Track[] }
 }
 
 export async function getSimilarAlbums(artisthash: string, limit: number = 5): Promise<Album[]> {

@@ -12,7 +12,6 @@
             :title="item.title || ''"
             :description="item.description"
             :items="item.items"
-            :play-source="playSources.mix"
             :route="item.path"
             :see-all-text="item.seeAllText"
         />
@@ -23,7 +22,6 @@
 import { nextTick, onMounted } from 'vue'
 import useAuth from '@/stores/auth'
 
-import { playSources } from '@/enums'
 import { updateCardWidth } from '@/stores/content-width'
 import useHome from '@/stores/home'
 import updatePageTitle from '@/utils/updatePageTitle'

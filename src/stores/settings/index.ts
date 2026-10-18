@@ -11,7 +11,6 @@ import { getLastFmApiSig } from '@/context_menus/hashing'
 import useAxios from '@/requests/useAxios'
 import { paths } from '@/config'
 import { router } from '@/router'
-import { LicenseInfo } from '@/interfaces'
 import { clamp, volumeToGain } from '@/utils/audio/volume'
 
 export default defineStore('settings', {
@@ -59,7 +58,6 @@ export default defineStore('settings', {
             auto_download: false,
             overide_unsynced: false,
         },
-        trust_cloud_lyrics: false,
         lasftfm_token: '',
         lastfm_api_key: '',
         lastfm_api_secret: '',
@@ -84,12 +82,6 @@ export default defineStore('settings', {
         showInlineFavIcon: false,
         _highlightFavoriteTracks: false,
 
-        device_name: '',
-        device_id: '',
-        licenseInfo: <LicenseInfo | null>null,
-
-        // classical support
-        classical_enabled: false,
     }),
     actions: {
         mapDbSettings(settings: DBSettings) {
@@ -119,11 +111,6 @@ export default defineStore('settings', {
                 this.lyrics_plugin_settings = settings.plugins.find(p => p.name === 'lyrics_finder')?.settings
             }
 
-            this.trust_cloud_lyrics = settings.trustCloudLyrics
-            this.device_name = settings.deviceName
-            this.device_id = settings.deviceId
-            this.licenseInfo = settings.licenseInfo
-            this.classical_enabled = settings.classicalEnabled
         },
         setArtistSeparators(separators: string[]) {
             this.separators = separators
@@ -336,9 +323,6 @@ export default defineStore('settings', {
                 'show_albums_as_singles'
             )
         },
-        async toggleTrustCloudLyrics() {
-            return await this.genericToggleSetting('trustCloudLyrics', !this.trust_cloud_lyrics, 'trust_cloud_lyrics')
-        },
         async toggleShowPlaylistsInFolders() {
             return await this.genericToggleSetting(
                 'showPlaylistsInFolderView',
@@ -413,12 +397,6 @@ export default defineStore('settings', {
         setStatsPeriod(period: string) {
             this.statsperiod = period
         },
-        updateLicenseInfo(info: LicenseInfo | null) {
-            this.licenseInfo = info
-        },
-        async toggleClassicalEnabled() {
-            return await this.genericToggleSetting('classicalEnabled', !this.classical_enabled, 'classical_enabled')
-        },
     },
     getters: {
         can_extend_width(): boolean {
@@ -452,7 +430,6 @@ export default defineStore('settings', {
             // reset plugin settings
             store.use_lyrics_plugin = false
             store.lyrics_plugin_settings = {}
-            store.licenseInfo = null
         },
     },
 })

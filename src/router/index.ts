@@ -24,8 +24,6 @@ const PlaylistView = () => import('@/views/PlaylistView/index.vue')
 const ArtistDiscographyView = () => import('@/views/ArtistDiscography.vue')
 const FavoriteCardScroller = () => import('@/views/FavoriteCardScroller.vue')
 const StatsView = () => import('@/views/Stats/main.vue')
-const MixView = () => import('@/views/MixView.vue')
-const MixListView = () => import('@/views/MixListView.vue')
 const Collection = () => import('@/views/Collections/Collection.vue')
 const Onboarding = () => import('@/views/Onboarding.vue')
 
@@ -184,18 +182,6 @@ const ArtistListView = {
     name: 'ArtistListView',
 }
 
-const Mix = {
-    path: '/mix/:mixid',
-    name: 'MixView',
-    component: MixView,
-}
-
-const MixList = {
-    path: '/mixes/:type',
-    name: 'MixListView',
-    component: MixListView,
-}
-
 const PageView = {
     path: '/collections/:collection',
     name: 'Collection',
@@ -229,8 +215,6 @@ const routes = [
     AlbumListView,
     ArtistListView,
     Stats,
-    Mix,
-    MixList,
     PageView,
     OnboardingView,
 ]
@@ -255,8 +239,6 @@ const Routes = {
     AlbumList: AlbumListView.name,
     ArtistList: ArtistListView.name,
     Stats: Stats.name,
-    Mix: Mix.name,
-    MixList: MixList.name,
     Page: PageView.name,
     Onboarding: OnboardingView.name,
 }

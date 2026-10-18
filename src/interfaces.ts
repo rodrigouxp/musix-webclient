@@ -45,7 +45,6 @@ export interface Track extends AlbumDisc {
 
     color?: string
     blurhash?: string
-    is_classical: boolean
 }
 
 export interface Folder {
@@ -77,7 +76,6 @@ export interface Album {
     help_text?: string
     time?: string
     is_favorite: boolean
-    is_classical: boolean
     genres: Genre[]
     versions: string[]
     trend?: {
@@ -86,63 +84,7 @@ export interface Album {
     }
 }
 
-export interface CatalogueId {
-    name: string
-    hash: string
-}
-
-export interface ClassicalMovement extends Track {
-    movement_title: string
-    // added when the movement is added to the queue,
-    // links back to tracklist.worklist
-    workhash?: string
-}
-
-export interface ClassicalWork {
-    catalogue_ids: CatalogueId[]
-    composer: string
-    composer_hash: string
-    key: string | null
-    name: string
-    subtitle: string | null
-    workhash: string
-    movements: ClassicalMovement[]
-}
-
-export type QueueItem = Track | ClassicalMovement
-export type QueueWork = Omit<ClassicalWork, 'movements'>
-
-export interface Mix {
-    id: string
-    title: string
-    description: string
-    sourcehash: string
-    userid: number
-    timestamp: number | string
-    saved: boolean
-    extra: {
-        type: string
-        artisthash: string
-        og_sourcehash: string
-        image?: {
-            image: string
-            color: string
-        }
-        images?: {
-            image: string
-            color: string
-        }[]
-    }
-    duration: number
-    trackcount: number
-    help_text?: string
-    time?: string
-}
-
-export interface FullMix extends Mix {
-    tracks: Track[]
-    saved: boolean
-}
+export type QueueItem = Track
 
 export interface HomePageItem {
     position: number
@@ -217,7 +159,7 @@ export interface Playlist {
 export interface Collection {
     id: number
     name: string
-    items: (Album | Artist | Mix | Playlist)[]
+    items: (Album | Artist | Playlist)[]
     extra: {
         description: string
     }
@@ -260,17 +202,6 @@ export interface fromArtist {
     type: FromOptions.artist
     artisthash: string
     artistname: string
-}
-
-export interface fromMix {
-    type: FromOptions.mix
-    name: string
-    mixid: string
-    sourcehash: string
-    image: {
-        type: 'mix' | 'track'
-        image: string
-    }
 }
 
 export interface fromFav {
@@ -360,67 +291,4 @@ export interface StatItem {
     value: string
     text: string
     image?: string
-}
-
-// License
-
-interface Device {
-    current: boolean
-    device_id: string
-    device_name: string
-    last_seen: string | null
-    device_type: 'server' | 'laptop' | 'desktop' | 'handheld'
-}
-
-interface Customer {
-    email: string
-    id: string
-    name: string | null
-}
-
-interface Devices {
-    active: number
-    limit: number
-    list: Device[]
-}
-
-interface License {
-    created_at: string
-    device_id: string
-    device_name: string
-    expires_at: string | null
-    license_type: 'lifetime' | 'subscription' | 'gh_sponsor'
-    public_key: string
-    status: string
-    subscription: {
-        amount: number
-        cancel_at_period_end: boolean
-        canceled_at: string | null
-        created_at: string
-        currency: string
-        current_period_end: string
-        current_period_start: string
-        custom_field_data: { [key: string]: any }
-        discount_id: string | null
-        ends_at: string
-        id: string
-        metadata: { [key: string]: any }
-        meters: any[]
-        modified_at: string
-        price_id: string
-        product_id: string
-        recurring_interval: 'month' | 'year' | 'one_time'
-        started_at: string
-        status: string
-        trial_end: string | null
-        trial_start: string | null
-    }
-}
-
-export interface LicenseInfo {
-    customer: Customer
-    devices: Devices
-    license: License
-    msg: string
-    license_key: string
 }

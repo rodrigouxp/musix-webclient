@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 
 import { favType } from '@/enums'
 import updateMediaNotif from '@/helpers/mediaNotification'
-import { ClassicalWork, QueueItem, Track } from '@/interfaces'
+import { QueueItem, Track } from '@/interfaces'
 import { isFavorite } from '@/requests/favorite'
 import useInterface from './interface'
 
@@ -146,16 +146,12 @@ export default defineStore('Queue', {
             player.clearMovingNextTimeout()
         },
 
-        playTrackNext(track: Track, works?: ClassicalWork[]) {
+        playTrackNext(track: Track) {
             const Toast = useToast()
             const tracklist = useTracklist()
 
             const nextindex = this.currentindex + 1
             tracklist.insertAt([track], nextindex)
-
-            if (works?.length) {
-                tracklist.indexWorks(works, [track])
-            }
 
             Toast.showNotification(t("Stores.Queue.AddedTrack"), NotifType.Success)
         },

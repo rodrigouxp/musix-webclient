@@ -175,7 +175,6 @@
     "album": "专辑",
     "artist": "艺术家",
     "experimental": "实验性",
-    "mix": "混音集",
     "new": "新",
     "removed": "已移除",
     "selected": "已选择",
@@ -306,18 +305,6 @@
       "NewPlaylist": "新建播放列表",
       "SearchOn": "搜索于"
     }
-  },
-  "Mixes": {
-    "Radio": "电台",
-    "RadioName": "{title} 电台",
-    "SaveMix": "保存混音集",
-    "SavedMix": "已保存的混音集",
-    "TypeLabel": "{type}混音集",
-    "Types": {
-      "artist": "艺术家",
-      "track": "曲目"
-    },
-    "track": "曲目"
   },
   "Modal": {
     "DeletePlaylist": "确定要永久删除此播放列表吗？",
@@ -473,9 +460,6 @@
       "Developer": "Swing Music 是 {link} 在 GitHub 上用心开发的作品。如果你喜欢这款软件，欢迎在 GitHub 上点个星。希望你使用它时和我开发它时一样开心。😁🤗",
       "GetInTouchDescription": "如果你喜欢我的作品并想打个招呼，我很乐意听到你的声音。",
       "GetInTouchTitle": "联系我们",
-      "LicenseDesc": "管理你的许可证密钥、订阅和已授权设备",
-      "LicenseDisplayName": "许可证与订阅",
-      "LicenseTitle": "许可证",
       "LinksContribute": "参与贡献",
       "LinksDocs": "文档",
       "LinksGitHub": "在 GitHub 上点星",
@@ -547,10 +531,6 @@
         "AlbumAsSingles": {
           "Description": "要求专辑至少包含两首曲目",
           "Title": "将只有一首曲目的专辑标记为单曲"
-        },
-        "Classical": {
-          "Desc": "为专辑启用古典音乐支持（需要高级版）",
-          "Title": "启用古典音乐支持"
         },
         "CleanTitles": {
           "Description": "移除标题中括号内的文字，并尽可能单独处理",
@@ -641,44 +621,6 @@
       },
       "UseNoSidebarTitle": "使用无侧边栏布局"
     },
-    "License": {
-      "ActivateLicense": "{action}许可证",
-      "Amount": "金额",
-      "AuthDevices": "已授权设备",
-      "AutoRenewOff": "自动续订已关闭",
-      "CanceledAt": "已取消 ",
-      "CurrentlyUsed": "当前正在使用你的许可证密钥的实例（{cur}/{tot} 个活跃）",
-      "Expires": "到期",
-      "GithubSponsorTitle": "GitHub 赞助者权益",
-      "GithubSponsors": "GitHub 赞助者",
-      "LastActivity": "最近活动：{time}",
-      "LicenseKey": {
-        "AlreadyHave": "已经有许可证密钥？",
-        "Info": "许可证密钥信息",
-        "Paste": "在此粘贴你的许可证密钥：",
-        "Update": "更新你的许可证密钥："
-      },
-      "LogInToGithub": "使用 GitHub 登录",
-      "Manage": "管理{lic} ↗",
-      "NewOrUpServerName": "{action}服务器名称：",
-      "NoActiveSub": "没有有效订阅",
-      "NoActiveSubDesc": "订阅以解锁所有高级功能。\n 使用下方链接浏览可用方案和权益。",
-      "NoActivity": "没有活动",
-      "NoGithubLogin": "Swing Music 高级版对所有 GitHub 赞助者开放。使用 GitHub 登录即可获取。",
-      "RefreshStatus": "刷新状态",
-      "Renewal": "续订",
-      "Revoke": "撤销",
-      "SaveChanges": "保存更改",
-      "SponsorOnGithub": "在 GitHub 上赞助 ❤️",
-      "Sponsorship": "赞助",
-      "Status": "状态",
-      "Subscription": "订阅",
-      "ThanksCustName": "你好 @{cust}！你已可以使用 Swing Music 高级版。",
-      "ThanksWithHearts": "感谢你的支持。❤️❤️",
-      "Tier": "等级",
-      "UnknownError": "发生未知错误",
-      "ViewPricing": "查看价格"
-    },
     "List": {
       "RootNotConfigured": "尚未配置根目录。请使用上方的“配置”按钮进行配置"
     },
@@ -726,10 +668,6 @@
         },
         "ToggleLyrics": {
           "Title": "启用插件"
-        },
-        "TrustCloud": {
-          "Desc": "不显示未经验证的歌词（需要高级版）",
-          "Title": "仅显示已验证的歌词"
         }
       },
       "LyricsDescription": "从互联网查找并显示歌词。"
@@ -844,15 +782,6 @@
       "SearchOnline": "在线搜索",
       "Searching": "搜索中...",
       "Unsynced": "未同步"
-    },
-    "MixListView": {
-      "MixesBasedOnListening": "{n} 个混音集 • 基于你最近收听的艺术家",
-      "OtherMixes": "其他{type}混音集",
-      "SavedMixes": "已保存的混音集",
-      "mixes": "混音集"
-    },
-    "MixView": {
-      "MixNotFound": "404：未找到混音集"
     },
     "NotFound": {
       "Error": "404！页面未找到！"

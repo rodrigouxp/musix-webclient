@@ -1,5 +1,3 @@
-import { LicenseInfo } from "./interfaces";
-
 export enum playSources {
   playlist,
   album,
@@ -10,7 +8,6 @@ export enum playSources {
   track,
   recentlyAdded,
   recentlyPlayed,
-  mix,
 }
 
 export enum NotifType {
@@ -27,8 +24,6 @@ export enum FromOptions {
   album = "album",
   search = "search",
   artist = "artist",
-  mix = "mix",
-  artistMix = "artist mix",
   albumCard = "albumCard",
   favorite = "favorite",
 }
@@ -110,10 +105,4 @@ export interface DBSettings {
   lastfmSessionKey: string;
   showPlaylistsInFolderView: boolean;
   artistArticleAwareSorting: boolean;
-  trustCloudLyrics: boolean;
-
-  deviceName: string;
-  deviceId: string;
-  licenseInfo: LicenseInfo | null;
-  classicalEnabled: boolean
 }

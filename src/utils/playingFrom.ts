@@ -12,7 +12,6 @@ import FolderSvg from '@/assets/icons/folder.svg'
 import HeartSvg from '@/assets/icons/heart.fill.svg'
 import PlaylistSvg from '@/assets/icons/playlist.svg'
 import SearchSvg from '@/assets/icons/search.svg'
-import RadioSvg from '@/assets/icons/radio.svg'
 import { useT } from '@/i18n'
 
 const { t } = useT()
@@ -102,25 +101,6 @@ export default (source: From): PlayingFrom => {
                     name: Routes.favoriteTracks,
                 },
                 image: '',
-            }
-
-        case FromOptions.mix:
-            return {
-                name: source.name,
-                icon: RadioSvg,
-                location: {
-                    name: Routes.Mix,
-                    params: {
-                        mixid: source.mixid,
-                    },
-                    query: {
-                        src: source.sourcehash,
-                    },
-                },
-                image:
-                    source.image.type === 'mix'
-                        ? paths.images.mix.small + source.image.image
-                        : paths.images.thumb.small + source.image.image,
             }
 
         default:

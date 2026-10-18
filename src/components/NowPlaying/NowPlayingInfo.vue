@@ -2,11 +2,7 @@
     <div class="now-playing-info">
         <div class="text">
             <div class="title">
-                {{
-                    (queue.currenttrack as ClassicalMovement)?.movement_title ??
-                    (queue.currenttrack as Track)?.title ??
-                    $t('Common.AppTitle')
-                }}
+                {{ queue.currenttrack?.title ?? $t('Common.AppTitle') }}
             </div>
             <div class="artist">
                 <ArtistName
@@ -30,7 +26,6 @@
 import { ref } from 'vue'
 import useQueueStore from '@/stores/queue'
 import ArtistName from '../shared/ArtistName.vue'
-import { ClassicalMovement, Track } from '@/interfaces'
 import { showTrackContextMenu } from '@/helpers/contextMenuHandler'
 
 const context_menu_showing = ref(false)

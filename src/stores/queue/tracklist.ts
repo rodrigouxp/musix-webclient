@@ -8,17 +8,13 @@ import useSettings from '@/stores/settings'
 
 import { FromOptions } from '@/enums'
 import {
-    ClassicalMovement,
-    ClassicalWork,
     fromAlbum,
     fromArtist,
     fromFav,
     fromFolder,
-    fromMix,
     fromPlaylist,
     fromSearch,
     QueueItem,
-    QueueWork,
     Track,
 } from '@/interfaces'
 import track from '@/context_menus/track'
@@ -26,7 +22,7 @@ import { useT } from '@/i18n'
 
 const { t } = useT();
 
-export type From = fromFolder | fromAlbum | fromPlaylist | fromSearch | fromArtist | fromFav | fromMix
+export type From = fromFolder | fromAlbum | fromPlaylist | fromSearch | fromArtist | fromFav
 
 function shuffle(tracks: QueueItem[]) {
     const shuffled = tracks.slice()
@@ -41,7 +37,6 @@ export default defineStore('tracklist', {
     state: () => ({
         from: {} as From,
         tracklist: <QueueItem[]>[],
-        worklist: <{ [workhash: string]: QueueWork }>{},
     }),
     actions: {
         loadFromLocalStorage() {
@@ -59,41 +54,9 @@ export default defineStore('tracklist', {
                 this.tracklist.push(...tracklist)
             }
 
-            this.worklist = {}
-
             const { focusCurrentInSidebar } = useInterface()
             focusCurrentInSidebar(1000)
             usePlayer().clearNextAudio()
-        },
-        indexWorks(works: ClassicalWork[], tracks: Track[]) {
-            // maps each work's movements by trackhash so the flat tracks
-            // can be stamped with a back-reference to their work
-            const trackWork: { [trackhash: string]: ClassicalWork['movements'][number] & { workhash: string } } = {}
-
-            for (const work of works) {
-                this.worklist[work.workhash] = {
-                    catalogue_ids: work.catalogue_ids,
-                    composer: work.composer,
-                    composer_hash: work.composer_hash,
-                    key: work.key,
-                    name: work.name,
-                    subtitle: work.subtitle,
-                    workhash: work.workhash,
-                }
-
-                for (const movement of work.movements) {
-                    trackWork[movement.trackhash] = { ...movement, workhash: work.workhash }
-                }
-            }
-
-            for (const track of tracks) {
-                const movement = trackWork[track.trackhash]
-                if (!movement) continue
-
-                const queueMovement = track as ClassicalMovement
-                queueMovement.workhash = movement.workhash
-                queueMovement.movement_title = movement.movement_title
-            }
         },
         setFromFolder(path: string, tracks: Track[]) {
             // remove trailing slash
@@ -106,7 +69,7 @@ export default defineStore('tracklist', {
             }
             this.setNewList(tracks)
         },
-        setFromAlbum(name: string, albumhash: string, tracks: Track[], works?: ClassicalWork[]) {
+        setFromAlbum(name: string, albumhash: string, tracks: Track[]) {
             this.from = <fromAlbum>{
                 type: FromOptions.album,
                 name: name,
@@ -114,33 +77,12 @@ export default defineStore('tracklist', {
             }
 
             this.setNewList(tracks)
-
-            if (works?.length) {
-                this.indexWorks(works, tracks)
-            }
         },
         setFromPlaylist(name: string, pid: number, tracks: Track[]) {
             this.from = <fromPlaylist>{
                 type: FromOptions.playlist,
                 name: name,
                 id: pid,
-            }
-
-            this.setNewList(tracks)
-        },
-        setFromMix(
-            name: string,
-            id: string,
-            tracks: Track[],
-            sourcehash: string,
-            image: { type: 'mix' | 'track'; image: string }
-        ) {
-            this.from = <fromMix>{
-                type: FromOptions.mix,
-                name: name,
-                mixid: id,
-                sourcehash,
-                image,
             }
 
             this.setNewList(tracks)
@@ -172,12 +114,8 @@ export default defineStore('tracklist', {
         addTrack(track: Track) {
             return this.addTracks([track])
         },
-        addTracks(tracks: Track[], works?: ClassicalWork[]) {
+        addTracks(tracks: Track[]) {
             this.insertAt(tracks, this.tracklist.length)
-
-            if (works?.length) {
-                this.indexWorks(works, tracks)
-            }
 
             const Toast = useToast()
             Toast.showNotification(t("Stores.Tracklist.AddTrackToQueue", {n: tracks.length}, tracks.length), NotifType.Success)
@@ -194,7 +132,6 @@ export default defineStore('tracklist', {
         },
         clearList() {
             this.tracklist = []
-            this.worklist = {}
             this.from = {} as From
         },
         shuffleList() {
@@ -235,14 +172,10 @@ export default defineStore('tracklist', {
                 track.is_favorite = !track.is_favorite
             }
         },
-        insertAfterCurrent(tracks: Track[], works?: ClassicalWork[]) {
+        insertAfterCurrent(tracks: Track[]) {
             const { currentindex } = useQueue()
 
             this.tracklist.splice(currentindex + 1, 0, ...tracks)
-
-            if (works?.length) {
-                this.indexWorks(works, tracks)
-            }
 
             const Toast = useToast()
             Toast.showNotification(t("Stores.Tracklist.AddTrackToQueue", {n: tracks.length}, tracks.length), NotifType.Success)

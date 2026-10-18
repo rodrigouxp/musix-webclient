@@ -106,7 +106,6 @@
                     :text="setting.state ? setting.state() : ''"
                     @submit="setting.action"
                 />
-                <License v-if="setting.type === SettingType.license" />
             </div>
         </div>
     </div>
@@ -132,7 +131,6 @@ import DropDown from '../shared/DropDown.vue'
 import About from './About.vue'
 import BackupRestore from './Components/BackupRestore.vue'
 import SecretInput from './Components/SecretInput.vue'
-import License from './Components/License.vue'
 
 defineProps<{
     group: SettingGroup

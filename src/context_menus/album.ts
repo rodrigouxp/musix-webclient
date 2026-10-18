@@ -4,12 +4,12 @@ import useAlbum from '@/stores/pages/album'
 import useCollection from '@/stores/pages/collections'
 import useTracklist from '@/stores/queue/tracklist'
 
-import { getAlbumTracks, normalizeAlbumTracks } from '@/requests/album'
+import { getAlbumTracks } from '@/requests/album'
 import { addOrRemoveItemFromCollection } from '@/requests/collections'
 import { addAlbumToPlaylist } from '@/requests/playlists'
 
 import { AddToQueueIcon, DeleteIcon, PlayNextIcon, PlusIcon } from '@/icons'
-import { Album, ClassicalWork, Collection, Option, Playlist, Track } from '@/interfaces'
+import { Album, Collection, Option, Playlist, Track } from '@/interfaces'
 import { get_find_on_social, getAddToCollectionOptions, getAddToPlaylistOptions } from './utils'
 import { useT } from '@/i18n'
 
@@ -26,16 +26,14 @@ export default async (album?: Album) => {
         label: t('Menus.Common.PlayNext'),
         action: async () => {
             let tracks: Track[] = []
-            let works: ClassicalWork[] | undefined
 
             if (album) {
-                ;({ tracks, works } = normalizeAlbumTracks(await getAlbumTracks(album.albumhash)))
+                tracks = await getAlbumTracks(album.albumhash)
             } else {
                 tracks = albumStore.tracks.filter(track => !track.is_album_disc_number)
-                works = albumStore.info.is_classical ? albumStore.works : undefined
             }
 
-            useTracklist().insertAfterCurrent(tracks, works)
+            useTracklist().insertAfterCurrent(tracks)
         },
         icon: PlayNextIcon,
     }
@@ -44,16 +42,14 @@ export default async (album?: Album) => {
         label: t('Menus.Common.AddToQueue'),
         action: async () => {
             let tracks: Track[] = []
-            let works: ClassicalWork[] | undefined
 
             if (album) {
-                ;({ tracks, works } = normalizeAlbumTracks(await getAlbumTracks(album.albumhash)))
+                tracks = await getAlbumTracks(album.albumhash)
             } else {
                 tracks = albumStore.tracks.filter(track => !track.is_album_disc_number)
-                works = albumStore.info.is_classical ? albumStore.works : undefined
             }
 
-            useTracklist().addTracks(tracks, works)
+            useTracklist().addTracks(tracks)
         },
         icon: AddToQueueIcon,
     }

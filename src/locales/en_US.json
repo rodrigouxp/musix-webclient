@@ -175,7 +175,6 @@
     "album": "album | albums",
     "artist": "artist | artists",
     "experimental": "experimental",
-    "mix": "mix | mixes",
     "new": "new",
     "removed": "removed",
     "selected": "selected",
@@ -308,18 +307,6 @@
       "NewPlaylist": "New playlist",
       "SearchOn": "Search on"
     }
-  },
-  "Mixes": {
-    "Radio": "Radio",
-    "RadioName": "{title} Radio",
-    "TypeLabel": "{type} mix",
-    "Types": {
-      "artist": "artist",
-      "track": "track"
-    },
-    "SaveMix": "Save Mix",
-    "SavedMix": "Saved Mix",
-    "track": "track | tracks"
   },
   "Modal": {
     "DeletePlaylist": "Are you sure you want to permanently delete this playlist?",
@@ -475,9 +462,6 @@
       "Developer": "Swing Music is a labor of love developed by {link} on GitHub. If you like this software, a star on GitHub would be nice. Hope you enjoy using it as much as I enjoy building it. 😁🤗",
       "GetInTouchDescription": "If you like my work, and would like to say hi, I'd like to hear from you.",
       "GetInTouchTitle": "Get in touch",
-      "LicenseDesc": "Manage your license key, subscription and authorized devices",
-      "LicenseDisplayName": "License and Subscription",
-      "LicenseTitle": "License",
       "LinksContribute": "Contribute",
       "LinksDocs": "Docs",
       "LinksGitHub": "Star on GitHub",
@@ -549,10 +533,6 @@
         "Title": "Language"
       },
       "Albums": {
-        "Classical": {
-          "Desc": "Enable classical music support for albums (premium required)",
-          "Title": "Enable classical music support"
-        },
         "AlbumAsSingles": {
           "Description": "Require an album to have at least two tracks",
           "Title": "Mark albums with one track as singles"
@@ -643,44 +623,6 @@
       },
       "UseNoSidebarTitle": "Use no sidebar layout"
     },
-    "License": {
-      "ActivateLicense": "{action} License",
-      "UnknownError": "An unknown error occurred",
-      "Amount": "Amount",
-      "AuthDevices": "Authorized Devices",
-      "AutoRenewOff": "Auto-renew off",
-      "CanceledAt": "Canceled ",
-      "CurrentlyUsed": "Instances currently using your license key ({cur}/{tot} active)",
-      "Expires": "Expires",
-      "GithubSponsorTitle": "GitHub Sponsor Benefits",
-      "GithubSponsors": "GitHub Sponsors",
-      "LastActivity": "Last activity: {time}",
-      "LicenseKey": {
-        "AlreadyHave": "Already got a license key?",
-        "Info": "License key info",
-        "Paste": "Paste your license key here:",
-        "Update": "Update your license key:"
-      },
-      "LogInToGithub": "Log in with GitHub",
-      "Manage": "Manage {lic} ↗",
-      "NewOrUpServerName": "{action} server name:",
-      "NoActiveSub": "No Active Subscription",
-      "NoActiveSubDesc": "Get a subscription to unlock all premium features.\n Use the link below to browse the available plans and benefits.",
-      "NoActivity": "No activity",
-      "NoGithubLogin": "Swing Music Premium is available to all our GitHub Sponsors. Log in with GitHub to get access.",
-      "RefreshStatus": "Refresh Status",
-      "Renewal": "Renewal",
-      "Revoke": "Revoke",
-      "SaveChanges": "Save Changes",
-      "SponsorOnGithub": "Sponsor on GitHub ❤️",
-      "Sponsorship": "Sponsorship",
-      "Status": "Status",
-      "Subscription": "Subscription",
-      "ThanksCustName": "Hello @{cust}! You have access to Swing Music Premium.",
-      "ThanksWithHearts": "Thank you for your support. ❤️❤️",
-      "Tier": "Tier",
-      "ViewPricing": "View Pricing"
-    },
     "List": {
       "RootNotConfigured": "Root directories not configured. Use the \"Configure\" button above to configure"
     },
@@ -728,10 +670,6 @@
         },
         "ToggleLyrics": {
           "Title": "Enable plugin"
-        },
-        "TrustCloud": {
-          "Desc": "Do not show lyrics unverified lyrics (premium required)",
-          "Title": "Only display verified lyrics"
         }
       },
       "LyricsDescription": "Finds and displays lyrics from the internet."
@@ -846,17 +784,6 @@
       "SearchOnline": "Search online",
       "Searching": "Searching...",
       "Unsynced": "unsynced"
-    },
-    "MixLisView": {
-    },
-    "MixListView": {
-      "MixesBasedOnListening": "{n} mixes • Based on artists you have been listening to",
-      "OtherMixes": "Other {type} mixes",
-      "SavedMixes": "Saved mixes",
-      "mixes": "mixes"
-    },
-    "MixView": {
-      "MixNotFound": "404: Mix not found"
     },
     "NotFound": {
       "Error": "404! Page Not Found!"

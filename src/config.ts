@@ -58,9 +58,6 @@ export const paths = {
         artist: '/artist',
         lyrics: '/lyrics',
         plugins: '/plugins',
-        get mixes() {
-            return this.plugins + '/mixes'
-        },
 
         // Single album
         album: '/album',
@@ -149,18 +146,6 @@ export const paths = {
             get updateConfig() {
                 return this.base + '/update'
             },
-            get licenseInfo(){
-                return this.base + '/license/status'
-            },
-            get licenseRegister() {
-                return this.base + '/license/register'
-            },
-            get licenseDeactivate() {
-                return this.base + '/license/deactivate'
-            },
-            get licenseDevice() {
-                return this.base + '/license/device'
-            }
         },
         files: '/file',
         home: {
@@ -244,9 +229,5 @@ export const paths = {
             medium: baseImgUrl + imageRoutes.artist.medium,
         },
         playlist: baseImgUrl + imageRoutes.playlist,
-        mix: {
-            medium: baseImgUrl + '/mix/medium/',
-            small: baseImgUrl + '/mix/small/',
-        },
     },
 }

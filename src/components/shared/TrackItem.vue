@@ -6,7 +6,6 @@
                 currentInQueue: isCurrent,
             },
             { contexton: context_on },
-            { 'is-classical-track': isClassicalTrack },
         ]"
         @click.prevent.stop="playThis"
         @dblclick.prevent.stop="() => emit('playThis')"
@@ -30,24 +29,7 @@
                 <ArtistName :artists="track.artists" :albumartists="track.albumartists" :smaller="true" />
             </div>
         </div>
-        <TrackDuration
-            v-if="!isQueueTrack && isClassicalTrack"
-            :duration="track.duration ?? 0"
-            :is_fav="is_fav"
-            :show-inline-fav-icon="false"
-            :highlight-favorite-tracks="false"
-            @showMenu="showMenu"
-            @toggleFav="() => addToFav(track.trackhash)"
-        />
         <div class="float-buttons flex">
-            <!-- <div
-                v-if="!isClassicalTrack"
-                class="fav-icon"
-                :title="is_fav ? $t('TrackItem.AddToFavorites') : $t('TrackItem.RemoveFromFavorites')"
-                @click.stop="() => addToFav(track.trackhash)"
-            >
-                <HeartSvg :state="is_fav" :no_emit="true" />
-            </div> -->
             <div
                 v-if="isQueueTrack"
                 class="remove-track"
@@ -69,20 +51,18 @@ import { paths } from '@/config'
 import { favType } from '@/enums'
 import { showTrackContextMenu as showContext } from '@/helpers/contextMenuHandler'
 import favoriteHandler from '@/helpers/favoriteHandler'
-import { ClassicalMovement, Track } from '@/interfaces'
+import { Track } from '@/interfaces'
 
 import DelSvg from '@/assets/icons/plus.svg'
 import ArtistName from './ArtistName.vue'
 import HeartSvg from './HeartSvg.vue'
-import TrackDuration from './SongItem/TrackDuration.vue'
 
 const props = defineProps<{
-    track: Track | ClassicalMovement
+    track: Track
     isCurrent: boolean
     isCurrentPlaying: boolean
     isQueueTrack?: boolean
     index?: number
-    isClassicalTrack?: boolean
 }>()
 
 const player = useTracklist()

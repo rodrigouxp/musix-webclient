@@ -34,17 +34,4 @@ const auto_download_on_unsynced = <Setting>{
     },
 }
 
-const trust_cloud_lyrics = <Setting>{
-    title: t('Settings.Plugins.Lyrics.TrustCloud.Title'),
-    desc: t('Settings.Plugins.Lyrics.TrustCloud.Desc'),
-    type: SettingType.binary,
-    state: () => useSettings().trust_cloud_lyrics,
-    action: () => useSettings().toggleTrustCloudLyrics(),
-    inactive: () => {
-        const settings = useSettings()
-
-        return !(settings.use_lyrics_plugin && settings.licenseInfo?.license.status === 'active')
-    },
-}
-
-export default [toggle_lyrics_plugin, auto_download_lyrics, auto_download_on_unsynced, trust_cloud_lyrics]
+export default [toggle_lyrics_plugin, auto_download_lyrics, auto_download_on_unsynced]

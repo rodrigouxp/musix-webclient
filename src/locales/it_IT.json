@@ -175,7 +175,6 @@
     "album": "album | album",
     "artist": "artista | artisti",
     "experimental": "sperimentale",
-    "mix": "mix | mixes",
     "new": "nuovo",
     "removed": "rimosso",
     "selected": "selezionato",
@@ -306,18 +305,6 @@
       "NewPlaylist": "Nuova playlist",
       "SearchOn": "Cerca su"
     }
-  },
-  "Mixes": {
-    "Radio": "Radio",
-    "RadioName": "{title} Radio",
-    "TypeLabel": "Mix {type}",
-    "Types": {
-      "artist": "artista",
-      "track": "traccia"
-    },
-    "SaveMix": "Salva mix",
-    "SavedMix": "Mix salvato",
-    "track": "traccia | tracce"
   },
   "Modal": {
     "DeletePlaylist": "Sei sicuro di voler cancellare questa playlist in modo definitivo?",
@@ -473,9 +460,6 @@
       "Developer": "Swing Music è un atto d'amore sviluppato su GitHub all'indirizzo {link}. Se questo software ti piace, una stellina sul progetto sarebbe molto apprezzata. Spero tu l'apprezzi tanto quanto mi son divertito a scriverla da zero. 😁🤗",
       "GetInTouchDescription": "Se apprezzi il mio lavoro, e ti piacerebbe salutarmi, mi farebbe piacere un contatto (in inglese).",
       "GetInTouchTitle": "Rimani in contatto",
-      "LicenseDesc": "Gestisci la tua chiave di licenza, la tua sottoscrizione e i tuoi dispositivi autorizzati.",
-      "LicenseDisplayName": "Licenza e sottoscrizione",
-      "LicenseTitle": "Licenza",
       "LinksContribute": "Contribuisci",
       "LinksDocs": "Docs",
       "LinksGitHub": "Stellina su GitHub",
@@ -547,10 +531,6 @@
         "Title": "Lingua"
       },
       "Albums": {
-        "Classical": {
-          "Desc": "Abilita il supporto per la musica classica negli album (richiede premium)",
-          "Title": "Abilita il supporto per la musica classica"
-        },
         "AlbumAsSingles": {
           "Description": "Richiedi che un album abbia almeno due tracce",
           "Title": "Marca album con una sola traccia come singles"
@@ -641,44 +621,6 @@
       },
       "UseNoSidebarTitle": "Usa il layout senza barre laterali"
     },
-    "License": {
-      "UnknownError": "Si è verificato un errore sconosciuto",
-      "ActivateLicense": "{action} licenza",
-      "Amount": "Quantità",
-      "AuthDevices": "Dispositivi autorizzati",
-      "AutoRenewOff": "Addebito auto off",
-      "CanceledAt": "Terminata ",
-      "CurrentlyUsed": "Istanze che utilizzano la tua chiave di licenza ({cur}/{tot} attivi)",
-      "Expires": "Scade",
-      "GithubSponsorTitle": "Benefit GitHub Sponsor",
-      "GithubSponsors": "Sponsors GitHub",
-      "LastActivity": "Ultima attività: {time}",
-      "LicenseKey": {
-        "AlreadyHave": "Hai già una chiave di licenza?",
-        "Info": "Informazioni chiave licenza",
-        "Paste": "Incolla la chiave di licenza qui:",
-        "Update": "Aggiorna la chiave di licenza:"
-      },
-      "LogInToGithub": "Accedi a GitHub",
-      "Manage": "Gestisci {lic} ↗",
-      "NewOrUpServerName": "{action} server:",
-      "NoActiveSub": "Nessun abbonamento attivo",
-      "NoActiveSubDesc": "Ottieni un abbonamento per sbloccare tutte le funzionalità premium.\n Usa il link qui sotto per sfogliare piani e vantaggi disponibili.",
-      "NoActivity": "Nessuna attività",
-      "NoGithubLogin": "Il premium di Swing Music è disponibile per tutti i donatori su Github Sponsor. Accedici per averne l'accesso.",
-      "RefreshStatus": "Aggiorna stato",
-      "Renewal": "Rinnova",
-      "Revoke": "Revoca",
-      "SaveChanges": "Salva modifiche",
-      "SponsorOnGithub": "Sponsorizza su GitHub ❤️",
-      "Sponsorship": "Sponsor",
-      "Status": "Stato",
-      "Subscription": "Abbonamento",
-      "ThanksCustName": "Ciao @{cust}! Hai accesso a Swing Music Premium.",
-      "ThanksWithHearts": "Grazie per il tuo supporto. ❤️❤️",
-      "Tier": "Livello",
-      "ViewPricing": "Mostra prezzi"
-    },
     "List": {
       "RootNotConfigured": "Cartella radice non impostata. Usa il pulsante \"Configure\" per impostarla"
     },
@@ -726,10 +668,6 @@
         },
         "ToggleLyrics": {
           "Title": "Abilita plugin"
-        },
-        "TrustCloud": {
-          "Desc": "Non mostrare testi non verificati (licenza premium richiesta)",
-          "Title": "Mostra solo testi verificati"
         }
       },
       "LyricsDescription": "Cerca e visualizza testi delle canzoni trovate su internet."
@@ -844,17 +782,6 @@
       "SearchOnline": "Cerca online",
       "Searching": "Cercando...",
       "Unsynced": "non sincronizzata"
-    },
-    "MixLisView": {
-    },
-    "MixListView": {
-      "MixesBasedOnListening": "{n} mixes • In base agli artisti che hai ascoltato ultimamente",
-      "OtherMixes": "Altri mixes di {type}",
-      "SavedMixes": "Mixes salvati",
-      "mixes": "mixes"
-    },
-    "MixView": {
-      "MixNotFound": "404: Mix non trovato"
     },
     "NotFound": {
       "Error": "404! Pagina non trovata!"
