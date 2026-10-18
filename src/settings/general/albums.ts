@@ -2,6 +2,7 @@ import { Setting } from '@/interfaces/settings'
 import { SettingType } from '../enums'
 
 import useSettingsStore from '@/stores/settings'
+import { refreshAllCovers } from '@/requests/settings/covers'
 import { useT } from '@/i18n'
 
 const { t } = useT()
@@ -36,4 +37,13 @@ const show_albums_as_singles: Setting = {
     action: () => settings().toggleShowAlbumsAsSingles(),
 }
 
-export default [clean_album_titles, merge_album_versions, show_albums_as_singles]
+const update_all_covers: Setting = {
+    title: t('Settings.General.Albums.UpdateAllCovers.Title'),
+    desc: t('Settings.General.Albums.UpdateAllCovers.Description'),
+    type: SettingType.button,
+    state: null,
+    button_text: () => t('Settings.General.Albums.UpdateAllCovers.Button'),
+    action: () => refreshAllCovers(),
+}
+
+export default [clean_album_titles, merge_album_versions, show_albums_as_singles, update_all_covers]

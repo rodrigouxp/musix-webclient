@@ -54,6 +54,8 @@ export default defineStore('album', {
             }
         >{},
         srcTracks: <Track[]>[],
+        // bumped after the cover is rebuilt, so the header image is fetched again
+        coverVersion: 0,
         artistAlbums: <
             {
                 [key: string]: Album[]
@@ -80,6 +82,10 @@ export default defineStore('album', {
          */
         async fetchTracksAndArtists(albumhash: string) {
             const album = await getAlbum(albumhash, maxAbumCards.value)
+
+            if (this.info.albumhash !== album.info.albumhash) {
+                this.coverVersion = 0
+            }
 
             this.srcTracks = album.tracks
             this.info = album.info
@@ -131,8 +137,12 @@ export default defineStore('album', {
             this.similarAlbums = await getSimilarAlbums(this.info.albumartists[0].artisthash, maxAbumCards.value)
         },
         extractColors() {
-            const url = paths.images.thumb.small + this.info.image
+            const url = paths.images.thumb.small + this.info.image + this.coverQuery
             setColorsToStore(this, url)
+        },
+        bumpCover() {
+            this.coverVersion = Date.now()
+            this.extractColors()
         },
         resetQuery() {
             this.query = ''
@@ -168,6 +178,9 @@ export default defineStore('album', {
         },
     },
     getters: {
+        coverQuery(): string {
+            return this.coverVersion ? `?v=${this.coverVersion}` : ''
+        },
         filteredTracks(): ComputedRef<FuseResult[]> {
             const discs = this.discs
             let tracks: Track[] | AlbumDisc[] = []

@@ -280,7 +280,8 @@
       "PlayNext": "다음에 재생",
       "RemoveFromCollection": "항목 제거",
       "RemoveFromPlaylist": "재생 목록에서 제거",
-      "RemoveFromQueue": "대기열에서 제거"
+      "RemoveFromQueue": "대기열에서 제거",
+      "UpdateAlbumCover": "Update album cover"
     },
     "PlayList": {
       "RemoveFromPlaylist": "재생 목록에서 제거"
@@ -389,7 +390,12 @@
   },
   "Requests": {
     "Album": {
-      "AlbumNotCreatedYet": "아직 생성되지 않은 앨범이에요!"
+      "AlbumNotCreatedYet": "아직 생성되지 않은 앨범이에요!",
+      "CoverUpdated": "Album cover updated",
+      "NoCoverFound": "No cover found for this album",
+      "UpdateAllCoversError": "Could not start the cover update",
+      "UpdateCoverError": "Could not update the album cover",
+      "UpdatingAllCovers": "Updating covers in the background"
     },
     "Artists": {
       "ArtistNotFound": "아티스트를 찾을 수 없어요"
@@ -539,6 +545,11 @@
         "MergeAlbum": {
           "Description": "같은 앨범의 모든 버전을 하나의 앨범으로 병합해요",
           "Title": "앨범 버전 병합"
+        },
+        "UpdateAllCovers": {
+          "Title": "Update all album covers",
+          "Description": "Rebuilds every album cover from folder images and embedded art. Runs in the background.",
+          "Button": "Update"
         }
       },
       "ArtistSeparatorDesc": "아티스트 구분자 맞춤 설정",

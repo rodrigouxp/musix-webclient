@@ -146,6 +146,9 @@ export const paths = {
             get updateConfig() {
                 return this.base + '/update'
             },
+            get refreshCovers() {
+                return this.base + '/refresh-covers'
+            },
         },
         files: '/file',
         home: {

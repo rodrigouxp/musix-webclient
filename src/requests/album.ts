@@ -119,6 +119,19 @@ export async function getAlbumTracks(albumhash: string): Promise<Track[]> {
     return data
 }
 
+export async function refreshAlbumCover(albumhash: string): Promise<{ ok: boolean; has_cover: boolean } | null> {
+    const { data, error } = await useAxios({
+        url: albumUrl + `/${albumhash}/refresh-cover`,
+        method: 'POST',
+    })
+
+    if (error) {
+        return null
+    }
+
+    return data
+}
+
 export async function getSimilarAlbums(artisthash: string, limit: number = 5): Promise<Album[]> {
     const { data } = await useAxios({
         url: albumUrl + '/similar?' + 'artisthash=' + artisthash + '&albumlimit=' + limit,

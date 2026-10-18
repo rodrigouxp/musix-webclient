@@ -282,7 +282,8 @@
       "PlayNext": "Play next",
       "RemoveFromCollection": "Remove item",
       "RemoveFromPlaylist": "Remove From Playlist",
-      "RemoveFromQueue": "Remove from Queue"
+      "RemoveFromQueue": "Remove from Queue",
+      "UpdateAlbumCover": "Update album cover"
     },
     "PlayList": {
       "RemoveFromPlaylist": "Remove from playlist"
@@ -391,7 +392,12 @@
   },
   "Requests": {
     "Album": {
-      "AlbumNotCreatedYet": "Album not created yet!"
+      "AlbumNotCreatedYet": "Album not created yet!",
+      "CoverUpdated": "Album cover updated",
+      "NoCoverFound": "No cover found for this album",
+      "UpdateAllCoversError": "Could not start the cover update",
+      "UpdateCoverError": "Could not update the album cover",
+      "UpdatingAllCovers": "Updating covers in the background"
     },
     "Artists": {
       "ArtistNotFound": "Artist not found"
@@ -544,6 +550,11 @@
         "MergeAlbum": {
           "Description": "All versions of the same album will be merged into one album",
           "Title": "Merge album versions"
+        },
+        "UpdateAllCovers": {
+          "Title": "Update all album covers",
+          "Description": "Rebuilds every album cover from folder images and embedded art. Runs in the background.",
+          "Button": "Update"
         }
       },
       "ArtistSeparatorDesc": "Customize artist separators",

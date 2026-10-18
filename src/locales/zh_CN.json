@@ -280,7 +280,8 @@
       "PlayNext": "下一首播放",
       "RemoveFromCollection": "移除项目",
       "RemoveFromPlaylist": "从播放列表移除",
-      "RemoveFromQueue": "从队列移除"
+      "RemoveFromQueue": "从队列移除",
+      "UpdateAlbumCover": "Update album cover"
     },
     "PlayList": {
       "RemoveFromPlaylist": "从播放列表移除"
@@ -389,7 +390,12 @@
   },
   "Requests": {
     "Album": {
-      "AlbumNotCreatedYet": "专辑尚未创建！"
+      "AlbumNotCreatedYet": "专辑尚未创建！",
+      "CoverUpdated": "Album cover updated",
+      "NoCoverFound": "No cover found for this album",
+      "UpdateAllCoversError": "Could not start the cover update",
+      "UpdateCoverError": "Could not update the album cover",
+      "UpdatingAllCovers": "Updating covers in the background"
     },
     "Artists": {
       "ArtistNotFound": "未找到艺术家"
@@ -539,6 +545,11 @@
         "MergeAlbum": {
           "Description": "同一专辑的所有版本将合并为一张专辑",
           "Title": "合并专辑版本"
+        },
+        "UpdateAllCovers": {
+          "Title": "Update all album covers",
+          "Description": "Rebuilds every album cover from folder images and embedded art. Runs in the background.",
+          "Button": "Update"
         }
       },
       "ArtistSeparatorDesc": "自定义艺术家分隔符",

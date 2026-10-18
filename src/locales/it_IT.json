@@ -280,7 +280,8 @@
       "PlayNext": "Riproduci dopo la corrente",
       "RemoveFromCollection": "Rimuovi oggetto",
       "RemoveFromPlaylist": "Rimuovi dalla playlist",
-      "RemoveFromQueue": "Rimuovi dalla coda"
+      "RemoveFromQueue": "Rimuovi dalla coda",
+      "UpdateAlbumCover": "Update album cover"
     },
     "PlayList": {
       "RemoveFromPlaylist": "Rimuovi dalla playlist"
@@ -389,7 +390,12 @@
   },
   "Requests": {
     "Album": {
-      "AlbumNotCreatedYet": "Album non ancora creato!"
+      "AlbumNotCreatedYet": "Album non ancora creato!",
+      "CoverUpdated": "Album cover updated",
+      "NoCoverFound": "No cover found for this album",
+      "UpdateAllCoversError": "Could not start the cover update",
+      "UpdateCoverError": "Could not update the album cover",
+      "UpdatingAllCovers": "Updating covers in the background"
     },
     "Artists": {
       "ArtistNotFound": "Artista non trovato"
@@ -542,6 +548,11 @@
         "MergeAlbum": {
           "Description": "Tutte le versioni diverse dello stesso album verranno unite in un singolo album",
           "Title": "Unisci versioni albums"
+        },
+        "UpdateAllCovers": {
+          "Title": "Update all album covers",
+          "Description": "Rebuilds every album cover from folder images and embedded art. Runs in the background.",
+          "Button": "Update"
         }
       },
       "ArtistSeparatorDesc": "Personalizza i separatori degli artisti",

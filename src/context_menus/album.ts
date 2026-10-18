@@ -4,13 +4,14 @@ import useAlbum from '@/stores/pages/album'
 import useCollection from '@/stores/pages/collections'
 import useTracklist from '@/stores/queue/tracklist'
 
-import { getAlbumTracks } from '@/requests/album'
+import { getAlbumTracks, refreshAlbumCover } from '@/requests/album'
 import { addOrRemoveItemFromCollection } from '@/requests/collections'
 import { addAlbumToPlaylist } from '@/requests/playlists'
 
 import { AddToQueueIcon, DeleteIcon, PlayNextIcon, PlusIcon } from '@/icons'
 import { Album, Collection, Option, Playlist, Track } from '@/interfaces'
 import { get_find_on_social, getAddToCollectionOptions, getAddToPlaylistOptions } from './utils'
+import { NotifType, useToast } from '@/stores/notification'
 import { useT } from '@/i18n'
 
 const { t } = useT();
@@ -102,11 +103,35 @@ export default async (album?: Album) => {
         icon: DeleteIcon,
     }
 
+    const update_cover = <Option>{
+        label: t('Menus.Common.UpdateAlbumCover'),
+        action: async () => {
+            const toast = useToast()
+            const result = await refreshAlbumCover(album.albumhash)
+
+            if (result === null) {
+                toast.showNotification(t('Requests.Album.UpdateCoverError'), NotifType.Error)
+                return
+            }
+
+            if (!result.has_cover) {
+                toast.showNotification(t('Requests.Album.NoCoverFound'), NotifType.Info)
+            } else {
+                toast.showNotification(t('Requests.Album.CoverUpdated'), NotifType.Success)
+            }
+
+            if (albumStore.info.albumhash === album.albumhash) {
+                albumStore.bumpCover()
+            }
+        },
+    }
+
     return [
         play_next,
         add_to_queue,
         add_to_playlist,
         ...[router.currentRoute.value.name === Routes.Page ? remove_from_page : add_to_page],
         get_find_on_social('album', '', album),
+        update_cover,
     ]
 }

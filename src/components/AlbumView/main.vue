@@ -18,7 +18,7 @@
     >
         <div class="big-img no-scroll" :class="`${isHeaderSmall ? 'imgSmall' : ''} shadow-lg rounded-sm`">
             <ImageLoader
-                :image="imguri.thumb.large + album.image"
+                :image="imguri.thumb.large + album.image + store.coverQuery"
                 :blurhash="album.blurhash"
                 :duration="1000"
                 :panels="true"
