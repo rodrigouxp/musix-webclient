@@ -71,7 +71,7 @@ context.$subscribe((mutation, state) => {
   z-index: 1000 !important;
   height: min-content;
   padding: $small;
-  background: $context;
+  background: var(--menu-bg);
   transform-origin: top left;
   font-size: 0.875rem;
   font-weight: 500;
@@ -79,10 +79,24 @@ context.$subscribe((mutation, state) => {
   visibility: hidden;
   transition: opacity 0.25s ease-out, visibility 0.25s ease-out;
 
-  // the album menu of the prototype is 232px wide; the other menus keep 13rem
+  // the radius and the shadow of the menu come from the tokens (all menus)
+  &.rounded {
+    border-radius: var(--menu-radius);
+  }
+
+  &.shadow-lg {
+    box-shadow: var(--menu-shadow);
+  }
+
+  // the album menu of the prototype; the other menus keep 13rem and their padding
   &.wide {
-    width: 232px;
-    padding: 10px 8px;
+    width: var(--menu-width);
+    padding: var(--menu-padding-y) var(--menu-padding-x);
+  }
+
+  // the color of the line of every separator
+  .separator {
+    border-top-color: var(--menu-divider);
   }
 
   .separator {
@@ -93,15 +107,16 @@ context.$subscribe((mutation, state) => {
     pointer-events: none;
   }
 
-  // the thin separator of the album menu: the width of the items, no extra height
+  // the thin separator of the album menu: the width of the items, with the gap of the
+  // prototype above and below, so the hover of an item never touches the line
   .separator.inset {
     height: 0;
     min-height: 0;
     padding: 0;
-    margin: 0;
+    margin: var(--menu-gap) 0;
     width: 100%;
     overflow: hidden;
-    border-top: 0.8px solid rgba(255, 255, 255, 0.15);
+    border-top: var(--menu-divider-width) solid var(--menu-divider);
     border-radius: 0;
     box-sizing: content-box;
   }

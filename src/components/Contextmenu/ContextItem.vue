@@ -183,6 +183,7 @@ function runChildAction(action: () => void) {
     padding: 0.4rem;
     position: relative;
     border-radius: $small;
+    color: var(--menu-item-text);
     transition: background-color 0.2s ease-out;
 
     // the arrow of the items that open a submenu: 8 x 12, 10px from the right edge
@@ -193,7 +194,7 @@ function runChildAction(action: () => void) {
         right: 10px;
         top: 50%;
         margin-top: -6px;
-        color: #b8b8b8;
+        color: var(--menu-item-icon);
 
         svg {
             height: 100%;
@@ -206,7 +207,7 @@ function runChildAction(action: () => void) {
         width: 12rem;
         z-index: 10;
         transform: scale(0);
-        background-color: $context;
+        background-color: var(--menu-bg);
         padding: $small $smaller;
         border: solid 1px $gray3;
         opacity: 0;
@@ -244,14 +245,17 @@ function runChildAction(action: () => void) {
         }
     }
 
+    // the selected item (mouse over): blue background and white text; the icon keeps its grey
     &:hover {
-        background: $darkestblue;
+        background: var(--menu-item-bg-selected);
+        color: var(--menu-item-text-selected);
     }
 
     .icon {
         height: 1.25rem;
         width: 1.25rem;
         margin-right: $small;
+        color: var(--menu-item-icon);
 
         svg {
             height: 100%;
@@ -266,21 +270,19 @@ function runChildAction(action: () => void) {
 
     // items with the icons of the album menu prototype
     &.menu-icon {
-        min-height: 37px;
-        padding: 0 10px;
-        border-radius: 8px;
-        color: #ececec;
+        min-height: var(--menu-item-height);
+        padding: 0 var(--menu-item-padding-x);
+        border-radius: var(--menu-item-radius);
 
         .icon {
-            height: 18px;
-            width: 18px;
-            margin-right: 12px;
-            color: #b8b8b8;
+            height: var(--menu-icon-size);
+            width: var(--menu-icon-size);
+            margin-right: var(--menu-item-gap);
             flex-shrink: 0;
         }
 
         &:hover .icon {
-            color: #ececec;
+            color: var(--menu-item-icon-selected);
         }
 
         .label {
