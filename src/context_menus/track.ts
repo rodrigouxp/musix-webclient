@@ -235,8 +235,7 @@ export default async (track: Track): Promise<Option[]> => {
     // out and the separators only go between the groups that are there
     const groups: Option[][] = [
         remove,
-        [play_next],
-        [add_to_q, add_to_playlist],
+        [play_next, add_to_q, add_to_playlist],
         [go_to_album, go_to_folder, go_to_artist],
         [open_in_explorer],
         useAuth().is_admin ? [rename] : [],
