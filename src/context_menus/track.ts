@@ -6,7 +6,17 @@ import { Option } from '@/interfaces'
 import { openInFiles } from '@/requests/folders'
 import { addTracksToPlaylist, removeTracks } from '@/requests/playlists'
 
-import { AddToQueueIcon, AlbumIcon, ArtistIcon, DeleteIcon, EditIcon, FolderIcon, PlayNextIcon, PlusIcon } from '@/icons'
+import {
+    DeleteIcon,
+    EditIcon,
+    MenuAddToPlaylistIcon,
+    MenuAddToQueueIcon,
+    MenuGoToAlbumIcon,
+    MenuGoToArtistIcon,
+    MenuGoToFolderIcon,
+    MenuPlayNextIcon,
+    MenuSearchOnIcon,
+} from '@/icons'
 import { renameTrack } from '@/requests/tracks'
 import useAuth from '@/stores/auth'
 import { NotifType, useToast } from '@/stores/notification'
@@ -15,7 +25,7 @@ import { patchTrackEverywhere } from '@/utils/patchTrack'
 import usePlaylistStore from '@/stores/pages/playlist'
 import useQueueStore from '@/stores/queue'
 import useTracklist from '@/stores/queue/tracklist'
-import { getAddToPlaylistOptions, get_find_on_social } from './utils'
+import { getAddToPlaylistOptions, get_find_on_social, insetSeparator } from './utils'
 import { useT } from '@/i18n'
 
 const { t } = useT();
@@ -74,7 +84,8 @@ export default async (track: Track): Promise<Option[]> => {
                 trackhash: track.trackhash,
                 playlist_name: track.title,
             }),
-        icon: PlusIcon,
+        icon: MenuAddToPlaylistIcon,
+        menuIcon: true,
     }
 
     const add_to_q: Option = {
@@ -82,7 +93,8 @@ export default async (track: Track): Promise<Option[]> => {
         action: () => {
             useTracklist().addTracks([track])
         },
-        icon: AddToQueueIcon,
+        icon: MenuAddToQueueIcon,
+        menuIcon: true,
     }
 
     const play_next: Option = {
@@ -90,7 +102,8 @@ export default async (track: Track): Promise<Option[]> => {
         action: () => {
             useQueueStore().playTrackNext(track)
         },
-        icon: PlayNextIcon,
+        icon: MenuPlayNextIcon,
+        menuIcon: true,
     }
 
     const go_to_folder: Option = {
@@ -101,12 +114,14 @@ export default async (track: Track): Promise<Option[]> => {
                 params: { path: track.folder },
             })
         },
-        icon: FolderIcon,
+        icon: MenuGoToFolderIcon,
+        menuIcon: true,
     }
 
     const go_to_artist: Option = {
         label: t('Menus.Track.GoToArtist'),
-        icon: ArtistIcon,
+        icon: MenuGoToArtistIcon,
+        menuIcon: true,
         action: () => {
             track_artists.length == 1
                 ? Router.push({
@@ -126,7 +141,8 @@ export default async (track: Track): Promise<Option[]> => {
         action: () => {
             openInFiles(track.filepath || track.folder || '')
         },
-        icon: FolderIcon,
+        icon: MenuGoToFolderIcon,
+        menuIcon: true,
     }
 
     const go_to_album: Option = {
@@ -137,13 +153,14 @@ export default async (track: Track): Promise<Option[]> => {
                 params: { albumhash: track.albumhash },
             })
         },
-        icon: AlbumIcon,
+        icon: MenuGoToAlbumIcon,
+        menuIcon: true,
     }
 
     const rename: Option = {
         label: t('Menus.Track.Rename'),
         icon: EditIcon,
-        icon18: true,
+        menuIcon: true,
         action: () => {
             const oldFilepath = track.filepath
 
@@ -185,41 +202,48 @@ export default async (track: Track): Promise<Option[]> => {
                 })
             },
             icon: DeleteIcon,
+            menuIcon: true,
             critical: true,
         }
 
-    const options: Option[] = [
-        play_next,
-        add_to_q,
-        add_to_playlist,
-        go_to_album,
-        go_to_folder,
-        go_to_artist,
-        open_in_explorer,
-        get_find_on_social('track', `${track.title} ${track.artists[0].name}`),
-        // del_track,
-    ]
-
-    if (useAuth().is_admin) {
-        options.push(rename)
+    const search_on = {
+        ...get_find_on_social('track', `${track.title} ${track.artists[0].name}`),
+        icon: MenuSearchOnIcon,
+        menuIcon: true,
     }
 
+    // "Remove from ..." goes first, only on the pages where it makes sense (red, as before)
+    const remove: Option[] = []
+
     if (route.name === Routes.playlist && on_playlist) {
-        options.splice(0, 0, getRemoveFromPlaylistOption())
+        remove.push(getRemoveFromPlaylistOption())
     }
 
     if (route.name === Routes.nowPlaying) {
-        options.splice(0, 0, <Option>{
+        remove.push(<Option>{
             label: t('Menus.Common.RemoveFromQueue'),
             action: () => {
                 useTracklist().removeByIndex(track.index)
             },
             icon: DeleteIcon,
+            menuIcon: true,
             critical: true,
         })
     }
 
-    return options
+    // the groups of the menu; the empty ones (the admin one for other users) are left
+    // out and the separators only go between the groups that are there
+    const groups: Option[][] = [
+        remove,
+        [play_next],
+        [add_to_q, add_to_playlist],
+        [go_to_album, go_to_folder, go_to_artist],
+        [open_in_explorer],
+        useAuth().is_admin ? [rename] : [],
+        [search_on],
+    ].filter(group => group.length)
+
+    return groups.flatMap((group, index) => (index ? [insetSeparator, ...group] : group))
 }
 
 // TODO: Find a way to fetch playlists lazily. ie. When the "Add to playlist" option is triggered.

@@ -268,15 +268,6 @@ function runChildAction(action: () => void) {
         transform: scale(0.85);
     }
 
-    // an 18px icon in a menu that keeps its old layout: the text stays where it was
-    // (20px icon + 8px gap = 18px icon + 10px gap)
-    &.icon18 .icon {
-        height: var(--menu-icon-size);
-        width: var(--menu-icon-size);
-        margin-right: calc($small + 2px);
-        flex-shrink: 0;
-    }
-
     // items with the icons of the album menu prototype
     &.menu-icon {
         min-height: var(--menu-item-height);

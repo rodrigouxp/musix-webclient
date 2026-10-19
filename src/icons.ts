@@ -39,3 +39,9 @@ export { default as MenuSoundtrackIcon } from "@/assets/icons/menu/mark-soundtra
 export { default as MenuLiveIcon } from "@/assets/icons/menu/mark-live.svg?raw";
 export { default as MenuSearchOnIcon } from "@/assets/icons/menu/search-on.svg?raw";
 export { default as MenuSubmenuIcon } from "@/assets/icons/menu/submenu-indicator.svg?raw";
+
+// icons of the song menu: the album and folder ones are the same drawings as the
+// "EPs & Singles" mark and "Go to folder"; the names say what each one is used for
+export { default as MenuGoToAlbumIcon } from "@/assets/icons/menu/mark-eps-singles.svg?raw";
+export { default as MenuGoToFolderIcon } from "@/assets/icons/menu/go-to-folder.svg?raw";
+export { default as MenuGoToArtistIcon } from "@/assets/icons/menu/go-to-artist.svg?raw";
