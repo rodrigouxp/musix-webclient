@@ -17,7 +17,7 @@ function generateGetBoundingClientRect(x = 0, y = 0) {
 export default defineStore("context-menu", {
   state: () => ({
     visible: false,
-    options: {} as Option[],
+    options: [] as Option[],
     src: <null | ContextSrc>"",
     elem: <HTMLElement | null>null,
   }),

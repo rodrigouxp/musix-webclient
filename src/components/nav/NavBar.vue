@@ -130,6 +130,33 @@ function toggleSidenav() {
         }
     }
 
+    // Default layout above the phone breakpoint: back/forward on the left, search centered
+    // on 50% of the top bar, avatar on the right edge. The alt layout keeps the logo in the middle.
+    @media only screen and (min-width: 901px) {
+        &:not(.use_links) {
+            grid-template-columns: minmax(0, 1fr) minmax(14rem, 50%) minmax(0, 1fr);
+
+            .left {
+                grid-column: 1;
+                min-width: 0;
+            }
+
+            .right {
+                display: contents;
+
+                & > .gsearch-input {
+                    grid-column: 2;
+                    min-width: 0;
+                }
+
+                & > .avatar {
+                    grid-column: 3;
+                    justify-self: end;
+                }
+            }
+        }
+    }
+
     @include allPhones {
         display: flex;
     }

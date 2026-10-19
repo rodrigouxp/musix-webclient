@@ -286,6 +286,8 @@
   "LeftSidebar": {
     "FileTypeBitrate": "file type • bitrate",
     "NavItems": {
+      "Albums": "Albums",
+      "Artists": "Artists",
       "Favorites": "Favorites",
       "Folder": "Folders",
       "Home": "Home",

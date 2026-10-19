@@ -1,11 +1,10 @@
 import { Routes } from "@/router";
 import useDialog from "@/stores/modal";
-import useSearch from "@/stores/search";
 
-import FolderSvg from "@/assets/icons/folder-1.svg";
+import AlbumsSvg from "@/assets/icons/menu/mark-eps-singles.svg";
+import ArtistsSvg from "@/assets/icons/menu/go-to-artist.svg";
 import HeartSvg from "@/assets/icons/heart.svg";
 import PlaylistSvg from "@/assets/icons/playlist-1.svg";
-import SearchSvg from "@/assets/icons/search.svg";
 import SettingsSvg from "@/assets/icons/settings.svg";
 import HomeSvg from "@/assets/icons/home.svg";
 import { useT } from "@/i18n";
@@ -13,11 +12,16 @@ import { useT } from "@/i18n";
 export const useNavItems = () => {
   const { t } = useT()
 
-  const folder = {
-    name: t('LeftSidebar.NavItems.Folder'),
-    route_name: Routes.folder,
-    params: { path: "$home" },
-    icon: FolderSvg,
+  const albums = {
+    name: t('LeftSidebar.NavItems.Albums'),
+    route_name: Routes.AlbumList,
+    icon: AlbumsSvg,
+  };
+
+  const artists = {
+    name: t('LeftSidebar.NavItems.Artists'),
+    route_name: Routes.ArtistList,
+    icon: ArtistsSvg,
   };
 
   const favorites = {
@@ -40,14 +44,8 @@ export const useNavItems = () => {
 
   const menus = [
     home,
-    folder,
-    {
-      name: t('LeftSidebar.NavItems.Search'),
-      route_name: Routes.search,
-      params: { page: "top" },
-      query: () => ({ q: useSearch().query }),
-      icon: SearchSvg,
-    },
+    albums,
+    artists,
     {
       separator: true,
     },
@@ -66,7 +64,7 @@ export const useNavItems = () => {
     },
   ];
 
-  const topnavitems = [home, folder, favorites, playlists];
-  
+  const topnavitems = [home, albums, artists, favorites, playlists];
+
   return { menus, topnavitems };
 };

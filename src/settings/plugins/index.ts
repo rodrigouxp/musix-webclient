@@ -2,7 +2,7 @@ import lyrics from './lyrics'
 import { loggedInUserIsAdmin } from '../utils'
 import { SettingCategory } from '@/interfaces/settings'
 
-import LyricsSvg from '@/assets/icons/lyrics.svg?raw'
+import LyricsSvg from '@/assets/icons/lyrics-mic.svg?raw'
 import { useT } from '@/i18n'
 
 const { t } = useT()

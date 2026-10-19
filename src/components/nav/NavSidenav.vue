@@ -140,6 +140,14 @@ function closeSidenav() {
 
             svg {
                 height: 1.5rem;
+                width: 1.5rem;
+                flex-shrink: 0;
+            }
+
+            // INFO: svgo drops the viewBox of the 18x18 icons (Albums, Artists), so they cannot scale; padding keeps them centered in the same 1.5rem box
+            svg[width="18"][height="18"] {
+                box-sizing: border-box;
+                padding: 3px;
             }
         }
 

@@ -10,7 +10,7 @@ import { Routes } from '@/router'
 import { useRoute, useRouter } from 'vue-router'
 
 import useLyrics from '@/stores/lyrics'
-import LyricsSvg from '@/assets/icons/lyrics.svg'
+import LyricsSvg from '@/assets/icons/lyrics-mic.svg'
 
 defineProps<{
     showText?: boolean

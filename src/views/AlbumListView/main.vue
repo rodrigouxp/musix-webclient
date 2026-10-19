@@ -27,8 +27,11 @@
 <script setup lang="ts">
 import { Routes } from "@/router";
 import { storeToRefs } from "pinia";
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { onBeforeRouteLeave, onBeforeRouteUpdate, useRoute } from "vue-router";
+
+import { useT } from "@/i18n";
+import updatePageTitle from "@/utils/updatePageTitle";
 
 import { maxAbumCards } from "@/stores/content-width";
 import { useAlbumList, useArtistList } from "@/stores/pages/itemlist";
@@ -38,6 +41,7 @@ import CardRow from "@/components/shared/CardRow.vue";
 import Header from "./Header.vue";
 import SortBanner from "@/components/CardListView/SortBanner.vue";
 
+const { t } = useT();
 const route = useRoute();
 const store = route.name == Routes.AlbumList ? useAlbumList() : useArtistList();
 
@@ -90,6 +94,10 @@ const scrollerItems = computed(() => {
 
   return items;
 });
+
+onMounted(() =>
+  updatePageTitle(t(route.name == Routes.AlbumList ? "Common.Album" : "Common.Artist", 2))
+);
 
 onBeforeRouteUpdate((to, from, next) => {
   const { sortby, reverse } = to.query;

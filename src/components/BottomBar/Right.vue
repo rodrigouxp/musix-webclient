@@ -72,6 +72,8 @@ defineEmits<{
         }
     }
 
+    // INFO: lyrics-mic.svg has no viewBox once optimized, so it cannot shrink: keep the full 1.5rem inside the button
+    .lyrics,
     .shuffle {
         padding: $small $smallest !important;
     }

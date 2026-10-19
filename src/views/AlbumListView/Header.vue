@@ -1,7 +1,7 @@
 <template>
   <div class="albumlistviewhead">
     <GenericHeader>
-      <template #name>{{ $t('Common.Album', props.total)
+      <template #name>{{ is_albumlist ? $t('Common.Album', props.total) : $t('Common.Artist', props.total)
       }}</template>
       <template #description>
         {{ $t('Views.Header.TotalAlbumAndArtists',

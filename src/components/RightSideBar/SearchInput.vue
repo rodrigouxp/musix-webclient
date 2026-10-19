@@ -107,7 +107,7 @@ function handleButton() {
 </style>
 
 <style lang="scss">
-.right > .gsearch-input > #ginner > input {
+.topnav.use_links .right > .gsearch-input > #ginner > input {
     width: 150px;
 
     @include allPhones {

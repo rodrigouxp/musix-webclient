@@ -86,18 +86,21 @@ const { menus } = useNavItems();
     .circular.nav-item:last-child {
       display: none;
     }
-
-    .circular.nav-item:nth-child(3) {
-      display: none;
-    }
   }
 
   svg {
     height: 1.5rem;
+    width: 1.5rem;
     margin: 0 $small 0 $small;
     border-radius: $small;
     transform: scale(0.9);
     opacity: 0.75;
+  }
+
+  // INFO: svgo drops the viewBox of the 18x18 icons (Albums, Artists), so they cannot scale; padding keeps them centered in the same 1.5rem box
+  svg[width="18"][height="18"] {
+    box-sizing: border-box;
+    padding: 3px;
   }
 
   svg.radiosvg {
