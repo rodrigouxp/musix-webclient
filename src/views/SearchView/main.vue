@@ -1,6 +1,6 @@
 <template>
-  <div class="search-view" :class="{ is_alt_layout }">
-    <div v-if="is_alt_layout" class="buttons-area">
+  <div class="search-view with_tabs">
+    <div class="buttons-area">
       <Tabs
         :tabs="pages"
         :current-tab="($route.params.page as string)"
@@ -23,9 +23,7 @@ import { Routes } from "@/router";
 import { computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 
-import { content_width } from "@/stores/content-width";
 import useSearchStore from "@/stores/search";
-import useSettings from "@/stores/settings";
 import updatePageTitle from "@/utils/updatePageTitle";
 
 import Tabs from "@/components/RightSideBar/Search/TabsWrapper.vue";
@@ -36,10 +34,7 @@ import { useT } from "@/i18n";
 
 const { t } = useT(); 
 
-const settings = useSettings();
 const search = useSearchStore();
-
-const is_alt_layout = computed(() => settings.is_alt_layout || content_width.value < 1100);
 
 const pages = ["top", "tracks", "albums", "artists"];
 
@@ -113,7 +108,8 @@ onMounted(() => {
     }
   }
 
-  &.is_alt_layout {
+  // the tabs (Top, Tracks, Albums, Artists) always live in the page, never in the top bar
+  &.with_tabs {
     grid-template-rows: 2rem 1fr;
     gap: 1rem;
     padding-top: 1rem;

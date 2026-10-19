@@ -3,14 +3,23 @@
     <div
         ref="parentRef"
         class="context-item"
-        @mouseenter="handleMouseEnter"
+        :class="{ 'inline-children': compact && option.children && !option.singleChild, 'children-open': compact && childrenShown }"
+        @pointerenter="handlePointerEnter"
         @mouseleave="handleMouseLeave"
         @click="runAction"
     >
-        <div class="icon image" v-html="option.icon"></div>
-        <div class="label ellip">{{ option.label }}</div>
-        <div v-if="hasChildren && !option.singleChild" class="more" v-html="MenuSubmenuIcon"></div>
-        <div v-if="children" ref="childRef" class="children rounded shadow-sm">
+        <div class="item-row">
+            <div class="icon image" v-html="option.icon"></div>
+            <div class="label ellip">{{ option.label }}</div>
+        </div>
+        <div v-if="option.children && !option.singleChild" class="more" v-html="MenuSubmenuIcon"></div>
+        <div
+            v-if="children"
+            ref="childRef"
+            class="children rounded shadow-sm"
+            :class="{ inline: compact, open: childrenShown }"
+            @click="onChildrenClick"
+        >
             <div className="wrapper">
                 <div
                     v-for="child in children"
@@ -30,11 +39,15 @@
 
 <script setup lang="ts">
 import { createPopper, Instance, Modifier, Placement, Rect } from '@popperjs/core'
-import { computed, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 
 import { contextChildrenShowMode } from '@/enums'
 import { MenuSubmenuIcon } from '@/icons'
+import useContextStore from '@/stores/context'
+import { claimInlineSubmenu, releaseInlineSubmenu } from './inlineSubmenu'
 import { Option } from '@/interfaces'
+
+const context = useContextStore()
 
 const props = defineProps<{
     option: Option
@@ -46,6 +59,19 @@ const emit = defineEmits<{
     (event: 'hideContextMenu'): void
 }>()
 
+// Narrow or short screens (phones, landscape): the submenu opens inside the menu, under its
+// item, and the menu scrolls. Keep this query in sync with the one in ContextMenu.vue.
+const compactQuery = '(max-width: 900px), (max-height: 500px)'
+const compactMedia = window.matchMedia(compactQuery)
+const compact = ref(compactMedia.matches)
+const updateCompact = () => (compact.value = compactMedia.matches)
+
+onMounted(() => compactMedia.addEventListener('change', updateCompact))
+onBeforeUnmount(() => {
+    compactMedia.removeEventListener('change', updateCompact)
+    releaseInlineSubmenu(hideChildren)
+})
+
 const showChildrenDelay = 250
 const stillWaitingForChildren = ref(false)
 const children = ref<Option[] | false>(false)
@@ -54,14 +80,17 @@ const childrenShown = ref(false)
 const childRef = ref<HTMLElement>()
 const parentRef = ref<HTMLElement>()
 
-const hasChildren = computed(() => {
-    return props.option.children && props.childrenShowMode === contextChildrenShowMode.hover
+// hover opens the submenu only with a mouse, in hover mode, on screens with room for a flyout
+const opensOnHover = computed(() => {
+    return props.option.children && props.childrenShowMode === contextChildrenShowMode.hover && !compact.value
 })
 
 let popperInstance: Instance | null = null
 
-async function handleMouseEnter() {
-    if (!hasChildren.value) return
+async function handlePointerEnter(e: PointerEvent) {
+    // a touch fires pointerenter and then the click: the tap alone opens the submenu
+    if (e.pointerType && e.pointerType !== 'mouse') return
+    if (!opensOnHover.value) return
 
     stillWaitingForChildren.value = true
     await new Promise(resolve => setTimeout(resolve, showChildrenDelay))
@@ -72,7 +101,7 @@ async function handleMouseEnter() {
 }
 
 function handleMouseLeave() {
-    if (!hasChildren.value) return
+    if (!opensOnHover.value) return
     stillWaitingForChildren.value = false
     hideChildren()
 }
@@ -86,15 +115,31 @@ async function getChildren() {
     }
 }
 
+let opening = false
+
 async function showChildren() {
-    if (childrenShown.value) {
-        childrenShown.value = false
-        return
-    }
+    if (childrenShown.value || opening) return
+    opening = true
 
     if (props.option.children) {
         await getChildren()
-        // return;
+        await nextTick()
+    }
+
+    opening = false
+    if (!childRef.value) return
+
+    if (compact.value) {
+        claimInlineSubmenu(hideChildren)
+        childRef.value.style.visibility = 'visible'
+        childRef.value.style.opacity = '1'
+        childrenShown.value = true
+        // the menu grew: place it again inside the screen, then (it scrolls on small screens)
+        // bring the opened submenu into view
+        await nextTick()
+        context.updatePosition()
+        childRef.value?.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+        return
     }
 
     const offsetModifier: Modifier<
@@ -125,13 +170,16 @@ async function showChildren() {
                 options: {
                     altAxis: true,
                     boundariesElement: 'viewport',
+                    padding: 8,
                 },
             },
             {
                 name: 'flip',
                 options: {
-                    fallbackPlacements: ['left-start', 'auto'],
+                    // no room on the right or on the left: under the item, or over it
+                    fallbackPlacements: ['left-start', 'bottom-start', 'top-start', 'auto'],
                     boundariesElement: 'viewport',
+                    padding: 8,
                 },
             },
             offsetModifier,
@@ -147,6 +195,13 @@ function hideChildren() {
     childRef.value ? (childRef.value.style.opacity = '0') : null
     popperInstance?.destroy()
     childrenShown.value = false
+    releaseInlineSubmenu(hideChildren)
+    if (compact.value) nextTick(() => context.updatePosition())
+}
+
+// the submenu of the inline (compact) mode lives inside its item: a tap on it must not toggle the item
+function onChildrenClick(e: MouseEvent) {
+    if (compact.value) e.stopPropagation()
 }
 
 function hideContextMenu() {
@@ -242,6 +297,61 @@ function runChildAction(action: () => void) {
 
         .separator {
             padding: 0;
+        }
+    }
+
+    // the icon and the label of an item (its submenu comes under them in the compact mode)
+    .item-row {
+        display: flex;
+        align-items: center;
+        flex: 1 1 auto;
+        min-width: 0;
+        min-height: inherit;
+    }
+
+    // compact mode (phones, landscape): the submenu opens under its item, inside the menu
+    &.inline-children {
+        flex-wrap: wrap;
+        align-content: flex-start;
+
+        > .item-row {
+            flex: 1 1 100%;
+        }
+
+        &.children-open {
+            > .more {
+                top: calc(var(--menu-item-height, 2rem) / 2);
+                transform: rotate(90deg);
+            }
+
+            // the whole block is not one big hover target: the header and each option are
+            &:hover {
+                background: transparent;
+                color: var(--menu-item-text);
+            }
+        }
+    }
+
+    .children.inline {
+        display: none;
+        position: static;
+        transform: none;
+        flex: 0 0 100%;
+        width: 100%;
+        margin: 2px 0 4px;
+        padding: 0 0 0 1.75rem;
+        border: none;
+        box-shadow: none;
+        background-color: transparent;
+
+        &.open {
+            display: block;
+        }
+
+        .wrapper {
+            padding: 0;
+            max-height: none;
+            overflow: visible;
         }
     }
 

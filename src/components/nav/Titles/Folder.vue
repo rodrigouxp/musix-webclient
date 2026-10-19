@@ -87,14 +87,17 @@ const current = computed(() => {
 // }
 
 #folder-nav-title {
-    width: fit-content;
-    // overflow: hidden;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 13rem; // the sort menu (10rem with its gap) and at least 3rem of the path
     display: grid;
-    grid-template-columns: 1fr;
-    // gap: 1rem;
+
+    @media only screen and (min-width: 1101px) {
+        min-width: 18rem; // more room for the path where there is room
+    }
+    grid-template-columns: minmax(0, 1fr);
     justify-content: space-between;
-    // width: 100%;
-    margin-right: 10rem; // sortbar width
+    padding-right: 10rem; // sortbar width (the sort menu is always visible, the path gives way)
 
     @include allPhones {
         display: grid;
@@ -122,6 +125,10 @@ const current = computed(() => {
         display: flex;
         align-items: center;
         max-width: 100%;
+        min-width: 3rem;
+        // the path scrolls inside its own strip (the open folder is brought into view);
+        // contain: inline-size keeps a long path from asking the top bar for more room
+        contain: inline-size;
         overflow: auto;
         overflow-y: hidden;
         -webkit-overflow-scrolling: touch;

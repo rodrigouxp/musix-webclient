@@ -4,6 +4,7 @@
         :class="{
             use_links: settings.is_alt_layout,
             use_sidebar: settings.use_sidebar && isSmall,
+            has_search: hasSearch,
         }"
     >
         <div class="left">
@@ -21,7 +22,7 @@
         <NavSidenav @close="toggleSidenav" :class="{ active: sidenavActive }" />
         <div class="dimmer noSelect" :class="{ active: sidenavActive }" @click="toggleSidenav"></div>
         <RouterLink v-if="settings.is_alt_layout" to="/" class="logo rounded-sm"><LogoSvg /></RouterLink>
-        <div v-if="settings.is_alt_layout || !settings.use_sidebar || !xl" class="right">
+        <div v-if="hasSearch" class="right">
             <SearchInput :on_nav="true" />
             <AvatarWithDropdown />
         </div>
@@ -49,6 +50,8 @@ import AvatarWithDropdown from './AvatarWithDropdown.vue'
 const auth = useAuth()
 const settings = useSettings()
 const isSmall = computed(() => content_width.value < 800)
+// the search and the avatar live in the top bar, unless the right sidebar is open (it has its own search)
+const hasSearch = computed(() => settings.is_alt_layout || !settings.use_sidebar || !xl.value)
 
 const sidenavActive = ref(false)
 
@@ -82,7 +85,10 @@ function toggleSidenav() {
 
         .info {
             margin: auto 0;
-            width: fit-content;
+            // what cannot shrink (a button, the sort menu) sets the least room it needs; the text
+            // titles and the folder path give way (see SimpleNav.vue and Titles/Folder.vue)
+            min-width: min-content;
+            max-width: 100%;
             overflow: hidden;
 
             .title {
@@ -130,15 +136,26 @@ function toggleSidenav() {
         }
     }
 
-    // Default layout above the phone breakpoint: back/forward on the left, search centered
-    // on 50% of the top bar, avatar on the right edge. The alt layout keeps the logo in the middle.
+    // Default layout above the phone breakpoint, with the search in the top bar: back/forward on
+    // the left, search centered on 50% of the bar, avatar on the right edge. The alt layout keeps
+    // the logo in the middle. The left column grows to what cannot shrink (buttons, sort menu)
+    // and the search gives way (never under 14rem), so nothing is ever covered.
     @media only screen and (min-width: 901px) {
-        &:not(.use_links) {
-            grid-template-columns: minmax(0, 1fr) minmax(14rem, 50%) minmax(0, 1fr);
+        &.has_search:not(.use_links) {
+            grid-template-columns: minmax(min-content, 1fr) minmax(14rem, 50%) minmax(min-content, 1fr);
 
             .left {
                 grid-column: 1;
                 min-width: 0;
+            }
+
+            // medium widths: tighter gaps, so the left side, the search (14rem at least) and the avatar fit
+            @media only screen and (max-width: 1100px) {
+                gap: 0.5rem;
+
+                .left {
+                    gap: 0.5rem;
+                }
             }
 
             .right {

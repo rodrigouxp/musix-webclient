@@ -10,6 +10,14 @@ defineProps<{
 
 <style lang="scss">
 .simple-nav-title {
+  // long names (an artist, for example) are cut with an ellipsis instead of covering the search;
+  // contain: inline-size keeps the text from asking the top bar for more room
+  min-width: 3rem;
+  contain: inline-size;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
   @include mediumPhones {
     font-size: 1.3rem;
   }

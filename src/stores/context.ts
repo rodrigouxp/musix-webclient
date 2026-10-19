@@ -1,4 +1,4 @@
-import { createPopper, VirtualElement } from "@popperjs/core";
+import { createPopper, Instance, VirtualElement } from "@popperjs/core";
 import { defineStore } from "pinia";
 import { ContextSrc } from "../enums";
 import { Option } from "../interfaces";
@@ -13,6 +13,9 @@ function generateGetBoundingClientRect(x = 0, y = 0) {
     left: x,
   });
 }
+
+// the popper of the open menu, kept to place it again when the menu changes size
+let menuPopper: Instance | null = null;
 
 export default defineStore("context-menu", {
   state: () => ({
@@ -45,13 +48,23 @@ export default defineStore("context-menu", {
           this.options = options;
         })
         .then(() => {
-          createPopper(virtualElement, this.elem as HTMLElement, {
+          menuPopper?.destroy();
+          menuPopper = createPopper(virtualElement, this.elem as HTMLElement, {
             placement: "right-start",
             modifiers: [
               {
                 name: "flip",
                 options: {
                   fallbackPlacements: ["left-start"],
+                  padding: 8,
+                },
+              },
+              {
+                // keeps the menu inside the screen on both axes, near any edge
+                name: "preventOverflow",
+                options: {
+                  altAxis: true,
+                  padding: 8,
                 },
               },
             ],
@@ -61,6 +74,10 @@ export default defineStore("context-menu", {
             },
           });
         });
+    },
+    // the menu grew or shrank (a submenu opened inside it): keep it inside the screen
+    updatePosition() {
+      menuPopper?.update();
     },
     hideContextMenu() {
       this.visible = false;
