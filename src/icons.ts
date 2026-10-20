@@ -34,8 +34,8 @@ export { default as MenuEpsSinglesIcon } from "@/assets/icons/figma/ep-and-singl
 export { default as MenuSoundtrackIcon } from "@/assets/icons/figma/soundtrack.svg?raw";
 export { default as MenuLiveIcon } from "@/assets/icons/figma/live-album.svg?raw";
 export { default as MenuSearchOnIcon } from "@/assets/icons/figma/search-on.svg?raw";
-// the arrow of the items with a submenu (it is not in the Figma icon set)
-export { default as MenuSubmenuIcon } from "@/assets/icons/menu/submenu-indicator.svg?raw";
+// the arrow of the items with a submenu
+export { default as MenuSubmenuIcon } from "@/assets/icons/figma/chevron-right.svg?raw";
 
 // icons of the song menu: the album one is the same drawing as the "EPs & Singles" mark; the folder
 // and artist ones are not in the Figma icon set

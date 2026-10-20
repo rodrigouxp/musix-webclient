@@ -197,10 +197,10 @@ function handleButton() {
                 background-color: $gray;
             }
 
-            // the X: 14 x 14px
+            // the X: 10 x 10px
             svg {
-                height: 14px;
-                width: 14px;
+                height: 10px;
+                width: 10px;
             }
 
             @include allPhones {

@@ -244,17 +244,18 @@ function runChildAction(action: () => void) {
     color: var(--menu-item-text);
     transition: background-color 0.2s ease-out;
 
-    // the arrow of the items that open a submenu: 8 x 12, 10px from the right edge
+    // the arrow of the items that open a submenu (chevron-right of the Figma): 10 x 10, 10px from the right edge
     .more {
-        height: 12px;
-        width: 8px;
+        height: 10px;
+        width: 10px;
         position: absolute;
         right: 10px;
         top: 50%;
-        margin-top: -6px;
+        margin-top: -5px;
         color: var(--menu-item-icon);
 
         svg {
+            display: block;
             height: 100%;
             width: 100%;
         }
