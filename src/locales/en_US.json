@@ -18,6 +18,30 @@
       "GenreExists": "Genres"
     },
     "PlayDisc": "Play Disc",
+    "RenameAlbum": {
+      "BackToName": "Back",
+      "Close": "Close",
+      "Done": "Album renamed in {count} files",
+      "DonePartial": "Album renamed in {ok} files, {failed} failed",
+      "DistinctTitles": "The files have different values in the Album tag ({titles}). They all get the same title.",
+      "EditName": "Rename album",
+      "Error": "Could not rename the album",
+      "Failed": "Files that failed (they keep the old title)",
+      "GoToAlbum": "Go to the album",
+      "Merge": "\"{title}\" already exists ({count} tracks): the two albums will be merged",
+      "NewName": "New title",
+      "NoAlbumTag": "Files without an album tag (nothing is created there, they are not changed): {count}",
+      "NotWritable": "Files without permission to write: {count}",
+      "Preview": "Preview",
+      "Progress": "{done} of {total} files",
+      "RenameFiles": "Rename {count} files",
+      "Running": "Renaming...",
+      "SameIdentity": "Only the letter case or the spaces change: the album keeps the same identity (favorites, plays and collections stay).",
+      "SamplesTitle": "Before and after",
+      "Summary": "This album has {tracks} tracks in {total} files.",
+      "TagHint": "This text goes whole into the Album tag, including words like (Deluxe Edition).",
+      "Unsupported": "Formats that can not be written: {count}"
+    },
     "TrackCount": "Track | Tracks"
   },
   "ArtistCard": {

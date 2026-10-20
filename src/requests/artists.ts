@@ -2,6 +2,7 @@ import { paths } from '@/config'
 import { Album, Artist, Genre, StatItem, Track } from '@/interfaces'
 import { NotifType, useToast } from '@/stores/notification'
 import useAxios from './useAxios'
+import { getRenameStatus, postRename, RenameJobStatus } from './rename'
 import { useT } from '@/i18n'
 
 const { t } = useT();
@@ -176,16 +177,10 @@ export interface RenameSample {
     participant: boolean
 }
 
-export interface RenameStatus {
-    running: boolean
+export interface RenameStatus extends RenameJobStatus {
     artisthash: string
     old_name: string
     new_name: string
-    done: number
-    total: number
-    current: string | null
-    errors: { [filepath: string]: string }
-    finished: boolean
     new_artisthash: string | null
     result: {
         error?: string
@@ -201,33 +196,16 @@ export interface RenameStatus {
  * On failure returns `{ error }` with the message of the server.
  */
 export async function previewArtistRename(hash: string, name: string): Promise<RenamePreview | { error: string }> {
-    const { data, error } = await useAxios({
-        method: 'POST',
-        url: paths.api.artist + `/${hash}/rename/preview`,
-        props: { name },
-    })
-
-    return error ? { error: (data?.error as string) || error } : (data as RenamePreview)
+    return postRename<RenamePreview>(paths.api.artist + `/${hash}/rename/preview`, { name })
 }
 
 /**
  * Starts the rename, which runs in the background (see `getArtistRenameStatus`).
  */
 export async function startArtistRename(hash: string, name: string): Promise<{ ok: boolean } | { error: string }> {
-    const { data, error } = await useAxios({
-        method: 'POST',
-        url: paths.api.artist + `/${hash}/rename`,
-        props: { name, confirm: true },
-    })
-
-    return error ? { error: (data?.error as string) || error } : (data as { ok: boolean })
+    return postRename<{ ok: boolean }>(paths.api.artist + `/${hash}/rename`, { name, confirm: true })
 }
 
 export async function getArtistRenameStatus(): Promise<RenameStatus | null> {
-    const { data, error } = await useAxios({
-        method: 'GET',
-        url: paths.api.artist + '/rename/status',
-    })
-
-    return error ? null : (data as RenameStatus)
+    return getRenameStatus<RenameStatus>(paths.api.artist + '/rename/status')
 }

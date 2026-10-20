@@ -2,6 +2,7 @@ import { paths } from '@/config'
 import { Album, StatItem, Track } from '@/interfaces'
 import { NotifType, useToast } from '@/stores/notification'
 import useAxios from './useAxios'
+import { getRenameStatus, postRename, RenameJobStatus } from './rename'
 import { useT } from '@/i18n'
 
 const { t } = useT();
@@ -185,6 +186,71 @@ export async function getSimilarAlbums(artisthash: string, limit: number = 5): P
     })
 
     return data
+}
+
+export interface AlbumRenameSample {
+    filepath: string
+    title: string
+    album_before: string | null
+    album_after: string | null
+}
+
+export interface AlbumRenamePreview {
+    album: { albumhash: string; title: string; albumartists: string[] }
+    current_title: string
+    new_title: string
+    new_albumhash: string | null
+    hash_changes: boolean
+    tracks_count: number
+    files_total: number
+    files_to_rewrite: number
+    distinct_titles: string[]
+    distinct_titles_count: number
+    no_album_tag: string[]
+    no_album_tag_count: number
+    unsupported_count: number
+    unsupported_formats: { filepath: string; error: string }[]
+    not_writable_count: number
+    not_writable: string[]
+    other_errors: { filepath: string; error: string }[]
+    merge: { title: string; albumhash: string; trackcount: number } | null
+    samples: AlbumRenameSample[]
+    warning: string
+}
+
+export interface AlbumRenameStatus extends RenameJobStatus {
+    albumhash: string
+    old_title: string
+    new_title: string
+    // the same hash when it did not change (only the letter case)
+    new_albumhash: string | null
+    result: {
+        error?: string
+        files_ok?: number
+        files_failed?: { [filepath: string]: string }
+        album_moved?: boolean
+        hash_changed?: boolean
+        new_albumhash?: string | null
+    } | null
+}
+
+/**
+ * What renaming the album in all its files would do. Writes nothing.
+ * On failure returns `{ error }` with the message of the server.
+ */
+export async function previewAlbumRename(albumhash: string, title: string): Promise<AlbumRenamePreview | { error: string }> {
+    return postRename<AlbumRenamePreview>(albumUrl + `/${albumhash}/rename/preview`, { title })
+}
+
+/**
+ * Starts the rename, which runs in the background (see `getAlbumRenameStatus`).
+ */
+export async function startAlbumRename(albumhash: string, title: string): Promise<{ ok: boolean } | { error: string }> {
+    return postRename<{ ok: boolean }>(albumUrl + `/${albumhash}/rename`, { title, confirm: true })
+}
+
+export async function getAlbumRenameStatus(): Promise<AlbumRenameStatus | null> {
+    return getRenameStatus<AlbumRenameStatus>(albumUrl + '/rename/status')
 }
 
 export { getAlbumData as getAlbum, getAlbumArtists, getAlbumBio }
