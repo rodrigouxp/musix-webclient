@@ -8,25 +8,28 @@
     >
         <LeftGroup @handleFav="handleFav" />
         <div class="center">
-            <div v-if="!isMobile" class="with-time">
-                <div class="time time-current">
-                    <div class="numbers">
-                        {{ formatSeconds(queue.duration.current || 0) }}
-                    </div>
-                </div>
-
+            <!-- desktop and tablet: the buttons, and under them the time, the bar and the full time -->
+            <template v-if="!isMobile">
                 <div class="buttons rounded-sm border">
-                    <HotKeys />
+                    <HotKeys with-shuffle-repeat />
                 </div>
-                <div class="time time-full">
-                    <div class="numbers">
-                        {{ formatSeconds(queue.duration.full) }}
+                <div class="progress-row">
+                    <div class="time time-current">
+                        <div class="numbers">
+                            {{ formatSeconds(queue.duration.current || 0) }}
+                        </div>
+                    </div>
+                    <Progress />
+                    <div class="time time-full">
+                        <div class="numbers">
+                            {{ formatSeconds(queue.duration.full) }}
+                        </div>
                     </div>
                 </div>
-            </div>
-            <Progress />
+            </template>
+            <Progress v-else />
         </div>
-        <RightGroup v-if="!isMobile" @handleFav="handleFav" />
+        <RightGroup v-if="!isMobile" desktop @handleFav="handleFav" />
         <Navigation v-else />
     </div>
 </template>
@@ -158,14 +161,15 @@ function handleFav() {
         }
     }
 
-    .with-time {
+    // the time, the progress bar and the full time (desktop and tablet)
+    .progress-row {
         display: grid;
         grid-template-columns: max-content 1fr max-content;
-        align-items: flex-end;
-        height: 2rem;
+        align-items: center;
+        gap: $medium;
 
-        button {
-            background: transparent;
+        #progress {
+            margin: 0;
         }
     }
 
@@ -212,6 +216,15 @@ function handleFav() {
         place-items: center;
         transform: scale(1.2);
         border: none;
+        height: 2.5rem;
+
+        button {
+            background: transparent;
+        }
+
+        @include allPhones {
+            height: unset;
+        }
     }
 }
 </style>

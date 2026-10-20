@@ -1,5 +1,29 @@
 <template>
-    <button class="speaker" @wheel.passive="handleMouseWheel">
+    <!-- desktop and tablet: the speaker and, always open and horizontal, the slider next to it -->
+    <div v-if="inline" class="speaker-inline" :title="`${volume_percent}%`" @wheel.passive="handleMouseWheel">
+        <button class="speaker-icon" :aria-label="$t('BottomBar.VolumeLabel', { percent: volume_percent })" @click="settings.toggleMute">
+            <VolumeMuteSvg v-if="settings.mute || settings.volume == 0.0" />
+            <VolumeMidSvg v-else-if="settings.volume > 0.75" />
+            <VolumeLowSvg v-else-if="settings.volume > 0" />
+        </button>
+        <input
+            id="volume"
+            type="range"
+            name="volume"
+            max="1"
+            min="0"
+            step="0.01"
+            :value="settings.volume"
+            :title="`${volume_percent}%`"
+            :aria-label="$t('BottomBar.VolumeLabel', { percent: volume_percent })"
+            :aria-valuetext="`${volume_percent}%`"
+            :style="{
+                backgroundSize: `${volume_percent}% 100%`,
+            }"
+            @input="changeVolume"
+        />
+    </div>
+    <button v-else class="speaker" @wheel.passive="handleMouseWheel">
         <div class="icon" @click="settings.toggleMute">
             <VolumeMuteSvg v-if="settings.mute || settings.volume == 0.0" />
             <VolumeMidSvg v-else-if="settings.volume > 0.75" />
@@ -34,6 +58,12 @@ import VolumeMidSvg from '@/assets/icons/volume-mid.svg'
 import VolumeMuteSvg from '@/assets/icons/volume-mute.svg'
 import useSettingsStore from '@/stores/settings'
 import { clamp } from '@/utils/audio/volume'
+
+defineProps<{
+    // the slider is always open next to the speaker (above 900px); without it the slider is the
+    // popover that opens over the speaker
+    inline?: boolean
+}>()
 
 const settings = useSettingsStore()
 
@@ -73,6 +103,36 @@ const handleMouseWheel = (event: WheelEvent) => {
     border-top: 1px solid transparent !important;
     border-top-left-radius: 0 !important;
     border-top-right-radius: 0 !important;
+}
+
+// the speaker and the slider that is always open (desktop and tablet)
+.speaker-inline {
+    display: flex;
+    align-items: center;
+    gap: $smaller;
+    height: 3rem;
+
+    input#volume {
+        // between 901px and about 1200px the slider shrinks (4rem at the least)
+        width: clamp(4rem, 8vw, 6rem);
+        flex-shrink: 0;
+        margin: 0;
+        touch-action: pan-x;
+        background: linear-gradient(to top, #ffffff, #ffffff) 0% 50% no-repeat, $gray4;
+
+        // the thumb is always there (in the progress bar it only shows on hover)
+        &::-webkit-slider-thumb {
+            height: 1rem;
+            width: 1rem;
+            cursor: pointer;
+        }
+
+        &::-moz-range-thumb {
+            height: 1rem;
+            width: 1rem;
+            cursor: pointer;
+        }
+    }
 }
 
 .speaker {

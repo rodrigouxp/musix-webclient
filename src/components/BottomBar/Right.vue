@@ -1,5 +1,16 @@
 <template>
-    <div class="right-group">
+    <!-- desktop and tablet: lyrics, favorite, volume (shuffle and repeat are next to play) -->
+    <div v-if="desktop" class="right-group desktop">
+        <LyricsButton />
+        <HeartSvg
+            v-if="!hideHeart"
+            :title="$t('BottomBar.Favorite')"
+            :state="queue.currenttrack?.is_favorite"
+            @handleFav="() => $emit('handleFav')"
+        />
+        <Volume inline />
+    </div>
+    <div v-else class="right-group">
         <LyricsButton />
         <Volume />
         <button
@@ -40,6 +51,8 @@ const settings = useSettings()
 
 defineProps<{
     hideHeart?: boolean
+    // the bottom bar of the desktop and tablet (above 900px)
+    desktop?: boolean
 }>()
 
 defineEmits<{
@@ -91,7 +104,20 @@ defineEmits<{
         }
     }
 
-    .speaker svg {
+    // the microphone looked a bit bigger than the icons next to it: 6.5% smaller (22.4px of the
+    // 24px). It can not be done with width/height (no viewBox), so it is scaled around the center.
+    .lyrics svg {
+        transform: scale(0.935);
+    }
+
+    &.desktop {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    .speaker svg,
+    .speaker-icon svg {
         height: 1.35rem;
         width: 1.35rem;
     }
