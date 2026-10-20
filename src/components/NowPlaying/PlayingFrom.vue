@@ -104,6 +104,12 @@ function showContextMenu(e: MouseEvent) {
             width: 1.5rem;
             color: rgb(202, 197, 197);
         }
+
+        // the icons of the Figma (search, favorited): 18px keeps the glyph of the old ones (about 14px)
+        svg[width="24"][height="24"] {
+            height: 18px;
+            width: 18px;
+        }
     }
 
     .type {

@@ -1,7 +1,7 @@
 import { SettingCategory } from "@/interfaces/settings";
 import gapless from "./groups";
 
-import VolumeSvg from "@/assets/icons/volume-mid.svg?raw"
+import VolumeSvg from "@/assets/icons/figma/speaker-max.svg?raw"
 import { useT } from "@/i18n";
 
 const { t } = useT();

@@ -31,7 +31,7 @@ import useQueue from '@/stores/queue'
 import useTracklist from '@/stores/queue/tracklist'
 import useSearch from '@/stores/search'
 
-import SearchSvg from '@/assets/icons/search.svg'
+import SearchSvg from '@/assets/icons/figma/search.svg'
 import AlbumsFetcher from '@/components/ArtistView/AlbumsFetcher.vue'
 import NoItems from '@/components/shared/NoItems.vue'
 import SongItem from '@/components/shared/SongItem.vue'

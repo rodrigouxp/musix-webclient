@@ -28,7 +28,7 @@ import { getFavTracks } from '@/requests/favorite'
 
 import GenericHeader from '@/components/shared/GenericHeader.vue'
 import GenericTrackPagination from '@/components/shared/GenericTrackPagination.vue'
-import HeartSvg from '@/assets/icons/heart.svg'
+import HeartSvg from '@/assets/icons/figma/favorite.svg'
 import { track_limit } from '@/stores/content-width'
 
 const trackCount = ref(0)

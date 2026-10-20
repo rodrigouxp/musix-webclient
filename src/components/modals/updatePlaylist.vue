@@ -75,7 +75,7 @@ import { Ref, onMounted, ref } from 'vue'
 import { updatePlaylist } from '@/requests/playlists'
 import usePStore from '@/stores/pages/playlist'
 
-import DeleteIcon from '@/assets/icons/delete.svg'
+import DeleteIcon from '@/assets/icons/figma/delete.svg'
 import ExpandSvg from '@/assets/icons/expand.svg'
 import ImageIcon from '@/assets/icons/image.svg'
 
@@ -241,16 +241,20 @@ function update_playlist(e: Event) {
             place-items: center;
             cursor: pointer;
 
+            // delete: error/300, white while the red background is on (1.7rem = the glyph of the old 2rem)
             svg {
                 transform: scale(1);
-                color: rgb(255, 255, 255);
-                transition: transform 0.2s ease-out;
+                height: 1.7rem;
+                width: 1.7rem;
+                color: $red;
+                transition: transform 0.2s ease-out, color 0.2s ease-out;
             }
 
             &:hover {
                 background-color: $red;
 
                 svg {
+                    color: rgb(255, 255, 255);
                     transform: scale(1.25);
                     transform-origin: center;
                 }

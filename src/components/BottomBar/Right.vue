@@ -86,29 +86,31 @@ defineEmits<{
         }
     }
 
-    // INFO: lyrics-mic.svg has no viewBox once optimized, so it cannot shrink: keep the full 1.5rem inside the button
     .lyrics,
     .shuffle {
         padding: $small $smallest !important;
     }
 
-    .lyrics,
     .repeat,
     .shuffle {
         svg {
             height: 1.5rem;
             width: 1.5rem;
         }
+    }
 
+    // lyrics and volume: the same size (the glyphs of the Figma are 20px in 24px)
+    .lyrics svg {
+        height: 1.3rem;
+        width: 1.3rem;
+    }
+
+    .lyrics,
+    .repeat,
+    .shuffle {
         &:active > svg {
             transform: scale(0.6);
         }
-    }
-
-    // the microphone looked a bit bigger than the icons next to it: 6.5% smaller (22.4px of the
-    // 24px). It can not be done with width/height (no viewBox), so it is scaled around the center.
-    .lyrics svg {
-        transform: scale(0.935);
     }
 
     &.desktop {
@@ -120,8 +122,8 @@ defineEmits<{
 
     .speaker svg,
     .speaker-icon svg {
-        height: 1.35rem;
-        width: 1.35rem;
+        height: 1.3rem;
+        width: 1.3rem;
     }
 
     button.repeat.repeat-disabled {

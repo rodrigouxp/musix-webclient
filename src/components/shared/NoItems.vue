@@ -42,6 +42,12 @@ defineProps<{
     height: 9rem;
   }
 
+  // the icons of the Figma (search, favorite) have a margin in their box: 7rem keeps the old size of the glyph
+  svg[width="24"][height="24"] {
+    height: 7rem;
+    width: 7rem;
+  }
+
   & > * {
     margin: auto;
     text-align: center;

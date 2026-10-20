@@ -53,7 +53,7 @@ import { Album, Artist, RecentFavResult, Track } from '@/interfaces'
 import { getAllFavs } from '@/requests/favorite'
 import updatePageTitle from '@/utils/updatePageTitle'
 
-import HeartSvg from '@/assets/icons/heart-no-color.svg'
+import HeartSvg from '@/assets/icons/figma/favorite.svg'
 import TopTracks from '@/components/ArtistView/TopTracks.vue'
 import CardScroller from '@/components/shared/CardScroller.vue'
 import GenericHeader from '@/components/shared/GenericHeader.vue'

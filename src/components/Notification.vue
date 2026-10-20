@@ -10,7 +10,7 @@
 <script setup lang="ts">
 import { NotifType, useToast } from '../stores/notification'
 
-import HeartSvg from '../assets/icons/heart.svg'
+import HeartSvg from '../assets/icons/figma/favorited.svg'
 import ErrorSvg from '../assets/icons/toast/error.svg'
 import InfoSvg from '../assets/icons/toast/info.svg'
 import SuccessSvg from '../assets/icons/toast/ok.svg'
@@ -83,9 +83,15 @@ function getSvg(notif: NotifType) {
     color: #418dc0;
 }
 
-.new-notif.favorite > .notif-icon,
 .new-notif.success > .notif-icon {
     color: #4cbd4c;
+}
+
+// the heart of the Figma (favorited, error/300); 25px keeps the glyph of the old heart (18.8px)
+.new-notif.favorite > .notif-icon {
+    color: $red;
+    width: 25px;
+    height: 25px;
 }
 
 .new-notif.working > .notif-icon {

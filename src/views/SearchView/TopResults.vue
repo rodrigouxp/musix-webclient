@@ -42,7 +42,7 @@
 <script setup lang="ts">
 import useSearchStore from "@/stores/search";
 
-import SearchSvg from "@/assets/icons/search.svg";
+import SearchSvg from "@/assets/icons/figma/search.svg";
 import TopItem from "@/components/RightSideBar/Search/Top/TopItem.vue";
 import TopTracks from "@/components/RightSideBar/Search/Top/TopTracks.vue";
 import RecentItems from "@/components/shared/CardScroller.vue";

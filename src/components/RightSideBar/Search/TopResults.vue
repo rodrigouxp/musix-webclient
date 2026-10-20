@@ -37,7 +37,7 @@ import TopTracks from "./Top/TopTracks.vue";
 import useSearchStore from "@/stores/search";
 import TopArtists from "./Top/TopArtists.vue";
 import NoItems from "@/components/shared/NoItems.vue";
-import SearchSvg from "@/assets/icons/search.svg";
+import SearchSvg from "@/assets/icons/figma/search.svg";
 
 const search = useSearchStore();
 </script>

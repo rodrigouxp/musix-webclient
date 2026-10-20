@@ -9,7 +9,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import DeleteSvg from '@/assets/icons/delete.svg'
+import DeleteSvg from '@/assets/icons/figma/delete.svg'
 
 import { isHeaderSmall } from '@/stores/content-width'
 
@@ -56,7 +56,8 @@ function deletePlaylist() {
         transform: scale(0.75);
         margin-bottom: -0.2rem;
         color: $red !important;
-        height: 1.5rem;
+        height: 1.275rem;
+        width: 1.275rem;
     }
 }
 </style>

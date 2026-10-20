@@ -34,7 +34,7 @@
 import { backupNow, getBackups, restoreBackup, deleteBackup as deleteBackupReq } from '@/requests/settings'
 import { onMounted, ref } from 'vue'
 import { useToast } from '@/stores/notification'
-import DeleteSvg from '@/assets/icons/delete.svg'
+import DeleteSvg from '@/assets/icons/figma/delete.svg'
 import { useT } from "@/i18n";
 
 const { t } = useT();
@@ -192,11 +192,9 @@ function getBackupStatsString(backup: Backup): string {
         align-items: center;
 
         svg {
-            height: 1.2rem;
+            height: 1.02rem;
+            width: 1.02rem;
             cursor: pointer;
-        }
-
-        svg:hover {
             color: $red;
         }
     }

@@ -1,14 +1,16 @@
 import { Routes } from "@/router";
 import useDialog from "@/stores/modal";
 
-import AlbumsSvg from "@/assets/icons/menu/mark-eps-singles.svg";
+import AlbumsSvg from "@/assets/icons/figma/ep-and-single.svg";
 import ArtistsSvg from "@/assets/icons/menu/go-to-artist.svg";
-import HeartSvg from "@/assets/icons/heart.svg";
+import HeartSvg from "@/assets/icons/figma/favorite.svg";
 import PlaylistSvg from "@/assets/icons/playlist-1.svg";
-import SettingsSvg from "@/assets/icons/settings.svg";
-import HomeSvg from "@/assets/icons/home.svg";
+import SettingsSvg from "@/assets/icons/figma/settings.svg";
+import HomeSvg from "@/assets/icons/figma/home.svg";
 import { useT } from "@/i18n";
 
+// The icons of the Figma have a 2px margin inside their 24px: `icon_pad` is the padding (px) that keeps
+// the glyph of each one as big as the glyph of the icon it replaced, inside the same 1.5rem box.
 export const useNavItems = () => {
   const { t } = useT()
 
@@ -16,6 +18,7 @@ export const useNavItems = () => {
     name: t('LeftSidebar.NavItems.Albums'),
     route_name: Routes.AlbumList,
     icon: AlbumsSvg,
+    icon_pad: "3px",
   };
 
   const artists = {
@@ -28,6 +31,7 @@ export const useNavItems = () => {
     name: t('LeftSidebar.NavItems.Favorites'),
     route_name: Routes.favorites,
     icon: HeartSvg,
+    icon_pad: "1.4px",
   };
 
   const playlists = {
@@ -40,6 +44,7 @@ export const useNavItems = () => {
     name: t('LeftSidebar.NavItems.Home'),
     route_name: Routes.Home,
     icon: HomeSvg,
+    icon_pad: "2.35px",
   };
 
   const menus = [
@@ -58,6 +63,7 @@ export const useNavItems = () => {
       name: t('LeftSidebar.NavItems.Settings'),
       route_name: null,
       icon: SettingsSvg,
+      icon_pad: "2.15px",
       action: () => {
         useDialog().showSettingsModal()
       }

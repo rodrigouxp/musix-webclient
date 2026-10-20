@@ -133,6 +133,12 @@ defineEmits<{
 
         .icon {
             height: 1.25rem;
+
+            // the icons of the Figma come with a width and a height of 24px: they follow the 1.25rem
+            svg[width][height] {
+                height: 100%;
+                width: auto;
+            }
         }
 
         &:hover {

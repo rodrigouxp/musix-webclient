@@ -9,6 +9,26 @@ import { nodePolyfills } from 'vite-plugin-node-polyfills'
 
 const path = require("path");
 
+// svgo (inside vite-svg-loader) drops the viewBox of the svgs that have width and height, and without
+// the viewBox an icon cannot scale with the CSS size. The icons of the Figma (assets/icons/figma) all
+// have `viewBox="0 0 W H"` equal to their size: this plugin puts it back after the default plugins,
+// only for that folder (the other icons keep the optimization they always had).
+const keepFigmaViewBox = {
+  name: "keepFigmaViewBox",
+  fn: (_root, _params, info) => {
+    if (!/[\\/]icons[\\/]figma[\\/]/.test(info.path || "")) return;
+    return {
+      element: {
+        exit: (node) => {
+          if (node.name !== "svg" || node.attributes.viewBox) return;
+          const { width, height } = node.attributes;
+          if (width && height) node.attributes.viewBox = `0 0 ${parseFloat(width)} ${parseFloat(height)}`;
+        },
+      },
+    };
+  },
+};
+
 export default defineConfig({
   define: {
     __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'false'
@@ -16,7 +36,7 @@ export default defineConfig({
   base: "./",
   plugins: [
     vue(),
-    svgLoader(),
+    svgLoader({ svgoConfig: { plugins: ["preset-default", keepFigmaViewBox] } }),
     VitePWA({
       registerType: "autoUpdate",
       devOptions: {

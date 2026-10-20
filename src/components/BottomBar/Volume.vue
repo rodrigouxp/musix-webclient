@@ -53,9 +53,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import VolumeLowSvg from '@/assets/icons/volume-low.svg'
-import VolumeMidSvg from '@/assets/icons/volume-mid.svg'
-import VolumeMuteSvg from '@/assets/icons/volume-mute.svg'
+import VolumeMidSvg from '@/assets/icons/figma/speaker-max.svg'
+import VolumeLowSvg from '@/assets/icons/figma/speaker-min.svg'
+import VolumeMuteSvg from '@/assets/icons/figma/speaker-mute.svg'
 import useSettingsStore from '@/stores/settings'
 import { clamp } from '@/utils/audio/volume'
 

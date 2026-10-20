@@ -15,7 +15,7 @@
                 :class="{ active: $route.name === link.route_name }"
                 @click="closeSidenav"
             >
-                <component :is="link.icon" />
+                <component :is="link.icon" :style="link.icon_pad ? { boxSizing: 'border-box', padding: link.icon_pad } : undefined" />
                 <!-- Render the icon as a Vue component -->
                 <span>{{ link.name }}</span>
             </RouterLink>
@@ -54,18 +54,18 @@ function closeSidenav() {
         padding: 2px;
         cursor: pointer;
 
-        > .bar {
-            height: 2px;
-            width: calc(100% - 14px);
-            border-radius: 1rem;
-            background-color: $white;
+        // the menu icon of the Figma: 16px (the glyph is 16 x 9.6px, like the two bars it replaced)
+        > svg {
+            height: 16px;
+            width: 16px;
+            color: $white;
             opacity: 0.75;
-            transition: color 0.2s ease-out, transform 0.2s ease-out;
+            transition: opacity 0.2s ease-out;
         }
 
         &:hover {
-            > .bar {
-                background-color: #ffffff;
+            > svg {
+                opacity: 1;
             }
         }
     }

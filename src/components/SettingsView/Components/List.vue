@@ -8,7 +8,7 @@
                 </div>
             </div>
             <div class="icon" @click="i.action">
-                <DeleteSvg />
+                <DeleteSvg class="delete-svg" />
             </div>
         </div>
         <div v-if="!items.length" class="option-list-item" style="opacity: 0.5">
@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import DeleteSvg from '@/assets/icons/delete.svg'
+import DeleteSvg from '@/assets/icons/figma/delete.svg'
 import FolderSvg from '@/assets/icons/folder.svg'
 
 const props = defineProps<{
@@ -66,6 +66,12 @@ const icon_ = getIcon()
             flex-shrink: 0;
             width: 1.25rem;
             display: block;
+        }
+
+        svg.delete-svg {
+            width: 1.06rem;
+            height: 1.06rem;
+            color: $red;
         }
 
         .with-icon {

@@ -77,7 +77,7 @@ import { onMounted, ref } from 'vue'
 import useAuth from '@/stores/auth'
 import { useToast } from '@/stores/notification'
 
-import DeleteSvg from '@/assets/icons/delete.svg'
+import DeleteSvg from '@/assets/icons/figma/delete.svg'
 import PlusSvg from '@/assets/icons/plus.svg'
 import Avatar from '@/components/shared/Avatar.vue'
 import Profile from '../Profile.vue'
@@ -322,9 +322,11 @@ onMounted(async () => {
             }
         }
 
+        // delete: always error/300 (the glyph of the Figma is 1.175x the old one: 1.275rem = old 1.5rem)
         .delete {
-            height: 1.5rem;
-            color: $gray1;
+            height: 1.275rem;
+            width: 1.275rem;
+            color: $red;
         }
     }
 

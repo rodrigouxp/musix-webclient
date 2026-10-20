@@ -31,7 +31,7 @@ import { computed } from 'vue'
 
 import { maxAbumCards } from '@/stores/content-width'
 
-import SearchSvg from '@/assets/icons/search.svg'
+import SearchSvg from '@/assets/icons/figma/search.svg'
 import NoItems from '@/components/shared/NoItems.vue'
 import CardRow from '@/components/shared/CardRow.vue'
 import AlbumsFetcher from '@/components/ArtistView/AlbumsFetcher.vue'

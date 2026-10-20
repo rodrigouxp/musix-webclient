@@ -11,7 +11,7 @@
                     <span @click="updatePage"> {{ collection.collection?.extra.description }} </span>
                 </template>
                 <template #right>
-                    <button @click="deletePage"><DeleteSvg height="1.2rem" width="1.2rem" /> {{ $t('Common.Delete') }}</button>
+                    <button @click="deletePage"><DeleteSvg height="1.02rem" width="1.02rem" style="color: var(--color-error-300)" /> {{ $t('Common.Delete') }}</button>
                 </template>
             </GenericHeader>
         </template>
@@ -22,7 +22,7 @@
 import { onBeforeUnmount, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
-import DeleteSvg from '@/assets/icons/delete.svg'
+import DeleteSvg from '@/assets/icons/figma/delete.svg'
 import PencilSvg from '@/assets/icons/pencil.svg'
 import GenericHeader from '@/components/shared/GenericHeader.vue'
 import CardGridPage from '@/views/SearchView/CardGridPage.vue'

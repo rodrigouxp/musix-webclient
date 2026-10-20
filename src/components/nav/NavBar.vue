@@ -16,8 +16,7 @@
             <NavTitles v-else-if="settings.is_default_layout && !isSmall" />
         </div>
         <div class="sidenav_toggle" @click="toggleSidenav">
-            <div class="bar"></div>
-            <div class="bar"></div>
+            <MenuSvg />
         </div>
         <NavSidenav @close="toggleSidenav" :class="{ active: sidenavActive }" />
         <div class="dimmer noSelect" :class="{ active: sidenavActive }" @click="toggleSidenav"></div>
@@ -39,6 +38,7 @@ import useSettings from '@/stores/settings'
 import { xl } from './../../composables/useBreakpoints'
 
 import LogoSvg from '@/assets/icons/logos/note.svg'
+import MenuSvg from '@/assets/icons/figma/menu.svg'
 import SearchInput from '../RightSideBar/SearchInput.vue'
 import NavButtons from './NavButtons.vue'
 import NavLinks from './NavLinks.vue'

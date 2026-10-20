@@ -361,9 +361,10 @@ function runChildAction(action: () => void) {
         color: var(--menu-item-text-selected);
     }
 
+    // the icons of the Figma are drawn for the 18px of the menu
     .icon {
-        height: 1.25rem;
-        width: 1.25rem;
+        height: var(--menu-icon-size);
+        width: var(--menu-icon-size);
         margin-right: $small;
         color: var(--menu-item-icon);
 
@@ -373,9 +374,13 @@ function runChildAction(action: () => void) {
         }
     }
 
-    // add to queue icon (the old one: the new icons are already the right size)
-    &:nth-child(2):not(.menu-icon) .icon > svg {
-        transform: scale(0.85);
+    // the delete icon is always error/300 (white while the red item is selected)
+    &.critical .icon {
+        color: var(--color-error-300);
+    }
+
+    &.critical:hover .icon {
+        color: var(--color-neutral-white);
     }
 
     // items with the icons of the album menu prototype
@@ -393,6 +398,10 @@ function runChildAction(action: () => void) {
 
         &:hover .icon {
             color: var(--menu-item-icon-selected);
+        }
+
+        &.critical:hover .icon {
+            color: var(--color-neutral-white);
         }
 
         .label {

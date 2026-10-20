@@ -18,7 +18,7 @@
                 :class="{ no_bg: on_nav }"
                 @click.prevent="handleButton"
             >
-                <SearchSvg v-if="on_nav || tabs.current === tabs.tabs.queue" />
+                <SearchSvg v-if="on_nav || tabs.current === tabs.tabs.queue" class="search-glyph" />
                 <BackSvg v-else />
             </button>
             <input
@@ -48,9 +48,9 @@ import useSettings from '@/stores/settings'
 import useTabStore from '@/stores/tabs'
 import { ref } from 'vue'
 
-import CancelSvg from '@/assets/icons/a.svg'
+import CancelSvg from '@/assets/icons/figma/close.svg'
 import BackSvg from '@/assets/icons/arrow.svg'
-import SearchSvg from '@/assets/icons/search.svg'
+import SearchSvg from '@/assets/icons/figma/search.svg'
 import { Routes } from '@/router'
 
 const props = defineProps<{
@@ -155,6 +155,12 @@ function handleButton() {
             pointer-events: none;
         }
 
+        // the glyph of the magnifier is 15.7px (the Figma icon has a 2px margin in its 24px)
+        button svg.search-glyph {
+            height: 1.175rem;
+            width: 1.175rem;
+        }
+
         input {
             width: 100%;
             border: none;
@@ -191,8 +197,10 @@ function handleButton() {
                 background-color: $gray;
             }
 
+            // the X: 14 x 14px
             svg {
-                height: 1rem;
+                height: 14px;
+                width: 14px;
             }
 
             @include allPhones {
