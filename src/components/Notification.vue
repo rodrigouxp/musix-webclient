@@ -76,7 +76,7 @@ function getSvg(notif: NotifType) {
 }
 
 .new-notif.error > .notif-icon {
-    color: #c54848;
+    color: $red;
 }
 
 .new-notif.info > .notif-icon {
@@ -94,7 +94,7 @@ function getSvg(notif: NotifType) {
 
 /*
 .new-notif.error {
-    $bg: rgb(197, 72, 72);
+    $bg: $red;
     background-color: $bg;
 }
 */

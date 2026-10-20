@@ -103,7 +103,7 @@ useVisibility(albumheaderthing, handleVisibilityState)
 
         .top {
             .albumtype {
-                color: $pink;
+                color: $red;
             }
         }
     }

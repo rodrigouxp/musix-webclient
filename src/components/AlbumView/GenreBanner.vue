@@ -92,7 +92,7 @@ const color = computed(() => {
     }
 
     &:hover {
-      background-color: $pink !important;
+      background-color: $red !important;
       color: $white;
     }
   }

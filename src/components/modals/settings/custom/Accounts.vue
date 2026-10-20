@@ -318,7 +318,7 @@ onMounted(async () => {
             transition: all 0.25s ease;
 
             &:hover {
-                color: rgb(248, 115, 115);
+                color: $red;
             }
         }
 

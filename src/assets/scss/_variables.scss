@@ -29,13 +29,13 @@ $gray4: #3a3a3c;
 $gray5: #2c2c2e;
 $body: #000f;
 
-$red: #f7635c;
+// The only red of the app: error/300 of the Figma (see --color-error-300 in _musix-tokens.scss)
+$red: var(--color-error-300);
 $blue: #0a84ff;
 $darkblue: #055ee2;
 $green: #5ef784;
 $yellow: rgb(255, 214, 10);
 $orange: #ff9f0a;
-$pink: rgb(255, 55, 95);
 $purple: #bf5af2;
 $brown: #ac8e68;
 $indigo: #5e5ce6;

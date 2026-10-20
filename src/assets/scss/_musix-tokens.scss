@@ -36,7 +36,8 @@
   --color-warning-500: #f79009;
   --color-warning-700: #b54708;
 
-  --color-error-300: #ff7676;
+  // O vermelho do app é este (error/300): $red e $danger do SCSS leem esta variável.
+  --color-error-300: #f7635c;
   --color-error-500: #fc0404;
   --color-error-700: #860000;
 

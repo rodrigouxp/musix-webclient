@@ -90,7 +90,7 @@ defineProps<{
     }
 
     .heart {
-        color: $pink;
+        color: $red;
     }
 
     .play-btn {
