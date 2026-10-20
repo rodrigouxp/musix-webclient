@@ -178,6 +178,9 @@ async function showChildren() {
                 options: {
                     // no room on the right or on the left: under the item, or over it
                     fallbackPlacements: ['left-start', 'bottom-start', 'top-start', 'auto'],
+                    // a tall submenu next to the bottom of the screen (the add button of the bottom bar)
+                    // stays at the side of its item and is moved up, instead of covering the menu
+                    altAxis: false,
                     boundariesElement: 'viewport',
                     padding: 8,
                 },

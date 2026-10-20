@@ -106,9 +106,23 @@ function handleFav() {
         width: 3rem;
         transition: background-color 0.2s ease-out, border-color 0.2s ease-out;
 
+        // the hover is only the fill, with no border (until 900px it keeps its border)
         &:hover {
-            border: solid 1px $gray3 !important;
             background-color: $gray !important;
+
+            @include allPhones {
+                border: solid 1px $gray3 !important;
+            }
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--color-primary-300);
+            outline-offset: -2px;
+        }
+
+        &:disabled {
+            opacity: 0.4;
+            pointer-events: none;
         }
 
         @include allPhones {

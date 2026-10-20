@@ -101,6 +101,9 @@
     "WelcomeBack": "Welcome back"
   },
   "BottomBar": {
+    "Add": "Add",
+    "AddToPlaylist": "Add to playlist",
+    "GoToAlbum": "Go to album",
     "VolumeLabel": "Volume {percent} percent",
     "Favorite": "Favorite",
     "GoToNowPlaying": "Go to Now Playing",

@@ -1,13 +1,7 @@
 <template>
-    <!-- desktop and tablet: lyrics, favorite, volume (shuffle and repeat are next to play) -->
+    <!-- above 900px: lyrics, volume (shuffle and repeat are next to play, the favorite is by the song) -->
     <div v-if="desktop" class="right-group desktop">
         <LyricsButton />
-        <HeartSvg
-            v-if="!hideHeart"
-            :title="$t('BottomBar.Favorite')"
-            :state="queue.currenttrack?.is_favorite"
-            @handleFav="() => $emit('handleFav')"
-        />
         <Volume inline />
     </div>
     <div v-else class="right-group">
@@ -77,12 +71,19 @@ defineEmits<{
         height: 3rem !important;
         width: 3rem !important;
         background-color: transparent;
-        border: solid 1px transparent;
         border-radius: 400px;
 
+        // the hover is only the fill; until 900px it keeps its border
+        @include allPhones {
+            border: solid 1px transparent;
+        }
+
         &:hover {
-            border: solid 1px $gray3 !important;
             background-color: $gray !important;
+
+            @include allPhones {
+                border: solid 1px $gray3 !important;
+            }
         }
     }
 
@@ -132,13 +133,9 @@ defineEmits<{
         }
     }
 
-    // the favorite is only the icon: no resting border (the hover is the one of the other buttons)
+    // the favorite is only the icon, no border (the hover is the one of the other buttons)
     .heart-button {
-        border: solid 1px transparent !important;
-
-        &:hover {
-            border: solid 1px $gray3 !important;
-        }
+        border: none !important;
     }
 }
 </style>

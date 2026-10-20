@@ -9,7 +9,8 @@ import useContextStore from '@/stores/context'
 import albumContextItems from '@/context_menus/album'
 import artistContextItems from '@/context_menus/artist'
 import folderContextItems from '@/context_menus/folder'
-import trackContextItems from '@/context_menus/track'
+import trackContextItems, { getTrackAddOptions } from '@/context_menus/track'
+import { useT } from '@/i18n'
 import queueContextItems from '@/context_menus/queue'
 
 let stop_prev_watcher = () => {}
@@ -35,6 +36,22 @@ export const showTrackContextMenu = (e: MouseEvent, track: Track, flag: Ref<bool
     menu.showContextMenu(e, options, ContextSrc.Track)
 
     flagWatcher(menu, flag)
+}
+
+// The menu of the add button of the bottom bar: it opens upward, from the top of the button
+export const showPlayingAddMenu = (button: HTMLElement, track: Track) => {
+    const menu = useContextStore()
+    const { t } = useT()
+    const rect = button.getBoundingClientRect()
+
+    const options = async () => {
+        const { add_to_q, add_to_playlist } = getTrackAddOptions(track, t('BottomBar.AddToPlaylist'))
+        return [add_to_q, add_to_playlist]
+    }
+
+    // the menu only needs the point it opens from
+    const point = { x: rect.left, y: rect.top - 4 } as MouseEvent
+    menu.showContextMenu(point, options, ContextSrc.Track, 'top-start', ['bottom-start'])
 }
 
 export const showAlbumContextMenu = (e: MouseEvent, flag: Ref<boolean>, album?: Album) => {

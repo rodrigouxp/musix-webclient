@@ -1,4 +1,4 @@
-import { createPopper, Instance, VirtualElement } from "@popperjs/core";
+import { createPopper, Instance, Placement, VirtualElement } from "@popperjs/core";
 import { defineStore } from "pinia";
 import { ContextSrc } from "../enums";
 import { Option } from "../interfaces";
@@ -28,7 +28,10 @@ export default defineStore("context-menu", {
     showContextMenu(
       e: MouseEvent,
       getContextOptions: () => Promise<Option[]>,
-      src: ContextSrc
+      src: ContextSrc,
+      // where the menu opens from the point (the right of the click by default)
+      placement: Placement = "right-start",
+      fallbackPlacements: Placement[] = ["left-start"]
     ) {
       if (this.visible) {
         this.hideContextMenu();
@@ -50,12 +53,12 @@ export default defineStore("context-menu", {
         .then(() => {
           menuPopper?.destroy();
           menuPopper = createPopper(virtualElement, this.elem as HTMLElement, {
-            placement: "right-start",
+            placement,
             modifiers: [
               {
                 name: "flip",
                 options: {
-                  fallbackPlacements: ["left-start"],
+                  fallbackPlacements,
                   padding: 8,
                 },
               },

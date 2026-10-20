@@ -80,6 +80,11 @@ defineProps<{
         gap: $smaller;
         justify-content: center;
 
+        // no border (the hover is only the fill)
+        button {
+            border: none;
+        }
+
         // every button has the same width, so the round hover is the same for all of them
         button.play {
             width: 3rem;

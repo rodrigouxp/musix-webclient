@@ -31,6 +31,47 @@ import { useT } from '@/i18n'
 const { t } = useT();
 
 /**
+ * "Add to queue" and "Add to playlist" of a track: the same two items in the menu of the song and in
+ * the menu of the add button of the bottom bar (that one writes "playlist" in lowercase).
+ */
+export function getTrackAddOptions(track: Track, playlist_label = t('Menus.Common.AddToPlaylist')) {
+    const route = router.currentRoute.value
+
+    const AddToPlaylistAction = (playlist: Playlist) => {
+        addTracksToPlaylist(playlist, [track]).then(success => {
+            if (!(route.name == Routes.playlist && parseInt(route.params.pid as string) == playlist.id)) return
+
+            if (!success) return
+            const store = usePlaylistStore()
+            store.addTrack(track)
+            store.fetchAll(parseInt(route.params.pid as string), true)
+        })
+    }
+
+    const add_to_playlist: Option = {
+        label: playlist_label,
+        children: () =>
+            getAddToPlaylistOptions(AddToPlaylistAction, {
+                trackhash: track.trackhash,
+                playlist_name: track.title,
+            }),
+        icon: MenuAddToPlaylistIcon,
+        menuIcon: true,
+    }
+
+    const add_to_q: Option = {
+        label: t('Menus.Common.AddToQueue'),
+        action: () => {
+            useTracklist().addTracks([track])
+        },
+        icon: MenuAddToQueueIcon,
+        menuIcon: true,
+    }
+
+    return { add_to_q, add_to_playlist }
+}
+
+/**
  * Returns a list of context menu items for a track.
  * @param  {any} track a track object.
  * @return {Array<Option>()} a list of context menu items.
@@ -66,36 +107,7 @@ export default async (track: Track): Promise<Option[]> => {
         })
     }
 
-    const AddToPlaylistAction = (playlist: Playlist) => {
-        addTracksToPlaylist(playlist, [track]).then(success => {
-            if (!(route.name == Routes.playlist && parseInt(route.params.pid as string) == playlist.id)) return
-
-            if (!success) return
-            const store = usePlaylistStore()
-            store.addTrack(track)
-            store.fetchAll(parseInt(route.params.pid as string), true)
-        })
-    }
-
-    const add_to_playlist: Option = {
-        label: t('Menus.Common.AddToPlaylist'),
-        children: () =>
-            getAddToPlaylistOptions(AddToPlaylistAction, {
-                trackhash: track.trackhash,
-                playlist_name: track.title,
-            }),
-        icon: MenuAddToPlaylistIcon,
-        menuIcon: true,
-    }
-
-    const add_to_q: Option = {
-        label: t('Menus.Common.AddToQueue'),
-        action: () => {
-            useTracklist().addTracks([track])
-        },
-        icon: MenuAddToQueueIcon,
-        menuIcon: true,
-    }
+    const { add_to_q, add_to_playlist } = getTrackAddOptions(track)
 
     const play_next: Option = {
         label: t('Menus.Common.PlayNext'),
