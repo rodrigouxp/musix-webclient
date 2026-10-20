@@ -1,11 +1,9 @@
 import { Routes } from "@/router";
-import useDialog from "@/stores/modal";
 
 import AlbumsSvg from "@/assets/icons/figma/ep-and-single.svg";
 import ArtistsSvg from "@/assets/icons/menu/go-to-artist.svg";
 import HeartSvg from "@/assets/icons/figma/favorite.svg";
 import PlaylistSvg from "@/assets/icons/playlist-1.svg";
-import SettingsSvg from "@/assets/icons/figma/settings.svg";
 import HomeSvg from "@/assets/icons/figma/home.svg";
 import { useT } from "@/i18n";
 
@@ -56,18 +54,6 @@ export const useNavItems = () => {
     },
     favorites,
     playlists,
-    {
-      separator: true,
-    },
-    {
-      name: t('LeftSidebar.NavItems.Settings'),
-      route_name: null,
-      icon: SettingsSvg,
-      icon_pad: "2.15px",
-      action: () => {
-        useDialog().showSettingsModal()
-      }
-    },
   ];
 
   const topnavitems = [home, albums, artists, favorites, playlists];

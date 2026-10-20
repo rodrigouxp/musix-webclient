@@ -82,12 +82,6 @@ const { menus } = useNavItems();
     }
   }
 
-  @include allPhones {
-    .circular.nav-item:last-child {
-      display: none;
-    }
-  }
-
   svg {
     height: 1.5rem;
     width: 1.5rem;
