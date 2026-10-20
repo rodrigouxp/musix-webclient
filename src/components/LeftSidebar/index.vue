@@ -27,7 +27,7 @@ const settings = useSettingsStore();
   grid-template-rows: 3.75rem 1fr max-content;
   border-right: solid 1px $gray5;
   position: relative;
-  padding: 1rem;
+  padding: var(--layout-gutter);
 
   .scrollable {
     height: 100%;

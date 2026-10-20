@@ -8,6 +8,10 @@
 // o resto migra aos poucos.
 
 :root {
+  // Espaço lateral do app (1rem): padding do painel da esquerda, margem do painel principal
+  // nos dois lados e laterais da barra inferior. Uma fonte só: o $padleft do SCSS lê esta variável.
+  --layout-gutter: 1rem;
+
   // Cores (estilos de cor do Figma)
   --color-neutral-white: #ffffff;
   --color-neutral-100: #ececec;

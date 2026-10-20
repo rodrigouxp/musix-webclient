@@ -59,25 +59,17 @@ $overshoot: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
 $separator: $gray4;
 
-$margright: 0;
 $padbottom: 4rem;
-$maxwidth: 1438px;
 $navheight: 4.5rem;
 $cardwidth: 10.75rem;
-$maxpadleft: 5rem;
 
 $alt_layout_pad: max(2rem, calc((100% - 1280px) / 2));
 
-$maxpadright: calc(100% - $maxwidth);
-
-$padleft: clamp(2rem, $maxpadright, $maxpadleft);
-
-// 👇 fixed width with content floating to the left.
-// $padright: clamp(
-//   1rem,
-//   max($maxpadright, 5rem),
-//   calc($maxpadright + $maxpadleft)
-// );
+// The side margin of the main panel, on both sides, at every width: the same as the padding of
+// the left panel and of the bottom bar. It is the CSS variable `--layout-gutter` (see
+// _musix-tokens.scss), so there is one value only. Do not put a calc() or a clamp() of the
+// width here: percentages mean different things in each element and the margins stop matching.
+$padleft: var(--layout-gutter);
 $padright: $padleft;
 
 $margright: calc(0rem - $padright);

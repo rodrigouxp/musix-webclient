@@ -2,8 +2,8 @@
     <div
         class="b-bar"
         :style="{
-            paddingLeft: `${settings.is_default_layout ? '1rem' : ''}`,
-            paddingRight: `${settings.is_default_layout ? '1rem' : ''}`,
+            paddingLeft: settings.is_default_layout ? 'var(--layout-gutter)' : '',
+            paddingRight: settings.is_default_layout ? 'var(--layout-gutter)' : '',
         }"
     >
         <LeftGroup @handleFav="handleFav" />

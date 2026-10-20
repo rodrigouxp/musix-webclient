@@ -114,7 +114,7 @@ function getContentSize() {
 }
 
 function updateContentElemSize({ width, height }: { width: number; height: number }) {
-    // 1572 is the maxwidth of the #acontent. see app-grid.scss > $maxwidth
+    // the side margins of the page come from --layout-gutter (see _musix-tokens.scss)
     const elem_width = appcontent.value?.offsetWidth || 0
 
     content_width.value = elem_width
