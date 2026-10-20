@@ -42,3 +42,8 @@ export { default as MenuSubmenuIcon } from "@/assets/icons/menu/submenu-indicato
 export { default as MenuGoToAlbumIcon } from "@/assets/icons/figma/ep-and-single.svg?raw";
 export { default as MenuGoToFolderIcon } from "@/assets/icons/menu/go-to-folder.svg?raw";
 export { default as MenuGoToArtistIcon } from "@/assets/icons/menu/go-to-artist.svg?raw";
+
+// the user menu
+export { default as RefreshIcon } from "@/assets/icons/figma/refresh.svg?raw";
+export { default as SettingsIcon } from "@/assets/icons/figma/settings.svg?raw";
+export { default as LogoutIcon } from "@/assets/icons/figma/logout.svg?raw";

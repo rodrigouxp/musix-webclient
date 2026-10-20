@@ -1,134 +1,102 @@
 <template>
-    <div class="profiledrop rounded-md pad-sm shadow-lg noSelect">
-        <div class="info item">
-            <div class="username ellip2">{{ $t('ProfileDropdown.HiUser', { user: auth.user.firstname || auth.user.username }) }}</div>
+    <!-- The user menu: the rows are the ContextItem of the context menus (icon, then text) and the
+         panel is made of the same --menu-* tokens. It opens on hover (see AvatarWithDropdown.vue). -->
+    <div class="profiledrop noSelect">
+        <div class="greeting">
+            <div class="ellip">{{ $t('ProfileDropdown.HiUser', { user: auth.user.firstname || auth.user.username }) }}</div>
         </div>
         <div class="separator"></div>
-        <div class="item scan" @click="() => triggerScan(false)">
-            <div class="label">{{ $t('ProfileDropdown.QuickScan') }}</div>
-            <ReloadSvg />
-        </div>
-        <div class="item" @click="modal.showSettingsModal">
-            <div class="label">{{ $t('Common.Settings') }}</div>
-            <SettingsSvg />
-        </div>
+        <ContextItem
+            v-for="option in scanAndSettings"
+            :key="option.label"
+            class="context-item menu-icon"
+            :option="option"
+            :children-show-mode="settings.contextChildrenShowMode"
+            @hideContextMenu="noop"
+        />
         <div class="separator"></div>
-        <div class="item critical logout" @click="auth.logout">
-            <div class="label">{{ $t('Common.LogOut') }}</div>
-            <LogoutSvg />
-        </div>
+        <ContextItem
+            class="context-item menu-icon critical"
+            :option="logout"
+            :children-show-mode="settings.contextChildrenShowMode"
+            @hideContextMenu="noop"
+        />
     </div>
 </template>
 
 <script setup lang="ts">
+import { LogoutIcon, RefreshIcon, SettingsIcon } from '@/icons'
+import { Option } from '@/interfaces'
+import { triggerScan } from '@/requests/settings/rootdirs'
 import useAuth from '@/stores/auth'
 import useModal from '@/stores/modal'
+import useSettings from '@/stores/settings'
+import { useT } from '@/i18n'
 
-import LogoutSvg from '@/assets/icons/logout.svg'
-import ReloadSvg from '@/assets/icons/reload.svg'
-import SettingsSvg from '@/assets/icons/settings.svg'
-import { triggerScan } from '@/requests/settings/rootdirs'
+import ContextItem from '../Contextmenu/ContextItem.vue'
 
+const { t } = useT()
 const auth = useAuth()
 const modal = useModal()
+const settings = useSettings()
+
+const scanAndSettings: Option[] = [
+    { label: t('ProfileDropdown.QuickScan'), icon: RefreshIcon, action: () => triggerScan(false), menuIcon: true },
+    { label: t('Common.Settings'), icon: SettingsIcon, action: () => modal.showSettingsModal(), menuIcon: true },
+]
+
+const logout: Option = { label: t('Common.LogOut'), icon: LogoutIcon, action: () => auth.logout(), menuIcon: true, critical: true }
+
+// the menu closes when the pointer leaves the avatar: there is nothing to hide on click
+const noop = () => {}
 </script>
 
 <style lang="scss">
 .profiledrop {
     position: absolute;
-
     z-index: 9999;
     top: 2.25rem;
     right: 0;
-    width: 10.25rem;
-    font-size: 0.95rem;
-    font-weight: 400;
-    display: flex;
-    flex-direction: column;
-    border: solid 1px $gray5;
-    background-color: $gray;
+    width: var(--menu-width);
+    // never wider than the screen
+    max-width: calc(100vw - 16px);
+    padding: var(--menu-padding-y) var(--menu-padding-x);
+    background: var(--menu-bg);
+    border-radius: var(--menu-radius);
+    box-shadow: var(--menu-shadow);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--menu-item-text);
+    cursor: default;
 
-    .separator {
-        height: 1px;
-        background-color: $gray3;
-        padding: 0;
-    }
-
-    .item {
+    // "Hi {name}": not a button, the same height and edges as the items
+    .greeting {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        gap: $smaller;
-        padding: $small $medium;
-        padding-right: $small;
-        max-height: 36px;
-        border-radius: 8px;
-        cursor: pointer;
-        transition:
-            background-color 0.2s ease-out,
-            opacity 0.2s ease-out,
-            box-shadow 0.2s ease-out;
+        min-height: var(--menu-item-height);
+        padding: 0 var(--menu-item-padding-x);
 
-        &:hover {
-            background-color: $gray4;
-        }
-
-        &:active {
-            opacity: 0.3;
-        }
-
-        svg {
-            display: block;
-            height: 1.5rem;
+        .ellip {
+            min-width: 0;
         }
     }
 
-    .item.scan {
-        margin-bottom: $smaller;
+    // the thin separator of the menus: the gap of the prototype above and below
+    .separator {
+        height: 0;
+        margin: var(--menu-gap) 0;
+        border-top: var(--menu-divider-width) solid var(--menu-divider);
     }
 
-    .item.logout svg,
-    .scan svg {
-        // INFO: Though the icons are 1.5rem, it looks larger than the rest
-        // So, we reduce the size a bit.
-        height: 1.25rem;
-    }
-
-    .logout svg {
-        margin-right: 1px;
-    }
-
-    .scan svg {
-        margin-right: 3px;
-    }
-
-    .info {
-        gap: $small;
-        cursor: auto;
-        padding: $smaller $medium;
-
-        &:hover {
-            background-color: transparent;
-        }
-
-        > .username {
-            font-weight: 500;
-        }
-    }
-
-    .info.item {
-        max-height: unset;
-        opacity: unset;
-        pointer-events: none;
-    }
-
+    // the red item (Log out): red text, red background while selected
     .critical {
-        color: $red;
-    }
+        color: var(--color-error-300);
+        transition: background-color 0.2s ease-out, color 0.2s ease-out;
 
-    .critical:hover {
-        background-color: transparent;
-        box-shadow: 0 0 0 1px $red;
+        &:hover {
+            background-color: var(--color-error-300);
+            color: var(--color-neutral-white);
+        }
     }
 }
 </style>
