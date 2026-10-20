@@ -101,7 +101,8 @@ function handleFav() {
 
     button {
         background: transparent;
-        border-radius: $small;
+        // round (pill) hover on every control of the bar
+        border-radius: 400px;
         width: 3rem;
         transition: background-color 0.2s ease-out, border-color 0.2s ease-out;
 
@@ -214,12 +215,16 @@ function handleFav() {
     .buttons {
         display: grid;
         place-items: center;
-        transform: scale(1.2);
         border: none;
         height: 2.5rem;
 
         button {
             background: transparent;
+        }
+
+        // the hotkeys set their own square corners
+        .hotkeys button {
+            border-radius: 400px;
         }
 
         @include allPhones {

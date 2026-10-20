@@ -76,14 +76,19 @@ defineProps<{
 
     // shuffle, previous, play, next, repeat (desktop and tablet)
     &.with-shuffle-repeat {
-        grid-template-columns: repeat(2, 3rem) 4rem repeat(2, 3rem);
+        grid-template-columns: repeat(5, 3rem);
         gap: $smaller;
         justify-content: center;
 
-        // The glyphs of previous, next, shuffle and repeat have the same height, 18px (before the
-        // 1.2 scale of the row): each svg has its own size because the drawings do not fill their
-        // box the same way (previous and next: 18px in 24; shuffle: 0.59 of 28; repeat: 0.78 of 28).
-        // The glyph of play is 20% taller (21.6px).
+        // every button has the same width, so the round hover is the same for all of them
+        button.play {
+            width: 3rem;
+        }
+
+        // All the glyphs (previous, next, shuffle, repeat, play and pause) are 18px tall, with no
+        // scale on the row: each svg has its own size because the drawings do not fill their box
+        // the same way (previous and next: 18px in 24; shuffle: 0.59 of 28; repeat: 0.78 of 28;
+        // play: 0.55 of 28).
         button.prev svg,
         button.next svg {
             height: 1.5rem;
@@ -101,20 +106,21 @@ defineProps<{
         }
 
         button.play > svg {
-            height: 2.45rem;
-            width: 2.45rem;
+            height: 2.04rem;
+            width: 2.04rem;
         }
 
         // pause.svg has no viewBox once optimized (it has a width and a height), so it can not
-        // grow with its size: it keeps 28px and is scaled around the center (1.4 = 2.45rem / 28px)
+        // grow with its size: it keeps 28px and is scaled around the center (its bars are 14.8px
+        // tall in 28px, so 1.215 gives 18px)
         button.play > svg.pausesvg {
             height: 28px;
             width: 28px;
-            transform: scale(1.4);
+            transform: scale(1.215);
         }
 
         button.play:active > svg.pausesvg {
-            transform: scale(1.05);
+            transform: scale(0.91);
         }
 
         button.shuffle:active svg,
