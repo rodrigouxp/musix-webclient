@@ -30,6 +30,17 @@ function getPin(playlist: Pick<Playlist, 'id' | 'pinned'>): Option {
     }
 }
 
+// "Delete" (red): it asks to confirm, and then goes back to the list of playlists
+function getDelete(pid: number): Option {
+    return {
+        label: t('Menus.PlayList.Delete'),
+        action: () => useModal().showDeletePlaylistModal(pid),
+        icon: DeleteIcon,
+        menuIcon: true,
+        critical: true,
+    }
+}
+
 /**
  * The menu of the three dots of the page of a playlist.
  */
@@ -57,20 +68,12 @@ export default async (): Promise<Option[]> => {
         menuIcon: true,
     }
 
-    const remove: Option = {
-        label: t('Menus.PlayList.Delete'),
-        action: () => useModal().showDeletePlaylistModal(pid),
-        icon: DeleteIcon,
-        menuIcon: true,
-        critical: true,
-    }
-
-    return [play_next, getAddToQueue(pid), insetSeparator, getPin(playlist), rename, insetSeparator, remove]
+    return [play_next, getAddToQueue(pid), insetSeparator, getPin(playlist), rename, insetSeparator, getDelete(pid)]
 }
 
 /**
- * The menu of the card of a playlist (right click): pin, rename and add to queue.
- * ``rename`` puts the name of the card in a text field.
+ * The menu of the card of a playlist (right click): pin, rename and add to queue, and, after a
+ * divider, delete. ``rename`` puts the name of the card in a text field.
  */
 export async function playlistCardItems(playlist: Playlist, rename: () => void): Promise<Option[]> {
     return [
@@ -82,5 +85,7 @@ export async function playlistCardItems(playlist: Playlist, rename: () => void):
             menuIcon: true,
         },
         getAddToQueue(playlist.id),
+        insetSeparator,
+        getDelete(playlist.id),
     ]
 }
