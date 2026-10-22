@@ -44,7 +44,7 @@
         />
       </div>
     </div>
-    <Info :text-color="textColor" :btn_color="colors.btn" />
+    <Info :text-color="textColor" />
     <LastUpdated />
   </div>
 </template>

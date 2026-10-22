@@ -353,7 +353,11 @@
       "UpdateAlbumCover": "Update album cover"
     },
     "PlayList": {
-      "RemoveFromPlaylist": "Remove from playlist"
+      "Delete": "Delete",
+      "Pin": "Pin",
+      "RemoveFromPlaylist": "Remove from playlist",
+      "Rename": "Rename",
+      "Unpin": "Unpin"
     },
     "Queue": {
       "AddQueueToPlaylist": "Add queue to playlist",

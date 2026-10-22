@@ -6,7 +6,7 @@
     }"
   >
     <div class="btns">
-      <PlayBtnRect :source="playSources.playlist" :bg_color="btn_color" />
+      <Buttons :text-color="textColor" />
     </div>
     <div class="duration">
       {{ playlist.info.count.toLocaleString() + $t('Common.Track', playlist.info.count) }}
@@ -47,14 +47,13 @@
 import { storeToRefs } from "pinia";
 import { Ref, computed, nextTick, ref, watch } from "vue";
 
-import { playSources } from "@/enums";
 import { updatePlaylistInfo } from "@/requests/playlists";
 import { NotifType, useToast } from "@/stores/notification";
 import { formatSeconds } from "@/utils";
 import updatePageTitle from "@/utils/updatePageTitle";
 
 import NameEditButton from "@/components/shared/NameEditButton.vue";
-import PlayBtnRect from "@/components/shared/PlayBtnRect.vue";
+import Buttons from "./Buttons.vue";
 import usePStore from "@/stores/pages/playlist";
 import usePlaylistsStore from "@/stores/pages/playlists";
 import { balanceText } from "@/utils/balanceText";

@@ -3,7 +3,7 @@ import { Ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { ContextSrc } from '@/enums'
-import { Album, Track } from '@/interfaces'
+import { Album, Playlist, Track } from '@/interfaces'
 import useContextStore from '@/stores/context'
 
 import albumContextItems from '@/context_menus/album'
@@ -12,6 +12,7 @@ import folderContextItems from '@/context_menus/folder'
 import trackContextItems, { getTrackAddOptions } from '@/context_menus/track'
 import { useT } from '@/i18n'
 import queueContextItems from '@/context_menus/queue'
+import playlistContextItems, { playlistCardItems } from '@/context_menus/playlist'
 
 let stop_prev_watcher = () => {}
 
@@ -79,6 +80,22 @@ export const showArtistContextMenu = (e: MouseEvent, flag: Ref<boolean>, artisth
     menu.showContextMenu(e, options, ContextSrc.ArtistHeader)
 
     flagWatcher(menu, flag)
+}
+
+// The three dots of the page of a playlist
+export const showPlaylistContextMenu = (e: MouseEvent, flag: Ref<boolean>) => {
+    const menu = useContextStore()
+
+    menu.showContextMenu(e, () => playlistContextItems(), ContextSrc.PHeader)
+
+    flagWatcher(menu, flag)
+}
+
+// The right click on the card of a playlist: `rename` puts its name in a text field
+export const showPlaylistCardContextMenu = (e: MouseEvent, playlist: Playlist, rename: () => void) => {
+    const menu = useContextStore()
+
+    menu.showContextMenu(e, () => playlistCardItems(playlist, rename), ContextSrc.PlaylistCard)
 }
 
 export const showQueueContextMenu = (e: MouseEvent, flag: Ref<boolean>) => {
