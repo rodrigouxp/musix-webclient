@@ -850,6 +850,7 @@
     },
     "PlaylistView": {
       "AddMoreDesc": "Add tracks to this playlist by right clicking on a track and selecting \"add to playlist\"",
+      "MoveError": "Could not change the order of the tracks",
       "NoTracks": "No tracks in this playlist"
     },
     "SearchView": {

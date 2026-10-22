@@ -1,7 +1,7 @@
 <template>
     <div
         class="songlist-item rounded-sm"
-        :class="[{ current: isCurrent() }, { contexton: context_menu_showing }]"
+        :class="[{ current: isCurrent() }, { contexton: context_menu_showing }, { reorderable, dragging }]"
         @dblclick="emitUpdate"
         @contextmenu.prevent="showMenu"
     >
@@ -10,8 +10,18 @@
             :index="index"
             :is_fav="is_fav"
             :show-inline-fav-icon="settings.showInlineFavIcon"
+            :reorderable="reorderable"
             @add-to-fav="addToFav(track.trackhash)"
+            @drag-start="emit('dragStart', $event)"
+            @drag-hover="emit('dragHover')"
         />
+        <!-- small screens have no number: a fixed handle at the start of the row -->
+        <div
+            v-else-if="reorderable"
+            class="drag-handle"
+            @pointerdown="emit('dragStart', $event)"
+            v-html="DragIcon"
+        ></div>
 
         <TrackTitle
             :track="track"
@@ -48,6 +58,7 @@ import { useRoute } from 'vue-router'
 import { dropSources, favType } from '@/enums'
 import { showTrackContextMenu as showContext } from '@/helpers/contextMenuHandler'
 import favoriteHandler from '@/helpers/favoriteHandler'
+import { DragIcon } from '@/icons'
 import { Track } from '@/interfaces'
 import { isSmall } from '@/stores/content-width'
 import useQueueStore from '@/stores/queue'
@@ -72,6 +83,9 @@ const props = defineProps<{
     droppable?: boolean
     is_last?: boolean
     source: dropSources
+    // the row can be dragged to another position (a playlist), and it is the one being dragged
+    reorderable?: boolean
+    dragging?: boolean
 }>()
 
 const is_fav = ref(props.track.is_favorite || false)
@@ -79,6 +93,8 @@ const is_fav = ref(props.track.is_favorite || false)
 const emit = defineEmits<{
     (e: 'playThis'): void
     (e: 'trackDropped', source: dropSources, track: Track, newIndex: number, oldIndex: number): void
+    (e: 'dragStart', event: PointerEvent): void
+    (e: 'dragHover'): void
 }>()
 
 function emitUpdate() {
@@ -192,6 +208,34 @@ const isFavoritesPage = route.path.startsWith('/favorites')
 
 .songlist-item.current {
     background-color: $gray;
+}
+
+.songlist-item.dragging {
+    opacity: 0.35;
+}
+
+// the handle of the small screens (no number there): its own column at the start of the row
+.songlist-item .drag-handle {
+    display: grid;
+    place-items: center;
+    height: 3rem;
+    cursor: grab;
+    touch-action: none;
+    color: var(--menu-item-icon);
+
+    svg {
+        height: 1.25rem;
+        width: 1.25rem;
+    }
+}
+
+.isSmall .songlist-item.reorderable {
+    grid-template-columns: 1.5rem 2fr 7.5rem !important;
+    padding-left: 0;
+
+    @include mediumPhones {
+        grid-template-columns: 1.5rem 2fr 2.5rem !important;
+    }
 }
 
 .songlist-item.contexton {

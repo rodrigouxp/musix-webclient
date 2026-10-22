@@ -104,6 +104,13 @@ export default defineStore('playlist-tracks', {
             this.extractColors(this.info.image)
             this.info.has_image = true
         },
+        /**
+         * Moves a track to another position of the list (the same move the server does).
+         */
+        moveTrack(from: number, to: number) {
+            const [track] = this.allTracks.splice(from, 1)
+            this.allTracks.splice(to, 0, track)
+        },
         removeTrackByIndex(index: number) {
             this.allTracks.splice(index, 1)
         },

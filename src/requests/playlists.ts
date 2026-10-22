@@ -287,6 +287,21 @@ export async function removeBannerImage(playlistid: number) {
     new Notification(t('Requests.Playlists.BannerImageRemovedError'), NotifType.Error)
 }
 
+/**
+ * Moves a track of the playlist to another position (`toIndex` is the position it has after the move).
+ */
+export async function movePlaylistTrack(pid: number, trackhash: string, toIndex: number) {
+    const { status } = await useAxios({
+        url: paths.api.playlist.base + `/${pid}/move-track`,
+        props: {
+            trackhash,
+            to_index: toIndex,
+        },
+    })
+
+    return status === 200
+}
+
 export async function pinUnpinPlaylist(pid: number) {
     const { status } = await useAxios({
         url: paths.api.playlist.base + `/${pid}/pin_unpin`,

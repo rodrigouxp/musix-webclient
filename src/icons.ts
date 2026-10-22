@@ -7,6 +7,7 @@ export { default as EditIcon } from "@/assets/icons/figma/edit.svg?raw";
 export { default as SearchIcon } from "@/assets/icons/figma/search.svg?raw";
 export { default as PlusIcon } from "@/assets/icons/figma/add.svg?raw";
 export { default as PinIcon } from "@/assets/icons/figma/pin.svg?raw";
+export { default as DragIcon } from "@/assets/icons/figma/drag.svg?raw";
 export { default as PlayNextIcon } from "@/assets/icons/figma/play-next.svg?raw";
 export { default as AddToQueueIcon } from "@/assets/icons/figma/add-to-queue.svg?raw";
 

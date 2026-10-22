@@ -172,6 +172,29 @@ export default defineStore('tracklist', {
                 track.is_favorite = !track.is_favorite
             }
         },
+        /**
+         * Moves a track of the queue to another position without stopping the music: the marker
+         * of the track that is playing follows its track, and the next audio is loaded again.
+         */
+        moveTrack(from: number, to: number) {
+            const queue = useQueue()
+
+            const [item] = this.tracklist.splice(from, 1)
+            this.tracklist.splice(to, 0, item)
+
+            let current = queue.currentindex
+
+            if (current === from) {
+                current = to
+            } else if (from < current && to >= current) {
+                current--
+            } else if (from > current && to <= current) {
+                current++
+            }
+
+            queue.setCurrentIndex(current)
+            usePlayer().clearNextAudio()
+        },
         insertAfterCurrent(tracks: Track[]) {
             const { currentindex } = useQueue()
 

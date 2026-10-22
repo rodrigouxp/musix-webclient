@@ -19,16 +19,38 @@
                         :key="index"
                         v-bind="item.props"
                         @playThis="playFromPlaylistPage(item.props.index - 1)"
+                        @dragStart="onDragStart($event, item.props.index - 1)"
+                        @dragHover="ensureAllLoaded"
                     ></component>
                 </DynamicScrollerItem>
             </template>
         </DynamicScroller>
+
+        <!-- while a row is dragged: the row that follows the pointer and the line of the destination -->
+        <template v-if="drag.state.active && dragTrack">
+            <div
+                class="drag-ghost"
+                :style="{ left: drag.state.left + 'px', width: drag.state.width + 'px', top: drag.state.pointerY - 32 + 'px' }"
+            >
+                <SongItem :track="dragTrack" :index="drag.state.from + 1" :source="dropSources.playlist" />
+            </div>
+            <div
+                v-if="drag.state.lineY >= 0"
+                class="drag-line"
+                :style="{ left: drag.state.left + 'px', width: drag.state.width + 'px', top: drag.state.lineY + 'px' }"
+            ></div>
+        </template>
     </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import { onMounted, onUpdated } from 'vue'
+
+import useTrackDrag from '@/composables/useTrackDrag'
+import { FromOptions } from '@/enums'
+import { movePlaylistTrack } from '@/requests/playlists'
+import { NotifType, useToast } from '@/stores/notification'
 
 import { isMedium, isSmall, isSmallPhone, track_limit } from '@/stores/content-width'
 import { dropSources } from '@/enums'
@@ -73,6 +95,62 @@ const getNoItemsComponent = () =>
         },
     }
 
+// The rows can be dragged to another position, unless the list is filtered or it is a special
+// playlist ("recently added"). The rest of the tracks is loaded the first time the user goes for a handle.
+const reorderable = computed(() => Number.isInteger(playlist.info.id) && !playlist.query)
+
+let loadingAll: Promise<void> | null = null
+
+function ensureAllLoaded(): Promise<void> {
+    if (playlist.allTracks.length >= playlist.info.count) return Promise.resolve()
+
+    loadingAll ??= playlist.fetchAll(playlist.info.id, false, true).finally(() => (loadingAll = null))
+    return loadingAll
+}
+
+const drag = useTrackDrag({
+    scroller: () => document.getElementById('contentscroller'),
+    rowsBefore: 2,
+    onDrop: dropTrack,
+})
+
+const dragTrack = computed(() => playlist.allTracks[drag.state.from])
+
+function onDragStart(event: PointerEvent, index: number) {
+    if (!reorderable.value) return
+
+    drag.begin(event, index, ensureAllLoaded)
+}
+
+/**
+ * The track at `from` goes to `to`: the list changes at once, and goes back if the server says no.
+ * If the queue is this playlist in the same order, the queue follows (the music does not stop).
+ */
+async function dropTrack(from: number, to: number) {
+    const pid = playlist.info.id
+    const hash = playlist.allTracks[from]?.trackhash
+
+    if (!hash) return
+
+    const before = playlist.allTracks.map(track => track.trackhash)
+    const queued =
+        tracklist.from.type === FromOptions.playlist &&
+        (tracklist.from as { id?: number }).id === pid &&
+        tracklist.tracklist.length === before.length &&
+        before.every((trackhash, i) => tracklist.tracklist[i].trackhash === trackhash)
+
+    playlist.moveTrack(from, to)
+    if (queued) tracklist.moveTrack(from, to)
+
+    if (await movePlaylistTrack(pid, hash, to)) return
+
+    // the server did not move it: the list goes back to what it was
+    playlist.moveTrack(to, from)
+    if (queued) tracklist.moveTrack(to, from)
+
+    useToast().showNotification(t('Views.PlaylistView.MoveError'), NotifType.Error)
+}
+
 const scrollerItems = computed(() => {
     const header: ScrollerItem = {
         id: 'header',
@@ -96,6 +174,8 @@ const scrollerItems = computed(() => {
                 is_last: track.index === playlist.tracks.length - 1,
                 droppable: true,
                 source: dropSources.playlist,
+                reorderable: reorderable.value,
+                dragging: drag.state.active && drag.state.from === track.index,
             },
             size: 64,
         }
@@ -141,5 +221,25 @@ onBeforeRouteLeave(() => playlist.resetAll())
     .nothing {
         height: 25rem;
     }
+}
+
+// the row that follows the pointer while it is dragged, and the line of the destination
+.drag-ghost {
+    position: fixed;
+    z-index: 30;
+    pointer-events: none;
+    background: var(--menu-bg);
+    border-radius: var(--menu-item-radius);
+    box-shadow: var(--menu-shadow);
+}
+
+.drag-line {
+    position: fixed;
+    z-index: 31;
+    height: 2px;
+    margin-top: -1px;
+    border-radius: 1px;
+    pointer-events: none;
+    background: var(--color-primary-500);
 }
 </style>

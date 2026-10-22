@@ -51,8 +51,7 @@
     "vite-plugin-node-polyfills": "^0.22.0",
     "vite-plugin-pwa": "^0.16.4",
     "vite-plugin-singlefile": "^0.13.5",
-    "vite-svg-loader": "^4.0.0",
-    "vue-virtual-draglist": "^3.0.4"
+    "vite-svg-loader": "^4.0.0"
   },
   "packageManager": "yarn@1.22.19"
 }
