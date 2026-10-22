@@ -23,7 +23,10 @@
         <div id="acontent" v-element-size="updateContentElemSize">
             <div id="contentresizer" ref="appcontent"></div>
             <BalancerProvider>
-                <RouterView />
+                <!-- the key: Albums and Artists are the same component, it has to start again when the route changes -->
+                <RouterView v-slot="{ Component, route: current }">
+                    <component :is="Component" :key="String(current.name)" />
+                </RouterView>
             </BalancerProvider>
         </div>
         <RightSideBar v-if="settings.use_sidebar && xl" />
@@ -32,7 +35,9 @@
     </section>
     <div v-else id="noui">
         <BalancerProvider>
-            <RouterView />
+            <RouterView v-slot="{ Component, route: current }">
+                <component :is="Component" :key="String(current.name)" />
+            </RouterView>
         </BalancerProvider>
     </div>
 </template>

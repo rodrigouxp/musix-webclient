@@ -65,7 +65,7 @@ import Header from '@/components/PlaylistView/Header.vue'
 import NoItems from '@/components/shared/NoItems.vue'
 import SongItem from '@/components/shared/SongItem.vue'
 import AfterHeader from '@/components/PlaylistView/AfterHeader.vue'
-import { onBeforeRouteLeave } from 'vue-router'
+import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
 import AlbumsFetcher from '@/components/ArtistView/AlbumsFetcher.vue'
 import { useT } from '@/i18n'
 
@@ -213,6 +213,14 @@ async function playFromPlaylistPage(index: number) {
     updatePageTitle(playlist.info.name)
 })
 
+// from a playlist to another one (the page stays, only the id changes): the other playlist is loaded
+onBeforeRouteUpdate(async to => {
+    if (String(to.params.pid) === String(playlist.info.id)) return
+
+    playlist.allTracks = []
+    await playlist.fetchAll(to.params.pid as unknown as number)
+})
+
 onBeforeRouteLeave(() => playlist.resetAll())
 </script>
 
@@ -240,6 +248,7 @@ onBeforeRouteLeave(() => playlist.resetAll())
     margin-top: -1px;
     border-radius: 1px;
     pointer-events: none;
-    background: var(--color-primary-500);
+    // neutral/500 of the design system at 15%
+    background: color-mix(in srgb, var(--color-neutral-500) 15%, transparent);
 }
 </style>

@@ -30,6 +30,10 @@ export default defineStore('homepage', () => {
 
     async function fetchAll() {
         const data: { [key: string]: HomePageItem }[] = await getHomePageData(maxAbumCards.value + 2)
+
+        // the request failed: the page stays as it is (it does not break)
+        if (!Array.isArray(data)) return
+
         let keys = []
 
         for (const [index, item] of data.entries()) {
