@@ -136,9 +136,7 @@ export interface Option {
 }
 
 export interface PlaylistSettings {
-    banner_pos: number
     has_gif: boolean
-    square_img: boolean
     pinned: boolean
 }
 

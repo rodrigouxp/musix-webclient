@@ -4,14 +4,12 @@
     :style="[
       {
         background: bg,
-        backgroundPosition: `center ${info.settings.banner_pos}%`,
         height: `${isSmallPhone ? '24rem' : '18rem'}`,
       },
     ]"
-    :class="{ 'use-sqr_img': useSqrImg }"
+    :class="'use-sqr_img'"
   >
   <div
-    v-if="!info.has_image || info.settings.square_img"
     class="album-header-ambient rounded-lg"
     style="height: 100%; width: 100%"
     :style="{
@@ -31,11 +29,10 @@
       <PinSvg v-else />
     </div>
 
-    <div v-if="!isSmallPhone && info.has_image" class="gradient rounded-lg"></div>
-    <div v-if="info.has_image && useSqrImg" class="sqr_img">
+    <div v-if="info.has_image" class="sqr_img">
       <img :src="(playlist.info.image as string)" class="rounded-sm" />
     </div>
-    <BannerImages v-if="playlist.info.count && !info.has_image && useSqrImg" class="sqr_img rounded-sm" />
+    <BannerImages v-if="playlist.info.count && !info.has_image" class="sqr_img rounded-sm" />
     <Info :text-color="textColor" :btn_color="colors.btn" />
     <LastUpdated />
   </div>
@@ -66,16 +63,8 @@ const bg = computed(() => {
     return "";
   }
 
-  if (playlist.info.has_image) {
-    if (isSmallPhone.value || (!playlist.info.settings.square_img && !isSmallPhone.value)) {
-      return `url(${info.value.image})`;
-    }
-  }
-
   return colors.value.bg ? colors.value.bg : "";
 });
-
-const useSqrImg = computed(() => !playlist.info.has_image || !bg.value.startsWith("url"));
 
 const textColor = computed(() => {
   if (colors.value.bg !== "") {
@@ -166,16 +155,6 @@ function pinPlaylist(pid: number) {
       width: 100%;
       object-fit: cover;
     }
-  }
-
-  .gradient {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: $black;
-    opacity: 0.5;
   }
 
   @include largePhones {

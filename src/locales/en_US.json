@@ -772,9 +772,7 @@
   },
   "UpdatePlaylist": {
     "CoverAction": "Click to {action} cover image",
-    "ImagePosition": "Adjust image position • {pos} %",
-    "Name": "Playlist name",
-    "SquareCover": "Show square cover image"
+    "Name": "Playlist name"
   },
   "UsePlayFrom": {
     "AlbumTracksNotFound": "Album tracks not found",

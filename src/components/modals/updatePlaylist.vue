@@ -45,23 +45,6 @@
                 </div>
             </div>
         </div>
-        <label v-if="playlist.has_image && !playlist.settings.square_img">{{ $t('Common.Settings') }}</label>
-        <div v-if="image || playlist.has_image" class="banner-settings rounded-sm">
-            <div>{{ $t('UpdatePlaylist.SquareCover') }}</div>
-            <Switch :state="playlist.settings.square_img || false" @click="pStore.toggleSquareImage" />
-        </div>
-        <div v-if="playlist.has_image && !playlist.settings.square_img" class="boxed banner-position-adjust rounded-sm">
-            <div class="t-center">{{ $t('UpdatePlaylist.ImagePosition', {pos: pStore.info.settings.banner_pos }) }}</div>
-            <div class="buttons">
-                <button @click.stop.prevent="pStore.minusBannerPos">
-                    <ExpandSvg />
-                </button>
-                <button @click.stop.prevent="pStore.plusBannerPos">
-                    <ExpandSvg />
-                </button>
-            </div>
-        </div>
-
         <button type="submit">
             {{ clicked ? $t('Common.Saving') : $t('Common.Update') }}
         </button>
@@ -76,10 +59,8 @@ import { updatePlaylist } from '@/requests/playlists'
 import usePStore from '@/stores/pages/playlist'
 
 import DeleteIcon from '@/assets/icons/figma/delete.svg'
-import ExpandSvg from '@/assets/icons/expand.svg'
 import ImageIcon from '@/assets/icons/image.svg'
 
-import Switch from '../SettingsView/Components/Switch.vue'
 import { useT } from '@/i18n.js'
 
 const { t } = useT()
@@ -123,7 +104,6 @@ function handleFile(file: File) {
 
     if (preview) {
         pStore.setImage(obj_url)
-        pStore.setInitialBannerPos()
     }
 
     image.value = file
