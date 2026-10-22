@@ -28,12 +28,6 @@
                 @hideModal="hideModal"
                 @setTitle="setTitle"
             />
-            <UpdatePlaylist
-                v-if="modal.component == modal.options.updatePlaylist"
-                v-bind="modal.props"
-                @hideModal="hideModal"
-                @setTitle="setTitle"
-            />
             <div v-if="modal.component == modal.options.deletePlaylist">
                 <ConfirmModal
                     :text="$t('Modal.DeletePlaylist')"
@@ -50,7 +44,9 @@
 
 <script setup lang="ts">
 import { deletePlaylist as delPlaylist } from '@/requests/playlists'
+import { Routes } from '@/router'
 import useModalStore, { ModalOptions } from '@/stores/modal'
+import usePlaylistsStore from '@/stores/pages/playlists'
 import { useRouter } from 'vue-router'
 
 import AuthLogin from './modals/AuthLogin.vue'
@@ -60,7 +56,6 @@ import NewPlaylist from './modals/NewPlaylist.vue'
 import RootDirsPrompt from './modals/RootDirsPrompt.vue'
 import SetRootDirs from './modals/SetRootDirs.vue'
 import Settings from './modals/Settings.vue'
-import UpdatePlaylist from './modals/updatePlaylist.vue'
 
 const modal = useModalStore()
 const router = useRouter()
@@ -73,10 +68,12 @@ function hideModal() {
     modal.hideModal()
 }
 
+// the playlist is gone: back to the list of playlists (it is fetched again)
 function deletePlaylist() {
     delPlaylist(modal.props.pid)
         .then(() => modal.hideModal())
-        .then(() => router.back())
+        .then(() => usePlaylistsStore().fetchAll())
+        .then(() => router.push({ name: Routes.playlists }))
 }
 </script>
 

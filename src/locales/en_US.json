@@ -382,8 +382,7 @@
     }
   },
   "Modal": {
-    "DeletePlaylist": "Are you sure you want to permanently delete this playlist?",
-    "UpdatePlaylist": "Update Playlist"
+    "DeletePlaylist": "Are you sure you want to permanently delete this playlist?"
   },
   "Nav": {
     "ResetClient": "Reset client"
@@ -441,8 +440,12 @@
   },
   "PlaylistView": {
     "AllTracks": "All Tracks",
-    "Edit": "Edit",
-    "LastUpdated": "Last Updated {date}"
+    "EditPhoto": "Edit photo",
+    "LastUpdated": "Last Updated {date}",
+    "PhotoUpdated": "Playlist photo updated",
+    "RemovePhoto": "Remove photo",
+    "RenamePlaylist": "Rename playlist",
+    "UploadPhoto": "Upload photo"
   },
   "Profile": {
     "AddUser": "Add user",
@@ -769,10 +772,6 @@
   "UpNext": {
     "NextUp": "Next up",
     "PlayNextSong": "play next song"
-  },
-  "UpdatePlaylist": {
-    "CoverAction": "Click to {action} cover image",
-    "Name": "Playlist name"
   },
   "UsePlayFrom": {
     "AlbumTracksNotFound": "Album tracks not found",

@@ -7,14 +7,11 @@
         <div id="albumheadertitle" class="title ellip2">
           <span v-for="t in titleSplits" :key="t">{{ t }}<br /></span>
         </div>
-        <button
+        <NameEditButton
           v-if="canRename"
-          class="name-edit-btn"
-          :title="$t('AlbumView.RenameAlbum.EditName')"
-          :aria-label="$t('AlbumView.RenameAlbum.EditName')"
+          :label="$t('AlbumView.RenameAlbum.EditName')"
           @click="renaming = true"
-          v-html="EditIcon"
-        ></button>
+        />
       </div>
       <RenameAlbumDialog
         v-if="renaming"
@@ -37,7 +34,7 @@ import { storeToRefs } from "pinia";
 import { computed, onMounted, ref, watch } from "vue";
 import { onBeforeRouteUpdate } from "vue-router";
 
-import { EditIcon } from "@/icons";
+import NameEditButton from "@/components/shared/NameEditButton.vue";
 import { balanceText } from "@/utils/balanceText";
 import { getTextColor } from "@/utils/colortools/shift";
 
@@ -111,34 +108,6 @@ watch(() => album.value.title, updateTitle);
       align-items: flex-end;
       gap: $small;
       min-width: 0;
-
-      .name-edit-btn {
-        flex-shrink: 0;
-        height: 2.25rem;
-        width: 2.25rem;
-        padding: 0;
-        display: grid;
-        place-items: center;
-        border-radius: 50%;
-        opacity: 0;
-        transition: opacity 0.15s ease;
-
-        svg {
-          height: 18px;
-          width: 18px;
-        }
-      }
-
-      &:hover .name-edit-btn,
-      .name-edit-btn:focus-visible {
-        opacity: 1;
-      }
-
-      @media (hover: none) {
-        .name-edit-btn {
-          opacity: 1;
-        }
-      }
 
       @include largePhones {
         justify-content: center;

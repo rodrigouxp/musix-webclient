@@ -11,14 +11,11 @@
                 <div class="artist-name" :class="`${useCircularImage ? 'ellip' : 'ellip2'}`" :title="artist.name">
                     {{ artist.name }}
                 </div>
-                <button
+                <NameEditButton
                     v-if="canRename"
-                    class="name-edit-btn"
-                    :title="$t('ArtistView.RenameArtist.EditName')"
-                    :aria-label="$t('ArtistView.RenameArtist.EditName')"
+                    :label="$t('ArtistView.RenameArtist.EditName')"
                     @click="renaming = true"
-                    v-html="EditIcon"
-                ></button>
+                />
             </div>
             <RenameArtistDialog
                 v-if="renaming"
@@ -48,7 +45,7 @@ import { getTextColor } from '@/utils/colortools/shift'
 import { ref } from 'vue'
 
 import { Artist } from '@/interfaces'
-import { EditIcon } from '@/icons'
+import NameEditButton from '@/components/shared/NameEditButton.vue'
 import formatSeconds from '@/utils/useFormatSeconds'
 import Buttons from './Buttons.vue'
 import RenameArtistDialog from '../RenameArtistDialog.vue'
@@ -91,34 +88,6 @@ const renaming = ref(false)
         align-items: center;
         gap: $small;
         min-width: 0;
-
-        .name-edit-btn {
-            flex-shrink: 0;
-            height: 2.25rem;
-            width: 2.25rem;
-            padding: 0;
-            display: grid;
-            place-items: center;
-            border-radius: 50%;
-            opacity: 0;
-            transition: opacity 0.15s ease;
-
-            svg {
-                height: 18px;
-                width: 18px;
-            }
-        }
-
-        &:hover .name-edit-btn,
-        .name-edit-btn:focus-visible {
-            opacity: 1;
-        }
-
-        @media (hover: none) {
-            .name-edit-btn {
-                opacity: 1;
-            }
-        }
     }
 
     .artist-name {

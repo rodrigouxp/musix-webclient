@@ -7,7 +7,6 @@ const { t } = useT()
 export enum ModalOptions {
     newPlaylist,
     page,
-    updatePlaylist,
     deletePlaylist,
     SetIP,
     rootDirsPrompt,
@@ -58,9 +57,6 @@ export default defineStore('newModal', {
                 playlist_name: name,
             }
             this.showModal(ModalOptions.newPlaylist, props)
-        },
-        showEditPlaylistModal() {
-            this.showModal(ModalOptions.updatePlaylist)
         },
         showDeletePlaylistModal(pid: number) {
             const props = {

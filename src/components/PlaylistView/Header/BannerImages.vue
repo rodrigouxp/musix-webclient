@@ -25,19 +25,15 @@ const playlist = usePStore()
 .playlist-banner-images {
     display: grid;
     grid: repeat(2, 1fr) / repeat(2, 1fr);
+    height: 100%;
+    width: 100%;
     transition: all 0.2s ease-in-out;
 
     img {
-        height: 7rem;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
         transition: all 0.2s ease-in-out;
-    }
-
-    @include largePhones {
-        right: -4rem;
-
-        img {
-            height: 7rem;
-        }
     }
 }
 </style>

@@ -152,6 +152,7 @@ export interface Playlist {
     duration: number
     settings: PlaylistSettings
     pinned: boolean
+    is_favorite: boolean
     help_text?: string
     time?: string
     images: {

@@ -15,6 +15,8 @@ export default defineStore('playlist-tracks', {
     state: () => ({
         info: <Playlist>{},
         query: '',
+        // the title is a text field (the pencil, or "Rename" of the menu)
+        renaming: false,
         allTracks: <Track[]>[],
         colors: {
             bg: '',
@@ -28,6 +30,7 @@ export default defineStore('playlist-tracks', {
          * @param id The id of the playlist to fetch
          */
         async fetchAll(id: number, no_tracks = false, fetchAll = false) {
+            if (this.allTracks.length === 0) this.renaming = false
             // if fetchAll, use -1 to fetch all tracks
             const playlist = await getPlaylist(id, no_tracks, this.allTracks.length, fetchAll ? -1 : track_limit.value)
             if (this.allTracks.length !== 0) {
@@ -55,6 +58,8 @@ export default defineStore('playlist-tracks', {
             if (!res) return
 
             this.info = { ...res, duration }
+            // the colors of the photo are not valid anymore
+            this.resetColors()
             this.extractColors()
 
             this.createImageLink()

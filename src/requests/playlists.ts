@@ -190,27 +190,36 @@ export function saveArtistAsPlaylist(playlist_name: string, itemhash: string) {
 
 // ========== END =========
 
-export async function updatePlaylist(pid: number, playlist: FormData, pStore: any) {
-    const uri = `${basePlaylistUrl}/${pid}/update`
+/**
+ * Changes the name and/or the cover of a playlist. Only what is sent changes.
+ * The error has the text to show to the user.
+ */
+export async function updatePlaylistInfo(
+    pid: number,
+    fields: { name?: string; image?: File }
+): Promise<{ playlist: Playlist } | { error: string }> {
+    const form = new FormData()
+
+    if (fields.name !== undefined) form.append('name', fields.name)
+    if (fields.image) form.append('image', fields.image)
 
     const { data, status } = await useAxios({
-        url: uri,
+        url: `${basePlaylistUrl}/${pid}/update`,
         method: 'PUT',
-        props: playlist,
+        props: form,
         headers: {
             'Content-Type': 'multipart/form-data',
         },
     })
 
-    if (status == 400) {
-        new Notification(t('Requests.Playlists.ErrUnsupportedImage'), NotifType.Error)
-        return
+    if (status === 200 && data) {
+        return { playlist: data.data as Playlist }
     }
 
-    if (data) {
-        pStore.updatePInfo(data.data)
-        new Notification(t('Requests.Playlists.Updated'))
-    }
+    if (status === 409) return { error: t('Requests.Playlists.AlreadyExists') }
+    if (status === 400) return { error: t('Requests.Playlists.ErrUnsupportedImage') }
+
+    return { error: t('Common.NotificationError') }
 }
 
 /**
@@ -288,4 +297,19 @@ export async function pinUnpinPlaylist(pid: number) {
     }
 
     return false
+}
+
+/**
+ * Favorites or unfavorites a playlist. Gives the new state, or `null` if it failed.
+ */
+export async function favoritePlaylist(pid: number): Promise<boolean | null> {
+    const { data, status } = await useAxios({
+        url: paths.api.playlist.base + `/${pid}/favorite`,
+    })
+
+    if (status === 200) {
+        return data.is_favorite as boolean
+    }
+
+    return null
 }
