@@ -348,14 +348,13 @@
       "AddToQueue": "Add to queue",
       "PlayNext": "Play next",
       "RemoveFromCollection": "Remove item",
-      "RemoveFromPlaylist": "Remove From Playlist",
+      "RemoveFromPlaylist": "Remove From {name}",
       "RemoveFromQueue": "Remove from queue",
       "UpdateAlbumCover": "Update album cover"
     },
     "PlayList": {
       "Delete": "Delete",
       "Pin": "Pin",
-      "RemoveFromPlaylist": "Remove from playlist",
       "Rename": "Rename",
       "Unpin": "Unpin"
     },

@@ -203,7 +203,8 @@ export default async (track: Track): Promise<Option[]> => {
 
     const getRemoveFromPlaylistOption = () =>
         <Option>{
-            label: t('Menus.Common.RemoveFromPlaylist'),
+            // "Remove From <name of the playlist the track is in>"
+            label: t('Menus.Common.RemoveFromPlaylist', { name: usePlaylistStore().info.name }),
             action: () => {
                 removeTracks(parseInt(route.params.pid as string), [
                     { trackhash: track.trackhash, index: track.index },

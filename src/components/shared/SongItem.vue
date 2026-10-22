@@ -224,8 +224,8 @@ const isFavoritesPage = route.path.startsWith('/favorites')
     color: var(--menu-item-icon);
 
     svg {
-        height: 1.25rem;
-        width: 1.25rem;
+        height: 16px;
+        width: 16px;
     }
 }
 

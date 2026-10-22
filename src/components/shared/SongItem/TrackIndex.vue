@@ -68,11 +68,14 @@ defineEmits<{
     cursor: grab;
     touch-action: none;
     color: var(--menu-item-icon);
+    // the number is 4px to the right of the center of its cell (the row has 8px of padding on the
+    // left and 16px of gap on the right): the same 4px balances the space at both sides of the icon
+    transform: translateX($smaller);
     transition: opacity 0.2s;
 
     svg {
-      height: 1.25rem;
-      width: 1.25rem;
+      height: 16px;
+      width: 16px;
     }
   }
 
