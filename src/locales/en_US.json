@@ -486,6 +486,13 @@
       "AddOrRemCollSuccess": "{payload} {command} to page",
       "CollectionAlreadyPresent": "{payload} already in collection"
     },
+    "Folders": {
+      "NotAllowed": "This folder is not one of your music folders",
+      "NotConfigured": "Open in files is not set up on the server",
+      "NotFound": "This folder does not exist anymore",
+      "NotMapped": "This folder is not in the folders set up for Open in files",
+      "OpenError": "Could not open the folder in Files"
+    },
     "Playlists": {
       "AddedToPlaylist": "Added to {name}",
       "AlreadyExists": "That playlist already exists",
