@@ -5,23 +5,18 @@
         @dblclick="emitUpdate"
         @contextmenu.prevent="showMenu"
     >
+        <!-- small screens have no number, except in a playlist (the number is the handle of the drag) -->
         <TrackIndex
-            v-if="!isSmall"
+            v-if="!isSmall || reorderable"
             :index="index"
             :is_fav="is_fav"
             :show-inline-fav-icon="settings.showInlineFavIcon"
             :reorderable="reorderable"
+            :held="isSmall && (held || dragging)"
             @add-to-fav="addToFav(track.trackhash)"
             @drag-start="emit('dragStart', $event)"
             @drag-hover="emit('dragHover')"
         />
-        <!-- small screens have no number: a fixed handle at the start of the row -->
-        <div
-            v-else-if="reorderable"
-            class="drag-handle"
-            @pointerdown="emit('dragStart', $event)"
-            v-html="DragIcon"
-        ></div>
 
         <TrackTitle
             :track="track"
@@ -58,7 +53,6 @@ import { useRoute } from 'vue-router'
 import { dropSources, favType } from '@/enums'
 import { showTrackContextMenu as showContext } from '@/helpers/contextMenuHandler'
 import favoriteHandler from '@/helpers/favoriteHandler'
-import { DragIcon } from '@/icons'
 import { Track } from '@/interfaces'
 import { isSmall } from '@/stores/content-width'
 import useQueueStore from '@/stores/queue'
@@ -86,6 +80,8 @@ const props = defineProps<{
     // the row can be dragged to another position (a playlist), and it is the one being dragged
     reorderable?: boolean
     dragging?: boolean
+    // the row that follows the pointer: the number is already the handle
+    held?: boolean
 }>()
 
 const is_fav = ref(props.track.is_favorite || false)
@@ -214,27 +210,12 @@ const isFavoritesPage = route.path.startsWith('/favorites')
     opacity: 0.35;
 }
 
-// the handle of the small screens (no number there): its own column at the start of the row
-.songlist-item .drag-handle {
-    display: grid;
-    place-items: center;
-    height: 3rem;
-    cursor: grab;
-    touch-action: none;
-    color: var(--menu-item-icon);
-
-    svg {
-        height: 16px;
-        width: 16px;
-    }
-}
-
+// small screens, in a playlist: the number has a column again (it fits four digits)
 .isSmall .songlist-item.reorderable {
-    grid-template-columns: 1.5rem 2fr 7.5rem !important;
-    padding-left: 0;
+    grid-template-columns: 2.25rem 2fr 7.5rem !important;
 
     @include mediumPhones {
-        grid-template-columns: 1.5rem 2fr 2.5rem !important;
+        grid-template-columns: 2.25rem 2fr 2.5rem !important;
     }
 }
 

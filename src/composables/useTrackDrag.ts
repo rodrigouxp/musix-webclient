@@ -4,6 +4,9 @@ import { onBeforeUnmount, reactive } from 'vue'
 const EDGE = 64
 // the most the list scrolls in one frame
 const MAX_SPEED = 18
+// touch: how long the finger has to stay on the handle before the drag starts, and how much it can move
+const HOLD_MS = 350
+const HOLD_SLOP = 8
 
 interface Options {
     /** The element that scrolls (the DynamicScroller). */
@@ -19,12 +22,17 @@ interface Options {
  * touch). The list is virtual: the position under the pointer comes from the rows that are on
  * the screen (the `data-index` of each one), and the list scrolls by itself near its edges.
  *
+ * With a mouse the drag starts at once. With a finger it starts after a long press (350 ms without
+ * moving more than 8px): until then the list scrolls as always. From the moment the drag is on, the
+ * scroll of the page is blocked (a non passive `touchmove`, which iOS needs).
+ *
  * The pointer moves are listened on the window, because the row that started the drag can leave
  * the screen (and be removed) while the list scrolls.
  */
 export default function useTrackDrag(options: Options) {
     const state = reactive({
-        // the button went down on the handle, the drag starts when `before` is done
+        // the button went down on the handle, the drag starts when `before` is done (mouse) or
+        // when the long press is done (touch)
         pending: false,
         active: false,
         from: -1,
@@ -40,6 +48,10 @@ export default function useTrackDrag(options: Options) {
 
     let released = false
     let frame = 0
+    let holdTimer = 0
+    let touching = false
+    let startX = 0
+    let startY = 0
     let previousSelect = ''
     let previousCursor = ''
 
@@ -106,7 +118,18 @@ export default function useTrackDrag(options: Options) {
         if (state.active) {
             e.preventDefault()
             update()
+            return
         }
+
+        // touch, still waiting for the long press: a finger that moves is a scroll, not a drag
+        if (touching && state.pending && Math.hypot(e.clientX - startX, e.clientY - startY) > HOLD_SLOP) {
+            finish()
+        }
+    }
+
+    // the page does not scroll while a row is dragged (iOS only looks at this event)
+    function onTouchMove(e: TouchEvent) {
+        if (state.active && e.cancelable) e.preventDefault()
     }
 
     function onUp() {
@@ -130,18 +153,21 @@ export default function useTrackDrag(options: Options) {
 
     function finish() {
         cancelAnimationFrame(frame)
+        clearTimeout(holdTimer)
 
         window.removeEventListener('pointermove', onMove)
         window.removeEventListener('pointerup', onUp)
         window.removeEventListener('pointercancel', finish)
         window.removeEventListener('blur', finish)
         window.removeEventListener('keydown', onKey)
+        document.removeEventListener('touchmove', onTouchMove)
 
         if (state.active) {
             document.body.style.userSelect = previousSelect
             document.body.style.cursor = previousCursor
         }
 
+        touching = false
         state.pending = false
         state.active = false
         state.from = -1
@@ -149,33 +175,15 @@ export default function useTrackDrag(options: Options) {
         state.lineY = -1
     }
 
-    /**
-     * Call it on `pointerdown` of the handle of the row at `index`. `before` runs first (it can load
-     * the rest of the list); if the button is up when it ends, there is no drag.
-     */
-    async function begin(e: PointerEvent, index: number, before?: () => Promise<void>) {
-        if (e.button !== undefined && e.button !== 0) return
-        if (state.pending || state.active) return
-
-        e.preventDefault()
-
-        released = false
-        state.pending = true
-        state.pointerY = e.clientY
-
+    function listen() {
         window.addEventListener('pointermove', onMove, { passive: false })
         window.addEventListener('pointerup', onUp)
         window.addEventListener('pointercancel', finish)
         window.addEventListener('blur', finish)
         window.addEventListener('keydown', onKey)
+    }
 
-        if (before) await before()
-
-        if (released || !state.pending) {
-            finish()
-            return
-        }
-
+    function activate(index: number) {
         const box = options.scroller()?.getBoundingClientRect()
 
         state.left = box?.left ?? 0
@@ -190,6 +198,55 @@ export default function useTrackDrag(options: Options) {
 
         update()
         frame = requestAnimationFrame(autoscroll)
+    }
+
+    /**
+     * Call it on `pointerdown` of the handle of the row at `index`. `before` runs first (it can load
+     * the rest of the list): with a mouse the drag waits for it, with a finger it runs while the
+     * finger is held. If the button is up when everything is ready, there is no drag.
+     */
+    async function begin(e: PointerEvent, index: number, before?: () => Promise<void>) {
+        if (e.button !== undefined && e.button !== 0) return
+        if (state.pending || state.active) return
+
+        released = false
+        state.pending = true
+        state.pointerY = e.clientY
+
+        if (e.pointerType === 'touch' || e.pointerType === 'pen') {
+            touching = true
+            startX = e.clientX
+            startY = e.clientY
+
+            listen()
+            // not passive: it is how iOS lets a page stop the scroll
+            document.addEventListener('touchmove', onTouchMove, { passive: false })
+
+            const loading = before ? before() : Promise.resolve()
+
+            holdTimer = window.setTimeout(async () => {
+                await loading
+
+                if (released || !state.pending) return
+
+                activate(index)
+                navigator.vibrate?.(10)
+            }, HOLD_MS)
+
+            return
+        }
+
+        e.preventDefault()
+        listen()
+
+        if (before) await before()
+
+        if (released || !state.pending) {
+            finish()
+            return
+        }
+
+        activate(index)
     }
 
     onBeforeUnmount(finish)

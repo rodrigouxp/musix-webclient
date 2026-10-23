@@ -32,7 +32,7 @@
                 class="drag-ghost"
                 :style="{ left: drag.state.left + 'px', width: drag.state.width + 'px', top: drag.state.pointerY - 32 + 'px' }"
             >
-                <SongItem :track="dragTrack" :index="drag.state.from + 1" :source="dropSources.playlist" />
+                <SongItem :track="dragTrack" :index="drag.state.from + 1" :source="dropSources.playlist" reorderable held />
             </div>
             <div
                 v-if="drag.state.lineY >= 0"
@@ -100,11 +100,15 @@ const getNoItemsComponent = () =>
 const reorderable = computed(() => Number.isInteger(playlist.info.id) && !playlist.query)
 
 let loadingAll: Promise<void> | null = null
+// the id of the playlist whose tracks were all asked for (a playlist with tracks that are not in the
+// library has a count that the page never reaches: it is asked once)
+let askedAllOf: number | null = null
 
 function ensureAllLoaded(): Promise<void> {
-    if (playlist.allTracks.length >= playlist.info.count) return Promise.resolve()
+    if (playlist.allTracks.length >= playlist.info.count || askedAllOf === playlist.info.id) return Promise.resolve()
 
-    loadingAll ??= playlist.fetchAll(playlist.info.id, false, true).finally(() => (loadingAll = null))
+    askedAllOf = playlist.info.id
+    loadingAll ??= playlist.loadAllTracks(playlist.info.id).finally(() => (loadingAll = null))
     return loadingAll
 }
 
@@ -142,7 +146,10 @@ async function dropTrack(from: number, to: number) {
     playlist.moveTrack(from, to)
     if (queued) tracklist.moveTrack(from, to)
 
-    if (await movePlaylistTrack(pid, hash, to)) return
+    // "right after the one above" (the start has none)
+    const after = to > 0 ? playlist.allTracks[to - 1].trackhash : null
+
+    if (await movePlaylistTrack(pid, hash, after)) return
 
     // the server did not move it: the list goes back to what it was
     playlist.moveTrack(to, from)

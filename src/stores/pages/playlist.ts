@@ -48,6 +48,17 @@ export default defineStore('playlist-tracks', {
 
             this.allTracks = playlist?.tracks || []
         },
+        /**
+         * Loads every track of the playlist, replacing the ones that are loaded. It starts from the
+         * beginning because the server counts positions of its list, which can have tracks that are
+         * not in the library (the rows loaded are not a position of it).
+         */
+        async loadAllTracks(id: number) {
+            const playlist = await getPlaylist(id, false, 0, -1)
+            if (this.info.id !== id) return
+
+            this.allTracks = playlist?.tracks || []
+        },
         createImageLink() {
             this.info.image = paths.images.playlist + this.info.image
         },

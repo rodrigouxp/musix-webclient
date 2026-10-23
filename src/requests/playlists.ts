@@ -288,15 +288,14 @@ export async function removeBannerImage(playlistid: number) {
 }
 
 /**
- * Moves a track of the playlist to another position (`toIndex` is the position it has after the move).
+ * Moves a track of the playlist: right after `afterTrackhash`, or to the start when there is
+ * none. It is said by neighbor, not by position, because a playlist can have tracks that are not
+ * in the library anymore: the page does not show them, so its positions are not the list's.
  */
-export async function movePlaylistTrack(pid: number, trackhash: string, toIndex: number) {
+export async function movePlaylistTrack(pid: number, trackhash: string, afterTrackhash: string | null) {
     const { status } = await useAxios({
         url: paths.api.playlist.base + `/${pid}/move-track`,
-        props: {
-            trackhash,
-            to_index: toIndex,
-        },
+        props: afterTrackhash === null ? { trackhash, to_index: 0 } : { trackhash, after_trackhash: afterTrackhash },
     })
 
     return status === 200
