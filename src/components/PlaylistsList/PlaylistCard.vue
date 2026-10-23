@@ -33,7 +33,7 @@
       />
       <div v-else class="p-name ellip">{{ playlist.name }}</div>
       <div class="p-count">
-        <b>{{ playlist.count.toLocaleString() + $t('Common.Track', playlist.count) }}</b>
+        <b>{{ $t('Common.TrackCount', { count: playlist.count.toLocaleString() }, playlist.count) }}</b>
       </div>
     </div>
   </router-link>
