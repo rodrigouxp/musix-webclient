@@ -133,6 +133,8 @@ export interface Option {
     inset?: boolean
     critical?: Boolean
     singleChild?: boolean
+    /** shows the check icon right after the label (the playlist already has the song) */
+    checked?: boolean
 }
 
 export interface PlaylistSettings {
@@ -153,6 +155,8 @@ export interface Playlist {
     settings: PlaylistSettings
     pinned: boolean
     is_favorite: boolean
+    /** only when the list was asked with trackhashes: the playlist has all of them */
+    has_track?: boolean
     help_text?: string
     time?: string
     images: {

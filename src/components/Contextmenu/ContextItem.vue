@@ -28,9 +28,10 @@
                     :class="[{ critical: child.critical }, child.type]"
                     @click="child.action && runChildAction(child.action)"
                 >
-                    <div class="label ellip">
+                    <div class="label ellip" :class="{ checked: child.checked }">
                         {{ child.label }}
                     </div>
+                    <div v-if="child.checked" class="check" v-html="CheckIcon"></div>
                 </div>
             </div>
         </div>
@@ -42,7 +43,7 @@ import { createPopper, Instance, Modifier, Placement, Rect } from '@popperjs/cor
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 
 import { contextChildrenShowMode } from '@/enums'
-import { MenuSubmenuIcon } from '@/icons'
+import { CheckIcon, MenuSubmenuIcon } from '@/icons'
 import useContextStore from '@/stores/context'
 import { claimInlineSubmenu, releaseInlineSubmenu } from './inlineSubmenu'
 import { Option } from '@/interfaces'
@@ -420,6 +421,31 @@ function runChildAction(action: () => void) {
         &:not(:has(.more)) {
             padding-right: 2px;
         }
+    }
+
+    // the mark of the submenu options that are already done (the playlist has the song): right
+    // after the name, which is the one that shrinks (and gets the ellipsis) when it is long
+    .label.checked {
+        flex: 0 1 auto;
+        padding-right: 0;
+    }
+
+    .check {
+        flex-shrink: 0;
+        height: 16px;
+        width: 16px;
+        margin-left: $small;
+        color: var(--menu-item-icon);
+
+        svg {
+            display: block;
+            height: 100%;
+            width: 100%;
+        }
+    }
+
+    &:hover > .check {
+        color: var(--menu-item-icon-selected);
     }
 
     .label {

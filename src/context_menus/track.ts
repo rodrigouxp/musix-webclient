@@ -51,10 +51,14 @@ export function getTrackAddOptions(track: Track, playlist_label = t('Menus.Commo
     const add_to_playlist: Option = {
         label: playlist_label,
         children: () =>
-            getAddToPlaylistOptions(AddToPlaylistAction, {
-                trackhash: track.trackhash,
-                playlist_name: track.title,
-            }),
+            getAddToPlaylistOptions(
+                AddToPlaylistAction,
+                {
+                    trackhash: track.trackhash,
+                    playlist_name: track.title,
+                },
+                [track.trackhash]
+            ),
         icon: MenuAddToPlaylistIcon,
         menuIcon: true,
     }

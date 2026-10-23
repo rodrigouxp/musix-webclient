@@ -38,6 +38,8 @@ export { default as MenuLiveIcon } from "@/assets/icons/figma/live-album.svg?raw
 export { default as MenuSearchOnIcon } from "@/assets/icons/figma/search-on.svg?raw";
 // the arrow of the items with a submenu
 export { default as MenuSubmenuIcon } from "@/assets/icons/figma/chevron-right.svg?raw";
+// the mark of the playlists that already have the song (submenu "Add to playlist")
+export { default as CheckIcon } from "@/assets/icons/figma/check.svg?raw";
 
 // icons of the song menu: the album one is the same drawing as the "EPs & Singles" mark; the folder
 // and artist ones are not in the Figma icon set

@@ -43,11 +43,16 @@ type action = (playlist: Playlist) => void
  *
  * @param addToPlaylist Function to be called when a playlist is selected
  * @param new_playlist_modal_props Props to be passed to the modal when creating a new playlist
+ * @param trackhashes The tracks being added: the playlists that already have them get the check icon
  * @returns A list of options to be used in a context menu
  */
-export async function getAddToPlaylistOptions(addToPlaylist: action, new_playlist_modal_props: any = {}) {
+export async function getAddToPlaylistOptions(
+    addToPlaylist: action,
+    new_playlist_modal_props: any = {},
+    trackhashes: string[] = []
+) {
     const new_playlist = get_new_playlist_option(new_playlist_modal_props)
-    const p = await getAllPlaylists(true)
+    const p = await getAllPlaylists(true, trackhashes)
 
     let items = [new_playlist]
 
@@ -60,6 +65,7 @@ export async function getAddToPlaylistOptions(addToPlaylist: action, new_playlis
     playlists = p.map(playlist => {
         return <Option>{
             label: playlist.name,
+            checked: playlist.has_track === true,
             action: () => {
                 addToPlaylist(playlist)
             },
