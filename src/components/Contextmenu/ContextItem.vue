@@ -25,7 +25,7 @@
                     v-for="child in children"
                     :key="child.label"
                     class="context-item"
-                    :class="[{ critical: child.critical }, child.type]"
+                    :class="[{ critical: child.critical, 'has-check': child.checked }, child.type]"
                     @click="child.action && runChildAction(child.action)"
                 >
                     <div class="label ellip" :class="{ checked: child.checked }">
@@ -423,8 +423,13 @@ function runChildAction(action: () => void) {
         }
     }
 
-    // the mark of the submenu options that are already done (the playlist has the song): right
-    // after the name, which is the one that shrinks (and gets the ellipsis) when it is long
+    // the mark of the submenu options that are already done (the playlist has the song): the name at
+    // one side and the check at the other, with the same padding on both (the item's). The name is the
+    // one that shrinks (and gets the ellipsis) when it is long
+    .context-item.has-check {
+        justify-content: space-between;
+    }
+
     .label.checked {
         flex: 0 1 auto;
         padding-right: 0;
@@ -432,8 +437,8 @@ function runChildAction(action: () => void) {
 
     .check {
         flex-shrink: 0;
-        height: 16px;
-        width: 16px;
+        height: var(--menu-icon-size);
+        width: var(--menu-icon-size);
         margin-left: $small;
         color: var(--menu-item-icon);
 
