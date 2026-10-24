@@ -31,13 +31,17 @@ export default defineStore('lyrics', {
         user_scrolled: false,
     }),
     actions: {
-        async getLyrics(force = false) {
+        /**
+         * Loads the lyrics of the current song from the server (the .lrc, the tags or a duplicate).
+         * `autoSearch` lets it go online for them when they are missing and the user turned that on.
+         */
+        async getLyrics(force = false, autoSearch = true) {
             const queue = useQueue()
             const track = queue.currenttrack
 
             if (!force && this.currentTrack === track.trackhash) {
                 this.sync()
-                this.searchWithPluginIfNeeded()
+                if (autoSearch) this.searchWithPluginIfNeeded()
                 return
             }
 
@@ -45,7 +49,7 @@ export default defineStore('lyrics', {
             this.copyright = ''
             this.synced = true
 
-            getLyrics(track.filepath, track.trackhash)
+            return getLyrics(track.filepath, track.trackhash)
                 .then(data => {
                     this.currentTrack = track.trackhash
 
@@ -74,7 +78,7 @@ export default defineStore('lyrics', {
                         this.copyright = ''
                     }
 
-                    this.searchWithPluginIfNeeded()
+                    if (autoSearch) this.searchWithPluginIfNeeded()
                 })
         },
         // Only search online while the user is actually looking at the lyrics tab.

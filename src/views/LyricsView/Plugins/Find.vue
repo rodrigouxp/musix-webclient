@@ -24,6 +24,12 @@ const plugin = useLyricsPlugin();
   background-color: $white;
   color: $black;
   margin-top: 1rem;
+  // a long message (the reason of an error) goes to a second line instead of widening the page
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.3;
+  text-align: center;
 
   &:hover {
     background-color: $white;

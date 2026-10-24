@@ -838,6 +838,13 @@
     "LyricView": {
       "NoLyricsFoundFirst": "You don't have",
       "NoLyricsFoundSecond": "the lyrics for this song",
+      "Reason": {
+        "Instrumental": "This track is instrumental",
+        "Network": "Couldn't reach the lyrics sites",
+        "NotFound": "No lyrics found online",
+        "PluginOff": "Turn on the lyrics plugin in Settings",
+        "WriteFailed": "Found the lyrics but couldn't save the file"
+      },
       "SearchOnline": "Search online",
       "Searching": "Searching...",
       "Unsynced": "unsynced"

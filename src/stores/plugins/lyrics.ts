@@ -1,16 +1,21 @@
 import { defineStore } from 'pinia'
-
-import useLyrics from '@/stores/lyrics'
-import useQueue from '@/stores/queue'
-
-import { findLyrics } from '@/requests/plugins/lyrics'
 import { nextTick } from 'vue'
 
-class TrackChangedError extends Error {
-    constructor() {
-        super('Track changed!')
-        this.name = 'TrackChanged'
-    }
+import { useT } from '@/i18n'
+import useLyrics from '@/stores/lyrics'
+import useQueue from '@/stores/queue'
+import useSettings from '@/stores/settings'
+
+import { findLyrics, LyricsSearchReason } from '@/requests/plugins/lyrics'
+
+const { t } = useT()
+
+const REASON_MESSAGES: Record<LyricsSearchReason, string> = {
+    not_found: 'Views.LyricView.Reason.NotFound',
+    instrumental: 'Views.LyricView.Reason.Instrumental',
+    network: 'Views.LyricView.Reason.Network',
+    plugin_off: 'Views.LyricView.Reason.PluginOff',
+    write_failed: 'Views.LyricView.Reason.WriteFailed',
 }
 
 export default defineStore('lyricsplugin', {
@@ -19,45 +24,53 @@ export default defineStore('lyricsplugin', {
         error: '',
     }),
     actions: {
-        searchLyrics() {
-            if (this.loading) return
+        /**
+         * Looks the lyrics of the current song up online. The server saves them as the .lrc of the song
+         * (synced or plain), and they are loaded again like any .lrc that was already there.
+         *
+         * `auto` is the search the app starts by itself: it is quiet when it fails (only the console).
+         * Gives why there was nothing, or null when the lyrics were found.
+         */
+        async searchLyrics(auto = false): Promise<LyricsSearchReason | null> {
+            if (this.loading) return null
             this.loading = true
 
             const queue = useQueue()
             const lyrics = useLyrics()
-
             const track = queue.currenttrack
-            const track_title = track.artists.map(artist => artist.name).join(', ')
+            let reason: LyricsSearchReason | null = null
 
-            findLyrics(track.title, track_title, track.filepath, track.album, track.trackhash)
-                .then(data => {
-                    if (data && data.trackhash !== queue.currenttrackhash) {
-                        throw new TrackChangedError()
-                    }
-                    if (data && data.lyrics) {
-                        return lyrics.setLyrics(data.lyrics)
-                    }
-
-                    throw new Error('No lyrics found!')
+            try {
+                const data = await findLyrics(track, {
+                    auto,
+                    replaceUnsynced: !!useSettings().lyrics_plugin_settings?.overide_unsynced,
                 })
-                .then(async () => {
-                    this.loading = false
-                    await nextTick()
-                    lyrics.scrollToContainerTop()
-                    lyrics.scrollToCurrentLine()
-                })
-                .catch(error => {
-                    if (error instanceof TrackChangedError) {
-                        return
+
+                // the song changed while the server was looking: nothing to show for this one
+                if (track.trackhash !== queue.currenttrackhash) return null
+
+                reason = data ? data.reason : 'network'
+                if (reason) return reason
+
+                await lyrics.getLyrics(true, false)
+                await nextTick()
+                lyrics.scrollToContainerTop()
+                lyrics.scrollToCurrentLine()
+                return null
+            } finally {
+                this.loading = false
+
+                if (reason) {
+                    if (auto) {
+                        console.debug('Lyrics search found nothing:', reason)
+                    } else {
+                        this.error = t(REASON_MESSAGES[reason])
+                        setTimeout(() => {
+                            this.error = ''
+                        }, 5000)
                     }
-
-                    this.loading = false
-                    this.error = error.message
-
-                    setTimeout(() => {
-                        this.error = ''
-                    }, 5000)
-                })
+                }
+            }
         },
     },
 })
