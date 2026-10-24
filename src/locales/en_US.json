@@ -724,7 +724,7 @@
     "Plugins": {
       "Lyrics": {
         "AutoDownload": {
-          "Description": "Automatically download missing lyrics when you are on the lyrics page",
+          "Description": "Automatically look the lyrics of the song that is playing up online when it has none",
           "Title": "Auto download lyrics"
         },
         "OverrideLocal": {

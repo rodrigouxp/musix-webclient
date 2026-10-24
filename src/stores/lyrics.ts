@@ -19,6 +19,10 @@ class HasUnSyncedLyricsError extends Error {
     }
 }
 
+// the songs whose lyrics the app already looked for online by itself (once for each song: pausing,
+// resuming and changing tabs do not look again)
+const autoSearched = new Set<string>()
+
 export default defineStore('lyrics', {
     state: () => ({
         lyrics: <LyricsLine[]>[],
@@ -81,17 +85,35 @@ export default defineStore('lyrics', {
                     if (autoSearch) this.searchWithPluginIfNeeded()
                 })
         },
-        // Only search online while the user is actually looking at the lyrics tab.
+        /**
+         * With "auto download" on, looks the lyrics of the song that is playing up online when it has
+         * none (or only plain ones and "override unsynced" is on). It runs on any screen, once for each
+         * song; a failure because of the connection is the only one that lets it try again.
+         */
         searchWithPluginIfNeeded() {
-            if (!this.onLyricsPage) return
+            const settings = useSettings()
+            if (!settings.use_lyrics_plugin) return
 
-            const { auto_download, overide_unsynced } = useSettings().lyrics_plugin_settings
+            const { auto_download, overide_unsynced } = settings.lyrics_plugin_settings
+            const trackhash = useQueue().currenttrackhash
+            if (!auto_download || !trackhash || autoSearched.has(trackhash)) return
+
             const missing = !this.exists || !this.lyrics.length
             const unsynced = !missing && !this.synced
 
-            if ((missing && auto_download) || (unsynced && overide_unsynced)) {
-                useLyricsPlugin().searchLyrics()
-            }
+            if (!missing && !(unsynced && overide_unsynced)) return
+
+            autoSearched.add(trackhash)
+
+            useLyricsPlugin()
+                .searchLyrics(true)
+                .then(reason => {
+                    if (reason === 'network') autoSearched.delete(trackhash)
+                })
+                .catch(error => {
+                    autoSearched.delete(trackhash)
+                    console.error(error)
+                })
         },
         scrollToContainerTop() {
             const container = document.getElementById('np-lyrics-synced')
