@@ -36,7 +36,7 @@ export default async () => {
   const clearQueue: Option = {
     label: t('Menus.Queue.ClearQueue'),
     action: () => {
-      useQueue().clearQueue();
+      useQueue().clearQueueKeepingCurrent();
     },
     icon: DeleteIcon,
     critical: true,

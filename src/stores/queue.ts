@@ -160,6 +160,25 @@ export default defineStore('Queue', {
             store.clearList()
             this.currentindex = 0
         },
+        /**
+         * "Clear queue" of the menu: everything goes but the song that is playing, which stays as the
+         * only one of the queue (the music goes on, and the queue and the player keep showing it).
+         * Without a current song it is the same as `clearQueue`.
+         */
+        clearQueueKeepingCurrent() {
+            const store = useTracklist()
+            const current = store.tracklist[this.currentindex]
+
+            if (!current) {
+                this.clearQueue()
+                return
+            }
+
+            store.tracklist = [current]
+            this.currentindex = 0
+            // the song that was loaded to play next is not in the queue anymore
+            usePlayer().clearNextAudio()
+        },
         shuffleQueue() {
             const { shuffleList } = useTracklist()
             const { focusCurrentInSidebar } = useInterface()
