@@ -727,6 +727,25 @@
           "Description": "Automatically look the lyrics of the song that is playing up online when it has none",
           "Title": "Auto download lyrics"
         },
+        "FindMissing": {
+          "AbortedNetwork": "Stopped: the lyrics sites could not be reached",
+          "AllDone": "All songs already have lyrics",
+          "Cancel": "Cancel",
+          "Cancelled": "Stopped before the end",
+          "Cancelling": "Cancelling...",
+          "Confirm": "Search for {count} songs? This can take about {minutes} min.",
+          "Description": "{missing} of {total} songs have no lyrics. Searches LRCLIB and Musixmatch and saves a .lrc next to each song.",
+          "DescriptionShort": "Searches LRCLIB and Musixmatch and saves a .lrc next to each song.",
+          "ErrorNetwork": "Couldn't reach the lyrics sites",
+          "ErrorWrite": "Couldn't save the .lrc file",
+          "Errors": "{count} errors",
+          "PluginOff": "Turn on the lyrics plugin first",
+          "Progress": "{done} / {total} • {found} found • {notfound} not found",
+          "Start": "Start",
+          "StartError": "Could not search for the missing lyrics",
+          "Summary": "{found} found ({synced} synced), {notfound} not found, {errors} errors",
+          "Title": "Find missing lyrics"
+        },
         "OverrideLocal": {
           "Description": "Automatically download lyrics even if unsynced lyrics are locally available",
           "Title": "Override unsynced lyrics"

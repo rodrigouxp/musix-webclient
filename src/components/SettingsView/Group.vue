@@ -58,6 +58,12 @@
                         {{ setting.button_text && setting.button_text() }}
                     </button>
                     <button
+                        v-if="setting.type === SettingType.lyrics_missing && setting.button_text && setting.button_text()"
+                        @click="setting.action"
+                    >
+                        {{ setting.button_text() }}
+                    </button>
+                    <button
                         v-if="setting.type === SettingType.separators_input"
                         :disabled="!separatorsDirty"
                         @click="separatorsInput?.save()"
@@ -100,6 +106,7 @@
                     @item-clicked="setting.action"
                 />
                 <BackupRestore v-if="setting.type === SettingType.backup" />
+                <MissingLyrics v-if="setting.type === SettingType.lyrics_missing" />
                 <SecretInput
                     v-if="setting.type === SettingType.secretinput"
                     :text="setting.state ? setting.state() : ''"
@@ -128,6 +135,7 @@ import Accounts from '../modals/settings/custom/Accounts.vue'
 import DropDown from '../shared/DropDown.vue'
 import About from './About.vue'
 import BackupRestore from './Components/BackupRestore.vue'
+import MissingLyrics from './Components/MissingLyrics.vue'
 import SecretInput from './Components/SecretInput.vue'
 
 defineProps<{

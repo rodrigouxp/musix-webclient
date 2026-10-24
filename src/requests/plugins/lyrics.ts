@@ -49,3 +49,58 @@ export async function findLyrics(
 
   return data;
 }
+
+export interface MissingLyricsCount {
+  missing: number;
+  total: number;
+  plugin_on: boolean;
+}
+
+export interface MissingLyricsStatus {
+  running: boolean;
+  done: number;
+  total: number;
+  found_synced: number;
+  found_plain: number;
+  not_found: number;
+  instrumental: number;
+  errors: Record<string, string>;
+  current: string | null;
+  finished: boolean;
+  cancelled: boolean;
+  aborted_reason: string | null;
+}
+
+export async function getMissingLyricsCount() {
+  const { data, status } = await useAxios({
+    url: paths.api.plugins + "/lyrics/missing/count",
+    method: "GET",
+  });
+
+  return status === 200 ? (data as MissingLyricsCount) : null;
+}
+
+export async function startMissingLyrics() {
+  const { data, status } = await useAxios({
+    url: paths.api.plugins + "/lyrics/missing/start",
+  });
+
+  return { status, data: data as (MissingLyricsStatus & { reason?: string }) | undefined };
+}
+
+export async function getMissingLyricsStatus() {
+  const { data, status } = await useAxios({
+    url: paths.api.plugins + "/lyrics/missing/status",
+    method: "GET",
+  });
+
+  return status === 200 ? (data as MissingLyricsStatus) : null;
+}
+
+export async function cancelMissingLyrics() {
+  const { data, status } = await useAxios({
+    url: paths.api.plugins + "/lyrics/missing/cancel",
+  });
+
+  return status === 200 ? (data as MissingLyricsStatus) : null;
+}

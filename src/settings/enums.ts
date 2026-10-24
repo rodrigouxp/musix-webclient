@@ -17,4 +17,5 @@ export enum SettingType {
   backup,
   secretinput,
   dropdown,
+  lyrics_missing,
 }
