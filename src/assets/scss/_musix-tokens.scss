@@ -12,6 +12,13 @@
   // nos dois lados e laterais da barra inferior. Uma fonte só: o $padleft do SCSS lê esta variável.
   --layout-gutter: 1rem;
 
+  // Fonte do painel da esquerda (Roboto variável, instalada no cliente: nada de CDN). Os caracteres que ela
+  // não tem (japonês, coreano, emoji) caem na fonte seguinte da lista. A fonte do resto do app continua
+  // definida no `body` (assets/scss/Global/index.scss), nos botões (Global/basic.scss) e nos campos
+  // (Global/inputs.scss).
+  --font-roboto: "Roboto Variable", Roboto, "SF Compact Display", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
   // Cores (estilos de cor do Figma)
   --color-neutral-white: #ffffff;
   --color-neutral-100: #ececec;

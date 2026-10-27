@@ -1139,6 +1139,11 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.46.0.tgz#3f7802972e8b6fe3f88ed1aabc74ec596c456db6"
   integrity sha512-a8TLtmPi8xzPkCbp/OGFUo5yhRkHM2Ko9kOWP4znJr0WAhWyThaw3PnwX4vOTWOAMsV2uRt32PPDcEz63esSaA==
 
+"@fontsource-variable/roboto@^5.3.0":
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/@fontsource-variable/roboto/-/roboto-5.3.0.tgz#3ddf845c018b0ea9d15b36e06515d0ebdb02f49e"
+  integrity sha512-BoaaZiQf8fgtxv07KXkTwx1bKz/EoqIlTXq2OOKKXINxp6qXWdnlChqV+hSaDANS49yyUASFl3OVBMMDTCIHFA==
+
 "@formkit/auto-animate@^1.0.0-beta.3":
   version "1.0.0-beta.5"
   resolved "https://registry.yarnpkg.com/@formkit/auto-animate/-/auto-animate-1.0.0-beta.5.tgz#3fe4d520a82909cdcffa8854f26bc26ca4562045"

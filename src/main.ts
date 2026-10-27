@@ -18,6 +18,9 @@ import App from "./App.vue";
 import { router } from "./router";
 import vTooltip from "./directives/vTooltip";
 
+// Roboto, variable (weights 100 to 900: the 500 and 600 of the side panel), served by the app itself.
+// By the path of the file: the Vite 3 of this project does not read the `exports` of the package.
+import "../node_modules/@fontsource-variable/roboto/wght.css";
 import "./assets/scss/index.scss";
 import "vue-virtual-scroller/dist/vue-virtual-scroller.css";
 
