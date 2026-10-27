@@ -17,15 +17,22 @@ import artistSettings from './artists'
 import sidebarSettings from './sidebar'
 import tracks from './tracks'
 // icons
-import AlbumSvg from '@/assets/icons/album.svg?raw'
-import AvatarSvg from '@/assets/icons/artist.svg?raw'
-import FolderSvg from '@/assets/icons/folder.svg?raw'
-import TrackSvg from '@/assets/icons/mic.svg?raw'
-import AppearanceSvg from '@/assets/icons/paintbrush.svg?raw'
-import CloudUploadSvg from '@/assets/icons/cloud-upload.svg?raw'
+import AlbumSvg from '@/assets/icons/figma/disc.svg?raw'
+import AvatarSvg from '@/assets/icons/figma/user.svg?raw'
+import FolderRawSvg from '@/assets/icons/folder.svg?raw'
+import TrackSvg from '@/assets/icons/figma/mic.svg?raw'
+import AppearanceRawSvg from '@/assets/icons/paintbrush.svg?raw'
+import CloudUploadRawSvg from '@/assets/icons/cloud-upload.svg?raw'
+import { fitIcon } from '../utils'
 import { useT } from '@/i18n'
 
 const { t } = useT()
+
+// the old icons (not in the Figma) with the viewBox that gives them the proportion of the Figma ones
+const FolderSvg = fitIcon(FolderRawSvg, '1.9 1.47 24.18 24.18')
+const AppearanceSvg = fitIcon(AppearanceRawSvg, '-3.3 -2.71 33.91 33.91')
+const CloudUploadSvg = fitIcon(CloudUploadRawSvg, '-2.99 -3.24 35.89 35.89')
+
 const npStrings = strings.nowPlayingStrings
 const rootRootStrings = strings.manageRootDirsStrings
 
