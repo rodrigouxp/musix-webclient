@@ -278,3 +278,21 @@ button {
     width: 0.9rem;
     margin-left: $smaller;
 }
+
+// Icons with states: the svg has one path for each state (`data-state="active"` and `"inactive"`, see
+// assets/icons/figma/README.md). At rest only the inactive one shows; inside an active navigation item
+// the active one takes its place. Icons without `data-state` are not touched.
+svg [data-state='active'] {
+    display: none;
+}
+
+.nav-item.active,
+.nav-button.active {
+    [data-state='active'] {
+        display: inline;
+    }
+
+    [data-state='inactive'] {
+        display: none;
+    }
+}
