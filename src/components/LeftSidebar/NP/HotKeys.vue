@@ -76,8 +76,8 @@ defineProps<{
 
     // shuffle, previous, play, next, repeat (desktop and tablet)
     &.with-shuffle-repeat {
-        grid-template-columns: repeat(5, 3rem);
-        gap: $smaller;
+        grid-template-columns: repeat(5, 28px);
+        gap: 12px;
         justify-content: center;
 
         // no border (the hover is only the fill)
@@ -85,47 +85,52 @@ defineProps<{
             border: none;
         }
 
-        // every button has the same width, so the round hover is the same for all of them
+        // every button is a 28px square, so the hover is a perfect circle (the border-radius of
+        // .buttons in BottomBar.vue) and the same for all of them
+        button,
         button.play {
-            width: 3rem;
+            width: 28px;
+            height: 28px;
         }
 
-        // All the glyphs (previous, next, shuffle, repeat, play and pause) are 18px tall, with no
-        // scale on the row: each svg has its own size because the drawings do not fill their box
-        // the same way (previous and next: 18px in 24; shuffle: 0.59 of 28; repeat: 0.78 of 28;
-        // play: 0.55 of 28).
+        // Every glyph (previous, next, shuffle, repeat, play and pause) fits in 14 x 14px: its
+        // larger side is 14px (previous and next are square). Each svg has its own size because the
+        // drawings do not fill their box the same way (previous and next: 20 of 24; shuffle: 0.75
+        // of the box wide; repeat: 0.92 wide; play: 0.55 tall).
         button.prev svg,
         button.next svg {
-            height: 1.5rem;
-            width: 1.5rem;
+            height: 1.05rem;
+            width: 1.05rem;
         }
 
         button.shuffle svg {
-            height: 1.9rem;
-            width: 1.9rem;
+            height: 1.172rem;
+            width: 1.172rem;
         }
 
         button.repeat svg {
-            height: 1.44rem;
-            width: 1.44rem;
+            height: 0.9525rem;
+            width: 0.9525rem;
         }
 
+        // the svg can be wider than the 28px button: it does not shrink, or the glyph would
         button.play > svg {
-            height: 2.04rem;
-            width: 2.04rem;
+            flex-shrink: 0;
+            height: 1.5894rem;
+            width: 1.5894rem;
         }
 
         // pause.svg has no viewBox once optimized (it has a width and a height), so it can not
-        // grow with its size: it keeps 28px and is scaled around the center (its bars are 14.8px
-        // tall in 28px, so 1.215 gives 18px)
+        // grow with its size: it keeps 28px and is scaled around the center (its bars are 14.82px
+        // tall in 28px, so 0.9447 gives 14px)
         button.play > svg.pausesvg {
             height: 28px;
             width: 28px;
-            transform: scale(1.215);
+            transform: scale(0.9447);
         }
 
         button.play:active > svg.pausesvg {
-            transform: scale(0.91);
+            transform: scale(0.71);
         }
 
         button.shuffle:active svg,
