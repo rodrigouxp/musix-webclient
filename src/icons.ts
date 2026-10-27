@@ -32,7 +32,7 @@ export { default as MenuAddToQueueIcon } from "@/assets/icons/figma/add-to-queue
 export { default as MenuAddToPlaylistIcon } from "@/assets/icons/figma/add-to-playlist.svg?raw";
 export { default as MenuAddToCollectionIcon } from "@/assets/icons/figma/add-to-collection.svg?raw";
 export { default as MenuUpdateCoverIcon } from "@/assets/icons/figma/update-album-cover.svg?raw";
-export { default as MenuEpsSinglesIcon } from "@/assets/icons/figma/ep-and-single.svg?raw";
+export { default as MenuEpsSinglesIcon } from "@/assets/icons/figma/disc.svg?raw";
 export { default as MenuSoundtrackIcon } from "@/assets/icons/figma/soundtrack.svg?raw";
 export { default as MenuLiveIcon } from "@/assets/icons/figma/live-album.svg?raw";
 export { default as MenuSearchOnIcon } from "@/assets/icons/figma/search-on.svg?raw";
@@ -43,7 +43,7 @@ export { default as CheckIcon } from "@/assets/icons/figma/check.svg?raw";
 
 // icons of the song menu: the album one is the same drawing as the "EPs & Singles" mark; the folder
 // and artist ones are not in the Figma icon set
-export { default as MenuGoToAlbumIcon } from "@/assets/icons/figma/ep-and-single.svg?raw";
+export { default as MenuGoToAlbumIcon } from "@/assets/icons/figma/disc.svg?raw";
 export { default as MenuGoToFolderIcon } from "@/assets/icons/menu/go-to-folder.svg?raw";
 export { default as MenuGoToArtistIcon } from "@/assets/icons/menu/go-to-artist.svg?raw";
 

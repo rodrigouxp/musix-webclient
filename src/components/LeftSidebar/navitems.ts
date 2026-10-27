@@ -1,6 +1,6 @@
 import { Routes } from "@/router";
 
-import AlbumsSvg from "@/assets/icons/figma/ep-and-single.svg";
+import AlbumsSvg from "@/assets/icons/figma/disc.svg";
 import ArtistsSvg from "@/assets/icons/figma/user.svg";
 import HeartSvg from "@/assets/icons/figma/favorite.svg";
 import PlaylistSvg from "@/assets/icons/figma/add-to-playlist.svg";
