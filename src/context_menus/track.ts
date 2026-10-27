@@ -153,7 +153,7 @@ export default async (track: Track): Promise<Option[]> => {
     }
 
     const open_in_explorer: Option = {
-        label: t('Menus.Track.OpenInFiles'),
+        label: t('Menus.Common.OpenInFiles'),
         action: () => {
             openInFiles(track.filepath || track.folder || '')
         },

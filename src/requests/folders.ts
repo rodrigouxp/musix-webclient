@@ -71,8 +71,11 @@ export function buildFilesUrl(template: string, hostPath: string) {
 
 /**
  * Opens, in a new tab, the folder of a song (or the folder itself) in the file manager of the host.
+ *
+ * The path can be known only after a wait (the folder of an album comes from its tracks): then it is
+ * a function that gives it. The tab is open before the wait either way.
  */
-export async function openInFiles(path: string) {
+export async function openInFiles(path: string | (() => Promise<string>)) {
     // The tab opens now, in the click: after waiting for the server the browser (the iPhone, above
     // all) would take it for a pop-up and block it
     const tab = window.open('', '_blank')
@@ -82,8 +85,18 @@ export async function openInFiles(path: string) {
         useToast().showNotification(t(`Requests.Folders.${key}`), NotifType.Error)
     }
 
+    let folder = ''
+
+    try {
+        folder = typeof path === 'function' ? await path() : path
+    } catch (error) {
+        console.error(error)
+    }
+
+    if (!folder) return fail('NotFound')
+
     const { data, status, error } = await useAxios({
-        url: paths.api.folder.showInFiles + `?path=${encodeURIComponent(path)}`,
+        url: paths.api.folder.showInFiles + `?path=${encodeURIComponent(folder)}`,
         method: 'GET',
     })
 

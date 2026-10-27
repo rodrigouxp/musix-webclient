@@ -346,6 +346,7 @@
       "AddToCollection": "Add to Collection",
       "AddToPlaylist": "Add to Playlist",
       "AddToQueue": "Add to queue",
+      "OpenInFiles": "Open in files",
       "PlayNext": "Play next",
       "RemoveFromCollection": "Remove item",
       "RemoveFromPlaylist": "Remove From {name}",
@@ -375,8 +376,7 @@
       "DeleteTrack": "Delete Track",
       "GoToAlbum": "Go to Album",
       "GoToArtist": "Go to Artist",
-      "GoToFolder": "Go to Folder",
-      "OpenInFiles": "Open in files"
+      "GoToFolder": "Go to Folder"
     },
     "Utils": {
       "NewCollection": "New Collection",

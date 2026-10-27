@@ -11,6 +11,8 @@ import { AlbumKind, embedAlbumCover, getAlbumTracks, refreshAlbumCover, setAlbum
 import { askConfirm } from '@/stores/confirm'
 import { addOrRemoveItemFromCollection } from '@/requests/collections'
 import { addAlbumToPlaylist } from '@/requests/playlists'
+import { openInFiles } from '@/requests/folders'
+import { commonFolder } from '@/utils/commonFolder'
 
 import {
     DeleteIcon,
@@ -18,6 +20,7 @@ import {
     MenuAddToPlaylistIcon,
     MenuAddToQueueIcon,
     MenuEpsSinglesIcon,
+    MenuGoToFolderIcon,
     MenuLiveIcon,
     MenuPlayNextIcon,
     MenuSearchOnIcon,
@@ -165,6 +168,14 @@ export default async (album?: Album) => {
         menuIcon: true,
     }
 
+    // the folder of the album comes from its tracks: the tab opens in the click, the folder is found after
+    const open_in_files: Option = {
+        label: t('Menus.Common.OpenInFiles'),
+        action: () => openInFiles(async () => commonFolder(await getAlbumTracks(album.albumhash))),
+        icon: MenuGoToFolderIcon,
+        menuIcon: true,
+    }
+
     const update_cover = <Option>{
         label: t('Menus.Common.UpdateAlbumCover'),
         action: async () => {
@@ -276,7 +287,7 @@ export default async (album?: Album) => {
             add_to_playlist,
             router.currentRoute.value.name === Routes.Page ? remove_from_page : add_to_page,
         ],
-        [update_cover, ...embed_cover],
+        [open_in_files, update_cover, ...embed_cover],
         markOptions,
         [find_on_social],
     ].filter(group => group.length)
