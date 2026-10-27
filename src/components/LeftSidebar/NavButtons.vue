@@ -17,7 +17,7 @@
       @click="menu.action && menu.action()"
     >
       <div v-if="!menu.separator">
-        <component :is="menu.icon" :style="menu.icon_pad ? { boxSizing: 'border-box', padding: menu.icon_pad } : undefined" />
+        <component :is="menu.icon" />
         <span>{{ menu.name }}</span>
       </div>
     </router-link>

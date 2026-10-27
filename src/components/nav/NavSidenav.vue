@@ -15,7 +15,7 @@
                 :class="{ active: $route.name === link.route_name, 'icon-active': $route.name === link.route_name }"
                 @click="closeSidenav"
             >
-                <component :is="link.icon" :style="link.icon_pad ? { boxSizing: 'border-box', padding: link.icon_pad } : undefined" />
+                <component :is="link.icon" />
                 <!-- Render the icon as a Vue component -->
                 <span>{{ link.name }}</span>
             </RouterLink>
