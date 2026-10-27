@@ -1,7 +1,11 @@
 <template>
     <div v-if="notifStore.notifs" class="toasts">
         <div v-for="notif in notifStore.notifs" :key="notif.text" class="new-notif rounded-sm" :class="notif.type">
-            <component :is="getSvg(notif.type)" class="notif-icon" />
+            <component
+                :is="getSvg(notif.type)"
+                class="notif-icon"
+                :class="{ 'icon-active': notif.type === NotifType.Favorite }"
+            />
             <div class="notif-text">{{ notif.text }}</div>
         </div>
     </div>
@@ -10,7 +14,7 @@
 <script setup lang="ts">
 import { NotifType, useToast } from '../stores/notification'
 
-import HeartSvg from '../assets/icons/figma/favorited.svg'
+import HeartSvg from '../assets/icons/figma/favorite.svg'
 import ErrorSvg from '../assets/icons/toast/error.svg'
 import InfoSvg from '../assets/icons/toast/info.svg'
 import SuccessSvg from '../assets/icons/toast/ok.svg'
@@ -87,7 +91,7 @@ function getSvg(notif: NotifType) {
     color: #4cbd4c;
 }
 
-// the heart of the Figma (favorited, error/300); 25px keeps the glyph of the old heart (18.8px)
+// the filled heart of the Figma (favorite, active state, error/300); 25px keeps the glyph of the old heart (18.8px)
 .new-notif.favorite > .notif-icon {
     color: $red;
     width: 25px;

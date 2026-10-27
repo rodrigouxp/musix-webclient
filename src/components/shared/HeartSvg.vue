@@ -20,8 +20,7 @@
                 },
             }"
         >
-            <HeartFillSvg v-if="state" class="is-favorited" />
-            <HeartSvg v-else />
+            <HeartSvg :class="{ 'icon-active': state }" />
         </Motion>
     </button>
 </template>
@@ -29,7 +28,6 @@
 <script setup lang="ts">
 import { Motion } from 'motion/vue'
 
-import HeartFillSvg from '@/assets/icons/figma/favorited.svg'
 import HeartSvg from '@/assets/icons/figma/favorite.svg'
 
 import { getTextColor } from '@/utils/colortools/shift'
@@ -62,17 +60,12 @@ $bg: rgb(255, 255, 255);
         height: max-content;
         transform: scale(1);
 
-        // The glyph of the heart is 16.5px (as it always was). The Figma icons have a margin and the
-        // filled heart is bigger than the outline one, so each has its own size.
+        // The heart of the Figma has two states in the same box (outline and filled, `favorite.svg`),
+        // so both have the same size.
         svg {
             height: 1.55rem;
             width: 1.55rem;
             display: block;
-        }
-
-        svg.is-favorited {
-            height: 1.375rem;
-            width: 1.375rem;
         }
     }
 

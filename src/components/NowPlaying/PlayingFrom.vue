@@ -10,7 +10,11 @@
                     :src="data.image"
                     :class="`${tracklist.from.type === FromOptions.artist ? 'circular' : 'rounded-xsm'}`"
                 />
-                <div v-else class="from-icon border rounded-sm">
+                <div
+                    v-else
+                    class="from-icon border rounded-sm"
+                    :class="{ 'icon-active': tracklist.from.type === FromOptions.favorite }"
+                >
                     <component :is="data.icon"></component>
                 </div>
                 <div class="pad-sm">
@@ -105,7 +109,7 @@ function showContextMenu(e: MouseEvent) {
             color: rgb(202, 197, 197);
         }
 
-        // the icons of the Figma (search, favorited): 18px keeps the glyph of the old ones (about 14px)
+        // the icons of the Figma (search, favorite filled): 18px keeps the glyph of the old ones (about 14px)
         svg[width="24"][height="24"] {
             height: 18px;
             width: 18px;

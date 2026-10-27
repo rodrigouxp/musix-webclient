@@ -239,7 +239,6 @@ defineEmits<{
 
         // the icons of the Figma have a margin: the same 1.3rem as the lyrics and the volume
         .heart-button div svg,
-        .heart-button div svg.is-favorited,
         .add-button svg {
             height: 1.3rem;
             width: 1.3rem;
