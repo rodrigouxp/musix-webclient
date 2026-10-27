@@ -47,15 +47,22 @@ const q = useQueueStore();
   width: 100%;
 }
 
-.sidebar-songcard {
+// the card of the song (SidePanel > album-art-NowPlaying): as wide as the panel lets it be, and square
+.sidebar-songcard,
+.sidebar-songcard.rounded-sm {
   width: 100%;
+  aspect-ratio: 1;
   position: relative;
-  width: 13rem;
+  border-radius: var(--sidepanel-art-radius);
 
-  img {
+  img,
+  img.l-image {
     cursor: pointer;
+    display: block;
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--sidepanel-art-radius);
   }
 }
 </style>

@@ -73,4 +73,41 @@
   --menu-icon-size: 18px;
   --menu-divider: var(--color-divider);
   --menu-divider-width: 0.8px;
+
+  // Painel da esquerda (componente SidePanel do Figma, nó 12329:437). Tudo em px, como no desenho. Nada
+  // tem largura fixa dentro do painel: os itens ocupam a largura que ele tiver menos o padding.
+  --sidepanel-width: 224px; // sem a borda direita de 1 px que o app mantém por enquanto
+  --sidepanel-border: 1px;
+  --sidepanel-padding: 12px;
+  --sidepanel-gap: 12px; // entre os blocos (cabeçalho, botões, divisor, playlists, cartão)
+  --sidepanel-bg: var(--color-neutral-black);
+  --sidepanel-font: var(--font-roboto);
+  --sidepanel-font-size: 14px;
+  --sidepanel-header-height: 60px;
+  --sidepanel-header-padding: 10px 12px 10px 18px;
+  --sidepanel-header-gap: 16px; // entre o logo e o texto
+  --sidepanel-header-radius: 13px;
+  // as duas cores abaixo ainda não têm estilo no Figma e ainda não são usadas: o cabeçalho segue com o
+  // gradiente e a borda de hoje até o Rodrigo decidir
+  --sidepanel-header-bg: #0a0a0a;
+  --sidepanel-header-border: #303030;
+  --sidepanel-title-weight: 600;
+  --sidepanel-item-height: 34px;
+  --sidepanel-item-padding: 8px;
+  --sidepanel-item-gap: 12px; // entre o ícone e o texto
+  --sidepanel-items-gap: 10px; // entre os botões de navegação
+  --sidepanel-icon-size: 20px;
+  --sidepanel-nav-weight: 600; // todos os itens, ativo ou não
+  --sidepanel-nav-line-height: 16px;
+  --sidepanel-nav-color: var(--color-neutral-100);
+  --sidepanel-playlists-gap: 8px;
+  --sidepanel-playlist-height: 28px;
+  --sidepanel-playlist-padding-x: 12px;
+  --sidepanel-playlist-gap: 8px; // entre a capa e o nome
+  --sidepanel-playlist-cover-size: 28px;
+  --sidepanel-playlist-cover-radius: 4px;
+  --sidepanel-playlist-weight: 500;
+  --sidepanel-playlist-line-height: 20px;
+  --sidepanel-playlist-color: var(--color-neutral-white);
+  --sidepanel-art-radius: 10px;
 }

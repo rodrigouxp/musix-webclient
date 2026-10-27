@@ -1,5 +1,5 @@
 <template>
-  <div class="l-sidebar no-scroll">
+  <div class="l-sidebar no-scroll" :class="{ 'no-card': !settings.use_np_img }">
     <Logo />
     <div class="scrollable">
       <Navigation />
@@ -20,21 +20,32 @@ const settings = useSettingsStore();
 </script>
 
 <style lang="scss">
+// The side panel of the Figma (SidePanel): the header and the card of the song stay, the middle (buttons,
+// divider, playlists) scrolls inside. The sizes are the tokens --sidepanel-* (_musix-tokens.scss).
 .l-sidebar {
-  width: 15rem;
+  // the panel of the Figma has --sidepanel-width; the border of 1px that the app keeps is on top of it
+  width: calc(var(--sidepanel-width) + var(--sidepanel-border));
   grid-area: l-sidebar;
   display: grid;
-  grid-template-rows: 3.75rem 1fr max-content;
-  border-right: solid 1px $gray5;
+  grid-template-rows: var(--sidepanel-header-height) minmax(0, 1fr) max-content;
+  gap: var(--sidepanel-gap);
+  border-right: solid var(--sidepanel-border) $gray5;
   position: relative;
-  padding: var(--layout-gutter);
+  padding: var(--sidepanel-padding);
+  background: var(--sidepanel-bg);
+  font-family: var(--sidepanel-font);
+
+  // no card of the song (Settings): the middle takes its place
+  &.no-card {
+    grid-template-rows: var(--sidepanel-header-height) minmax(0, 1fr);
+  }
 
   .scrollable {
     height: 100%;
+    min-height: 0;
     overflow: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
-    padding: 1rem 0;
 
     &::-webkit-scrollbar-thumb {
       background-color: transparent;
