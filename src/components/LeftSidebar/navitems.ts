@@ -1,9 +1,9 @@
 import { Routes } from "@/router";
 
 import AlbumsSvg from "@/assets/icons/figma/ep-and-single.svg";
-import ArtistsSvg from "@/assets/icons/menu/go-to-artist.svg";
+import ArtistsSvg from "@/assets/icons/figma/user.svg";
 import HeartSvg from "@/assets/icons/figma/favorite.svg";
-import PlaylistSvg from "@/assets/icons/playlist-1.svg";
+import PlaylistSvg from "@/assets/icons/figma/add-to-playlist.svg";
 import HomeSvg from "@/assets/icons/figma/home.svg";
 import { useT } from "@/i18n";
 
@@ -45,14 +45,15 @@ export const useNavItems = () => {
     icon_pad: "2.35px",
   };
 
+  // the side panel: the four buttons, a divider, and Playlists (with the pinned ones under it)
   const menus = [
     home,
     albums,
     artists,
+    favorites,
     {
       separator: true,
     },
-    favorites,
     playlists,
   ];
 

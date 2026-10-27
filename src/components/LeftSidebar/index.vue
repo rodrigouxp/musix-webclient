@@ -2,7 +2,7 @@
   <div class="l-sidebar no-scroll" :class="{ 'no-card': !settings.use_np_img }">
     <Logo />
     <div class="scrollable">
-      <Navigation />
+      <SidePanelNav />
     </div>
 
     <SongCard v-if="settings.use_np_img" />
@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import useSettingsStore from "@/stores/settings";
 
-import Navigation from "@/components/LeftSidebar/NavButtons.vue";
+import SidePanelNav from "./SidePanelNav.vue";
 import Logo from "@/components/Logo.vue";
 import SongCard from "./NP/SongCard.vue";
 
