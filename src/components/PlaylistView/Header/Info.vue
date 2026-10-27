@@ -79,15 +79,20 @@ const canRename = computed(() => Number.isInteger(playlist.info.id));
 const EDIT_BTN_SPACE = 44;
 const room = computed(() => (test_elem.value?.offsetWidth || 0) - (canRename.value ? EDIT_BTN_SPACE : 0));
 
-// the field starts with the current name selected
-watch(renaming, async (on) => {
-  if (!on) return;
+// the field starts with the current name selected (also when the page opens already renaming: the
+// "Rename" of the side panel opens the playlist and then asks for the field)
+watch(
+  renaming,
+  async (on) => {
+    if (!on) return;
 
-  newName.value = playlist.info.name;
-  await nextTick();
-  nameInput.value?.focus();
-  nameInput.value?.select();
-});
+    newName.value = playlist.info.name;
+    await nextTick();
+    nameInput.value?.focus();
+    nameInput.value?.select();
+  },
+  { immediate: true }
+);
 
 function stopRenaming() {
   renaming.value = false;

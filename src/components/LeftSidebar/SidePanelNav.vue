@@ -36,11 +36,13 @@
         <component :is="menu.icon" />
         <span>{{ menu.name }}</span>
       </router-link>
+      <PinnedPlaylists />
     </div>
   </nav>
 </template>
 
 <script setup lang="ts">
+import PinnedPlaylists from "./PinnedPlaylists.vue";
 import { useNavItems } from "./navitems";
 
 const { menus } = useNavItems();
