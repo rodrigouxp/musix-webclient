@@ -108,4 +108,41 @@
   --sidepanel-playlist-line-height: 20px;
   --sidepanel-playlist-color: var(--color-neutral-white);
   --sidepanel-art-radius: 10px;
+
+  // PlayerBar (barra de baixo acima de 900px; Figma 12355:646)
+  --playerbar-height: 80px; // sem a borda de cima
+  --playerbar-border: 2px;
+  --playerbar-border-color: var(--color-neutral-900);
+  --playerbar-bg: var(--color-background);
+  --playerbar-padding: 12px 20px;
+  --playerbar-font: var(--font-roboto);
+  --playerbar-text-size: 14px;
+  --playerbar-text-line-height: 20px;
+  --playerbar-text-weight: 700;
+  --playerbar-title-color: var(--color-neutral-100);
+  --playerbar-artist-color: var(--color-neutral-500);
+  --playerbar-artwork-size: 56px;
+  --playerbar-artwork-radius: 4px;
+  --playerbar-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
+  --playerbar-track-gap: 14px; // entre a capa e o texto
+  --playerbar-left-gap: 40px; // entre música, favorite e add
+  --playerbar-icon-size: 20px; // caixa do svg (glifo de 20 no viewBox de 24)
+  --playerbar-control-size: 34px; // círculo dos cinco controles do centro
+  --playerbar-control-gap: 28px;
+  --playerbar-side-control-size: 28px; // círculo de lyrics e do speaker (e de favorite e add, decisão minha)
+  --playerbar-hover-bg: var(--color-neutral-900);
+  --playerbar-timeline-width: 502px; // tempo + barra + tempo
+  --playerbar-timeline-gap: 12px;
+  --playerbar-progress-height: 4px;
+  --playerbar-progress-bg: var(--color-neutral-900);
+  --playerbar-progress-fill: var(--color-neutral-white);
+  --playerbar-progress-loaded: var(--color-neutral-700); // trecho já carregado (decisão minha, não existe no Figma)
+  --playerbar-thumb-size: 14px;
+  --playerbar-time-bg: var(--color-neutral-900);
+  --playerbar-time-radius: 4px;
+  --playerbar-time-padding: 1px 4px;
+  --playerbar-time-size: 12px;
+  --playerbar-right-gap: 40px; // entre lyrics e o volume
+  --playerbar-volume-gap: 8px;
+  --playerbar-volume-width: 94px;
 }

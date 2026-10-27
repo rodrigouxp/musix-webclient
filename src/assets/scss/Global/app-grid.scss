@@ -58,6 +58,14 @@ $g-border: solid 1px $gray5;
     grid-area: bottombar;
     border-top: $g-border;
     // background-color: $bars;
+
+    // above 900px: the PlayerBar of the Figma (80px with a 2px top border, inside the 82px row)
+    @media only screen and (min-width: 901px) {
+        box-sizing: border-box;
+        background-color: var(--playerbar-bg);
+        border-top: var(--playerbar-border) solid var(--playerbar-border-color);
+        padding: var(--playerbar-padding);
+    }
 }
 
 .content-page {
