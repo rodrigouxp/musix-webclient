@@ -114,11 +114,31 @@ defineEmits<{
         }
     }
 
+    // above 900px (the PlayerBar of the Figma): lyrics and the volume, 40px apart; each icon is 20px
+    // in a circle of 28px
     &.desktop {
         display: flex;
         justify-content: flex-end;
         align-items: center;
-        gap: 4px;
+        gap: var(--playerbar-right-gap);
+        height: var(--playerbar-side-control-size);
+
+        button.lyrics,
+        button.speaker-icon {
+            width: var(--playerbar-side-control-size) !important;
+            height: var(--playerbar-side-control-size) !important;
+            padding: 0 !important;
+
+            &:hover {
+                background-color: var(--playerbar-hover-bg) !important;
+            }
+        }
+
+        .lyrics svg,
+        .speaker-icon svg {
+            height: var(--playerbar-icon-size);
+            width: var(--playerbar-icon-size);
+        }
     }
 
     .speaker svg,

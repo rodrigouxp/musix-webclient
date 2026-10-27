@@ -13,7 +13,7 @@
                 :blurhash="queue.currenttrack.blurhash"
                 :duration="1000"
                 img-class="rounded-sm"
-                style="width: 48px; aspect-ratio: 1;"
+                :style="{ width: isMobile ? '48px' : 'var(--playerbar-artwork-size)', aspectRatio: '1' }"
             />
             <div v-if="isMobile" class="expandicon">
                 <ExpandSvg />
@@ -191,17 +191,31 @@ defineEmits<{
         padding: 0;
     }
 
-    // above 900px: thumbnail, text, favorite and add, 14px apart; what does not fit is the text
-    // (it is cut with an ellipsis), never the buttons
+    // above 900px (the PlayerBar of the Figma): thumbnail, text, favorite and add; what does not
+    // fit is the text (it is cut with an ellipsis), never the buttons
     &.on-desktop {
         display: flex;
         align-items: center;
-        gap: 14px;
+        // between the song (thumbnail and text), the favorite and the add
+        gap: var(--playerbar-left-gap);
         min-width: 0;
+        font-family: var(--playerbar-font);
+        font-size: var(--playerbar-text-size);
+        font-weight: var(--playerbar-text-weight);
+        line-height: var(--playerbar-text-line-height);
 
         .np-image {
             flex-shrink: 0;
-            margin: 0;
+            // the thumbnail and the text are closer than the rest (14px)
+            margin: 0 calc(var(--playerbar-track-gap) - var(--playerbar-left-gap)) 0 0;
+            height: var(--playerbar-artwork-size);
+            border-radius: var(--playerbar-artwork-radius);
+            box-shadow: var(--playerbar-shadow);
+
+            .il-image,
+            .blurhash-placeholder {
+                border-radius: var(--playerbar-artwork-radius);
+            }
 
             &.disabled {
                 pointer-events: none;
@@ -216,20 +230,35 @@ defineEmits<{
 
         .track-info .title {
             min-width: 0;
+            margin-bottom: 0;
+            color: var(--playerbar-title-color);
         }
 
         .track-info .text-loader {
             min-width: 0;
             max-width: 100%;
             overflow: hidden;
+            height: var(--playerbar-text-line-height);
         }
 
-        // the favorite and the add button: same size, same round hover as the others of the bar
+        .track-info .artistname {
+            opacity: 1;
+            color: var(--playerbar-artist-color);
+
+            a {
+                font-size: inherit;
+                color: inherit;
+            }
+        }
+
+        // the favorite and the add button: no circle in the Figma, only the icon (20px); the hover is
+        // a circle of 28px around it (-4px of margin keeps the 20px of layout and the 40px of distance)
         .heart-button,
         .add-button {
             flex-shrink: 0;
-            width: 3rem;
-            height: 3rem;
+            width: var(--playerbar-side-control-size);
+            height: var(--playerbar-side-control-size);
+            margin: calc((var(--playerbar-icon-size) - var(--playerbar-side-control-size)) / 2);
             padding: 0;
             border: none;
             aspect-ratio: auto;
@@ -237,11 +266,10 @@ defineEmits<{
             place-items: center;
         }
 
-        // the icons of the Figma have a margin: the same 1.3rem as the lyrics and the volume
         .heart-button div svg,
         .add-button svg {
-            height: 1.3rem;
-            width: 1.3rem;
+            height: var(--playerbar-icon-size);
+            width: var(--playerbar-icon-size);
         }
 
         .add-button svg:active {

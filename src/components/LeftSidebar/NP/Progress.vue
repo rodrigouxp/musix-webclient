@@ -7,7 +7,7 @@
         :max="time.full"
         step="0.1"
         :style="{
-            background: `#3a3a3c linear-gradient(90deg, white ${currentPercent}%, #48484a ${currentPercent}%, #48484a ${maxSeekPercent}%, #3a3a3c ${maxSeekPercent}%)`,
+            background: `var(--progress-track, #3a3a3c) linear-gradient(90deg, var(--progress-fill, white) ${currentPercent}%, var(--progress-loaded, #48484a) ${currentPercent}%, var(--progress-loaded, #48484a) ${maxSeekPercent}%, var(--progress-track, #3a3a3c) ${maxSeekPercent}%)`,
         }"
         @change="seek"
         @click="seek"

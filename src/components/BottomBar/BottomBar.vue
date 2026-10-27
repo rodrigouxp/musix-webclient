@@ -110,6 +110,11 @@ function handleFav() {
         &:hover {
             background-color: $gray !important;
 
+            // above 900px: the circle of the PlayerBar (neutral/900)
+            @media only screen and (min-width: 901px) {
+                background-color: var(--playerbar-hover-bg) !important;
+            }
+
             @include allPhones {
                 border: solid 1px $gray3 !important;
             }
@@ -176,15 +181,48 @@ function handleFav() {
         }
     }
 
+    // above 900px: the PlayerBar of the Figma (Roboto for the text and the times)
+    @media only screen and (min-width: 901px) {
+        font-family: var(--playerbar-font);
+
+        &:hover {
+            // the thumb of the progress bar (it only shows when the bar is under the mouse)
+            .progress-row #progress::-moz-range-thumb {
+                height: var(--playerbar-thumb-size);
+                width: var(--playerbar-thumb-size);
+            }
+
+            .progress-row #progress::-webkit-slider-thumb {
+                height: var(--playerbar-thumb-size);
+                width: var(--playerbar-thumb-size);
+            }
+        }
+    }
+
     // the time, the progress bar and the full time (desktop and tablet)
     .progress-row {
         display: grid;
         grid-template-columns: max-content 1fr max-content;
         align-items: center;
-        gap: $medium;
+        gap: var(--playerbar-timeline-gap);
 
         #progress {
             margin: 0;
+            width: 100%;
+            height: var(--playerbar-progress-height);
+            border-radius: 400px;
+            // the colors of the track, of the part played and of the part loaded (Progress.vue)
+            --progress-track: var(--playerbar-progress-bg);
+            --progress-fill: var(--playerbar-progress-fill);
+            --progress-loaded: var(--playerbar-progress-loaded);
+
+            &::-webkit-slider-thumb {
+                width: var(--playerbar-thumb-size);
+            }
+
+            &::-moz-range-thumb {
+                width: var(--playerbar-thumb-size);
+            }
         }
     }
 
@@ -194,6 +232,12 @@ function handleFav() {
         gap: 0.625rem;
 
         width: 30rem;
+
+        // above 900px: the buttons and the timeline are 56px together (34 and 22), 502px wide
+        @media only screen and (min-width: 901px) {
+            gap: 0;
+            width: var(--playerbar-timeline-width);
+        }
 
         @media only screen and (max-width: 1080px) {
             width: 20rem !important;
@@ -212,14 +256,18 @@ function handleFav() {
             }
         }
 
+        // the pills with the times (only above 900px: they are in the .progress-row)
         .time {
-            font-weight: 500;
-            font-size: $medium;
+            color: var(--color-neutral-white);
+            font-weight: var(--playerbar-text-weight);
+            font-size: var(--playerbar-time-size);
+            line-height: var(--playerbar-text-line-height);
 
             .numbers {
-                background-color: $gray3;
-                border-radius: $smaller;
-                padding: 1px $smaller;
+                background-color: var(--playerbar-time-bg);
+                border-radius: var(--playerbar-time-radius);
+                padding: var(--playerbar-time-padding);
+                box-shadow: var(--playerbar-shadow);
                 font-variant-numeric: tabular-nums;
             }
         }
@@ -230,7 +278,7 @@ function handleFav() {
         display: grid;
         place-items: center;
         border: none;
-        height: 2.5rem;
+        height: var(--playerbar-control-size);
 
         button {
             background: transparent;

@@ -109,27 +109,31 @@ const handleMouseWheel = (event: WheelEvent) => {
 .speaker-inline {
     display: flex;
     align-items: center;
-    gap: $smaller;
-    height: 3rem;
+    gap: var(--playerbar-volume-gap);
+    height: var(--playerbar-side-control-size);
 
     input#volume {
         // between 901px and about 1200px the slider shrinks (4rem at the least)
-        width: clamp(4rem, 8vw, 6rem);
+        width: clamp(4rem, 8vw, var(--playerbar-volume-width));
+        height: var(--playerbar-progress-height);
+        border-radius: 400px;
         flex-shrink: 0;
         margin: 0;
         touch-action: pan-x;
-        background: linear-gradient(to top, #ffffff, #ffffff) 0% 50% no-repeat, $gray4;
+        background: linear-gradient(to top, var(--playerbar-progress-fill), var(--playerbar-progress-fill)) 0% 50%
+                no-repeat,
+            var(--playerbar-progress-bg);
 
         // the thumb is always there (in the progress bar it only shows on hover)
         &::-webkit-slider-thumb {
-            height: 1rem;
-            width: 1rem;
+            height: var(--playerbar-thumb-size);
+            width: var(--playerbar-thumb-size);
             cursor: pointer;
         }
 
         &::-moz-range-thumb {
-            height: 1rem;
-            width: 1rem;
+            height: var(--playerbar-thumb-size);
+            width: var(--playerbar-thumb-size);
             cursor: pointer;
         }
     }

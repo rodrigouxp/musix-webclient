@@ -76,8 +76,8 @@ defineProps<{
 
     // shuffle, previous, play, next, repeat (desktop and tablet)
     &.with-shuffle-repeat {
-        grid-template-columns: repeat(5, 28px);
-        gap: 12px;
+        grid-template-columns: repeat(5, var(--playerbar-control-size));
+        gap: var(--playerbar-control-gap);
         justify-content: center;
 
         // no border (the hover is only the fill)
@@ -85,39 +85,27 @@ defineProps<{
             border: none;
         }
 
-        // every button is a 28px square, so the hover is a perfect circle (the border-radius of
-        // .buttons in BottomBar.vue) and the same for all of them
+        // every button is a square (34px in the Figma), so the hover is a perfect circle (the
+        // border-radius of .buttons in BottomBar.vue) and the same for all of them; the play is
+        // not bigger than the others
         button,
         button.play {
-            width: 28px;
-            height: 28px;
+            width: var(--playerbar-control-size);
+            height: var(--playerbar-control-size);
         }
 
-        // Every glyph (previous, next, shuffle, repeat, play and pause) fits in 14 x 14px: its
-        // larger side is 14px (previous and next are square). Each svg has its own size because the
-        // drawings do not fill their box the same way (previous and next: 20 of 24; shuffle: 0.75
-        // of the box wide; repeat: 0.92 wide; play: 0.55 tall).
-        button.prev svg,
-        button.next svg {
-            height: 1.05rem;
-            width: 1.05rem;
-        }
-
-        button.shuffle svg {
-            height: 1.172rem;
-            width: 1.172rem;
-        }
-
-        button.repeat svg {
-            height: 0.9525rem;
-            width: 0.9525rem;
-        }
-
-        // the svg can be wider than the 28px button: it does not shrink, or the glyph would
+        // every icon has the same box (20px, the glyph of 20 inside the viewBox of 24), so the
+        // icon and the circle keep the same proportion (20 to 34) in all of them
+        button svg,
         button.play > svg {
             flex-shrink: 0;
-            height: 1.5894rem;
-            width: 1.5894rem;
+            height: var(--playerbar-icon-size);
+            width: var(--playerbar-icon-size);
+        }
+
+        // the spinner has the room of the glyph (16px of the 20)
+        button .player-spinner {
+            height: 16px;
         }
 
         button.play:active > svg.pausesvg {
