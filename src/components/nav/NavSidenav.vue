@@ -12,7 +12,7 @@
                 :key="link.name"
                 class="link"
                 :to="{ name: link.route_name, params: link.params }"
-                :class="{ active: $route.name === link.route_name }"
+                :class="{ active: $route.name === link.route_name, 'icon-active': $route.name === link.route_name }"
                 @click="closeSidenav"
             >
                 <component :is="link.icon" :style="link.icon_pad ? { boxSizing: 'border-box', padding: link.icon_pad } : undefined" />
