@@ -19,7 +19,7 @@
 
 <style lang="scss">
 .generichead {
-    padding: 0 0 1rem $medium;
+    padding: 0;
     height: max-content;
     align-items: center;
     overflow: hidden;
