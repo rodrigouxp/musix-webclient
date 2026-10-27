@@ -23,10 +23,10 @@ import {
     MenuGoToFolderIcon,
     MenuLiveIcon,
     MenuPlayNextIcon,
-    MenuSearchOnIcon,
     MenuSoundtrackIcon,
     MenuUpdateCoverIcon,
     SaveIcon,
+    SearchIcon,
 } from '@/icons'
 import { Album, Collection, Option, Playlist, Track } from '@/interfaces'
 import { get_find_on_social, getAddToCollectionOptions, getAddToPlaylistOptions, insetSeparator } from './utils'
@@ -274,7 +274,7 @@ export default async (album?: Album) => {
 
     const find_on_social = {
         ...get_find_on_social('album', '', album),
-        icon: MenuSearchOnIcon,
+        icon: SearchIcon,
         menuIcon: true,
     }
 

@@ -35,7 +35,6 @@ export { default as MenuUpdateCoverIcon } from "@/assets/icons/figma/update-albu
 export { default as MenuEpsSinglesIcon } from "@/assets/icons/figma/disc.svg?raw";
 export { default as MenuSoundtrackIcon } from "@/assets/icons/figma/soundtrack.svg?raw";
 export { default as MenuLiveIcon } from "@/assets/icons/figma/live-album.svg?raw";
-export { default as MenuSearchOnIcon } from "@/assets/icons/figma/search-on.svg?raw";
 // the arrow of the items with a submenu
 export { default as MenuSubmenuIcon } from "@/assets/icons/figma/chevron-right.svg?raw";
 // the mark of the playlists that already have the song (submenu "Add to playlist")

@@ -15,7 +15,7 @@ import {
     MenuGoToArtistIcon,
     MenuGoToFolderIcon,
     MenuPlayNextIcon,
-    MenuSearchOnIcon,
+    SearchIcon,
 } from '@/icons'
 import { renameTrack } from '@/requests/tracks'
 import useAuth from '@/stores/auth'
@@ -225,7 +225,7 @@ export default async (track: Track): Promise<Option[]> => {
 
     const search_on = {
         ...get_find_on_social('track', `${track.title} ${track.artists[0].name}`),
-        icon: MenuSearchOnIcon,
+        icon: SearchIcon,
         menuIcon: true,
     }
 
