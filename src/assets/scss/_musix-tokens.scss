@@ -26,6 +26,7 @@
   --color-neutral-500: #909090;
   --color-neutral-900: #222222;
   --color-neutral-black: #000000;
+  --color-background: #151515; // fundo do painel da esquerda (estilo "background" do Figma)
 
   --color-primary-300: #76afe4;
   --color-primary-500: #1267b7;
@@ -80,18 +81,14 @@
   --sidepanel-border: 1px;
   --sidepanel-padding: 12px;
   --sidepanel-gap: 12px; // entre os blocos (cabeçalho, botões, divisor, playlists, cartão)
-  --sidepanel-bg: var(--color-neutral-black);
+  --sidepanel-bg: var(--color-background);
   --sidepanel-font: var(--font-roboto);
   --sidepanel-font-size: 14px;
   --sidepanel-header-height: 60px;
-  --sidepanel-header-padding: 10px 12px 10px 18px;
-  --sidepanel-header-gap: 16px; // entre o logo e o texto
+  --sidepanel-header-padding: 10px 12px;
   --sidepanel-header-radius: 13px;
-  // as duas cores abaixo ainda não têm estilo no Figma e ainda não são usadas: o cabeçalho segue com o
-  // gradiente e a borda de hoje até o Rodrigo decidir
-  --sidepanel-header-bg: #0a0a0a;
-  --sidepanel-header-border: #303030;
-  --sidepanel-title-weight: 600;
+  --sidepanel-header-bg: #0a0a0a; // ainda sem estilo de cor no Figma
+  --sidepanel-logo-width: 169.091px; // a palavra MUSIX; encolhe se o painel ficar mais estreito
   --sidepanel-item-height: 34px;
   --sidepanel-item-padding: 8px;
   --sidepanel-item-gap: 12px; // entre o ícone e o texto

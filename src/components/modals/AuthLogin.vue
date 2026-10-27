@@ -212,7 +212,7 @@ onMounted(async () => {
         pointer-events: none;
 
         svg {
-            transform: scale(0.85);
+            width: var(--sidepanel-logo-width);
         }
     }
 
