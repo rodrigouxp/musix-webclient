@@ -32,13 +32,13 @@ import { buffering } from '@/stores/player'
 import useQStore from '@/stores/queue'
 import useSettings from '@/stores/settings'
 
-import PauseSvg from '@/assets/icons/pause.svg'
+import PauseSvg from '@/assets/icons/figma/pause.svg'
 import NextSvg from '@/assets/icons/figma/play-next.svg'
 import PrevSvg from '@/assets/icons/figma/play-previous.svg'
-import PlaySvg from '@/assets/icons/play.svg'
+import PlaySvg from '@/assets/icons/figma/play.svg'
 import RepeatOneSvg from '@/assets/icons/repeat-one.svg'
-import RepeatAllSvg from '@/assets/icons/repeat.svg'
-import ShuffleSvg from '@/assets/icons/shuffle.svg'
+import RepeatAllSvg from '@/assets/icons/figma/repeat.svg'
+import ShuffleSvg from '@/assets/icons/figma/shuffle.svg'
 import Spinner from '@/components/shared/Spinner.vue'
 
 const queue = useQStore()
@@ -120,17 +120,8 @@ defineProps<{
             width: 1.5894rem;
         }
 
-        // pause.svg has no viewBox once optimized (it has a width and a height), so it can not
-        // grow with its size: it keeps 28px and is scaled around the center (its bars are 14.82px
-        // tall in 28px, so 0.9447 gives 14px)
-        button.play > svg.pausesvg {
-            height: 28px;
-            width: 28px;
-            transform: scale(0.9447);
-        }
-
         button.play:active > svg.pausesvg {
-            transform: scale(0.71);
+            transform: scale(0.75);
         }
 
         button.shuffle:active svg,

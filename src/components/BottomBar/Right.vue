@@ -34,8 +34,8 @@ import useSettings from '@/stores/settings'
 
 
 import RepeatOneSvg from '@/assets/icons/repeat-one.svg'
-import RepeatAllSvg from '@/assets/icons/repeat.svg'
-import ShuffleSvg from '@/assets/icons/shuffle.svg'
+import RepeatAllSvg from '@/assets/icons/figma/repeat.svg'
+import ShuffleSvg from '@/assets/icons/figma/shuffle.svg'
 import HeartSvg from '../shared/HeartSvg.vue'
 import LyricsButton from '../shared/LyricsButton.vue'
 import Volume from './Volume.vue'
