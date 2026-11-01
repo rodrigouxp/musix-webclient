@@ -252,13 +252,14 @@ defineEmits<{
         }
 
         // the favorite and the add button: no circle in the Figma, only the icon (20px); the hover is
-        // a circle of 28px around it (-4px of margin keeps the 20px of layout and the 40px of distance)
+        // a circle as big as the one of the central buttons (34px) around it (the negative margin keeps
+        // the 20px of layout and the 40px of distance)
         .heart-button,
         .add-button {
             flex-shrink: 0;
-            width: var(--playerbar-side-control-size);
-            height: var(--playerbar-side-control-size);
-            margin: calc((var(--playerbar-icon-size) - var(--playerbar-side-control-size)) / 2);
+            width: var(--playerbar-control-size);
+            height: var(--playerbar-control-size);
+            margin: calc((var(--playerbar-icon-size) - var(--playerbar-control-size)) / 2);
             padding: 0;
             border: none;
             aspect-ratio: auto;

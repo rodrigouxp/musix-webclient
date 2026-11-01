@@ -123,10 +123,13 @@ defineEmits<{
         gap: var(--playerbar-right-gap);
         height: var(--playerbar-side-control-size);
 
+        // the hover circle is as big as the one of the central buttons (34px); the negative margin
+        // keeps the 28px of layout (and so the 40px and 8px of distance)
         button.lyrics,
         button.speaker-icon {
-            width: var(--playerbar-side-control-size) !important;
-            height: var(--playerbar-side-control-size) !important;
+            width: var(--playerbar-control-size) !important;
+            height: var(--playerbar-control-size) !important;
+            margin: calc((var(--playerbar-side-control-size) - var(--playerbar-control-size)) / 2);
             padding: 0 !important;
 
             &:hover {

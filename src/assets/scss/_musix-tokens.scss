@@ -53,6 +53,9 @@
   // Divisor: branco com 15% de opacidade (ainda sem estilo de cor no Figma)
   --color-divider: rgba(255, 255, 255, 0.15);
 
+  // Hover padrão dos botões do app (o círculo atrás dos botões do PlayerBar no Figma)
+  --hover-bg: var(--color-neutral-900);
+
   // Menu de contexto (protótipo "Album context menu")
   --menu-bg: var(--color-neutral-900);
   --menu-radius: 10px;
@@ -69,6 +72,7 @@
   --menu-item-text: var(--color-neutral-100);
   --menu-item-icon: var(--color-neutral-300);
   --menu-item-bg-selected: var(--color-primary-500);
+  --menu-item-bg-hover: var(--color-neutral-700); // o fundo do menu já é neutral/900, então o hover usa um tom acima (decisão do Rodrigo)
   --menu-item-text-selected: var(--color-neutral-white);
   --menu-item-icon-selected: var(--color-neutral-300); // no Figma o ícone não muda no item selecionado
 
@@ -129,8 +133,8 @@
   --playerbar-icon-size: 20px; // caixa do svg (glifo de 20 no viewBox de 24)
   --playerbar-control-size: 34px; // círculo dos cinco controles do centro
   --playerbar-control-gap: 28px;
-  --playerbar-side-control-size: 28px; // círculo de lyrics e do speaker (e de favorite e add, decisão minha)
-  --playerbar-hover-bg: var(--color-neutral-900);
+  --playerbar-side-control-size: 28px; // caixa de layout de lyrics e do speaker (o círculo do hover é o de --playerbar-control-size)
+  --playerbar-hover-bg: var(--hover-bg);
   --playerbar-timeline-width: 502px; // tempo + barra + tempo
   --playerbar-timeline-gap: 12px;
   --playerbar-progress-height: 4px;

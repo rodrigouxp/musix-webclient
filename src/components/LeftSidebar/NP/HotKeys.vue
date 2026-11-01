@@ -66,7 +66,7 @@ defineProps<{
         border-radius: 0;
 
         &:hover {
-            background: $darkestblue;
+            background: var(--hover-bg);
         }
     }
 

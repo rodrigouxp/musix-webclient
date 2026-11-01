@@ -360,9 +360,9 @@ function runChildAction(action: () => void) {
         }
     }
 
-    // the selected item (mouse over): blue background and white text; the icon keeps its grey
+    // the item under the mouse: the hover background and white text; the icon keeps its grey
     &:hover {
-        background: var(--menu-item-bg-selected);
+        background: var(--menu-item-bg-hover);
         color: var(--menu-item-text-selected);
     }
 
