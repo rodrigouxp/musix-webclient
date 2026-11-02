@@ -13,7 +13,7 @@ import {
     MenuAddToQueueIcon,
     MenuGoToAlbumIcon,
     MenuGoToArtistIcon,
-    MenuGoToFolderIcon,
+    MenuOpenInFilesIcon,
     MenuPlayNextIcon,
     SearchIcon,
 } from '@/icons'
@@ -122,18 +122,6 @@ export default async (track: Track): Promise<Option[]> => {
         menuIcon: true,
     }
 
-    const go_to_folder: Option = {
-        label: t('Menus.Track.GoToFolder'),
-        action: () => {
-            Router.push({
-                name: Routes.folder,
-                params: { path: track.folder },
-            })
-        },
-        icon: MenuGoToFolderIcon,
-        menuIcon: true,
-    }
-
     const go_to_artist: Option = {
         label: t('Menus.Track.GoToArtist'),
         icon: MenuGoToArtistIcon,
@@ -157,7 +145,7 @@ export default async (track: Track): Promise<Option[]> => {
         action: () => {
             openInFiles(track.filepath || track.folder || '')
         },
-        icon: MenuGoToFolderIcon,
+        icon: MenuOpenInFilesIcon,
         menuIcon: true,
     }
 
@@ -253,7 +241,7 @@ export default async (track: Track): Promise<Option[]> => {
     const groups: Option[][] = [
         remove,
         [play_next, add_to_q, add_to_playlist],
-        [go_to_album, go_to_folder, go_to_artist],
+        [go_to_album, go_to_artist],
         [open_in_explorer],
         useAuth().is_admin ? [rename] : [],
         [search_on],

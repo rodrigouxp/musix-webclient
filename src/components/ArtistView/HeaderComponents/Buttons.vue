@@ -1,6 +1,6 @@
 <template>
   <div class="artist-buttons">
-    <PlayBtnRect :source="playSources.artist" :bg_color="artist.colors.btn" />
+    <PlayBtnRect :source="playSources.artist" />
     <HeartSvg
       :state="artist.info.is_favorite"
       :color="
@@ -70,12 +70,9 @@ function showContext(e: MouseEvent) {
     background-color: transparent;
     border: none;
 
+    // the menu is open: the same color as the hover
     &.context_menu_showing {
-      background-color: $darkblue;
-
-      svg {
-        color: $white !important;
-      }
+      background-color: var(--hover-bg);
     }
 
     svg {

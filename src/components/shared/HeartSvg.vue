@@ -54,7 +54,7 @@ $bg: rgb(255, 255, 255);
     border: none;
     color: $bg;
     aspect-ratio: 1.5;
-    background: rgba(255, 255, 255, 0.13);
+    background: transparent;
 
     div {
         height: max-content;
@@ -75,7 +75,7 @@ $bg: rgb(255, 255, 255);
     }
 
     &:hover {
-        background: transparent;
+        background: var(--hover-bg);
         border: none;
     }
 }

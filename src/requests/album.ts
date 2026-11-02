@@ -157,10 +157,11 @@ export async function embedAlbumCover(albumhash: string): Promise<EmbedCoverResu
     return data as EmbedCoverResult
 }
 
-export type AlbumKind = 'ep' | 'soundtrack' | 'live album'
+export type AlbumKind = 'ep' | 'soundtrack' | 'live album' | 'compilation' | 'album'
 
 /**
- * Marks the album as an EP, a soundtrack or a live album. `null` removes the mark.
+ * Marks the album as an EP, a soundtrack, a live album or a compilation. `null` removes the mark and
+ * `'album'` says it is a regular album (for one the server would take for a compilation).
  * Returns `null` if the server refused.
  */
 export async function setAlbumType(albumhash: string, kind: AlbumKind | null): Promise<{ ok: boolean; kind: AlbumKind | null } | null> {

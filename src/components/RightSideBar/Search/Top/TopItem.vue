@@ -163,7 +163,7 @@ function showMenu(e: MouseEvent) {
     }
 
     .context_menu_showing {
-        background-color: $darkestblue;
+        background-color: var(--hover-bg);
     }
 
     img {

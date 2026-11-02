@@ -2,7 +2,7 @@
   <!-- play, favorite and the three dots: the same buttons of the album banner. The special
        playlists ("recently added") only have the play button. -->
   <div class="playlist-buttons">
-    <PlayBtnRect :source="playSources.playlist" :bg_color="colors.btn" />
+    <PlayBtnRect :source="playSources.playlist" />
 
     <template v-if="isUserPlaylist">
       <HeartSvg
@@ -64,12 +64,9 @@ function showContextMenu(e: MouseEvent) {
     background-color: transparent;
     border: none;
 
+    // the menu is open: the same color as the hover
     &.context_menu_showing {
-      background-color: $darkblue;
-
-      svg {
-        color: $white !important;
-      }
+      background-color: var(--hover-bg);
     }
 
     svg {

@@ -1,12 +1,7 @@
 <template>
     <button
         v-wave
-        class="playbtnrect shadow-sm circular btn-active"
-        :style="{
-            backgroundColor: bg_color ? bg_color : '',
-            borderColor: bg_color ? bg_color : '',
-            color: bg_color ? getShift(bg_color, [100, 100]) : '',
-        }"
+        class="playbtnrect shadow-sm circular"
         @click="playFrom(source)"
     >
         <playBtnSvg />
@@ -16,14 +11,11 @@
 
 <script setup lang="ts">
 import { playSources } from '@/enums'
-import { getShift } from '@/utils/colortools/shift'
-
 import playBtnSvg from '@/assets/icons/play.svg'
 import { playFrom } from '@/helpers/usePlayFrom'
 
 defineProps<{
     source: playSources
-    bg_color?: string
 }>()
 </script>
 
@@ -33,8 +25,14 @@ defineProps<{
     display: flex;
     align-items: center;
     justify-content: center;
-    color: $white;
+    // always white, whatever the colors of the album, artist or playlist
+    background-color: var(--color-neutral-white);
+    color: var(--color-background);
     padding-right: 1rem;
+
+    &:hover {
+        background-color: var(--color-neutral-white);
+    }
 
     svg {
         height: 1.75rem;

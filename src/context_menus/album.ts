@@ -19,8 +19,9 @@ import {
     MenuAddToCollectionIcon,
     MenuAddToPlaylistIcon,
     MenuAddToQueueIcon,
+    MenuCompilationIcon,
     MenuEpsSinglesIcon,
-    MenuGoToFolderIcon,
+    MenuOpenInFilesIcon,
     MenuLiveIcon,
     MenuPlayNextIcon,
     MenuSoundtrackIcon,
@@ -35,7 +36,7 @@ import { useT } from '@/i18n'
 
 const { t } = useT();
 
-const albumKinds: { kind: AlbumKind; mark: string; remove: string; name: string; icon: string }[] = [
+const albumKinds: { kind: AlbumKind; mark: string; remove: string; name: string; icon: string; removeAs?: AlbumKind }[] = [
     {
         kind: 'ep',
         mark: 'Menus.Album.MarkAsEps',
@@ -56,6 +57,16 @@ const albumKinds: { kind: AlbumKind; mark: string; remove: string; name: string;
         remove: 'Menus.Album.RemoveFromLive',
         name: 'Live album',
         icon: MenuLiveIcon,
+    },
+    {
+        kind: 'compilation',
+        mark: 'Menus.Album.MarkAsCompilation',
+        remove: 'Menus.Album.RemoveFromCompilation',
+        name: 'Compilation',
+        icon: MenuCompilationIcon,
+        // an album that the server takes for a compilation by itself (Various Artists, "Greatest Hits"...)
+        // has no mark to remove: "not a compilation" is a mark of its own
+        removeAs: 'album',
     },
 ]
 
@@ -172,7 +183,7 @@ export default async (album?: Album) => {
     const open_in_files: Option = {
         label: t('Menus.Common.OpenInFiles'),
         action: () => openInFiles(async () => commonFolder(await getAlbumTracks(album.albumhash))),
-        icon: MenuGoToFolderIcon,
+        icon: MenuOpenInFilesIcon,
         menuIcon: true,
     }
 
@@ -204,7 +215,7 @@ export default async (album?: Album) => {
 
     const currentKind = album.album_type ?? album.type
     const markOptions: Option[] = useAuth().is_admin
-        ? albumKinds.map(({ kind, mark, remove, name, icon }) => {
+        ? albumKinds.map(({ kind, mark, remove, name, icon, removeAs }) => {
               const marked = currentKind === kind
 
               return <Option>{
@@ -213,7 +224,7 @@ export default async (album?: Album) => {
                   menuIcon: true,
                   action: async () => {
                       const toast = useToast()
-                      const result = await setAlbumType(album.albumhash, marked ? null : kind)
+                      const result = await setAlbumType(album.albumhash, marked ? removeAs ?? null : kind)
 
                       if (result === null) {
                           toast.showNotification(t('Requests.Album.TypeError'), NotifType.Error)
@@ -222,7 +233,7 @@ export default async (album?: Album) => {
 
                       album.album_type = result.kind ?? 'album'
                       toast.showNotification(
-                          result.kind
+                          result.kind === kind
                               ? t('Requests.Album.TypeMarked', { type: name })
                               : t('Requests.Album.TypeRemoved'),
                           NotifType.Success

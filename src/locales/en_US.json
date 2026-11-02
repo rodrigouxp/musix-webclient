@@ -331,9 +331,11 @@
       "ConfirmEmbedCover": "This writes the cover into the tags of {count} music files",
       "EmbedCover": "Save cover to files",
       "EmbedCoverConfirm": "Write cover",
+      "MarkAsCompilation": "Mark as Compilation",
       "MarkAsEps": "Mark as EPs & Singles",
       "MarkAsLive": "Mark as Live album",
       "MarkAsSoundtrack": "Mark as Soundtrack",
+      "RemoveFromCompilation": "Remove from Compilations",
       "RemoveFromEps": "Remove from EPs & Singles",
       "RemoveFromLive": "Remove from Live album",
       "RemoveFromSoundtrack": "Remove from Soundtrack"

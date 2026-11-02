@@ -1,6 +1,6 @@
 <template>
   <div class="album-buttons">
-    <PlayBtnRect :source="playSources.album" :bg_color="colors.btn" />
+    <PlayBtnRect :source="playSources.album" />
 
     <HeartSvg
       :state="album.is_favorite"
@@ -67,12 +67,9 @@ function handleFav() {
     background-color: transparent;
     border: none;
 
+    // the menu is open: the same color as the hover
     &.context_menu_showing {
-      background-color: $darkblue;
-
-      svg {
-        color: $white !important;
-      }
+      background-color: var(--hover-bg);
     }
 
     svg {

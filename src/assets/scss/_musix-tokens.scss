@@ -76,8 +76,8 @@
   --menu-item-text-selected: var(--color-neutral-white);
   --menu-item-icon-selected: var(--color-neutral-300); // no Figma o ícone não muda no item selecionado
 
-  --menu-icon-size: 18px;
-  --menu-divider: var(--color-divider);
+  --menu-icon-size: 20px; // o Icon do Figma é mostrado em 20 px nos itens do menu
+  --menu-divider: var(--color-neutral-700);
   --menu-divider-width: 0.8px;
 
   // Painel da esquerda (componente SidePanel do Figma, nó 12329:437). Tudo em px, como no desenho. Nada
@@ -129,7 +129,7 @@
   --playerbar-artwork-radius: 4px;
   --playerbar-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
   --playerbar-track-gap: 14px; // entre a capa e o texto
-  --playerbar-left-gap: 40px; // entre música, favorite e add
+  --playerbar-left-gap: 32px; // entre música, favorite e add
   --playerbar-icon-size: 20px; // caixa do svg (glifo de 20 no viewBox de 24)
   --playerbar-control-size: 34px; // círculo dos cinco controles do centro
   --playerbar-control-gap: 28px;

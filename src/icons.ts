@@ -35,15 +35,17 @@ export { default as MenuUpdateCoverIcon } from "@/assets/icons/figma/update-albu
 export { default as MenuEpsSinglesIcon } from "@/assets/icons/figma/disc.svg?raw";
 export { default as MenuSoundtrackIcon } from "@/assets/icons/figma/soundtrack.svg?raw";
 export { default as MenuLiveIcon } from "@/assets/icons/figma/live-album.svg?raw";
+export { default as MenuCompilationIcon } from "@/assets/icons/figma/compilation.svg?raw";
+// "Open in files" (the folder with the files)
+export { default as MenuOpenInFilesIcon } from "@/assets/icons/figma/files.svg?raw";
 // the arrow of the items with a submenu
 export { default as MenuSubmenuIcon } from "@/assets/icons/figma/chevron-right.svg?raw";
 // the mark of the playlists that already have the song (submenu "Add to playlist")
 export { default as CheckIcon } from "@/assets/icons/figma/check.svg?raw";
 
-// icons of the song menu: the album one is the same drawing as the "EPs & Singles" mark; the folder
-// and artist ones are not in the Figma icon set
+// icons of the song menu: the album one is the same drawing as the "EPs & Singles" mark; the artist
+// one is not in the Figma icon set
 export { default as MenuGoToAlbumIcon } from "@/assets/icons/figma/disc.svg?raw";
-export { default as MenuGoToFolderIcon } from "@/assets/icons/menu/go-to-folder.svg?raw";
 export { default as MenuGoToArtistIcon } from "@/assets/icons/menu/go-to-artist.svg?raw";
 
 // the user menu
