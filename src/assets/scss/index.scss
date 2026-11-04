@@ -1,36 +1,12 @@
 @import "./mixins.scss", "./variables", "./musix-tokens", "./ProgressBar.scss", "./BottomBar/BottomBar.scss", "./Global";
 
-/* San Francisco Compact Display font */
+/* Satoshi Variable (the font of the whole app): weights 300 to 900 in one file */
 @font-face {
-  font-family: "SF Compact Display";
+  font-family: "Satoshi Variable";
   font-style: normal;
-  font-weight: 400;
+  font-weight: 300 900;
   font-display: swap;
-  src: url("../fonts/SFCompactDisplay-Regular.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "SF Compact Display";
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url("../fonts/SFCompactDisplay-Medium.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "SF Compact Display";
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url("../fonts/SFCompactDisplay-Semibold.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "SF Compact Display";
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url("../fonts/SFCompactDisplay-Bold.woff2") format("woff2");
+  src: url("../fonts/Satoshi-Variable.ttf") format("truetype");
 }
 
 /* San Francisco Mono font */

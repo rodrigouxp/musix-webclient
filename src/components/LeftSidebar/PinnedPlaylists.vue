@@ -80,7 +80,7 @@ watch(
 
 <style lang="scss">
 // A pinned playlist (SidePanel > playlists > playlist of the Figma): 28 of height, padding 0 12, 8 between
-// the cover (28, corners 4) and the name (Roboto Medium 14, line 20, white).
+// the cover (28, corners 4) and the name (Satoshi Medium 14, line 20, white).
 .sidepanel-nav .pinned-playlist {
   display: flex;
   align-items: center;

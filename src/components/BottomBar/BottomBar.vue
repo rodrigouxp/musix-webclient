@@ -181,7 +181,7 @@ function handleFav() {
         }
     }
 
-    // above 900px: the PlayerBar of the Figma (Roboto for the text and the times)
+    // above 900px: the PlayerBar of the Figma (Satoshi, the font of the app, for the text and the times)
     @media only screen and (min-width: 901px) {
         font-family: var(--playerbar-font);
 

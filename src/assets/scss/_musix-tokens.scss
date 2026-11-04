@@ -12,12 +12,12 @@
   // nos dois lados e laterais da barra inferior. Uma fonte só: o $padleft do SCSS lê esta variável.
   --layout-gutter: 1rem;
 
-  // Fonte do painel da esquerda (Roboto variável, instalada no cliente: nada de CDN). Os caracteres que ela
-  // não tem (japonês, coreano, emoji) caem na fonte seguinte da lista. A fonte do resto do app continua
-  // definida no `body` (assets/scss/Global/index.scss), nos botões (Global/basic.scss) e nos campos
-  // (Global/inputs.scss).
-  --font-roboto: "Roboto Variable", Roboto, "SF Compact Display", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  // Fonte do app inteiro: Satoshi Variable (pesos 300 a 900), arquivo do próprio cliente (assets/fonts, sem CDN).
+  // Os caracteres que ela não tem (japonês, coreano, emoji) caem na fonte seguinte da lista. O `body`
+  // (assets/scss/Global/index.scss), os botões (Global/basic.scss) e os campos (Global/inputs.scss) usam esta
+  // variável; o código e os campos secretos continuam em "SF Mono".
+  --font-sans: "Satoshi Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 
   // Cores (estilos de cor do Figma)
   --color-neutral-white: #ffffff;
@@ -87,7 +87,7 @@
   --sidepanel-padding: 12px;
   --sidepanel-gap: 12px; // entre os blocos (cabeçalho, botões, divisor, playlists, cartão)
   --sidepanel-bg: var(--color-background);
-  --sidepanel-font: var(--font-roboto);
+  --sidepanel-font: var(--font-sans);
   --sidepanel-font-size: 14px;
   --sidepanel-header-height: 60px;
   --sidepanel-header-padding: 10px 12px;
@@ -119,7 +119,7 @@
   --playerbar-border-color: var(--color-neutral-900);
   --playerbar-bg: var(--color-background);
   --playerbar-padding: 12px 20px;
-  --playerbar-font: var(--font-roboto);
+  --playerbar-font: var(--font-sans);
   --playerbar-text-size: 14px;
   --playerbar-text-line-height: 20px;
   --playerbar-text-weight: 700;
