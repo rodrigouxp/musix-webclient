@@ -6,7 +6,7 @@ import { pluginSetActive, updatePluginSettings } from '@/requests/plugins'
 
 import { updateConfig } from '@/requests/settings'
 import { usePlayer } from '@/stores/player'
-import { content_width } from '../content-width'
+import { content_width, isMobile } from '../content-width'
 import useAxios from '@/requests/useAxios'
 import { paths } from '@/config'
 import { router } from '@/router'
@@ -17,6 +17,9 @@ export default defineStore('settings', {
         version: '',
         public_key: '',
         extend_width: false,
+        // the QueuePanel of the desktop (default layout): open or closed, kept between sessions. The PlayerBar's
+        // thumbnail toggles it (the panel itself comes in the next step).
+        queue_panel_open: false,
         contextChildrenShowMode: contextChildrenShowMode.hover,
         artist_top_tracks_count: 5,
         // repeat_all: true,
@@ -121,6 +124,9 @@ export default defineStore('settings', {
             }
 
             this.use_sidebar = !this.use_sidebar
+        },
+        toggleQueuePanel() {
+            this.queue_panel_open = !this.queue_panel_open
         },
         toggleExtendWidth() {
             this.extend_width = !this.extend_width
@@ -331,6 +337,8 @@ export default defineStore('settings', {
         },
         is_default_layout: state => state.layout === '',
         is_alt_layout: state => state.layout === 'alternate' && content_width.value > 900,
+        // the grid of panels of the Figma: above 900px and the default layout (same test as assets/scss/Global/app-grid.scss)
+        is_panel_layout: state => !isMobile.value && state.layout === '',
         highlightFavoriteTracks(): boolean {
             return (
                 !router.currentRoute.value.name?.toString().toLowerCase().startsWith('favorite') &&

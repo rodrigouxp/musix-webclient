@@ -107,14 +107,20 @@
     "VolumeLabel": "Volume {percent} percent",
     "Favorite": "Favorite",
     "GoToNowPlaying": "Go to Now Playing",
+    "HideQueue": "Hide queue",
+    "Next": "Next",
+    "Pause": "Pause",
     "PlaceholderArtist": "Welcome to MUSIX",
     "PlaceholderTitle": "Hello there",
+    "Play": "Play",
+    "Previous": "Previous",
     "RepeatOptions": {
       "All": "Repeat all",
       "None": "No repeat",
       "One": "Repeat one"
     },
-    "Shuffle": "Shuffle"
+    "Shuffle": "Shuffle",
+    "ShowQueue": "Show queue"
   },
   "Bubbles": {
     "DropHere": "DROP TRACKS HERE"

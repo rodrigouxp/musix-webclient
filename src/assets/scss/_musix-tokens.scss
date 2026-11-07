@@ -180,6 +180,35 @@
   --playerbar-volume-gap: 8px;
   --playerbar-volume-width: 94px;
 
+  // PlayerBar nova (grade em painéis; Figma default-2 nó 12408:1175 e playing-2 nó 12408:1263). Os --playerbar-* acima
+  // que não aparecem aqui (controle de 34, ícone de 20, barra de 4, bolinha de 14, miniatura de 56...) valem para as duas.
+  --playerbar-panel-padding: 12px 16px;
+  --playerbar-group-gap: 40px; // entre os controles, as ações e a música (e entre as ações)
+  --playerbar-group-gap-narrow: 24px; // até 1280 px de janela (o Figma só tem a largura de 1857)
+  --playerbar-transport-gap: 20px; // play, anterior e próxima; e depois a linha do tempo
+  --playerbar-row-gap: 8px; // tempo, barra, tempo, shuffle e repeat
+  --playerbar-timeline-min: 4rem; // a barra encolhe até aqui nas larguras pequenas
+  --playerbar-play-size: 48px;
+  --playerbar-play-icon-size: 28.24px; // caixa do ícone de 20 do Figma desenhada em 48/34 (glifo de 21,2 x 23,9 no play)
+  --playerbar-volume-pad-right: 7px; // folga da bolinha do volume (Figma: padding-right do grupo)
+  --playerbar-badge-size: 24px; // círculo do chevron sobre a miniatura (hover, nó 12408:1358)
+  --playerbar-badge-bg: var(--color-neutral-300);
+  --playerbar-badge-icon-size: 18px; // o chevron em traço de 1,5 (o glifo de 8 x 12) desenhado a 0,75x
+  --playerbar-badge-fade: 150ms;
+  --playerbar-transition: 400ms ease-in-out; // pausado <-> tocando (decisão minha: o Figma não tem transição)
+  --playerbar-paused-bg: var(--color-neutral-900);
+  --playerbar-playing-bg: var(--color-dynamic-playbar);
+  --playerbar-paused-play-bg: var(--color-neutral-white);
+  --playerbar-playing-play-bg: var(--color-neutral-100);
+  --playerbar-paused-play-icon: var(--color-background);
+  --playerbar-playing-play-icon: var(--color-dynamic-playbar);
+  --playerbar-paused-track: var(--color-neutral-700); // trilha da barra e pílulas dos tempos
+  --playerbar-playing-track: var(--color-neutral-500);
+  --playerbar-paused-loaded: var(--color-neutral-500); // trecho carregado: não existe no Figma (decisão minha)
+  --playerbar-playing-loaded: var(--color-neutral-300);
+  --playerbar-paused-artist: var(--color-neutral-500);
+  --playerbar-playing-artist: var(--color-neutral-300);
+
   // FeedPanel (painel da Home, nó 12408:1935; cartões ArtistThumb e AlbumThumb). Textos: ver os estilos de texto abaixo.
   --feedpanel-padding-top: 8px;
   --feedpanel-padding-right: 16px; // inclui a barra de rolagem: a rolagem de 7 px sai dele (ver .feedpanel)

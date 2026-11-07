@@ -23,7 +23,7 @@
 import { computed, nextTick, onMounted, watch } from 'vue'
 import useAuth from '@/stores/auth'
 
-import { isMobile, updateCardWidth } from '@/stores/content-width'
+import { updateCardWidth } from '@/stores/content-width'
 import useHome from '@/stores/home'
 import useSettings from '@/stores/settings'
 import updatePageTitle from '@/utils/updatePageTitle'
@@ -38,8 +38,7 @@ const home = useHome()
 const auth = useAuth()
 const settings = useSettings()
 
-// the same test as the grid of panels in assets/scss/Global/app-grid.scss (above 900px, default layout)
-const panelLayout = computed(() => !isMobile.value && settings.is_default_layout)
+const panelLayout = computed(() => settings.is_panel_layout)
 
 function getGreetings(username: string) {
     username = username ? username : ''

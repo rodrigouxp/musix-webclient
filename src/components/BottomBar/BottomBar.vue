@@ -1,5 +1,8 @@
 <template>
+    <!-- desktop, default layout: the PlayerBar of the Figma. The other sizes and the alternative layout keep this bar -->
+    <PlayerBar v-if="settings.is_panel_layout" @handleFav="handleFav" />
     <div
+        v-else
         class="b-bar"
         :style="{
             paddingLeft: isMobile && settings.is_default_layout ? 'var(--layout-gutter)' : '',
@@ -46,6 +49,8 @@ import useSettings from '@/stores/settings'
 import HotKeys from '@/components/LeftSidebar/NP/HotKeys.vue'
 import Progress from '@/components/LeftSidebar/NP/Progress.vue'
 import Navigation from '@/components/LeftSidebar/NavButtons.vue'
+
+import PlayerBar from '@/components/PlayerBar/PlayerBar.vue'
 
 import LeftGroup from './Left.vue'
 import RightGroup from './Right.vue'
