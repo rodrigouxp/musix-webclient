@@ -82,3 +82,30 @@
 .designatedOS .loginmodal .alcontent::-webkit-scrollbar-thumb {
     border-color: $black;
 }
+
+/* The scrollbar of the pages in the panel of the content (FeedPanel of the Figma): 4px wide, round,
+   neutral/700, with no track, 3px from the edge. Only above 900px, in the grid of panels. */
+@media only screen and (min-width: 901px) {
+    .designatedOS #app-grid:not(.is_alt_layout) #acontent ::-webkit-scrollbar {
+        width: 7px;
+        background-color: transparent;
+    }
+
+    .designatedOS #app-grid:not(.is_alt_layout) #acontent ::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+
+    .designatedOS #app-grid:not(.is_alt_layout) #acontent ::-webkit-scrollbar-thumb {
+        background-color: var(--color-neutral-700);
+        border-radius: 400px;
+        border: 0;
+        border-right: 3px solid transparent;
+        background-clip: padding-box;
+    }
+
+    /* the hover of the thumb is not in the Figma: the next grey of the system */
+    .designatedOS #app-grid:not(.is_alt_layout) #acontent ::-webkit-scrollbar-thumb:hover {
+        background-color: var(--color-neutral-500);
+        background-clip: padding-box;
+    }
+}
