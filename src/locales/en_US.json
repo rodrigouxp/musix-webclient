@@ -277,6 +277,13 @@
     "FavoriteTracks": "Favorite Tracks",
     "PlaylistUpper": "PLAYLIST"
   },
+  "FeedPanel": {
+    "MostPlayedAlbums": "Most played albums",
+    "MostPlayedArtists": "Most played artists",
+    "NothingPlayed": "Nothing played yet.",
+    "RecentlyAdded": "Recently added",
+    "ViewHistory": "View history"
+  },
   "FolderView": {
     "FileCount": "File | Files"
   },

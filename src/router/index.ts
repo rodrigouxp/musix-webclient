@@ -26,6 +26,7 @@ const FavoriteCardScroller = () => import('@/views/FavoriteCardScroller.vue')
 const StatsView = () => import('@/views/Stats/main.vue')
 const Collection = () => import('@/views/Collections/Collection.vue')
 const Onboarding = () => import('@/views/Onboarding.vue')
+const HistoryView = () => import('@/views/HistoryView.vue')
 
 const folder = {
     path: '/folder/:path',
@@ -170,6 +171,19 @@ const AlbumListView = {
     component: AlbumList,
 }
 
+// "View history" of the Home: all the most played artists and albums
+const historyArtists = {
+    path: '/history/artists',
+    name: 'HistoryArtists',
+    component: HistoryView,
+}
+
+const historyAlbums = {
+    path: '/history/albums',
+    name: 'HistoryAlbums',
+    component: HistoryView,
+}
+
 const Stats = {
     path: '/stats',
     name: 'StatsView',
@@ -214,6 +228,8 @@ const routes = [
     Home,
     AlbumListView,
     ArtistListView,
+    historyArtists,
+    historyAlbums,
     Stats,
     PageView,
     OnboardingView,
@@ -238,6 +254,8 @@ const Routes = {
     Home: Home.name,
     AlbumList: AlbumListView.name,
     ArtistList: ArtistListView.name,
+    historyArtists: historyArtists.name,
+    historyAlbums: historyAlbums.name,
     Stats: Stats.name,
     Page: PageView.name,
     Onboarding: OnboardingView.name,

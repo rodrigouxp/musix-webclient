@@ -180,6 +180,30 @@
   --playerbar-volume-gap: 8px;
   --playerbar-volume-width: 94px;
 
+  // FeedPanel (painel da Home, nó 12408:1935; cartões ArtistThumb e AlbumThumb). Textos: ver os estilos de texto abaixo.
+  --feedpanel-padding-top: 8px;
+  --feedpanel-padding-right: 16px; // inclui a barra de rolagem: a rolagem de 7 px sai dele (ver .feedpanel)
+  --feedpanel-padding-bottom: 12px;
+  --feedpanel-padding-left: 16px;
+  --feedpanel-scrollbar-width: 7px; // a trilha da barra fina de assets/scss/Global/scrollbars.scss (4 px do polegar + 3 px de margem)
+  --feedpanel-block-gap: 32px; // entre o título e as linhas
+  --feedpanel-header-gap: 20px; // entre o cabeçalho da linha e os cartões
+  --feedpanel-card-gap: 20px;
+  --feedpanel-card-columns: 8; // sempre 8 cartões por linha, cada um com 1/8 da largura
+  --feedpanel-history-card-min: 10.75rem; // páginas "View history": largura mínima do cartão (a do $cardwidth das grades do app)
+  --feedpanel-title-color: var(--color-neutral-white);
+  --feedpanel-link-color: var(--color-neutral-300); // "View history"
+  --feedpanel-name-color: var(--color-neutral-100); // nome do artista e título do álbum
+  --feedpanel-subtitle-color: var(--color-neutral-300); // artista do álbum e texto de apoio (reproduções)
+  --feedpanel-card-text-gap: 4px; // entre a imagem e o texto
+  --feedpanel-image-border: 1px solid var(--color-neutral-900); // 1 px por dentro da imagem
+  --feedpanel-album-radius: 8px;
+  --feedpanel-album-ratio: 164 / 172; // a imagem (quadrada) fica colada embaixo; a placa aparece atrás, em cima
+  --feedpanel-album-plate-bg: var(--color-neutral-500);
+  --feedpanel-album-plate-top: 1px;
+  --feedpanel-album-plate-inset: 8px; // dos dois lados
+  --feedpanel-album-text-padding: 0 4px;
+
   // Estilos de texto do Figma (refeitos em 2026-11-07): Satoshi Variable, altura de linha automática no Figma,
   // que no CSS é `normal` (a métrica da fonte). Use com o mixin `@include text('<nome>')` (assets/scss/_mixins.scss).
   // Hoje só a Home usa estes tokens (painéis novos); as outras páginas ainda não.
