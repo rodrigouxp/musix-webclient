@@ -253,7 +253,7 @@ function runChildAction(action: () => void) {
         right: 10px;
         top: 50%;
         margin-top: -5px;
-        color: var(--menu-item-icon);
+        color: var(--menu-item-arrow);
 
         svg {
             display: block;

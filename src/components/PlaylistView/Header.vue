@@ -130,7 +130,7 @@ const bg = computed(() => {
   }
 
   // no color to take from a photo or the albums: the neutral color of the design system
-  return colors.value.bg ? colors.value.bg : "var(--color-neutral-900)";
+  return colors.value.bg ? colors.value.bg : "var(--color-legacy-neutral-900)";
 });
 
 const textColor = computed(() => {

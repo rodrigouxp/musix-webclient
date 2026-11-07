@@ -2,6 +2,7 @@
 
 Uma cópia de cada variante do componente **Icon** do Figma (arquivo App-MUSIX, conjunto `6228:2651`). O nome do arquivo é o da variante (`type=home` vira `home.svg`).
 
+- **Cores (2026-11-07):** os cinzas do Figma mudaram de valor (`neutral-300` `#707070`, `neutral-500` `#333333`, `neutral-700` `#222222`, `neutral-900` `#111111`) e o app segue pelo nome do token. Os ícones do menu de contexto são brancos no Figma (`--menu-item-icon`); a seta do submenu usa `--menu-item-arrow` (`neutral-300`). Onde não há desenho no Figma, o valor antigo ficou em `--color-legacy-neutral-*` até o Rodrigo decidir.
 - Todos usam `currentColor`: a cor vem do CSS (token), nunca do SVG. `delete` e o `active` do `favorite` aparecem em `error/300` (`--color-error-300`) no Figma: aplique a cor pelo CSS (o botão de favoritar faz isso em `HeartSvg.vue`).
 - 24 x 24 com o glifo dentro de uma margem de 2 px (viewBox 24): desde 2026-10-27 o vetor de cada ícone tem **20 x 20 como maior medida** (os de linha aberta com traço, como `add-to-queue`, têm 18 x 20 de vetor e a ponta arredondada passa um pouco). `menu` e `close` têm 20 x 20.
 - **Não edite** estes arquivos. Para mudar um ícone, altere no Figma e exporte de novo.

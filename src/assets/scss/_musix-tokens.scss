@@ -22,12 +22,19 @@
   // Cores (estilos de cor do Figma)
   --color-neutral-white: #ffffff;
   --color-neutral-100: #ececec;
-  --color-neutral-300: #b8b8b8;
-  --color-neutral-500: #606060;
-  --color-neutral-700: #323232;
-  --color-neutral-900: #222222;
+  // Os cinzas mudaram de valor no Figma em 2026-11-07 (os nomes seguem iguais: neutral/neutral-XXX).
+  --color-neutral-300: #707070;
+  --color-neutral-500: #333333;
+  --color-neutral-700: #222222;
+  --color-neutral-900: #111111;
   --color-neutral-black: #000000;
   --color-background: #0d0d0d; // fundo do painel da esquerda (estilo "background" do Figma)
+  --color-dynamic-playbar: #1f1e1f; // fundo da PlayerBar tocando (estilo "dynamic-playbar" do Figma); hoje fixo
+
+  // Valores antigos dos cinzas, só para os lugares que NÃO têm desenho no Figma e usavam estes tokens.
+  // Sem desenho no Figma, aguardando decisão do Rodrigo: quando houver desenho, trocar pelo token novo e apagar.
+  --color-legacy-neutral-500: #606060; // fundo da página de playlist (mistura a 15%)
+  --color-legacy-neutral-900: #222222; // fundo padrão do cabeçalho da playlist
 
   --color-primary-300: #76afe4;
   --color-primary-500: #1267b7;
@@ -53,8 +60,8 @@
   // Divisor: branco com 15% de opacidade (ainda sem estilo de cor no Figma)
   --color-divider: rgba(255, 255, 255, 0.15);
 
-  // Hover padrão dos botões do app (o círculo atrás dos botões do PlayerBar no Figma)
-  --hover-bg: var(--color-neutral-900);
+  // Hover padrão dos botões do app (o círculo atrás dos botões do PlayerBar no Figma: neutral/700)
+  --hover-bg: var(--color-neutral-700);
 
   // Menu de contexto (protótipo "Album context menu")
   --menu-bg: var(--color-neutral-900);
@@ -70,11 +77,12 @@
   --menu-item-padding-x: 10px;
   --menu-item-gap: 12px; // entre o ícone e o texto
   --menu-item-text: var(--color-neutral-100);
-  --menu-item-icon: var(--color-neutral-300);
+  --menu-item-icon: var(--color-neutral-white); // os ícones do menu são brancos no Figma (ContextMenu, 12292:267)
+  --menu-item-arrow: var(--color-neutral-300); // seta do submenu (variante Album do Figma)
   --menu-item-bg-selected: var(--color-primary-500);
-  --menu-item-bg-hover: var(--color-neutral-700); // o fundo do menu já é neutral/900, então o hover usa um tom acima (decisão do Rodrigo)
+  --menu-item-bg-hover: var(--color-neutral-700); // hover do item no Figma: neutral/700 sobre o fundo neutral/900
   --menu-item-text-selected: var(--color-neutral-white);
-  --menu-item-icon-selected: var(--color-neutral-300); // no Figma o ícone não muda no item selecionado
+  --menu-item-icon-selected: var(--color-neutral-white); // no Figma o ícone não muda no item selecionado
 
   --menu-icon-size: 20px; // o Icon do Figma é mostrado em 20 px nos itens do menu
   --menu-divider: var(--color-neutral-700);
@@ -138,15 +146,16 @@
   --playerbar-timeline-width: 502px; // tempo + barra + tempo
   --playerbar-timeline-gap: 12px;
   --playerbar-progress-height: 4px;
-  --playerbar-progress-bg: var(--color-neutral-900);
+  --playerbar-progress-bg: var(--color-neutral-700); // trilha e pílulas dos tempos: neutral/700 na PlayerBar nova (default-2)
   --playerbar-progress-fill: var(--color-neutral-white);
-  --playerbar-progress-loaded: var(--color-neutral-700); // trecho já carregado (decisão minha, não existe no Figma)
+  --playerbar-progress-loaded: var(--color-neutral-500); // trecho já carregado (decisão minha, não existe no Figma)
   --playerbar-thumb-size: 14px;
-  --playerbar-time-bg: var(--color-neutral-900);
+  --playerbar-time-bg: var(--color-neutral-700);
   --playerbar-time-radius: 4px;
   --playerbar-time-padding: 1px 4px;
   --playerbar-time-size: 12px;
   --playerbar-right-gap: 24px; // entre lyrics e o volume (Figma: 40; o Rodrigo pediu 24 em 2026-11-03)
   --playerbar-volume-gap: 8px;
   --playerbar-volume-width: 94px;
+
 }

@@ -255,7 +255,7 @@ onBeforeRouteLeave(() => playlist.resetAll())
     margin-top: -1px;
     border-radius: 1px;
     pointer-events: none;
-    // neutral/500 of the design system at 15%
-    background: color-mix(in srgb, var(--color-neutral-500) 15%, transparent);
+    // the old neutral/500 at 15% (no design in the Figma for this page: legacy token, see _musix-tokens.scss)
+    background: color-mix(in srgb, var(--color-legacy-neutral-500) 15%, transparent);
 }
 </style>

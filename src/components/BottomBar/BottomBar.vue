@@ -110,7 +110,7 @@ function handleFav() {
         &:hover {
             background-color: $gray !important;
 
-            // above 900px: the circle of the PlayerBar (neutral/900)
+            // above 900px: the circle of the PlayerBar (--hover-bg, neutral/700)
             @media only screen and (min-width: 901px) {
                 background-color: var(--playerbar-hover-bg) !important;
             }
