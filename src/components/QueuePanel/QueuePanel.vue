@@ -25,7 +25,11 @@
                     <template #default="{ item, index: at, active }">
                         <DynamicScrollerItem :item="item" :active="active" :size-dependencies="[item.kind]" :data-index="at" :data-track="item.index ?? -1">
                             <div v-if="item.kind === 'header'" class="qp-row qp-row-header">
-                                <QueueGroupHeader :group="item.group" />
+                                <QueueGroupHeader
+                                    :group="item.group"
+                                    :repeating="tracklist.repeatGroups.includes(item.group.id)"
+                                    @dragstart="onGroupDragStart($event, item.group, item.start)"
+                                />
                             </div>
                             <div v-else-if="item.kind === 'divider'" class="qp-row qp-row-divider"></div>
                             <div v-else class="qp-row qp-row-track">
@@ -63,6 +67,20 @@
                 :style="{ left: drag.state.left + 'px', width: drag.state.width + 'px', top: drag.state.lineY + 'px' }"
             ></div>
         </template>
+        <!-- the same for a whole group: its header follows the pointer -->
+        <template v-if="groupDrag.state.active && draggedGroup">
+            <div
+                class="qp-ghost qp-ghost-group"
+                :style="{ left: groupDrag.state.left + 'px', width: groupDrag.state.width + 'px', top: groupDrag.state.pointerY - 8 + 'px' }"
+            >
+                <QueueGroupHeader :group="draggedGroup" />
+            </div>
+            <div
+                v-if="groupDrag.state.lineY >= 0"
+                class="qp-line"
+                :style="{ left: groupDrag.state.left + 'px', width: groupDrag.state.width + 'px', top: groupDrag.state.lineY + 'px' }"
+            ></div>
+        </template>
     </aside>
 </template>
 
@@ -87,7 +105,7 @@ import QueueTrack from './QueueTrack.vue'
 // went in whole under a header. Only the desktop, in the default layout (App.vue). It opens and closes with the
 // thumbnail of the PlayerBar (settings.queue_panel_open).
 type Row =
-    | { id: string; kind: 'header'; group: QueueGroup }
+    | { id: string; kind: 'header'; group: QueueGroup; start: number }
     | { id: string; kind: 'track'; index: number; track: Track }
     | { id: string; kind: 'divider' }
 
@@ -109,7 +127,7 @@ const rows = computed<Row[]>(() => {
         const prev = list[i - 1]?.group
         const next = list[i + 1]
 
-        if (group && prev?.id !== group.id) out.push({ id: `h-${i}`, kind: 'header', group })
+        if (group && prev?.id !== group.id) out.push({ id: `h-${i}`, kind: 'header', group, start: i })
 
         // ids are queue positions: the same track can be in the queue more than once
         out.push({ id: `t-${i}`, kind: 'track', index: i, track })
@@ -197,6 +215,24 @@ const dragTrack = computed(() => tracklist.tracklist[drag.state.from])
 
 function onDragStart(event: PointerEvent, index: number) {
     drag.begin(event, index)
+}
+
+// drag of a whole group: the slots are the same as for a track, and the group goes to the one that is chosen
+const draggedGroup = ref<QueueGroup | null>(null)
+
+const groupDrag = useTrackDrag({
+    scroller: () => scroller.value?.$el ?? null,
+    rowsBefore: 0,
+    rowIndex: el => Number(el.dataset.track ?? -1),
+    // `to` is the position after the move of one row; the slot (before the move) comes back from it
+    onDrop: (from, to) => {
+        if (draggedGroup.value) tracklist.moveGroup(draggedGroup.value.id, to >= from ? to + 1 : to)
+    },
+})
+
+function onGroupDragStart(event: PointerEvent, group: QueueGroup, start: number) {
+    draggedGroup.value = group
+    groupDrag.begin(event, start)
 }
 </script>
 

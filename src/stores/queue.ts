@@ -80,6 +80,13 @@ export default defineStore('Queue', {
             const { focusCurrentInSidebar } = useInterface()
             const { tracklist } = useTracklist()
             const is_last = this.currentindex === tracklist.length - 1
+            const localRepeat = this.localRepeatTarget
+
+            // the repeat of the track and of the group come before the general one of the PlayerBar
+            if (localRepeat !== null) {
+                this.play(localRepeat, false)
+                return
+            }
 
             if (settings.repeat == 'one') {
                 this.play(this.currentindex, false)
@@ -190,6 +197,17 @@ export default defineStore('Queue', {
         },
     },
     getters: {
+        /**
+         * Where the queue goes when the song that is playing ends, if the track or its group repeats (priority: the
+         * repeat of the track, then of the group, then the general one of the PlayerBar), `null` if neither does.
+         */
+        localRepeatTarget(): number | null {
+            const tracklist = useTracklist()
+
+            if (tracklist.tracklist[this.currentindex]?.repeat) return this.currentindex
+
+            return tracklist.groupRepeatTarget(this.currentindex)
+        },
         next(): Track {
             const { tracklist } = useTracklist()
             return tracklist[this.nextindex]
@@ -229,6 +247,10 @@ export default defineStore('Queue', {
         nextindex(): number {
             const { tracklist } = useTracklist()
             const { repeat } = useSettings()
+
+            if (this.localRepeatTarget !== null) {
+                return this.localRepeatTarget
+            }
 
             if (repeat == 'one') {
                 return this.currentindex

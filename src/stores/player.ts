@@ -291,7 +291,7 @@ export const usePlayer = defineStore('player', () => {
         const { submitData } = tracker
         submitData()
 
-        if (settings.repeat == 'none') {
+        if (settings.repeat == 'none' && queue.localRepeatTarget === null) {
             queue.playPause()
             queue.moveForward()
             return
@@ -415,7 +415,7 @@ export const usePlayer = defineStore('player', () => {
         const { repeat } = settings
 
         // if no repeat && is last track, return
-        if (currentindex === length - 1 && repeat == 'none') {
+        if (currentindex === length - 1 && repeat == 'none' && queue.localRepeatTarget === null) {
             return
         }
 

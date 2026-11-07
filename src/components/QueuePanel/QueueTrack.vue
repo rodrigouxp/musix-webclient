@@ -10,8 +10,14 @@
             <span v-tooltip class="qt-title">{{ track.title }}</span>
         </div>
         <div class="qt-functions">
-            <!-- repeat of the track: comes in the next step (it shows, disabled) -->
-            <button class="qt-button" disabled :title="$t('QueuePanel.RepeatTrack')" :aria-label="$t('QueuePanel.RepeatTrack')">
+            <button
+                class="qt-button"
+                :class="{ on: track.repeat }"
+                :title="$t('QueuePanel.RepeatTrack')"
+                :aria-label="$t('QueuePanel.RepeatTrack')"
+                :aria-pressed="!!track.repeat"
+                @click.stop="tracklist.toggleTrackRepeat(index)"
+            >
                 <RepeatSvg />
             </button>
             <button
@@ -39,7 +45,7 @@ import { ref } from 'vue'
 
 import { paths } from '@/config'
 import { showTrackContextMenu } from '@/helpers/contextMenuHandler'
-import { Track } from '@/interfaces'
+import { QueueItem } from '@/interfaces'
 import useTracklist from '@/stores/queue/tracklist'
 
 import DeleteSvg from '@/assets/icons/figma/delete.svg'
@@ -49,7 +55,7 @@ import RepeatSvg from '@/assets/icons/figma/repeat.svg'
 // TrackQueue of the Figma (node 12408:961): 36 high, the cover of 28, the name and the three small buttons. The
 // right click opens the menu of tracks of the other lists.
 const props = defineProps<{
-    track: Track
+    track: QueueItem
     index: number
     isCurrent?: boolean
     // the copy that follows the pointer while the row is dragged
@@ -140,8 +146,14 @@ function showMenu(e: MouseEvent) {
             height: var(--queuepanel-button-size);
         }
 
-        &:hover:not(:disabled) {
+        &:hover:not(:disabled),
+        &:focus-visible {
             color: var(--queuepanel-icon-hover);
+        }
+
+        // a repeat that is on (not in the Figma: the color of the hover)
+        &.on {
+            color: var(--queuepanel-icon-on);
         }
 
         &:disabled {

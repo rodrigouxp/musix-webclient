@@ -47,6 +47,8 @@ export default defineStore('tracklist', {
     state: () => ({
         from: {} as From,
         tracklist: <QueueItem[]>[],
+        // ids of the groups that repeat (when the last track of the group ends, it goes back to the first)
+        repeatGroups: <string[]>[],
     }),
     actions: {
         loadFromLocalStorage() {
@@ -59,6 +61,8 @@ export default defineStore('tracklist', {
             }
         },
         setNewList(tracklist: Track[], group?: QueueGroup) {
+            this.repeatGroups = []
+
             if (this.tracklist !== tracklist) {
                 this.tracklist = []
                 this.tracklist.push(...withGroup(tracklist, group))
@@ -141,6 +145,7 @@ export default defineStore('tracklist', {
             }
         },
         clearList() {
+            this.repeatGroups = []
             this.tracklist = []
             this.from = {} as From
         },
@@ -192,6 +197,17 @@ export default defineStore('tracklist', {
             const [item] = this.tracklist.splice(from, 1)
             this.tracklist.splice(to, 0, item)
 
+            // inside a group the track belongs to it; dropped between two tracks of a group it joins it; anywhere
+            // else it is a loose track
+            const before = this.tracklist[to - 1]?.group
+            const after = this.tracklist[to + 1]?.group
+
+            if (before && after && before.id === after.id) {
+                item.group = before
+            } else if (item.group && item.group.id !== before?.id && item.group.id !== after?.id) {
+                delete item.group
+            }
+
             let current = queue.currentindex
 
             if (current === from) {
@@ -203,6 +219,82 @@ export default defineStore('tracklist', {
             }
 
             queue.setCurrentIndex(current)
+            usePlayer().clearNextAudio()
+        },
+        // ---- groups (the buttons of the header in the QueuePanel) ----
+        /** The positions of the tracks of a group. */
+        groupIndexes(id: string): number[] {
+            return this.tracklist.reduce<number[]>((all, t, i) => (t.group?.id === id ? [...all, i] : all), [])
+        },
+        /** The last track of the group is the one that is playing: where it goes back to, if the group repeats. */
+        groupRepeatTarget(index: number): number | null {
+            const group = this.tracklist[index]?.group
+
+            if (!group || !this.repeatGroups.includes(group.id) || this.tracklist[index + 1]?.group?.id === group.id) {
+                return null
+            }
+
+            let start = index
+
+            while (this.tracklist[start - 1]?.group?.id === group.id) start--
+
+            return start
+        },
+        toggleGroupRepeat(id: string) {
+            this.repeatGroups = this.repeatGroups.includes(id)
+                ? this.repeatGroups.filter(g => g !== id)
+                : [...this.repeatGroups, id]
+            usePlayer().clearNextAudio()
+        },
+        toggleTrackRepeat(index: number) {
+            const track = this.tracklist[index]
+
+            if (track) track.repeat = !track.repeat
+            usePlayer().clearNextAudio()
+        },
+        /** Shuffles the tracks of the group among their own places; the song that is playing goes on. */
+        shuffleGroup(id: string) {
+            const queue = useQueue()
+            const places = this.groupIndexes(id)
+
+            if (places.length < 2) return
+
+            const current = this.tracklist[queue.currentindex]
+            const shuffled = shuffle(places.map(i => this.tracklist[i]))
+
+            places.forEach((place, k) => (this.tracklist[place] = shuffled[k]))
+
+            queue.setCurrentIndex(this.tracklist.indexOf(current))
+            usePlayer().clearNextAudio()
+        },
+        /** Takes every track of the group out; if the song that is playing is one of them, the next one plays. */
+        removeGroup(id: string) {
+            // from the last to the first, so the positions that are left do not move
+            this.groupIndexes(id)
+                .reverse()
+                .forEach(i => this.removeByIndex(i))
+
+            this.repeatGroups = this.repeatGroups.filter(g => g !== id)
+        },
+        /** The whole group goes to the slot `slot` (before the track that is there, 0 to the length of the queue). */
+        moveGroup(id: string, slot: number) {
+            const queue = useQueue()
+            const places = this.groupIndexes(id)
+
+            if (!places.length) return
+
+            const from = places[0]
+            const count = places.length
+
+            // dropped on itself
+            if (slot >= from && slot <= from + count) return
+
+            const current = this.tracklist[queue.currentindex]
+            const moved = this.tracklist.splice(from, count)
+
+            this.tracklist.splice(slot > from ? slot - count : slot, 0, ...moved)
+
+            queue.setCurrentIndex(this.tracklist.indexOf(current))
             usePlayer().clearNextAudio()
         },
         insertAfterCurrent(tracks: Track[], group?: QueueGroup) {

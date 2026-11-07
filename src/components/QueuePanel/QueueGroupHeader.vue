@@ -11,18 +11,25 @@
                 </div>
             </div>
         </div>
-        <!-- the buttons of the group come in the next step (they show, disabled) -->
+        <!-- the buttons act only on the tracks of this group -->
         <div class="qg-functions">
-            <button class="qg-button" disabled :title="$t('BottomBar.Shuffle')" :aria-label="$t('BottomBar.Shuffle')">
+            <button class="qg-button" :title="$t('BottomBar.Shuffle')" :aria-label="$t('BottomBar.Shuffle')" @click="tracklist.shuffleGroup(group.id)">
                 <ShuffleSvg />
             </button>
-            <button class="qg-button" disabled :title="$t('QueuePanel.RepeatGroup')" :aria-label="$t('QueuePanel.RepeatGroup')">
+            <button
+                class="qg-button"
+                :class="{ on: repeating }"
+                :title="$t('QueuePanel.RepeatGroup')"
+                :aria-label="$t('QueuePanel.RepeatGroup')"
+                :aria-pressed="repeating"
+                @click="tracklist.toggleGroupRepeat(group.id)"
+            >
                 <RepeatSvg />
             </button>
-            <button class="qg-button" disabled :title="$t('QueuePanel.RemoveGroup')" :aria-label="$t('QueuePanel.RemoveGroup')">
+            <button class="qg-button" :title="$t('QueuePanel.RemoveGroup')" :aria-label="$t('QueuePanel.RemoveGroup')" @click="tracklist.removeGroup(group.id)">
                 <DeleteSvg />
             </button>
-            <button class="qg-button" disabled :aria-label="$t('QueuePanel.Move')">
+            <button class="qg-button qg-drag" :aria-label="$t('QueuePanel.Move')" @pointerdown="$emit('dragstart', $event)">
                 <DragSvg />
             </button>
         </div>
@@ -33,6 +40,7 @@
 import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 import { QueueGroup } from '@/interfaces'
+import useTracklist from '@/stores/queue/tracklist'
 
 import DeleteSvg from '@/assets/icons/figma/delete.svg'
 import DragSvg from '@/assets/icons/figma/drag.svg'
@@ -45,7 +53,15 @@ import SoundtrackSvg from '@/assets/icons/figma/soundtrack.svg'
 // A name that does not fit runs to the left in a loop, like a marquee.
 const props = defineProps<{
     group: QueueGroup
+    // the group repeats
+    repeating?: boolean
 }>()
+
+defineEmits<{
+    (e: 'dragstart', event: PointerEvent): void
+}>()
+
+const tracklist = useTracklist()
 
 // pixels per second, and the pause at the start of every lap (seconds)
 const SPEED = 30
@@ -193,15 +209,27 @@ watch(
         border: none;
         background: transparent;
         color: var(--queuepanel-icon-color);
+        transition: color 0.2s ease-out;
 
         svg {
             width: var(--queuepanel-button-size);
             height: var(--queuepanel-button-size);
         }
 
-        &:disabled {
-            cursor: default;
+        &:hover,
+        &:focus-visible {
+            color: var(--queuepanel-icon-hover);
         }
+
+        // a repeat that is on (not in the Figma: the color of the hover)
+        &.on {
+            color: var(--queuepanel-icon-on);
+        }
+    }
+
+    .qg-drag {
+        cursor: grab;
+        touch-action: none;
     }
 }
 

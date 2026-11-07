@@ -98,7 +98,8 @@ export interface QueueGroup {
     pid?: number
 }
 
-export type QueueItem = Track & { group?: QueueGroup }
+/** `repeat`: this track repeats (the repeat button of its row in the QueuePanel). */
+export type QueueItem = Track & { group?: QueueGroup; repeat?: boolean }
 
 export interface HomePageItem {
     position: number
