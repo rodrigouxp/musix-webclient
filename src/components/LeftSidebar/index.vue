@@ -20,20 +20,20 @@ const settings = useSettingsStore();
 </script>
 
 <style lang="scss">
-// The side panel of the Figma (SidePanel): the header and the card of the song stay, the middle (buttons,
-// divider, playlists) scrolls inside. The sizes are the tokens --sidepanel-* (_musix-tokens.scss).
+// The side panel of the Figma (SidePanel, node 12329:437): a block of its own (corners of 8, neutral/900)
+// in the grid of panels; the header and the card of the song stay, the middle (buttons, divider,
+// playlists) scrolls inside. The sizes are the tokens --sidepanel-* (_musix-tokens.scss).
 .l-sidebar {
-  // the panel of the Figma has --sidepanel-width; the border of 1px that the app keeps is on top of it
-  width: calc(var(--sidepanel-width) + var(--sidepanel-border));
+  width: var(--sidepanel-width);
   grid-area: l-sidebar;
   display: grid;
   grid-template-rows: var(--sidepanel-header-height) minmax(0, 1fr) max-content;
   gap: var(--sidepanel-gap);
-  border-right: solid var(--sidepanel-border) $gray5;
   position: relative;
+  box-sizing: border-box;
   padding: var(--sidepanel-padding);
+  border-radius: var(--layout-panel-radius);
   background: var(--sidepanel-bg);
-  font-family: var(--sidepanel-font);
 
   // no card of the song (Settings): the middle takes its place
   &.no-card {

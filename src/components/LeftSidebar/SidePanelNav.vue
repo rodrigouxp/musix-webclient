@@ -11,7 +11,10 @@
           query: menu.query && menu.query(),
         }"
         class="circular nav-item"
-        :class="{ active: $route.name === menu.route_name }"
+        :class="{
+          active: $route.name === menu.route_name,
+          'icon-active nav-favorite': menu.route_name === Routes.favorites,
+        }"
       >
         <component :is="menu.icon" />
         <span>{{ menu.name }}</span>
@@ -42,6 +45,7 @@
 </template>
 
 <script setup lang="ts">
+import { Routes } from "@/router";
 import PinnedPlaylists from "./PinnedPlaylists.vue";
 import { useNavItems } from "./navitems";
 
@@ -78,7 +82,7 @@ const playlists = menus.slice(dividerAt + 1).filter((menu) => !("separator" in m
   .sidepanel-divider {
     flex-shrink: 0;
     height: 0;
-    border-top: solid 1px var(--color-divider);
+    border-top: solid 1px var(--sidepanel-divider);
   }
 
   .nav-item {
@@ -89,10 +93,8 @@ const playlists = menus.slice(dividerAt + 1).filter((menu) => !("separator" in m
     height: var(--sidepanel-item-height);
     flex-shrink: 0;
     padding: var(--sidepanel-item-padding);
-    font-family: var(--sidepanel-font);
-    font-size: var(--sidepanel-font-size);
-    font-weight: var(--sidepanel-nav-weight);
-    line-height: var(--sidepanel-nav-line-height);
+    border-radius: var(--sidepanel-item-radius);
+    @include text('action-button-14px');
     color: var(--sidepanel-nav-color);
     transition: background-color 0.2s ease-out;
 
@@ -110,12 +112,18 @@ const playlists = menus.slice(dividerAt + 1).filter((menu) => !("separator" in m
       white-space: nowrap;
     }
 
-    // the grey of the active item and of the hover are the ones the app already had
-    &.active {
-      background-color: $gray5;
+    // Favorites: the heart is always filled and red in the Figma (the item is not "active" for the colors)
+    &.nav-favorite svg {
+      color: var(--sidepanel-favorite-color);
     }
 
-    &:hover {
+    // the active item is the neutral/700 pill of the Figma; the hover is not in the Figma and keeps the grey
+    // the app already had
+    &.active {
+      background-color: var(--sidepanel-item-active-bg);
+    }
+
+    &:hover:not(.active) {
       background-color: $gray;
     }
 

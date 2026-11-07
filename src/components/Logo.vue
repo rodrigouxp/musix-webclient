@@ -7,8 +7,8 @@ import LogoSvg from "@/assets/icons/logos/musix.svg";
 </script>
 
 <style lang="scss">
-// The header of the side panel (SidePanel > header): the MUSIX wordmark of the Figma centered on a
-// rounded block. The sizes and the colors are the tokens --sidepanel-header-* (_musix-tokens.scss).
+// The header of the side panel (SidePanel > header): the MUSIX wordmark of the Figma centered, with no
+// background of its own. The sizes are the tokens --sidepanel-header-* (_musix-tokens.scss).
 .musix-logo,
 .musix-logo.rounded-md {
   height: var(--sidepanel-header-height);
@@ -16,9 +16,8 @@ import LogoSvg from "@/assets/icons/logos/musix.svg";
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--sidepanel-header-padding);
   border-radius: var(--sidepanel-header-radius);
-  background-color: var(--sidepanel-header-bg);
+  background-color: transparent;
   transition: background-color 0.2s ease-out;
 
   // the wordmark keeps its proportion and shrinks if the panel gets narrower than the Figma
@@ -27,6 +26,7 @@ import LogoSvg from "@/assets/icons/logos/musix.svg";
     height: auto;
   }
 
+  // the hover is not in the Figma: it keeps the grey the app already had
   &:hover {
     background-color: $gray5;
   }

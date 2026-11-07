@@ -80,7 +80,7 @@ watch(
 
 <style lang="scss">
 // A pinned playlist (SidePanel > playlists > playlist of the Figma): 28 of height, padding 0 12, 8 between
-// the cover (28, corners 4) and the name (Satoshi Medium 14, line 20, white).
+// the cover (28, corners 4) and the name (the text style action-button-14px, white).
 .sidepanel-nav .pinned-playlist {
   display: flex;
   align-items: center;
@@ -89,10 +89,7 @@ watch(
   height: var(--sidepanel-playlist-height);
   flex-shrink: 0;
   padding: 0 var(--sidepanel-playlist-padding-x);
-  font-family: var(--sidepanel-font);
-  font-size: var(--sidepanel-font-size);
-  font-weight: var(--sidepanel-playlist-weight);
-  line-height: var(--sidepanel-playlist-line-height);
+  @include text('action-button-14px');
   color: var(--sidepanel-playlist-color);
   text-transform: none;
   transition: background-color 0.2s ease-out;
