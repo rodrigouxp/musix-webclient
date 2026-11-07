@@ -158,4 +158,34 @@
   --playerbar-volume-gap: 8px;
   --playerbar-volume-width: 94px;
 
+  // Estilos de texto do Figma (refeitos em 2026-11-07): Satoshi Variable, altura de linha automática no Figma,
+  // que no CSS é `normal` (a métrica da fonte). Use com o mixin `@include text('<nome>')` (assets/scss/_mixins.scss).
+  // Hoje só a Home usa estes tokens (painéis novos); as outras páginas ainda não.
+  --text-screen-title-48px-size: 48px; // titles/screen-title-48px (Black)
+  --text-screen-title-48px-weight: 900;
+  --text-screen-title-48px-line-height: normal;
+  --text-section-title-28px-size: 28px; // titles/section-title-28px (Bold)
+  --text-section-title-28px-weight: 700;
+  --text-section-title-28px-line-height: normal;
+  --text-panel-title-20px-size: 20px; // titles/panel-title-20px (Bold)
+  --text-panel-title-20px-weight: 700;
+  --text-panel-title-20px-line-height: normal;
+  --text-action-button-14px-size: 14px; // actions/action-button-14px (Bold)
+  --text-action-button-14px-weight: 700;
+  --text-action-button-14px-line-height: normal;
+  --text-album-title-24px-size: 24px; // tracks/album-title-24px (Bold)
+  --text-album-title-24px-weight: 700;
+  --text-album-title-24px-line-height: normal;
+  --text-track-title-18px-size: 18px; // tracks/track-title-18px (Bold)
+  --text-track-title-18px-weight: 700;
+  --text-track-title-18px-line-height: normal;
+  --text-paragraph-18px-size: 18px; // paragraph/paragraph-18px (Medium)
+  --text-paragraph-18px-weight: 500;
+  --text-paragraph-18px-line-height: normal;
+  --text-paragraph-14px-size: 14px; // paragraph/paragraph-14px (Medium)
+  --text-paragraph-14px-weight: 500;
+  --text-paragraph-14px-line-height: normal;
+  --text-paragraph-12px-size: 12px; // paragraph/paragraph-12px (Medium)
+  --text-paragraph-12px-weight: 500;
+  --text-paragraph-12px-line-height: normal;
 }

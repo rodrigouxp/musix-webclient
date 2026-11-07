@@ -1,3 +1,12 @@
+// A text style of the Figma (tokens `--text-<name>-*` in _musix-tokens.scss): family, size, weight and
+// line height in one line. `$name` is the style without its group, e.g. text('action-button-14px').
+@mixin text($name) {
+  font-family: var(--font-sans);
+  font-size: var(--text-#{$name}-size);
+  font-weight: var(--text-#{$name}-weight);
+  line-height: var(--text-#{$name}-line-height);
+}
+
 @mixin ximage {
   background-position: center;
   background-size: cover;
