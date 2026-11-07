@@ -3,7 +3,7 @@
         <div class="qp-inner">
             <div class="qp-title">
                 <h2 class="qp-heading">{{ $t('QueuePanel.Title') }}</h2>
-                <button v-if="hasItems" class="qp-clear" @click="queue.clearQueue()">{{ $t('QueuePanel.Clear') }}</button>
+                <button v-if="hasItems" class="qp-clear" @click="queue.clearQueueKeepingCurrent()">{{ $t('QueuePanel.Clear') }}</button>
             </div>
 
             <div class="qp-list" :style="fadeStyle">
@@ -49,7 +49,14 @@
             <!-- the album that is playing, with a vinyl behind it that turns while the music plays -->
             <div v-if="hasItems && queue.currenttrack" class="qp-thumb">
                 <img class="qp-disc" :class="{ spinning: queue.playing }" :src="discUrl" alt="" />
-                <img class="qp-cover" :src="paths.images.thumb.large + queue.currenttrack.image" alt="" />
+                <component
+                    :is="queue.currenttrack.albumhash ? 'RouterLink' : 'div'"
+                    class="qp-cover-link"
+                    :to="queue.currenttrack.albumhash ? { name: Routes.album, params: { albumhash: queue.currenttrack.albumhash } } : undefined"
+                    :title="$t('BottomBar.GoToAlbum')"
+                >
+                    <img class="qp-cover" :src="paths.images.thumb.large + queue.currenttrack.image" alt="" />
+                </component>
             </div>
         </div>
 
@@ -90,6 +97,7 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { paths } from '@/config'
 import useTrackDrag from '@/composables/useTrackDrag'
 import { QueueGroup, Track } from '@/interfaces'
+import { Routes } from '@/router'
 import useInterface from '@/stores/interface'
 import useSettings from '@/stores/settings'
 import useQueue from '@/stores/queue'
@@ -353,13 +361,16 @@ function onGroupDragStart(event: PointerEvent, group: QueueGroup, start: number)
         background-color: var(--color-neutral-700);
     }
 
-    // 266 x 322: the vinyl is a square of the width, 55 above the cover; the cover is a square at the bottom
+    // the vinyl is a square of the width, 55 above the cover; the cover is a square under it. 8 from each border of
+    // the panel (the padding of the panel has 4 on the right: the thumbnail takes the other 4 itself). On a short
+    // window it gets smaller (never more than 45% of the height)
     .qp-thumb {
         position: relative;
         flex-shrink: 0;
-        align-self: center;
-        height: min(var(--queuepanel-thumb-height), 45%);
-        aspect-ratio: var(--queuepanel-thumb-ratio);
+        align-self: flex-start;
+        box-sizing: content-box;
+        width: min(calc(100% - var(--queuepanel-thumb-gap-right)), calc(45vh - var(--queuepanel-disc-lift)));
+        padding-top: var(--queuepanel-disc-lift);
         border-radius: var(--queuepanel-cover-radius);
     }
 
@@ -379,12 +390,15 @@ function onGroupDragStart(event: PointerEvent, group: QueueGroup, start: number)
         }
     }
 
+    .qp-cover-link {
+        position: relative;
+        display: block;
+        cursor: pointer;
+    }
+
     .qp-cover {
-        position: absolute;
-        bottom: 0;
-        left: -1px;
-        right: 0;
-        width: calc(100% + 1px);
+        display: block;
+        width: 100%;
         aspect-ratio: 1;
         box-sizing: border-box;
         object-fit: cover;

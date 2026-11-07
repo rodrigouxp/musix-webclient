@@ -146,8 +146,8 @@ watch(
     align-items: center;
     gap: var(--queuepanel-header-gap);
     box-sizing: border-box;
-    height: var(--queuepanel-header-height);
-    padding: 0 4px;
+    height: calc(var(--queuepanel-header-height) + var(--queuepanel-header-pad-top));
+    padding: var(--queuepanel-header-pad-top) 4px 0;
     color: var(--queuepanel-group-color);
 
     .qg-name {

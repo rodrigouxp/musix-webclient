@@ -543,6 +543,7 @@ function showAddMenu() {
             border-radius: 400px;
             background-color: var(--playerbar-badge-bg);
             color: var(--color-neutral-white);
+            z-index: 2;
             opacity: 0;
             pointer-events: none;
             transition: opacity var(--playerbar-badge-fade) ease-out;

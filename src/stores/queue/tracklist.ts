@@ -267,14 +267,17 @@ export default defineStore('tracklist', {
             queue.setCurrentIndex(this.tracklist.indexOf(current))
             usePlayer().clearNextAudio()
         },
-        /** Takes every track of the group out; if the song that is playing is one of them, the next one plays. */
+        /** Takes every track of the group out, but never the song that is playing: it stays in the queue. */
         removeGroup(id: string) {
+            const { currentindex } = useQueue()
+
             // from the last to the first, so the positions that are left do not move
             this.groupIndexes(id)
+                .filter(i => i !== currentindex)
                 .reverse()
                 .forEach(i => this.removeByIndex(i))
 
-            this.repeatGroups = this.repeatGroups.filter(g => g !== id)
+            if (!this.groupIndexes(id).length) this.repeatGroups = this.repeatGroups.filter(g => g !== id)
         },
         /** The whole group goes to the slot `slot` (before the track that is there, 0 to the length of the queue). */
         moveGroup(id: string, slot: number) {

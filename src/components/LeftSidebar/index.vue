@@ -1,22 +1,15 @@
 <template>
-  <div class="l-sidebar no-scroll" :class="{ 'no-card': !settings.use_np_img }">
+  <div class="l-sidebar no-scroll">
     <Logo />
     <div class="scrollable">
       <SidePanelNav />
     </div>
-
-    <SongCard v-if="settings.use_np_img" />
   </div>
 </template>
 
 <script setup lang="ts">
-import useSettingsStore from "@/stores/settings";
-
 import SidePanelNav from "./SidePanelNav.vue";
 import Logo from "@/components/Logo.vue";
-import SongCard from "./NP/SongCard.vue";
-
-const settings = useSettingsStore();
 </script>
 
 <style lang="scss">
@@ -27,18 +20,13 @@ const settings = useSettingsStore();
   width: var(--sidepanel-width);
   grid-area: l-sidebar;
   display: grid;
-  grid-template-rows: var(--sidepanel-header-height) minmax(0, 1fr) max-content;
+  grid-template-rows: var(--sidepanel-header-height) minmax(0, 1fr);
   gap: var(--sidepanel-gap);
   position: relative;
   box-sizing: border-box;
   padding: var(--sidepanel-padding);
   border-radius: var(--layout-panel-radius);
   background: var(--sidepanel-bg);
-
-  // no card of the song (Settings): the middle takes its place
-  &.no-card {
-    grid-template-rows: var(--sidepanel-header-height) minmax(0, 1fr);
-  }
 
   .scrollable {
     height: 100%;

@@ -17,6 +17,7 @@
   --layout-panel-gap: 8px;
   --layout-panel-radius: 8px;
   --layout-panel-border: 1px solid var(--color-neutral-700);
+  --layout-scrollbar-inset: 4px; // a barra de rolagem das páginas começa e termina a 4 das bordas do painel
 
   // TopBar (componente TopBar do Figma, nó 12395:365; SearchBar: 12394:348)
   --topbar-height: 64px;
@@ -242,8 +243,9 @@
   --queuepanel-header-icon-size: 16px;
   --queuepanel-group-gap: 8px; // entre o cabeçalho e as faixas
   --queuepanel-group-color: var(--color-neutral-300);
-  --queuepanel-thumb-height: 322px; // miniatura: disco 55 acima da capa de 267
-  --queuepanel-thumb-ratio: 266 / 322;
+  --queuepanel-disc-lift: 55px; // o disco aparece 55 acima da capa
+  --queuepanel-thumb-gap-right: 4px; // o painel tem 4 de padding à direita (barra da lista); a miniatura devolve 4: 8 de cada lado
+  --queuepanel-header-pad-top: 4px; // acima do cabeçalho do grupo
   --queuepanel-cover-radius: 4.914px;
   --queuepanel-cover-border: 0.614px solid var(--color-neutral-700);
   --queuepanel-disc-duration: 8s;

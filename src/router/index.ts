@@ -103,6 +103,13 @@ const NowPlayingView = {
     path: '/nowplaying/:tab',
     name: 'NowPlaying',
     component: NowPlaying,
+    // the page of Now Playing is not on the desktop of the grid of panels (for now); the lyrics are one of its tabs
+    // and stay
+    beforeEnter: async (to: any) => {
+        const { default: useSettings } = await import('@/stores/settings')
+
+        if (useSettings().is_panel_layout && to.params.tab !== 'lyrics') return { name: 'Home' }
+    },
 }
 
 const ArtistTracks = {
