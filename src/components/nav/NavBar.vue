@@ -140,21 +140,40 @@ function toggleSidenav() {
     // the left, search centered on 50% of the bar, avatar on the right edge. The alt layout keeps
     // the logo in the middle. The left column grows to what cannot shrink (buttons, sort menu)
     // and the search gives way (never under 14rem), so nothing is ever covered.
+    // The TopBar of the Figma (node 12395:365): back and forward, 64 apart, the search (380 wide), and the
+    // avatar on the right edge. The title of the page (or the path of the folder) is not in the Figma: it keeps
+    // its place between the search and the avatar and gives way first. Tokens --topbar-*.
     @media only screen and (min-width: 901px) {
         &.has_search:not(.use_links) {
-            grid-template-columns: minmax(min-content, 1fr) minmax(14rem, 50%) minmax(min-content, 1fr);
+            display: flex;
+            align-items: center;
+            gap: var(--topbar-gap);
 
-            .left {
-                grid-column: 1;
-                min-width: 0;
+            // medium widths: tighter gaps, so the buttons, the search (14rem at least) and the avatar fit
+            @media only screen and (max-width: 1100px) {
+                gap: 1.5rem;
             }
 
-            // medium widths: tighter gaps, so the left side, the search (14rem at least) and the avatar fit
-            @media only screen and (max-width: 1100px) {
-                gap: 0.5rem;
+            .left {
+                display: contents;
 
-                .left {
-                    gap: 0.5rem;
+                #back-forward {
+                    order: 0;
+                    flex: none;
+                }
+
+                .info {
+                    order: 2;
+                    flex: 1 1 0;
+                    min-width: min-content;
+                    max-width: none;
+                    margin: 0;
+                    // the sort menu of the folder is placed against this box (the .left is not a box here)
+                    position: relative;
+
+                    &:has(#folder-nav-title) {
+                        overflow: visible;
+                    }
                 }
             }
 
@@ -162,13 +181,16 @@ function toggleSidenav() {
                 display: contents;
 
                 & > .gsearch-input {
-                    grid-column: 2;
-                    min-width: 0;
+                    order: 1;
+                    flex: 0 1 var(--topbar-search-width);
+                    min-width: var(--topbar-search-min-width);
                 }
 
                 & > .avatar {
-                    grid-column: 3;
-                    justify-self: end;
+                    order: 3;
+                    flex: none;
+                    width: var(--topbar-avatar-size);
+                    margin-left: auto;
                 }
             }
         }

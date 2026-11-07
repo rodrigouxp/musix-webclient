@@ -39,7 +39,7 @@ export { default as MenuCompilationIcon } from "@/assets/icons/figma/compilation
 // "Open in files" (the folder with the files)
 export { default as MenuOpenInFilesIcon } from "@/assets/icons/figma/files.svg?raw";
 // the arrow of the items with a submenu
-export { default as MenuSubmenuIcon } from "@/assets/icons/figma/chevron-right.svg?raw";
+export { default as MenuSubmenuIcon } from "@/assets/icons/figma/chevron.svg?raw";
 // the mark of the playlists that already have the song (submenu "Add to playlist")
 export { default as CheckIcon } from "@/assets/icons/figma/check.svg?raw";
 

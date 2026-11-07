@@ -230,6 +230,53 @@ function handleButton() {
     }
 }
 
+// The search of the TopBar of the Figma (SearchBar, node 12394:348): 380 x 48, round, neutral/700 at 50% with a
+// border of 1, the magnifier (the glyph is 20 x 20, in a slot of 20) and the text (paragraph-18px) 24 apart.
+// Only in the default layout above 900px; the search of the right sidebar and of the alt layout do not change.
+@media only screen and (min-width: 901px) {
+    #app-grid:not(.is_alt_layout) .topnav.has_search:not(.use_links) .gsearch-input #ginner {
+        box-sizing: border-box;
+        height: var(--topbar-search-height);
+        padding: var(--topbar-search-padding);
+        gap: var(--topbar-search-gap);
+        border: var(--topbar-search-border);
+        border-radius: 400px;
+        background-color: var(--topbar-search-bg);
+
+        button {
+            width: var(--topbar-search-icon-slot);
+            height: var(--topbar-search-icon-slot);
+            margin: 0;
+            color: var(--topbar-search-color);
+
+            &:hover {
+                background-color: transparent;
+            }
+
+            svg.search-glyph {
+                flex-shrink: 0;
+                width: var(--topbar-search-icon-size);
+                height: var(--topbar-search-icon-size);
+            }
+        }
+
+        input {
+            @include text('paragraph-18px');
+            min-width: 0;
+            color: var(--topbar-search-text-color);
+
+            &::placeholder {
+                color: var(--topbar-search-color);
+                opacity: 1;
+            }
+        }
+
+        .clear_input {
+            margin-right: 0;
+        }
+    }
+}
+
 .search-focused {
     outline: solid 2px #fff;
 

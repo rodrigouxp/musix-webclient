@@ -301,7 +301,7 @@ $g-border: solid 1px $gray5;
         .topnav {
             box-sizing: border-box;
             height: var(--topbar-height);
-            padding: 4px var(--layout-gutter);
+            padding: var(--topbar-padding);
             border: var(--layout-panel-border);
             border-radius: var(--layout-panel-radius);
         }

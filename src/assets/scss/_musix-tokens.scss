@@ -17,7 +17,27 @@
   --layout-panel-gap: 8px;
   --layout-panel-radius: 8px;
   --layout-panel-border: 1px solid var(--color-neutral-700);
-  --topbar-height: 64px; // TopBar do Figma (nó 12395:365); o desenho fino dela entra na Etapa 2
+
+  // TopBar (componente TopBar do Figma, nó 12395:365; SearchBar: 12394:348)
+  --topbar-height: 64px;
+  --topbar-padding: 4px var(--layout-gutter);
+  --topbar-gap: 64px; // entre os botões, a busca e o título da página
+  --topbar-button-size: 36px; // círculo de voltar e avançar
+  --topbar-button-gap: 16px;
+  --topbar-button-border: 1px solid var(--color-neutral-700); // o Figma tem 0,82 (36 x 0,0227): arredondado para 1
+  --topbar-button-icon-size: 26.18px; // o `chevron` do Icon desenhado em 1,09x dentro do círculo (glifo de 11,6 x 17,5)
+  --topbar-search-width: 380px;
+  --topbar-search-min-width: 14rem; // a busca encolhe até aqui nas larguras pequenas
+  --topbar-search-height: 48px;
+  --topbar-search-padding: 7px 17px; // 8 e 18 do Figma, menos a borda de 1 (o Figma não conta a borda do SearchBar no padding)
+  --topbar-search-gap: 24px; // entre a lupa e o texto
+  --topbar-search-bg: color-mix(in srgb, var(--color-neutral-700) 50%, transparent);
+  --topbar-search-border: 1px solid var(--color-neutral-700);
+  --topbar-search-color: var(--color-neutral-500); // lupa e placeholder (contraste baixo, como no Figma)
+  --topbar-search-text-color: var(--color-neutral-100); // texto digitado: não está no Figma
+  --topbar-search-icon-slot: 20px; // o espaço da lupa no layout; o glifo de 20 x 20 é desenhado numa caixa de 24
+  --topbar-search-icon-size: 24px;
+  --topbar-avatar-size: 36px;
 
   // Fonte do app inteiro: Satoshi Variable (pesos 300 a 900), arquivo do próprio cliente (assets/fonts, sem CDN).
   // Os caracteres que ela não tem (japonês, coreano, emoji) caem na fonte seguinte da lista. O `body`
