@@ -9,7 +9,9 @@
         v-if="!hideUI"
         id="app-grid"
         :class="{
-            useSidebar: settings.use_sidebar && xl,
+            useSidebar: settings.use_sidebar && xl && !settings.is_panel_layout,
+            'has-queue-panel': settings.is_panel_layout,
+            'queue-open': settings.is_panel_layout && settings.queue_panel_open,
             NoSideBorders: settings.is_alt_layout || !xxl,
             extendWidth: settings.extend_width && settings.can_extend_width,
             is_alt_layout: settings.is_alt_layout,
@@ -26,7 +28,9 @@
                 </RouterView>
             </BalancerProvider>
         </div>
-        <RightSideBar v-if="settings.use_sidebar && xl" />
+        <!-- above 900px in the default layout the right sidebar is the QueuePanel ("Use sidebar" has no effect there) -->
+        <QueuePanel v-if="settings.is_panel_layout" />
+        <RightSideBar v-else-if="settings.use_sidebar && xl" />
         <BottomBar />
         <!-- <BubbleManager /> -->
     </section>
@@ -72,6 +76,7 @@ import Notification from '@/components/Notification.vue'
 import BottomBar from '@/components/BottomBar/BottomBar.vue'
 import LeftSidebar from '@/components/LeftSidebar/index.vue'
 import NavBar from '@/components/nav/NavBar.vue'
+import QueuePanel from '@/components/QueuePanel/QueuePanel.vue'
 import RightSideBar from '@/components/RightSideBar/Main.vue'
 
 import { getAllSettings } from '@/requests/settings'

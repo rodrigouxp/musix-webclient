@@ -209,6 +209,44 @@
   --playerbar-paused-artist: var(--color-neutral-500);
   --playerbar-playing-artist: var(--color-neutral-300);
 
+  // QueuePanel (nó 12408:1964; faixa TrackQueue 12408:961, grupo AlbumQueue 12408:964)
+  --queuepanel-width: 280px;
+  --queuepanel-padding: 8px 4px 8px 8px;
+  --queuepanel-gap: 12px; // entre o título, a lista e a miniatura
+  --queuepanel-duration: 300ms; // abrir e fechar (decisão minha)
+  --queuepanel-transition: var(--queuepanel-duration) ease-in-out;
+  --queuepanel-title-color: var(--color-neutral-white);
+  --queuepanel-clear-color: var(--color-error-300); // "Clear queue"
+  --queuepanel-item-gap: 4px; // entre as faixas e os itens da lista
+  --queuepanel-list-pad-right: 8px; // inclui a barra de rolagem
+  --queuepanel-scrollbar-width: 4px;
+  --queuepanel-fade: 24px; // degradê no limite da rolagem (decisão minha)
+  --queuepanel-track-height: 36px;
+  --queuepanel-track-padding: 4px;
+  --queuepanel-track-radius: 4px;
+  --queuepanel-track-gap: 10px; // entre o nome e os botões
+  --queuepanel-name-gap: 8px; // entre a capa e o nome
+  --queuepanel-picture-size: 28px;
+  --queuepanel-picture-radius: 4px;
+  --queuepanel-track-color: var(--color-neutral-white);
+  --queuepanel-track-current-bg: var(--hover-bg); // faixa que toca (neutral-700); o hover da linha não está no Figma: o mesmo
+  --queuepanel-button-size: 12px; // caixa do ícone (glifo de 10 no viewBox de 24)
+  --queuepanel-button-hit: 24px; // área de clique (decisão minha)
+  --queuepanel-button-gap: 4px;
+  --queuepanel-icon-color: var(--color-neutral-500);
+  --queuepanel-icon-hover: var(--color-neutral-100);
+  --queuepanel-header-height: 16px;
+  --queuepanel-header-gap: 12px; // entre o nome do grupo e os botões
+  --queuepanel-header-name-gap: 4px; // entre o ícone e o nome
+  --queuepanel-header-icon-size: 16px;
+  --queuepanel-group-gap: 8px; // entre o cabeçalho e as faixas
+  --queuepanel-group-color: var(--color-neutral-300);
+  --queuepanel-thumb-height: 322px; // miniatura: disco 55 acima da capa de 267
+  --queuepanel-thumb-ratio: 266 / 322;
+  --queuepanel-cover-radius: 4.914px;
+  --queuepanel-cover-border: 0.614px solid var(--color-neutral-700);
+  --queuepanel-disc-duration: 8s;
+
   // FeedPanel (painel da Home, nó 12408:1935; cartões ArtistThumb e AlbumThumb). Textos: ver os estilos de texto abaixo.
   --feedpanel-padding-top: 8px;
   --feedpanel-padding-right: 16px; // inclui a barra de rolagem: a rolagem de 7 px sai dele (ver .feedpanel)

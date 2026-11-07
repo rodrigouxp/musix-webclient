@@ -319,6 +319,30 @@ $g-border: solid 1px $gray5;
             border-radius: var(--layout-panel-radius);
         }
 
+        // the QueuePanel: a third column that goes from 0 to its width (and the gap of 8) when it opens. The gap of
+        // the grid is 0 on this axis and the panels carry their own 8 (SidePanel and QueuePanel), so a closed
+        // column leaves no space. The TopBar runs over the two last columns, as in the Figma.
+        &.has-queue-panel {
+            column-gap: 0;
+            grid-template-columns: calc(var(--sidepanel-width) + var(--layout-panel-gap)) minmax(0, 1fr) 0px;
+            grid-template-areas:
+                'l-sidebar nav nav'
+                'l-sidebar content r-sidebar'
+                'bottombar bottombar bottombar';
+            transition: grid-template-columns var(--queuepanel-transition);
+
+            &.queue-open {
+                grid-template-columns:
+                    calc(var(--sidepanel-width) + var(--layout-panel-gap)) minmax(0, 1fr)
+                    calc(var(--queuepanel-width) + var(--layout-panel-gap));
+            }
+
+            .l-sidebar,
+            .left-sidebar {
+                margin-right: var(--layout-panel-gap);
+            }
+        }
+
         &.useSidebar {
             grid-template-columns: var(--sidepanel-width) minmax(0, 1fr) 28rem;
 

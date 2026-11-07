@@ -86,7 +86,19 @@ export interface Album {
     }
 }
 
-export type QueueItem = Track
+/**
+ * A whole album or a whole playlist that went into the queue at once. `id` is new every time (the same album added
+ * twice is two groups). The QueuePanel shows the tracks of a group under a header.
+ */
+export interface QueueGroup {
+    id: string
+    type: 'album' | 'playlist'
+    name: string
+    albumhash?: string
+    pid?: number
+}
+
+export type QueueItem = Track & { group?: QueueGroup }
 
 export interface HomePageItem {
     position: number

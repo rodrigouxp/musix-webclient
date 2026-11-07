@@ -319,6 +319,14 @@
     "Title": "Home",
     "title": "Home"
   },
+  "QueuePanel": {
+    "Clear": "Clear queue",
+    "Move": "Move",
+    "RemoveGroup": "Remove from queue",
+    "RepeatGroup": "Repeat",
+    "RepeatTrack": "Repeat",
+    "Title": "Queue"
+  },
   "ImageLoader": {
     "NextPanel": "Next cover panel",
     "PrevPanel": "Previous cover panel"

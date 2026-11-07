@@ -13,6 +13,8 @@ interface Options {
     scroller: () => HTMLElement | null
     /** How many rows come before the first track (the header, "All tracks"). */
     rowsBefore: number
+    /** For lists with rows that are not tracks (headers, dividers): the track position of a row, -1 if it is not a track. */
+    rowIndex?: (el: HTMLElement) => number
     /** The drop: the track at `from` goes to `to` (both are positions of the list, after the move). */
     onDrop: (from: number, to: number) => void
 }
@@ -61,7 +63,10 @@ export default function useTrackDrag(options: Options) {
         if (!scroller) return []
 
         return [...scroller.querySelectorAll<HTMLElement>('[data-index]')]
-            .map(el => ({ index: Number(el.dataset.index) - options.rowsBefore, rect: el.getBoundingClientRect() }))
+            .map(el => ({
+                index: options.rowIndex ? options.rowIndex(el) : Number(el.dataset.index) - options.rowsBefore,
+                rect: el.getBoundingClientRect(),
+            }))
             .filter(row => row.index >= 0)
             .sort((a, b) => a.index - b.index)
     }

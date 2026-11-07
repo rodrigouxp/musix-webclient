@@ -4,17 +4,19 @@ import { DeleteIcon, EditIcon, MenuAddToQueueIcon, MenuPlayNextIcon, PinIcon } f
 import { Option, Playlist } from '@/interfaces'
 import useModal from '@/stores/modal'
 import usePlaylistPage from '@/stores/pages/playlist'
-import useTracklist from '@/stores/queue/tracklist'
+import useTracklist, { newGroup } from '@/stores/queue/tracklist'
 
 import { insetSeparator } from './utils'
 
 const { t } = useT()
 
-function getAddToQueue(pid: number): Option {
+function getAddToQueue(playlist: { id: number; name: string }): Option {
+    const pid = playlist.id
+
     return {
         label: t('Menus.Common.AddToQueue'),
         action: async () => {
-            useTracklist().addTracks(await getAllPlaylistTracks(pid))
+            useTracklist().addTracks(await getAllPlaylistTracks(pid), newGroup('playlist', playlist.name, { pid }))
         },
         icon: MenuAddToQueueIcon,
         menuIcon: true,
@@ -52,7 +54,7 @@ export default async (): Promise<Option[]> => {
     const play_next: Option = {
         label: t('Menus.Common.PlayNext'),
         action: async () => {
-            useTracklist().insertAfterCurrent(await getAllPlaylistTracks(pid))
+            useTracklist().insertAfterCurrent(await getAllPlaylistTracks(pid), newGroup('playlist', playlist.name, { pid }))
         },
         icon: MenuPlayNextIcon,
         menuIcon: true,
@@ -68,7 +70,7 @@ export default async (): Promise<Option[]> => {
         menuIcon: true,
     }
 
-    return [play_next, getAddToQueue(pid), insetSeparator, getPin(playlist), rename, insetSeparator, getDelete(pid)]
+    return [play_next, getAddToQueue(playlist), insetSeparator, getPin(playlist), rename, insetSeparator, getDelete(pid)]
 }
 
 /**
@@ -84,7 +86,7 @@ export async function playlistCardItems(playlist: Playlist, rename: () => void):
             icon: EditIcon,
             menuIcon: true,
         },
-        getAddToQueue(playlist.id),
+        getAddToQueue(playlist),
         insetSeparator,
         getDelete(playlist.id),
     ]

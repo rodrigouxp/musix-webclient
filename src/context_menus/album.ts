@@ -5,7 +5,7 @@ import useArtistPage from '@/stores/pages/artist'
 import useArtistDiscography from '@/stores/pages/artistDiscog'
 import useAuth from '@/stores/auth'
 import useCollection from '@/stores/pages/collections'
-import useTracklist from '@/stores/queue/tracklist'
+import useTracklist, { newGroup } from '@/stores/queue/tracklist'
 
 import { AlbumKind, embedAlbumCover, getAlbumTracks, refreshAlbumCover, setAlbumType } from '@/requests/album'
 import { askConfirm } from '@/stores/confirm'
@@ -105,7 +105,7 @@ export default async (album?: Album) => {
                 tracks = albumStore.tracks.filter(track => !track.is_album_disc_number)
             }
 
-            useTracklist().insertAfterCurrent(tracks)
+            useTracklist().insertAfterCurrent(tracks, newGroup('album', album!.title, { albumhash: album!.albumhash }))
         },
         icon: MenuPlayNextIcon,
         menuIcon: true,
@@ -122,7 +122,7 @@ export default async (album?: Album) => {
                 tracks = albumStore.tracks.filter(track => !track.is_album_disc_number)
             }
 
-            useTracklist().addTracks(tracks)
+            useTracklist().addTracks(tracks, newGroup('album', album!.title, { albumhash: album!.albumhash }))
         },
         icon: MenuAddToQueueIcon,
         menuIcon: true,

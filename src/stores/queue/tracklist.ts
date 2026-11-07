@@ -14,6 +14,7 @@ import {
     fromFolder,
     fromPlaylist,
     fromSearch,
+    QueueGroup,
     QueueItem,
     Track,
 } from '@/interfaces'
@@ -23,6 +24,15 @@ import { useT } from '@/i18n'
 const { t } = useT();
 
 export type From = fromFolder | fromAlbum | fromPlaylist | fromSearch | fromArtist | fromFav
+
+// A group is one entry of a whole album or playlist: the tracks get a copy with the group (the album page keeps its own).
+export function newGroup(type: QueueGroup['type'], name: string, key: { albumhash?: string; pid?: number }): QueueGroup {
+    return { id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`, type, name, ...key }
+}
+
+function withGroup(tracks: Track[], group?: QueueGroup): QueueItem[] {
+    return group ? tracks.map(t => ({ ...t, group })) : tracks
+}
 
 function shuffle(tracks: QueueItem[]) {
     const shuffled = tracks.slice()
@@ -48,10 +58,10 @@ export default defineStore('tracklist', {
                 this.tracklist = parsed.tracks
             }
         },
-        setNewList(tracklist: Track[]) {
+        setNewList(tracklist: Track[], group?: QueueGroup) {
             if (this.tracklist !== tracklist) {
                 this.tracklist = []
-                this.tracklist.push(...tracklist)
+                this.tracklist.push(...withGroup(tracklist, group))
             }
 
             const { focusCurrentInSidebar } = useInterface()
@@ -76,7 +86,7 @@ export default defineStore('tracklist', {
                 albumhash: albumhash,
             }
 
-            this.setNewList(tracks)
+            this.setNewList(tracks, newGroup('album', name, { albumhash }))
         },
         setFromPlaylist(name: string, pid: number, tracks: Track[]) {
             this.from = <fromPlaylist>{
@@ -85,7 +95,7 @@ export default defineStore('tracklist', {
                 id: pid,
             }
 
-            this.setNewList(tracks)
+            this.setNewList(tracks, newGroup('playlist', name, { pid }))
         },
         setFromSearch(query: string, tracks: Track[]) {
             this.from = <fromSearch>{
@@ -114,8 +124,8 @@ export default defineStore('tracklist', {
         addTrack(track: Track) {
             return this.addTracks([track])
         },
-        addTracks(tracks: Track[]) {
-            this.insertAt(tracks, this.tracklist.length)
+        addTracks(tracks: Track[], group?: QueueGroup) {
+            this.insertAt(withGroup(tracks, group), this.tracklist.length)
 
             const Toast = useToast()
             Toast.showNotification(t("Stores.Tracklist.AddTrackToQueue", {n: tracks.length}, tracks.length), NotifType.Success)
@@ -195,10 +205,10 @@ export default defineStore('tracklist', {
             queue.setCurrentIndex(current)
             usePlayer().clearNextAudio()
         },
-        insertAfterCurrent(tracks: Track[]) {
+        insertAfterCurrent(tracks: Track[], group?: QueueGroup) {
             const { currentindex } = useQueue()
 
-            this.tracklist.splice(currentindex + 1, 0, ...tracks)
+            this.tracklist.splice(currentindex + 1, 0, ...withGroup(tracks, group))
 
             const Toast = useToast()
             Toast.showNotification(t("Stores.Tracklist.AddTrackToQueue", {n: tracks.length}, tracks.length), NotifType.Success)
