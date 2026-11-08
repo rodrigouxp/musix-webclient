@@ -1,6 +1,11 @@
 <template>
-    <!-- desktop, default layout: the PlayerBar of the Figma. The other sizes and the alternative layout keep this bar -->
+    <!-- desktop, default layout: the PlayerBar of the Figma. The alternative layout keeps the old bar -->
     <PlayerBar v-if="settings.is_panel_layout" @handleFav="handleFav" />
+    <!-- tablet (661 to 900px, in any layout): the same PlayerBar in two rows, over the navigation buttons -->
+    <div v-else-if="isTablet" class="b-bar-tablet">
+        <PlayerBar tablet @handleFav="handleFav" />
+        <Navigation />
+    </div>
     <div
         v-else
         class="b-bar"
@@ -40,7 +45,9 @@
 <script setup lang="ts">
 import { favType } from '@/enums'
 import favoriteHandler from '@/helpers/favoriteHandler'
-import { isMobile } from '@/stores/content-width'
+import { computed } from 'vue'
+
+import { isMobile, isSmallPhone } from '@/stores/content-width'
 import { formatSeconds } from '@/utils'
 
 import useQStore from '@/stores/queue'
@@ -58,6 +65,9 @@ import RightGroup from './Right.vue'
 const queue = useQStore()
 const settings = useSettings()
 
+// tablet: above the phones (660px, content-width.ts) and up to 900px; the phones keep their own bar
+const isTablet = computed(() => isMobile.value && !isSmallPhone.value)
+
 function handleFav() {
     favoriteHandler(
         queue.currenttrack?.is_favorite,
@@ -70,6 +80,20 @@ function handleFav() {
 </script>
 
 <style lang="scss">
+// tablet: the PlayerBar (two rows) and, under it, the navigation buttons of the phones
+.b-bar-tablet {
+    grid-area: bottombar;
+    display: flex;
+    flex-direction: column;
+    gap: var(--layout-panel-gap);
+    padding: 0 var(--layout-gutter) var(--layout-panel-gap);
+    z-index: 1;
+
+    .side-nav-container {
+        padding: 0 var(--layout-panel-gap);
+    }
+}
+
 .b-bar {
     display: grid;
     grid-template-columns: 1fr max-content 1fr;

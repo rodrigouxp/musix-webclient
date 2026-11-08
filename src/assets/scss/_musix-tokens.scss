@@ -187,6 +187,7 @@
   --playerbar-group-gap: 40px; // entre os controles, as ações e a música (e entre as ações)
   --playerbar-group-gap-narrow: 24px; // até 1280 px de janela (o Figma só tem a largura de 1857)
   --playerbar-transport-gap: 20px; // play, anterior e próxima; e depois a linha do tempo
+  --playerbar-tablet-row-gap: 12px; // entre as duas linhas da PlayerBar do tablet (sem desenho no Figma, decisão minha)
   --playerbar-row-gap: 8px; // tempo, barra, tempo, shuffle e repeat
   --playerbar-timeline-min: 4rem; // a barra encolhe até aqui nas larguras pequenas
   --playerbar-play-size: 48px;
@@ -194,6 +195,7 @@
   --playerbar-volume-pad-right: 7px; // folga da bolinha do volume (Figma: padding-right do grupo)
   --playerbar-badge-size: 24px; // círculo do chevron sobre a miniatura (hover, nó 12408:1358)
   --playerbar-badge-bg: var(--color-neutral-300);
+  --playerbar-badge-icon-opacity: 0.25; // o chevron do badge está com 25% de opacidade (Figma, nó 12385:255)
   --playerbar-badge-icon-size: 18px; // o chevron em traço de 1,5 (o glifo de 8 x 12) desenhado a 0,75x
   --playerbar-badge-fade: 150ms;
   --playerbar-transition: 400ms ease-in-out; // pausado <-> tocando (decisão minha: o Figma não tem transição)
@@ -213,7 +215,7 @@
   // QueuePanel (nó 12408:1964; faixa TrackQueue 12408:961, grupo AlbumQueue 12408:964)
   --queuepanel-width: 280px;
   --queuepanel-padding: 8px 4px 8px 8px;
-  --queuepanel-gap: 12px; // entre o título, a lista e a miniatura
+  --queuepanel-gap: 20px; // entre o título, a lista e a miniatura
   --queuepanel-duration: 300ms; // abrir e fechar (decisão minha)
   --queuepanel-transition: var(--queuepanel-duration) ease-in-out;
   --queuepanel-title-color: var(--color-neutral-white);
@@ -256,7 +258,7 @@
   --feedpanel-padding-bottom: 12px;
   --feedpanel-padding-left: 16px;
   --feedpanel-scrollbar-width: 7px; // a trilha da barra fina de assets/scss/Global/scrollbars.scss (4 px do polegar + 3 px de margem)
-  --feedpanel-block-gap: 32px; // entre o título e as linhas
+  --feedpanel-block-gap: 40px; // entre o título e as linhas
   --feedpanel-header-gap: 20px; // entre o cabeçalho da linha e os cartões
   --feedpanel-card-gap: 20px;
   --feedpanel-card-columns: 8; // sempre 8 cartões por linha, cada um com 1/8 da largura

@@ -1,5 +1,5 @@
 <template>
-    <div class="player-bar" :class="{ 'is-playing': queue.playing }">
+    <div class="player-bar" :class="{ 'is-playing': queue.playing, 'is-tablet': tablet }">
         <!-- 1. controls: play, previous, next, then the timeline (time, bar, time) and shuffle and repeat -->
         <div class="pb-controls">
             <div class="pb-transport">
@@ -145,8 +145,13 @@ import TextLoader from '@/components/shared/TextLoader.vue'
 import Progress from '@/components/LeftSidebar/NP/Progress.vue'
 import Volume from '@/components/BottomBar/Volume.vue'
 
-// PlayerBar of the Figma (default-2 paused, playing-2 playing; nodes 12408:1175 and 12408:1263): only the desktop,
-// in the default layout (BottomBar decides). Tokens --playerbar-*.
+// PlayerBar of the Figma (default-2 paused, playing-2 playing; nodes 12408:1175 and 12408:1263): the desktop in the
+// default layout and, in two rows (`tablet`), the tablet (BottomBar decides). Tokens --playerbar-*.
+defineProps<{
+    // tablet (661 to 900px): the controls on the first row; the actions and the song on the second
+    tablet?: boolean
+}>()
+
 defineEmits<{
     (e: 'handleFav'): void
 }>()
@@ -222,6 +227,32 @@ function showAddMenu() {
 
     @media only screen and (max-width: 1280px) {
         gap: var(--playerbar-group-gap-narrow);
+    }
+
+    // tablet: there is no design for it in the Figma, so the same three groups go on two rows (the controls, then
+    // the actions on the left and the song on the right, as on the desktop)
+    &.is-tablet {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        grid-template-areas:
+            'controls controls'
+            'actions track';
+        gap: var(--playerbar-tablet-row-gap) var(--playerbar-group-gap-narrow);
+        height: auto;
+
+        .pb-controls {
+            grid-area: controls;
+        }
+
+        .pb-actions {
+            grid-area: actions;
+            justify-content: flex-start;
+        }
+
+        .pb-track {
+            grid-area: track;
+            justify-content: flex-end;
+        }
     }
 
     button {
@@ -551,6 +582,7 @@ function showAddMenu() {
             svg {
                 width: var(--playerbar-badge-icon-size);
                 height: var(--playerbar-badge-icon-size);
+                opacity: var(--playerbar-badge-icon-opacity);
                 // the chevron points right: up when the queue is closed, down when it is open
                 transform: rotate(-90deg);
                 transition: transform var(--playerbar-badge-fade) ease-out;
