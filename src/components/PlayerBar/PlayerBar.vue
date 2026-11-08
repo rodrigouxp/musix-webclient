@@ -199,6 +199,7 @@ function showAddMenu() {
     --pb-bg: var(--playerbar-paused-bg);
     --pb-play-bg: var(--playerbar-paused-play-bg);
     --pb-play-icon: var(--playerbar-paused-play-icon);
+    --pb-play-hover: var(--playerbar-paused-play-hover);
     --pb-artist: var(--playerbar-paused-artist);
 
     grid-area: bottombar;
@@ -222,6 +223,7 @@ function showAddMenu() {
         --pb-bg: var(--playerbar-playing-bg);
         --pb-play-bg: var(--playerbar-playing-play-bg);
         --pb-play-icon: var(--playerbar-playing-play-icon);
+        --pb-play-hover: var(--playerbar-playing-play-hover);
         --pb-artist: var(--playerbar-playing-artist);
     }
 
@@ -290,7 +292,7 @@ function showAddMenu() {
         gap: var(--playerbar-transport-gap);
     }
 
-    // play and pause: a circle of 48 with its own fill (no hover in the Figma, only the :active)
+    // play and pause: a circle of 48 with its own fill and its own hover color
     .pb-play {
         width: var(--playerbar-play-size);
         height: var(--playerbar-play-size);
@@ -298,6 +300,10 @@ function showAddMenu() {
         background-color: var(--pb-play-bg);
         color: var(--pb-play-icon);
         transition: background-color var(--playerbar-transition), color var(--playerbar-transition);
+
+        &:hover {
+            background-color: var(--pb-play-hover);
+        }
 
         svg {
             flex-shrink: 0;

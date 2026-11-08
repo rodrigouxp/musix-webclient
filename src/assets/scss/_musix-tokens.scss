@@ -201,10 +201,12 @@
   --playerbar-transition: 400ms ease-in-out; // pausado <-> tocando (decisão minha: o Figma não tem transição)
   --playerbar-paused-bg: var(--color-neutral-900);
   --playerbar-playing-bg: var(--color-dynamic-playbar);
-  --playerbar-paused-play-bg: var(--color-neutral-white);
-  --playerbar-playing-play-bg: var(--color-neutral-100);
-  --playerbar-paused-play-icon: var(--color-background);
-  --playerbar-playing-play-icon: var(--color-dynamic-playbar);
+  --playerbar-paused-play-bg: var(--color-neutral-700); // play (Figma, nó 12385:255)
+  --playerbar-paused-play-icon: var(--color-neutral-100);
+  --playerbar-paused-play-hover: var(--color-neutral-500);
+  --playerbar-playing-play-bg: var(--color-neutral-500); // pause
+  --playerbar-playing-play-icon: var(--color-neutral-100);
+  --playerbar-playing-play-hover: var(--color-neutral-700);
   --playerbar-paused-track: var(--color-neutral-700); // trilha da barra e pílulas dos tempos
   --playerbar-playing-track: var(--color-neutral-500);
   --playerbar-paused-loaded: var(--color-neutral-500); // trecho carregado: não existe no Figma (decisão minha)
