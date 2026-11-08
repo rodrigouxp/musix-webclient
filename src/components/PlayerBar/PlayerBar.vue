@@ -5,6 +5,7 @@
             <div class="pb-transport">
                 <button
                     class="pb-play"
+                    :class="{ 'is-play': !queue.playing }"
                     :aria-label="queue.playing ? $t('BottomBar.Pause') : $t('BottomBar.Play')"
                     @click.prevent="queue.playPause"
                 >
@@ -292,11 +293,16 @@ function showAddMenu() {
         gap: var(--playerbar-transport-gap);
     }
 
-    // play and pause: a circle of 48 with its own fill and its own hover color
+    // play and pause: a circle of 40 with its own fill and its own hover color
     .pb-play {
         width: var(--playerbar-play-size);
         height: var(--playerbar-play-size);
         border-radius: 400px;
+
+        // only the play has a padding on the left (the triangle looks more centered); the pause has none
+        &.is-play {
+            padding-left: var(--playerbar-play-pad-left);
+        }
         background-color: var(--pb-play-bg);
         color: var(--pb-play-icon);
         transition: background-color var(--playerbar-transition), color var(--playerbar-transition);
@@ -316,7 +322,7 @@ function showAddMenu() {
         }
 
         .player-spinner {
-            height: 20px;
+            height: 16.67px; // 20 at 48, scaled to 40
         }
     }
 

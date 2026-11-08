@@ -140,18 +140,20 @@ function toggleSidenav() {
     // the left, search centered on 50% of the bar, avatar on the right edge. The alt layout keeps
     // the logo in the middle. The left column grows to what cannot shrink (buttons, sort menu)
     // and the search gives way (never under 14rem), so nothing is ever covered.
-    // The TopBar of the Figma (node 12395:365): back and forward, 64 apart, the search (380 wide), and the
-    // avatar on the right edge. The title of the page (or the path of the folder) is not in the Figma: it keeps
-    // its place between the search and the avatar and gives way first. Tokens --topbar-*.
+    // The TopBar of the Figma (node 12395:365): back and forward, 64 apart, the search (no fill and no stroke now),
+    // and the avatar on the right edge. The search grows to 12px from the avatar. The title of the page (or the path
+    // of the folder) is not in the Figma: it keeps its place between the search and the avatar, takes only the room
+    // it needs and gives way first; when a page has no title the box is hidden. Tokens --topbar-*.
     @media only screen and (min-width: 901px) {
         &.has_search:not(.use_links) {
+            --tb-gap: var(--topbar-gap);
             display: flex;
             align-items: center;
-            gap: var(--topbar-gap);
+            gap: var(--tb-gap);
 
             // medium widths: tighter gaps, so the buttons, the search (14rem at least) and the avatar fit
             @media only screen and (max-width: 1100px) {
-                gap: 1.5rem;
+                --tb-gap: 1.5rem;
             }
 
             .left {
@@ -164,10 +166,14 @@ function toggleSidenav() {
 
                 .info {
                     order: 2;
-                    flex: 1 1 0;
+                    flex: 0 1 auto;
                     min-width: min-content;
                     max-width: none;
                     margin: 0;
+
+                    &:empty {
+                        display: none;
+                    }
                     // the sort menu of the folder is placed against this box (the .left is not a box here)
                     position: relative;
 
@@ -182,16 +188,22 @@ function toggleSidenav() {
 
                 & > .gsearch-input {
                     order: 1;
-                    flex: 0 1 var(--topbar-search-width);
+                    flex: 1 1 var(--topbar-search-min-width);
                     min-width: var(--topbar-search-min-width);
                 }
 
+                // no title: the gap between the search and the avatar is 12 (the flex gap, less the one that is not there)
                 & > .avatar {
                     order: 3;
                     flex: none;
                     width: var(--topbar-avatar-size);
-                    margin-left: auto;
+                    margin-left: calc(var(--topbar-search-avatar-gap) - var(--tb-gap));
                 }
+            }
+
+            // with a title (settings, playlists, folder...) the avatar keeps the normal gap after it
+            &:has(.left .info:not(:empty)) .right > .avatar {
+                margin-left: 0;
             }
         }
     }

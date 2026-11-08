@@ -81,13 +81,15 @@ function showContextMenu(e: MouseEvent) {
             transition: opacity 0.25s ease;
         }
 
-        // the play button of the old card (4rem), but never wider than the image (the cards get small at 900px)
+        // the play button: a round 40 x 40 (never wider than the image: the cards get small at 900px)
         .play-btn {
             position: absolute;
             left: 0;
             right: 0;
             bottom: 0;
-            width: min(4rem, 45%);
+            width: min(var(--feedpanel-play-size), 100%);
+            height: auto; // the global `button` has its own height, which broke the aspect ratio (an oval)
+            border-radius: var(--feedpanel-play-radius);
             margin: 0 auto;
             opacity: 0;
             transform: translateY(0);
