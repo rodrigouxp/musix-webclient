@@ -12,7 +12,7 @@
   // nos dois lados e laterais da barra inferior. Uma fonte só: o $padleft do SCSS lê esta variável.
   --layout-gutter: 1rem;
 
-  // Grade em painéis do desktop (acima de 900px, layout padrão; Figma "Home", nó 12384:168): 8 em volta de tudo e
+  // Grade em painéis (acima de 600px, layout padrão; Figma "Home", nó 12384:168): 8 em volta de tudo e
   // 8 entre os painéis, cantos de 8. Painéis sem fundo (TopBar, FeedPanel, QueuePanel) têm borda de 1 por dentro.
   --layout-panel-gap: 8px;
   --layout-panel-radius: 8px;
@@ -117,7 +117,7 @@
 
   // Painel da esquerda (componente SidePanel do Figma, nó 12329:437). Tudo em px, como no desenho. Nada
   // tem largura fixa dentro do painel: os itens ocupam a largura que ele tiver menos o padding.
-  --sidepanel-width: 224px;
+  --sidepanel-width: 25vw; // 25% da largura da janela (era 224 fixo); o que há dentro escala com o painel
   --sidepanel-padding: 8px;
   --sidepanel-gap: 12px; // entre os blocos (cabeçalho, botões, divisor, playlists, cartão)
   --sidepanel-bg: var(--color-neutral-900);
@@ -215,7 +215,7 @@
   --playerbar-playing-artist: var(--color-neutral-300);
 
   // QueuePanel (nó 12408:1964; faixa TrackQueue 12408:961, grupo AlbumQueue 12408:964)
-  --queuepanel-width: 280px;
+  --queuepanel-width: 25vw; // 25% da largura da janela (era 280 fixo); a capa e o disco escalam com o painel
   --queuepanel-padding: 8px 4px 8px 8px;
   --queuepanel-gap: 20px; // entre o título, a lista e a miniatura
   --queuepanel-duration: 300ms; // abrir e fechar (decisão minha)
@@ -247,7 +247,8 @@
   --queuepanel-header-icon-size: 16px;
   --queuepanel-group-gap: 8px; // entre o cabeçalho e as faixas
   --queuepanel-group-color: var(--color-neutral-300);
-  --queuepanel-disc-lift: 55px; // o disco aparece 55 acima da capa
+  --queuepanel-disc-lift-ratio: 0.2083; // o disco aparece acima da capa por 55/264 da largura dela (números do Figma a 280): escala com o painel
+  --queuepanel-thumb-ratio: 0.8276; // capa / (capa + disco) = 264/319: altura da miniatura inteira em função da largura
   --queuepanel-thumb-gap-right: 4px; // o painel tem 4 de padding à direita (barra da lista); a miniatura devolve 4: 8 de cada lado
   --queuepanel-header-pad-top: 4px; // acima do cabeçalho do grupo
   --queuepanel-cover-radius: 4.914px;

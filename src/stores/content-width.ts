@@ -53,7 +53,7 @@ const maxAbumCards = computed(() => {
 })
 
 // WINDOW SIZES
-const ALL_MOBILE_WIDTH = 900
+const ALL_MOBILE_WIDTH = 600
 const LARGE_MOBILE_WIDTH = 660
 const SMALL_MOBILE_WIDTH = 460
 
@@ -61,6 +61,8 @@ const { width: win_width } = useWindowSize()
 
 export const isSmallPhone = computed(() => win_width.value <= LARGE_MOBILE_WIDTH)
 export const isMobile = computed(() => win_width.value <= ALL_MOBILE_WIDTH)
+// up to 900px the alternative layout (a row of links in the top bar) does not fit: it shows the default one (panels)
+export const isNarrowWindow = computed(() => win_width.value <= 900)
 export const isLargerMobile = computed(
     () => win_width.value >= LARGE_MOBILE_WIDTH && win_width.value <= ALL_MOBILE_WIDTH
 )

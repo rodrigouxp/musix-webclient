@@ -144,7 +144,7 @@ function toggleSidenav() {
     // and the avatar on the right edge. The search grows to 12px from the avatar. The title of the page (or the path
     // of the folder) is not in the Figma: it keeps its place between the search and the avatar, takes only the room
     // it needs and gives way first; when a page has no title the box is hidden. Tokens --topbar-*.
-    @media only screen and (min-width: 901px) {
+    @media only screen and (min-width: 601px) {
         &.has_search:not(.use_links) {
             --tb-gap: var(--topbar-gap);
             display: flex;

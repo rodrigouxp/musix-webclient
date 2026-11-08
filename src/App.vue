@@ -12,6 +12,7 @@
             useSidebar: settings.use_sidebar && xl && !settings.is_panel_layout,
             'has-queue-panel': settings.is_panel_layout,
             'queue-open': settings.is_panel_layout && settings.queue_panel_open,
+            'queue-animating': queueAnimating,
             NoSideBorders: settings.is_alt_layout || !xxl,
             extendWidth: settings.extend_width && settings.can_extend_width,
             is_alt_layout: settings.is_alt_layout,
@@ -28,7 +29,7 @@
                 </RouterView>
             </BalancerProvider>
         </div>
-        <!-- above 900px in the default layout the right sidebar is the QueuePanel ("Use sidebar" has no effect there) -->
+        <!-- above 600px in the default layout the right sidebar is the QueuePanel ("Use sidebar" has no effect there) -->
         <QueuePanel v-if="settings.is_panel_layout" />
         <RightSideBar v-else-if="settings.use_sidebar && xl" />
         <BottomBar />
@@ -47,7 +48,7 @@
 // @libraries
 import { vElementSize } from '@vueuse/components'
 import { onStartTyping } from '@vueuse/core'
-import { onBeforeMount, onMounted, Ref, ref } from 'vue'
+import { onBeforeMount, onMounted, Ref, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { BalancerProvider } from 'vue-wrap-balancer'
 
@@ -95,6 +96,19 @@ const settings = useSettings()
 const UIStore = useInterface()
 const { hideUI } = storeToRefs(UIStore)
 useTracker()
+
+// the column of the QueuePanel only animates while the panel opens or closes: its width is a share of the window
+// (vw), and a transition that always runs would make the columns lag behind when the window is resized
+const queueAnimating = ref(false)
+let queueAnimationTimer: ReturnType<typeof setTimeout> | undefined
+watch(
+    () => settings.queue_panel_open,
+    () => {
+        queueAnimating.value = true
+        clearTimeout(queueAnimationTimer)
+        queueAnimationTimer = setTimeout(() => (queueAnimating.value = false), 400) // --queuepanel-duration is 300ms
+    }
+)
 
 handleShortcuts(useQueue, useModal)
 

@@ -48,7 +48,7 @@
 
 /* This query is "synced" with content-width.ts and index.ts values */
 @mixin allPhones {
-  @media only screen and (max-width: 900px) {
+  @media only screen and (max-width: 600px) {
     @content;
   }
 }

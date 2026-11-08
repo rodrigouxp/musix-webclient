@@ -85,7 +85,7 @@
 
 /* The scrollbar of the pages in the panel of the content (FeedPanel of the Figma): 4px wide, round,
    neutral/700, with no track, 3px from the edge. Only above 900px, in the grid of panels. */
-@media only screen and (min-width: 901px) {
+@media only screen and (min-width: 601px) {
     .designatedOS #app-grid:not(.is_alt_layout) #acontent ::-webkit-scrollbar {
         width: 7px;
         background-color: transparent;

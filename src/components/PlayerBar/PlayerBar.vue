@@ -147,9 +147,9 @@ import Progress from '@/components/LeftSidebar/NP/Progress.vue'
 import Volume from '@/components/BottomBar/Volume.vue'
 
 // PlayerBar of the Figma (default-2 paused, playing-2 playing; nodes 12408:1175 and 12408:1263): the desktop in the
-// default layout and, in two rows (`tablet`), the tablet (BottomBar decides). Tokens --playerbar-*.
+// default layout above 600px and, in two rows (`tablet`, up to 900px), the narrow windows (BottomBar decides). Tokens --playerbar-*.
 defineProps<{
-    // tablet (661 to 900px): the controls on the first row; the actions and the song on the second
+    // narrow (601 to 900px): the controls on the first row; the actions and the song on the second
     tablet?: boolean
 }>()
 

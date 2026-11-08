@@ -66,7 +66,7 @@ const icon = computed(() => (settings.is_alt_layout ? ArrowSvg : ChevronSvg))
 
 // The TopBar of the Figma (node 12395:365, page-buttons): two circles of 36, 16 apart, with a border of 1 in
 // neutral/700, no separator and the `chevron` drawn at 26.18 (the glyph of 11.6 x 17.5). Tokens --topbar-*.
-@media only screen and (min-width: 901px) {
+@media only screen and (min-width: 601px) {
     #app-grid:not(.is_alt_layout) #back-forward {
         display: flex;
         gap: var(--topbar-button-gap);

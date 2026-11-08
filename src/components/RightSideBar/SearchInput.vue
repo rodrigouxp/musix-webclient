@@ -233,7 +233,7 @@ function handleButton() {
 // The search of the TopBar of the Figma (SearchBar, node 12394:348): no fill and no stroke (Rodrigo, 2026-11-07),
 // the magnifier (the glyph is 20 x 20, in a slot of 20) and the text (paragraph-18px) 24 apart; it grows to the avatar
 // (NavBar.vue). Only in the default layout above 900px; the search of the right sidebar and of the alt layout do not change.
-@media only screen and (min-width: 901px) {
+@media only screen and (min-width: 601px) {
     #app-grid:not(.is_alt_layout) .topnav.has_search:not(.use_links) .gsearch-input #ginner {
         box-sizing: border-box;
         height: var(--topbar-search-height);

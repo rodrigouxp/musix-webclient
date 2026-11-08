@@ -6,7 +6,7 @@ import { pluginSetActive, updatePluginSettings } from '@/requests/plugins'
 
 import { updateConfig } from '@/requests/settings'
 import { usePlayer } from '@/stores/player'
-import { content_width, isMobile } from '../content-width'
+import { content_width, isMobile, isNarrowWindow } from '../content-width'
 import useAxios from '@/requests/useAxios'
 import { paths } from '@/config'
 import { router } from '@/router'
@@ -335,10 +335,11 @@ export default defineStore('settings', {
         volume_gain(): number {
             return volumeToGain(this.volume)
         },
-        is_default_layout: state => state.layout === '',
+        // the alternative layout does not fit from 601 to 900px: there the default one (panels) is shown
+        is_default_layout: state => state.layout === '' || (isNarrowWindow.value && !isMobile.value),
         is_alt_layout: state => state.layout === 'alternate' && content_width.value > 900,
-        // the grid of panels of the Figma: above 900px and the default layout (same test as assets/scss/Global/app-grid.scss)
-        is_panel_layout: state => !isMobile.value && state.layout === '',
+        // the grid of panels of the Figma: above 600px and the default layout (same test as assets/scss/Global/app-grid.scss)
+        is_panel_layout: state => !isMobile.value && (state.layout === '' || isNarrowWindow.value),
         highlightFavoriteTracks(): boolean {
             return (
                 !router.currentRoute.value.name?.toString().toLowerCase().startsWith('favorite') &&

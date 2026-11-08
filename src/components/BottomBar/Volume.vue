@@ -113,7 +113,7 @@ const handleMouseWheel = (event: WheelEvent) => {
     height: var(--playerbar-side-control-size);
 
     input#volume {
-        // between 901px and about 1200px the slider shrinks (4rem at the least)
+        // between 601px and about 1200px the slider shrinks (4rem at the least)
         width: clamp(4rem, 8vw, var(--playerbar-volume-width));
         height: var(--playerbar-progress-height);
         border-radius: 400px;

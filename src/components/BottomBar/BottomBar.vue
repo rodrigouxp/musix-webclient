@@ -1,11 +1,6 @@
 <template>
-    <!-- desktop, default layout: the PlayerBar of the Figma. The alternative layout keeps the old bar -->
-    <PlayerBar v-if="settings.is_panel_layout" @handleFav="handleFav" />
-    <!-- tablet (661 to 900px, in any layout): the same PlayerBar in two rows, over the navigation buttons -->
-    <div v-else-if="isTablet" class="b-bar-tablet">
-        <PlayerBar tablet @handleFav="handleFav" />
-        <Navigation />
-    </div>
+    <!-- default layout above 600px: the PlayerBar of the Figma (in two rows up to 900px). The alternative layout and the phones keep the old bar -->
+    <PlayerBar v-if="settings.is_panel_layout" :tablet="narrow" @handleFav="handleFav" />
     <div
         v-else
         class="b-bar"
@@ -45,9 +40,8 @@
 <script setup lang="ts">
 import { favType } from '@/enums'
 import favoriteHandler from '@/helpers/favoriteHandler'
-import { computed } from 'vue'
 
-import { isMobile, isSmallPhone } from '@/stores/content-width'
+import { isMobile, isNarrowWindow } from '@/stores/content-width'
 import { formatSeconds } from '@/utils'
 
 import useQStore from '@/stores/queue'
@@ -65,8 +59,8 @@ import RightGroup from './Right.vue'
 const queue = useQStore()
 const settings = useSettings()
 
-// tablet: above the phones (660px, content-width.ts) and up to 900px; the phones keep their own bar
-const isTablet = computed(() => isMobile.value && !isSmallPhone.value)
+// up to 900px the PlayerBar has two rows (the controls on top; the actions and the song under them)
+const narrow = isNarrowWindow
 
 function handleFav() {
     favoriteHandler(
@@ -80,20 +74,6 @@ function handleFav() {
 </script>
 
 <style lang="scss">
-// tablet: the PlayerBar (two rows) and, under it, the navigation buttons of the phones
-.b-bar-tablet {
-    grid-area: bottombar;
-    display: flex;
-    flex-direction: column;
-    gap: var(--layout-panel-gap);
-    padding: 0 var(--layout-gutter) var(--layout-panel-gap);
-    z-index: 1;
-
-    .side-nav-container {
-        padding: 0 var(--layout-panel-gap);
-    }
-}
-
 .b-bar {
     display: grid;
     grid-template-columns: 1fr max-content 1fr;
@@ -140,7 +120,7 @@ function handleFav() {
             background-color: $gray !important;
 
             // above 900px: the circle of the PlayerBar (--hover-bg, neutral/700)
-            @media only screen and (min-width: 901px) {
+            @media only screen and (min-width: 601px) {
                 background-color: var(--playerbar-hover-bg) !important;
             }
 
@@ -211,7 +191,7 @@ function handleFav() {
     }
 
     // above 900px: the PlayerBar of the Figma (Satoshi, the font of the app, for the text and the times)
-    @media only screen and (min-width: 901px) {
+    @media only screen and (min-width: 601px) {
         font-family: var(--playerbar-font);
 
         &:hover {
@@ -263,7 +243,7 @@ function handleFav() {
         width: 30rem;
 
         // above 900px: the buttons and the timeline are 56px together (34 and 22), 502px wide
-        @media only screen and (min-width: 901px) {
+        @media only screen and (min-width: 601px) {
             gap: 0;
             width: var(--playerbar-timeline-width);
         }

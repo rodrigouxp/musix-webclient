@@ -59,8 +59,8 @@ $g-border: solid 1px $gray5;
     border-top: $g-border;
     // background-color: $bars;
 
-    // above 900px: the PlayerBar of the Figma (80px with a 2px top border, inside the 82px row)
-    @media only screen and (min-width: 901px) {
+    // above 600px: the PlayerBar of the Figma (80px with a 2px top border, inside the 82px row)
+    @media only screen and (min-width: 601px) {
         box-sizing: border-box;
         background-color: var(--playerbar-bg);
         border-top: var(--playerbar-border) solid var(--playerbar-border-color);
@@ -280,11 +280,11 @@ $g-border: solid 1px $gray5;
 }
 
 // ====== GRID OF PANELS (desktop, default layout) =======
-// Above 900px the app is a set of independent panels (Figma "Home", node 12384:168): 8 around everything and
+// Above 600px the app is a set of independent panels (Figma "Home", node 12384:168): 8 around everything and
 // 8 between the panels, corners of 8, on the `background` color. SidePanel (l-sidebar) and PlayerBar (b-bar)
 // have their own fill; the TopBar (nav), the content (FeedPanel) and the right sidebar have no fill and a
 // border of 1 inside. Tokens --layout-panel-* and --topbar-height (_musix-tokens.scss).
-@media only screen and (min-width: 901px) {
+@media only screen and (min-width: 601px) {
     body:has(#app-grid:not(.is_alt_layout)) {
         background-color: var(--color-background);
     }
@@ -297,6 +297,10 @@ $g-border: solid 1px $gray5;
         background-color: var(--color-background);
         grid-template-columns: var(--sidepanel-width) minmax(0, 1fr);
         grid-template-rows: var(--topbar-height) minmax(0, 1fr) var(--playerbar-height);
+
+        @media only screen and (max-width: 900px) {
+            grid-template-rows: var(--topbar-height) minmax(0, 1fr) auto;
+        }
 
         .topnav {
             box-sizing: border-box;
@@ -329,7 +333,10 @@ $g-border: solid 1px $gray5;
                 'l-sidebar nav nav'
                 'l-sidebar content r-sidebar'
                 'bottombar bottombar bottombar';
-            transition: grid-template-columns var(--queuepanel-transition);
+
+            &.queue-animating {
+                transition: grid-template-columns var(--queuepanel-transition);
+            }
 
             &.queue-open {
                 grid-template-columns:

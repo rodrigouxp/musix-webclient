@@ -366,11 +366,15 @@ function onGroupDragStart(event: PointerEvent, group: QueueGroup, start: number)
     // window it gets smaller (never more than 45% of the height)
     .qp-thumb {
         position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
         flex-shrink: 0;
         align-self: flex-start;
-        box-sizing: content-box;
-        width: min(calc(100% - var(--queuepanel-thumb-gap-right)), calc(45vh - var(--queuepanel-disc-lift)));
-        padding-top: var(--queuepanel-disc-lift);
+        // the cover is a square of the width; the vinyl peeks out above it by 55/264 of that width (the Figma numbers
+        // at 280), so the whole set scales with the panel. On a short window it is never taller than 45% of it
+        width: min(calc(100% - var(--queuepanel-thumb-gap-right)), calc(45vh * var(--queuepanel-thumb-ratio)));
+        aspect-ratio: calc(1 / (1 + var(--queuepanel-disc-lift-ratio)));
         border-radius: var(--queuepanel-cover-radius);
     }
 
