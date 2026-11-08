@@ -117,7 +117,7 @@
 
   // Painel da esquerda (componente SidePanel do Figma, nó 12329:437). Tudo em px, como no desenho. Nada
   // tem largura fixa dentro do painel: os itens ocupam a largura que ele tiver menos o padding.
-  --sidepanel-width: 25vw; // 25% da largura da janela (era 224 fixo); o que há dentro escala com o painel
+  --sidepanel-width: min(25vw, 224px); // 25% da largura da janela, no máximo 224 (Figma); o que há dentro escala com o painel
   --sidepanel-padding: 8px;
   --sidepanel-gap: 12px; // entre os blocos (cabeçalho, botões, divisor, playlists, cartão)
   --sidepanel-bg: var(--color-neutral-900);
@@ -215,7 +215,7 @@
   --playerbar-playing-artist: var(--color-neutral-300);
 
   // QueuePanel (nó 12408:1964; faixa TrackQueue 12408:961, grupo AlbumQueue 12408:964)
-  --queuepanel-width: 25vw; // 25% da largura da janela (era 280 fixo); a capa e o disco escalam com o painel
+  --queuepanel-width: min(25vw, 280px); // 25% da largura da janela, no máximo 280 (Figma); a capa e o disco escalam com o painel
   --queuepanel-padding: 8px 4px 8px 8px;
   --queuepanel-gap: 20px; // entre o título, a lista e a miniatura
   --queuepanel-duration: 300ms; // abrir e fechar (decisão minha)
