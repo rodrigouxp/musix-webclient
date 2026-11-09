@@ -253,6 +253,12 @@
   --queuepanel-header-pad-top: 4px; // acima do cabeçalho do grupo
   --queuepanel-cover-radius: 4.914px;
   --queuepanel-cover-border: 0.614px solid var(--color-neutral-700);
+  // formato e bitrate sobre a capa ("FLAC • 3200"): sem desenho no Figma, aguardando confirmação do Rodrigo
+  --queuepanel-format-inset: 8px; // do canto inferior esquerdo da capa
+  --queuepanel-format-padding: 1px 4px;
+  --queuepanel-format-radius: 4px;
+  --queuepanel-format-bg: var(--color-neutral-700);
+  --queuepanel-format-color: var(--color-neutral-100);
   --queuepanel-disc-duration: 8s;
 
   // FeedPanel (painel da Home, nó 12408:1935; cartões ArtistThumb e AlbumThumb). Textos: ver os estilos de texto abaixo.

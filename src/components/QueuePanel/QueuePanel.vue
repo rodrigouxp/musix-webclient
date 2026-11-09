@@ -56,6 +56,7 @@
                     :title="$t('BottomBar.GoToAlbum')"
                 >
                     <img class="qp-cover" :src="paths.images.thumb.large + queue.currenttrack.image" alt="" />
+                    <Bitrate />
                 </component>
             </div>
         </div>
@@ -105,6 +106,7 @@ import useTracklist from '@/stores/queue/tracklist'
 
 import QueueSvg from '@/assets/icons/queue.svg'
 import discUrl from '@/assets/images/queue-disc.png'
+import Bitrate from '@/components/LeftSidebar/NP/Bitrate.vue'
 import NoItems from '@/components/shared/NoItems.vue'
 import QueueGroupHeader from './QueueGroupHeader.vue'
 import QueueTrack from './QueueTrack.vue'
@@ -398,6 +400,22 @@ function onGroupDragStart(event: PointerEvent, group: QueueGroup, start: number)
         position: relative;
         display: block;
         cursor: pointer;
+    }
+
+    // the file type and the bitrate (FLAC • 3200) over the lower left corner of the cover; the component is the one of
+    // the old card of the left panel (LeftSidebar/NP/Bitrate.vue), here with the tag tokens of the app
+    .qp-cover-link .bitrate {
+        @include text('paragraph-12px');
+        bottom: var(--queuepanel-format-inset);
+        left: var(--queuepanel-format-inset);
+        max-width: calc(100% - 2 * var(--queuepanel-format-inset));
+        padding: var(--queuepanel-format-padding);
+        border-radius: var(--queuepanel-format-radius);
+        background-color: var(--queuepanel-format-bg);
+        color: var(--queuepanel-format-color);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .qp-cover {
