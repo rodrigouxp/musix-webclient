@@ -29,6 +29,7 @@
   --topbar-button-icon-size: 26.18px; // o `chevron` do Icon desenhado em 1,09x dentro do círculo (glifo de 11,6 x 17,5)
   // A busca não tem mais fundo nem traço (Rodrigo, 2026-11-07): só a lupa e o texto. Ela cresce até 12 do avatar.
   --topbar-search-min-width: 14rem; // a busca encolhe até aqui nas larguras pequenas
+  --topbar-search-max-width: 500px; // a busca não passa daqui (Rodrigo, 2026-11-09); o que sobra fica entre ela e o avatar
   --topbar-search-avatar-gap: 12px; // entre o fim da busca e o avatar
   --topbar-search-height: 42px; // o que cabe na TopBar de 52 (menos a borda de 1 e o padding de 4, dos dois lados)
   --topbar-search-padding: 8px 18px;
@@ -366,6 +367,9 @@
   --artist-track-radius: 8px;
   --artist-track-hover-bg: var(--color-neutral-700); // hover, faixa tocando e menu aberto (a faixa tocando não está no Figma)
   --artist-track-color: var(--color-neutral-white);
+  --artist-track-meta-color: var(--color-neutral-300); // tempo (paragraph-14px) e ícone de options (Rodrigo, 2026-11-09)
+  --artist-scrollbar-thumb: 4px; // a barra de rolagem da página do artista sobrepõe o hero: mesma da grade em painéis (4 px, a 3 da borda)
+  --artist-scrollbar-edge: 3px;
   --artist-track-order-color: var(--color-neutral-300); // número de ordem, paragraph-12px (Rodrigo, 2026-11-09)
   --artist-track-plays-color: var(--color-neutral-300); // quantas vezes tocou, no hover: estilo e cor são decisão minha (paragraph-14px, neutral-300)
   --artist-track-thumb-size: 48px;

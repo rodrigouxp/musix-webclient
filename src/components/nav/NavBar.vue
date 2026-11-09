@@ -190,20 +190,26 @@ function toggleSidenav() {
                     order: 1;
                     flex: 1 1 var(--topbar-search-min-width);
                     min-width: var(--topbar-search-min-width);
+                    max-width: var(--topbar-search-max-width);
                 }
 
-                // no title: the gap between the search and the avatar is 12 (the flex gap, less the one that is not there)
+                // the search stops at 500px: what is left goes before the avatar, which stays on the right edge
                 & > .avatar {
                     order: 3;
                     flex: none;
                     width: var(--topbar-avatar-size);
-                    margin-left: calc(var(--topbar-search-avatar-gap) - var(--tb-gap));
+                    margin-left: auto;
                 }
             }
 
-            // with a title (settings, playlists, folder...) the avatar keeps the normal gap after it
+            // with a title (settings, playlists, folder...) it is the title that takes what is left, and the avatar
+            // keeps the normal gap after it
             &:has(.left .info:not(:empty)) .right > .avatar {
                 margin-left: 0;
+            }
+
+            &:has(.left .info:not(:empty)) .left .info {
+                margin-left: auto;
             }
         }
     }

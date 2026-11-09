@@ -26,11 +26,23 @@
                 </DynamicScrollerItem>
             </template>
         </DynamicScroller>
+        <!-- the scrollbar goes over the page (and over the hero, which reaches the border): the native one would take a
+             strip of the width; this one is drawn on top, as the thin one of the panels -->
+        <div v-show="bar.visible" class="artist-scrollbar" aria-hidden="true">
+            <div
+                class="bar-thumb"
+                :style="{ height: `${bar.height}px`, transform: `translateY(${bar.top}px)` }"
+                @pointerdown="onThumbDown"
+                @pointermove="onThumbMove"
+                @pointerup="onThumbUp"
+                @pointercancel="onThumbUp"
+            ></div>
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { dropSources } from '@/enums'
@@ -184,6 +196,74 @@ const items = computed(() => {
     ]
 })
 
+// SECTION: the scrollbar over the page
+const bar = reactive({ visible: false, height: 0, top: 0 })
+let scroller: HTMLElement | null = null
+let observer: ResizeObserver | undefined
+let drag: { y: number; scrollTop: number } | null = null
+
+// the thumb moves inside the track: the height of the page less the space that the ends leave (--layout-scrollbar-inset)
+function trackSize() {
+    const inset = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--layout-scrollbar-inset')) || 0
+    return Math.max((scroller?.clientHeight ?? 0) - inset * 2, 0)
+}
+
+function updateBar() {
+    if (!scroller) return
+
+    const { scrollTop, scrollHeight, clientHeight } = scroller
+    const track = trackSize()
+
+    bar.visible = scrollHeight > clientHeight + 1
+
+    if (!bar.visible) return
+
+    bar.height = Math.min(Math.max((clientHeight / scrollHeight) * track, 32), track)
+    bar.top = (scrollTop / (scrollHeight - clientHeight)) * (track - bar.height)
+}
+
+function onThumbDown(e: PointerEvent) {
+    if (!scroller) return
+
+    drag = { y: e.clientY, scrollTop: scroller.scrollTop }
+    ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
+}
+
+function onThumbMove(e: PointerEvent) {
+    if (!drag || !scroller) return
+
+    const room = trackSize() - bar.height
+
+    if (room > 0) {
+        scroller.scrollTop = drag.scrollTop + ((e.clientY - drag.y) * (scroller.scrollHeight - scroller.clientHeight)) / room
+    }
+}
+
+function onThumbUp() {
+    drag = null
+}
+
+onMounted(() => {
+    scroller = document.getElementById('artist-scroller')
+    if (!scroller) return
+
+    scroller.addEventListener('scroll', updateBar, { passive: true })
+    observer = new ResizeObserver(updateBar)
+    observer.observe(scroller)
+
+    const wrapper = scroller.querySelector('.vue-recycle-scroller__item-wrapper')
+    if (wrapper) observer.observe(wrapper)
+
+    updateBar()
+})
+
+onBeforeUnmount(() => {
+    scroller?.removeEventListener('scroll', updateBar)
+    observer?.disconnect()
+})
+
+watch(items, () => nextTick(updateBar))
+
 // the title of the tab follows the artist (it changes when the route goes from one artist to another)
 watch(() => store.info.name, name => updatePageTitle(name), { immediate: true })
 </script>
@@ -197,13 +277,39 @@ watch(() => store.info.name, name => updatePageTitle(name), { immediate: true })
         calc(100cqw / var(--artist-hero-ratio)),
         var(--artist-hero-height-max)
     );
+    position: relative;
     height: 100%;
 
     .artist-scroller {
+        @include hideScrollbars;
         height: 100%;
         padding: 0;
         overflow-x: hidden;
         scrollbar-gutter: auto;
+    }
+
+    // the scrollbar over the page: 4px, round, neutral-700, 3px from the edge, as the thin one of the panels; the hover
+    // is the next grey of the system. The ends keep the inset that the native one leaves.
+    .artist-scrollbar {
+        position: absolute;
+        top: var(--layout-scrollbar-inset);
+        bottom: var(--layout-scrollbar-inset);
+        right: var(--artist-scrollbar-edge);
+        width: var(--artist-scrollbar-thumb);
+        z-index: 6;
+        pointer-events: none;
+
+        .bar-thumb {
+            width: 100%;
+            border-radius: 400px;
+            background-color: var(--color-neutral-700);
+            pointer-events: auto;
+            touch-action: none;
+
+            &:hover {
+                background-color: var(--color-neutral-500);
+            }
+        }
     }
 
     // the hero and the tab bar scroll away together, except for the bar: the block sticks when only the bar is left
@@ -355,8 +461,9 @@ watch(() => store.info.name, name => updatePageTitle(name), { immediate: true })
             }
 
             .song-duration {
-                @include text('track-title-18px');
+                @include text('paragraph-14px');
                 text-align: right;
+                color: var(--artist-track-meta-color);
             }
 
             // how many times the track was played ("12 plays", "unplayed"): on the hover of the row it takes the place of
@@ -391,7 +498,7 @@ watch(() => store.info.name, name => updatePageTitle(name), { immediate: true })
                 width: var(--artist-track-icon-size);
                 height: var(--artist-track-icon-size);
                 aspect-ratio: auto;
-                color: var(--artist-track-icon-color);
+                color: var(--artist-track-meta-color);
 
                 &:hover {
                     background-color: transparent;
