@@ -85,8 +85,8 @@ const props = defineProps<{
     dragging?: boolean
     // the row that follows the pointer: the number is already the handle
     held?: boolean
-    // the row of the panels of the Figma (artist page, TrackList node 12462:2882): one click plays, the heart is always
-    // there, the number turns into the drag icon on hover (see components/ArtistView/ArtistPanel.vue for the layout)
+    // the row of the panels of the Figma (artist page, TrackList node 12462:2882): one click plays and the heart is always
+    // there; no drag (that is only in the playlists, for now) (see components/ArtistView/ArtistPanel.vue for the layout)
     panel?: boolean
 }>()
 

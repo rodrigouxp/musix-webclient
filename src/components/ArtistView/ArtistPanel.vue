@@ -229,23 +229,6 @@ watch(() => store.info.name, name => updatePageTitle(name), { immediate: true })
                 transform: none;
                 text-align: left;
             }
-
-            // the number turns into the drag icon (24 x 24) on hover, centered where the number was
-            .drag-icon {
-                inset: auto;
-                top: 50%;
-                left: 50%;
-                width: var(--artist-track-icon-size);
-                height: var(--artist-track-icon-size);
-                transform: translate(-50%, -50%);
-                cursor: default;
-                color: var(--artist-track-icon-color);
-
-                svg {
-                    width: var(--artist-track-icon-size);
-                    height: var(--artist-track-icon-size);
-                }
-            }
         }
 
         > .tracktitle {
