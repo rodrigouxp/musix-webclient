@@ -33,11 +33,11 @@
   --topbar-search-avatar-gap: 12px; // entre o fim da busca e o avatar
   --topbar-search-height: 42px; // o que cabe na TopBar de 52 (menos a borda de 1 e o padding de 4, dos dois lados)
   --topbar-search-padding: 8px 18px;
-  --topbar-search-gap: 24px; // entre a lupa e o texto
+  --topbar-search-gap: 12px; // entre a lupa e o texto (era 24; Rodrigo, 2026-11-09)
   --topbar-search-color: var(--color-neutral-500); // lupa e placeholder (contraste baixo, como no Figma)
   --topbar-search-text-color: var(--color-neutral-100); // texto digitado: não está no Figma
-  --topbar-search-icon-slot: 20px; // o espaço da lupa no layout; o glifo de 20 x 20 é desenhado numa caixa de 24
-  --topbar-search-icon-size: 24px;
+  --topbar-search-icon-slot: 18px; // o espaço da lupa no layout: o glifo é de 18 x 18 (era 20; Rodrigo, 2026-11-09), desenhado na caixa do ícone
+  --topbar-search-icon-size: 21.6px; // caixa do ícone: o glifo ocupa 20/24 dela, então 18 x 18 pedem 18 x 24 / 20
   --topbar-avatar-size: 36px;
 
   // Fonte do app inteiro: Satoshi Variable (pesos 300 a 900), arquivo do próprio cliente (assets/fonts, sem CDN).
@@ -312,6 +312,9 @@
   --text-paragraph-18px-size: 18px; // paragraph/paragraph-18px (Medium)
   --text-paragraph-18px-weight: 500;
   --text-paragraph-18px-line-height: normal;
+  --text-paragraph-16px-size: 16px; // paragraph/paragraph-16px (Medium): novo, texto da busca da TopBar (Rodrigo, 2026-11-09)
+  --text-paragraph-16px-weight: 500;
+  --text-paragraph-16px-line-height: normal;
   --text-paragraph-14px-size: 14px; // paragraph/paragraph-14px (Medium)
   --text-paragraph-14px-weight: 500;
   --text-paragraph-14px-line-height: normal;
