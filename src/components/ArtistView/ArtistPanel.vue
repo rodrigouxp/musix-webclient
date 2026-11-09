@@ -11,6 +11,9 @@
                 <DynamicScrollerItem :item="item" :active="active" :size-dependencies="[item.size]" :data-index="index">
                     <div v-if="item.kind === 'spacer'" :style="{ height: `${item.size}px` }"></div>
                     <p v-else-if="item.kind === 'empty'" class="artist-tab-empty">{{ item.text }}</p>
+                    <div v-else-if="item.kind === 'albums'" class="artist-albums-grid">
+                        <AlbumThumb v-for="album in item.albums" :key="album.albumhash" :album="album" :variant="item.variant" />
+                    </div>
                     <div v-else class="artist-track-item">
                         <SongItem
                             panel
@@ -31,15 +34,16 @@ import { computed, nextTick, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { dropSources } from '@/enums'
-import { Track } from '@/interfaces'
+import { Album, Track } from '@/interfaces'
 import { useT } from '@/i18n'
-import { getArtistTracks } from '@/requests/artists'
+import { getArtistAlbums, getArtistTracks } from '@/requests/artists'
 import useArtistPageStore from '@/stores/pages/artist'
 import useQueue from '@/stores/queue'
 import useTracklist from '@/stores/queue/tracklist'
 import useSettings from '@/stores/settings'
 import updatePageTitle from '@/utils/updatePageTitle'
 
+import AlbumThumb from '@/components/FeedPanel/AlbumThumb.vue'
 import SongItem from '@/components/shared/SongItem.vue'
 import ArtistHero from './ArtistHero.vue'
 import ArtistTabs from './ArtistTabs.vue'
@@ -119,10 +123,54 @@ async function playTrack(index: number) {
     queue.play(index)
 }
 
+// SECTION: releases (every album of the artist, newest first: the page only receives the first few of each kind)
+// the key of each tab in the list of the store and in the answer of the server (`/artist/<hash>/albums?all=true`)
+const releaseKeys: Record<string, { store: 'albums' | 'singles' | 'live_albums' | 'appearances' | 'compilations' | 'soundtracks'; api: string }> = {
+    albums: { store: 'albums', api: 'albums' },
+    singles: { store: 'singles', api: 'singles_and_eps' },
+    live: { store: 'live_albums', api: 'live_albums' },
+    appearances: { store: 'appearances', api: 'appearances' },
+    compilations: { store: 'compilations', api: 'compilations' },
+    soundtracks: { store: 'soundtracks', api: 'soundtracks' },
+}
+
+const allAlbums = ref<{ hash: string; data: Record<string, Album[]> } | null>(null)
+
+async function loadAlbums() {
+    const hash = store.info.artisthash
+    if (allAlbums.value?.hash === hash) return
+
+    const res = await getArtistAlbums(hash, 0, true)
+    if (store.info.artisthash === hash && res) allAlbums.value = { hash, data: res as unknown as Record<string, Album[]> }
+}
+
+// the first albums come with the page; the whole list is fetched when a tab of releases opens
+watch(
+    [currentTab, () => store.info.artisthash],
+    ([tab]) => {
+        if (tab !== 'tracks') loadAlbums()
+    },
+    { immediate: true }
+)
+
+function releasesOf(tab: string): Album[] {
+    const keys = releaseKeys[tab]
+    if (!keys) return []
+
+    if (allAlbums.value?.hash === store.info.artisthash) return allAlbums.value.data[keys.api] ?? []
+    return store[keys.store] ?? []
+}
+
 // the 40px between the tab bar and the first row, and the 16px after the last (plus its 4 of gap = the 20 of the Figma)
 const items = computed(() => {
     if (currentTab.value !== 'tracks') {
-        return [{ id: 'empty', kind: 'empty', size: 0, text: isTabEmpty() ? t('ArtistView.TabEmpty') : '' }]
+        const albums = releasesOf(currentTab.value)
+
+        if (!albums.length) return [{ id: 'empty', kind: 'empty', size: 0, text: t('ArtistView.TabEmpty') }]
+
+        // the artist is the same in all of them, except in Appearances (decision of the Figma): there the card shows it
+        const variant = currentTab.value === 'appearances' ? 'home' : 'artist'
+        return [{ id: `albums-${currentTab.value}`, kind: 'albums', size: albums.length, albums, variant }]
     }
 
     if (!allTracks.value.length) {
@@ -135,20 +183,6 @@ const items = computed(() => {
         { id: 'bottom', kind: 'spacer', size: 16 },
     ]
 })
-
-// the tabs of releases are drawn in the next stage; for now one that has nothing says so
-function isTabEmpty() {
-    const lists: Record<string, unknown[]> = {
-        albums: store.albums,
-        singles: store.singles,
-        live: store.live_albums,
-        appearances: store.appearances,
-        compilations: store.compilations,
-        soundtracks: store.soundtracks,
-    }
-
-    return !(lists[currentTab.value] ?? []).length
-}
 
 // the title of the tab follows the artist (it changes when the route goes from one artist to another)
 watch(() => store.info.name, name => updatePageTitle(name), { immediate: true })
@@ -184,6 +218,24 @@ watch(() => store.info.name, name => updatePageTitle(name), { immediate: true })
         margin: 0;
         padding: 40px 20px;
         color: var(--artist-tab-empty-color);
+    }
+
+    // the grid of the tabs of releases (Figma node 12462:3137): at most 8 columns, 20 between them and between the rows
+    .artist-albums-grid {
+        box-sizing: border-box;
+        display: grid;
+        grid-template-columns: repeat(
+            auto-fill,
+            minmax(
+                max(
+                    var(--artist-albums-card-min),
+                    calc((100% - (var(--artist-albums-columns) - 1) * var(--artist-albums-gap)) / var(--artist-albums-columns))
+                ),
+                1fr
+            )
+        );
+        gap: var(--artist-albums-gap);
+        padding: var(--artist-albums-padding);
     }
 
     .artist-track-item {

@@ -18,18 +18,23 @@
         </div>
         <div class="text">
             <div v-tooltip class="title">{{ album.title }}</div>
-            <div v-if="album.albumartists.length > 0" class="artist" @click.prevent.stop="() => {}">
+            <div
+                v-if="variant === 'home' && album.albumartists.length > 0"
+                class="artist"
+                @click.prevent.stop="() => {}"
+            >
                 <RouterLink :to="{ name: Routes.artist, params: { hash: album.albumartists[0].artisthash } }">
                     {{ album.albumartists[0].name }}
                 </RouterLink>
             </div>
+            <div v-if="year" class="year">{{ year }}</div>
             <div v-if="showHelp && album.help_text" class="help">{{ album.help_text }}</div>
         </div>
     </RouterLink>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 import { paths } from '@/config'
 import { playSources } from '@/enums'
@@ -39,15 +44,24 @@ import { Routes } from '@/router'
 
 import PlayBtn from '@/components/shared/PlayBtn.vue'
 
-// AlbumThumb of the Figma (node 12408:2422): a plate behind the square cover, then the title and the artist.
+// AlbumThumb of the Figma (nodes 12408:2422 and 12462:4315): a plate behind the square cover, then the title, the
+// artist and the year. Two variants: `home` (title, artist and year: the Home, "View history" and the Appearances
+// tab) and `artist` (title and year: the other tabs of the artist page, where the artist would be redundant).
 // It keeps what the old AlbumCard did: click opens the album, the name of the artist opens the artist, right
 // click opens the album menu, the play button shows on hover. `showHelp` is for the pages "View history".
-const props = defineProps<{
-    album: Album
-    showHelp?: boolean
-}>()
+const props = withDefaults(
+    defineProps<{
+        album: Album
+        showHelp?: boolean
+        variant?: 'home' | 'artist'
+    }>(),
+    { variant: 'home' }
+)
 
 const imguri = paths.images.thumb.medium
+
+// the date is a unix time in seconds (0 when the album has none: no year then)
+const year = computed(() => (props.album.date > 0 ? new Date(props.album.date * 1000).getUTCFullYear() : 0))
 const contextMenuFlag = ref(false)
 
 function showMenu(e: MouseEvent) {
@@ -151,6 +165,7 @@ function showMenu(e: MouseEvent) {
 
     .title,
     .artist,
+    .year,
     .help {
         white-space: nowrap;
         overflow: hidden;
@@ -158,11 +173,12 @@ function showMenu(e: MouseEvent) {
     }
 
     .title {
-        @include text('paragraph-18px');
+        @include text('album-title-16px');
         color: var(--feedpanel-name-color);
     }
 
     .artist,
+    .year,
     .help {
         @include text('paragraph-14px');
         color: var(--feedpanel-subtitle-color);

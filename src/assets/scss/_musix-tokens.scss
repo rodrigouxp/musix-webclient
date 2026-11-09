@@ -278,7 +278,7 @@
   --feedpanel-link-color: var(--color-neutral-300); // "View history"
   --feedpanel-name-color: var(--color-neutral-100); // nome do artista e título do álbum
   --feedpanel-subtitle-color: var(--color-neutral-300); // artista do álbum e texto de apoio (reproduções)
-  --feedpanel-card-text-gap: 4px; // entre a imagem e o texto
+  --feedpanel-card-text-gap: 0px; // entre a imagem e o texto e entre as linhas: o cartão novo não tem gaps (Rodrigo, 2026-11-09)
   --feedpanel-image-border: 1px solid var(--color-neutral-900); // 1 px por dentro da imagem
   --feedpanel-album-radius: 8px;
   --feedpanel-album-ratio: 164 / 172; // a imagem (quadrada) fica colada embaixo; a placa aparece atrás, em cima
@@ -320,6 +320,9 @@
   --text-action-button-16px-size: 16px; // actions/action-button-16px (Bold): novo, as abas da página do artista (Rodrigo, 2026-11-09)
   --text-action-button-16px-weight: 700;
   --text-action-button-16px-line-height: normal;
+  --text-album-title-16px-size: 16px; // tracks/album-title-16px: nome do cartão de álbum (Rodrigo, 2026-11-09)
+  --text-album-title-16px-weight: 700; // Bold como o album-title-24px: o peso não foi informado, decisão minha
+  --text-album-title-16px-line-height: normal;
 
   // Página do artista (grade em painéis; Figma nós 12452:929 página, 12452:2138 ArtistHero, 12461:2631 TabBar,
   // 12462:2882 TrackList). Medidas e estilos passados pelo Rodrigo em 2026-11-09 (o Figma estava fora do ar).
@@ -364,6 +367,10 @@
   --artist-track-thumb-radius: 4px;
   --artist-track-name-gap: 12px; // entre a capa e o título
   --artist-track-order-digit: 12px; // largura de um dígito do número de ordem (o Figma tem 12 para 1 dígito)
+  --artist-albums-padding: 40px 8px 20px 8px; // abas de lançamentos (nó 12462:3137): topo 40 e laterais 8 do Figma; o fim 20 é o da lista de faixas
+  --artist-albums-columns: 8; // no máximo 8 cartões por linha (o Figma: "8 x Auto")
+  --artist-albums-gap: 20px; // entre colunas e entre linhas
+  --artist-albums-card-min: 120px; // largura mínima do cartão: abaixo dela a grade perde colunas (decisão minha, o Figma só tem a larga)
   --artist-track-icon-size: 24px; // coração, drag e options
   --artist-track-actions-gap: 20px; // coração, tempo e options
   --artist-track-icon-color: var(--color-neutral-white); // coração sem favorito: decisão minha (o Figma só mostra o favorito, em error/300)
