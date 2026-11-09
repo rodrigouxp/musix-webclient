@@ -4,6 +4,7 @@
     <Notification v-if="!hideUI" />
     <ConfirmDialog v-if="!hideUI" />
     <PromptDialog v-if="!hideUI" />
+    <ArtistDialogs v-if="!hideUI" />
     <div id="drag-img" class="ellip2" style=""></div>
     <section
         v-if="!hideUI"
@@ -70,6 +71,7 @@ import { xl, xxl } from './composables/useBreakpoints'
 import ConfirmDialog from '@/components/ConfirmDialog.vue'
 import ContextMenu from '@/components/ContextMenu.vue'
 import PromptDialog from '@/components/PromptDialog.vue'
+import ArtistDialogs from '@/components/ArtistView/ArtistDialogs.vue'
 import Modal from '@/components/modal.vue'
 import Notification from '@/components/Notification.vue'
 

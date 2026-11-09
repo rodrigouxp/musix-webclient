@@ -111,6 +111,14 @@ export interface HomePageItem {
     url?: string
 }
 
+/** The wide image of the artist page: the file, the focus point (x and y, percent) and a version for the cache. */
+export interface ArtistHeroInfo {
+    image: string
+    x: number
+    y: number
+    version: number
+}
+
 export interface Artist {
     name: string
     image: string
@@ -125,6 +133,8 @@ export interface Artist {
     time?: string
     genres: Genre[]
     type?: string
+    /** only in the answer of the artist page; null: the page shows the checkerboard */
+    hero?: ArtistHeroInfo | null
 
     // available in charts
     trend?: {

@@ -344,6 +344,9 @@
   --artist-hero-fav-size: 32px; // o coração tem 20 x 18 (o ícone de 24 sem escala)
   --artist-hero-options-width: 14px; // o options tem 4 x 20 (o ícone de 24 sem escala), em uma caixa de 14 x 32
   --artist-hero-fav-color: var(--color-error-300);
+  --artist-hero-reposition-padding: 6px 12px; // botão "Reposition" e botões de posicionar: posição e padding não estão no Figma (decisão minha)
+  --artist-hero-reposition-offset: 12px; // do canto superior direito do hero
+  --artist-hero-reposition-fade: 150ms;
   --artist-tabs-height: 44px;
   --artist-tabs-padding: 8px 12px 0 12px;
   --artist-tabs-gap: 16px;

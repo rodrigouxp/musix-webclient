@@ -90,8 +90,16 @@
       "None": "No repeat",
       "One": "Repeat one"
     },
+    "ConfirmRemoveHero": "The hero image goes away and the page shows the checkerboard again",
+    "HeroRemoved": "Artist hero removed",
+    "HeroUpdated": "Artist hero updated",
     "Options": "Options",
+    "RemoveHero": "Remove",
+    "Reposition": "Reposition",
+    "RepositionHint": "Drag the image to choose what stays in view. The framing adapts to other widths.",
+    "Save": "Save",
     "TabEmpty": "Nothing here yet",
+    "ThumbnailHint": "Drag the square to choose the part that becomes the round photo",
     "Tabs": {
       "Albums": "Albums",
       "Appearances": "Appearances",
@@ -373,8 +381,12 @@
       "RemoveFromSoundtrack": "Remove from Soundtrack"
     },
     "Artist": {
+      "OpenInFilesRoot": "This artist has no folder of their own: opening the folder of the first album",
+      "PlayNext": "Play next",
+      "Rename": "Rename",
       "ThisIsPlaylist": "This is {artist}",
-      "PlayNext": "Play next"
+      "UpdateHero": "Update artist's hero",
+      "UpdateThumbnail": "Update artist's thumbnail"
     },
     "Common": {
       "AddToCollection": "Add to Collection",

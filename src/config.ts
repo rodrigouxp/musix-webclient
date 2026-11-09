@@ -29,6 +29,9 @@ const imageRoutes = {
         large: '/artist/',
         small: '/artist/small/',
         medium: '/artist/medium/',
+        // the hero of the artist page: up to 2560 px wide and up to 1280 px wide (narrow screens)
+        hero: '/artist/hero/',
+        heroSmall: '/artist/hero/small/',
     },
     playlist: '/playlist/',
 }
@@ -228,6 +231,8 @@ export const paths = {
             small: baseImgUrl + imageRoutes.artist.small,
             large: baseImgUrl + imageRoutes.artist.large,
             medium: baseImgUrl + imageRoutes.artist.medium,
+            hero: baseImgUrl + imageRoutes.artist.hero,
+            heroSmall: baseImgUrl + imageRoutes.artist.heroSmall,
         },
         playlist: baseImgUrl + imageRoutes.playlist,
     },

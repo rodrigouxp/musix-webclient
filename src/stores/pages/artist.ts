@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import { getArtistAlbums, getArtistData, getSimilarArtists } from '@/requests/artists'
 
 import { paths } from '@/config'
-import { Album, Artist, Genre, StatItem, Track } from '@/interfaces'
+import { Album, Artist, ArtistHeroInfo, Genre, StatItem, Track } from '@/interfaces'
 import { Routes, router } from '@/router'
 import { maxAbumCards } from '@/stores/content-width'
 import useSettingsStore from '@/stores/settings'
@@ -75,6 +75,9 @@ export default defineStore('artistPage', {
         extractColors() {
             const url = paths.images.artist.large + this.info.image + this.photoQuery
             setColorsToStore(this, url, true)
+        },
+        setHero(hero: ArtistHeroInfo | null) {
+            this.info.hero = hero
         },
         bumpPhoto() {
             this.photoVersion = Date.now()

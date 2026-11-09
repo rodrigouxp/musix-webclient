@@ -1,5 +1,5 @@
 import { paths } from '@/config'
-import { Album, Artist, Genre, StatItem, Track } from '@/interfaces'
+import { Album, Artist, ArtistHeroInfo, Genre, StatItem, Track } from '@/interfaces'
 import { NotifType, useToast } from '@/stores/notification'
 import useAxios from './useAxios'
 import { getRenameStatus, postRename, RenameJobStatus } from './rename'
@@ -66,9 +66,15 @@ export const getArtistAlbums = async (hash: string, limit = 6, all = false) => {
  * Sends a photo of the artist chosen on this computer.
  * On failure returns `{ error }` with the message of the server.
  */
-export async function uploadArtistImage(hash: string, file: File) {
+export async function uploadArtistImage(hash: string, file: File, focus?: { x: number; y: number }) {
     const form = new FormData()
     form.append('image', file)
+
+    // the square of the round photo is cut around this point (percent of the width and of the height)
+    if (focus) {
+        form.append('x', String(focus.x))
+        form.append('y', String(focus.y))
+    }
 
     const { data, error } = await useAxios({
         method: 'POST',
@@ -89,6 +95,51 @@ export async function refetchArtistImage(hash: string) {
     })
 
     return error ? { error: (data?.error as string) || error } : (data as ArtistImageResult)
+}
+
+/**
+ * Sends the hero (the wide image of the artist page) and where to look at it (percent, x and y).
+ * On failure returns `{ error }` with the message of the server.
+ */
+export async function uploadArtistHero(hash: string, file: File, focus: { x: number; y: number }) {
+    const form = new FormData()
+    form.append('image', file)
+    form.append('x', String(focus.x))
+    form.append('y', String(focus.y))
+
+    const { data, error } = await useAxios({
+        method: 'POST',
+        url: paths.api.artist + `/${hash}/hero`,
+        props: form as any,
+    })
+
+    return error ? { error: (data?.error as string) || error } : (data as ArtistHeroResult)
+}
+
+/** Saves only the focus point of the hero. */
+export async function setArtistHeroPosition(hash: string, focus: { x: number; y: number }) {
+    const { data, error } = await useAxios({
+        method: 'POST',
+        url: paths.api.artist + `/${hash}/hero/position`,
+        props: focus as any,
+    })
+
+    return error ? { error: (data?.error as string) || error } : (data as ArtistHeroResult)
+}
+
+/** Removes the hero: the page goes back to the checkerboard. */
+export async function deleteArtistHero(hash: string) {
+    const { data, error } = await useAxios({
+        method: 'DELETE',
+        url: paths.api.artist + `/${hash}/hero`,
+    })
+
+    return error ? { error: (data?.error as string) || error } : (data as ArtistHeroResult)
+}
+
+export interface ArtistHeroResult {
+    ok: boolean
+    hero: ArtistHeroInfo | null
 }
 
 export interface ArtistImageResult {
