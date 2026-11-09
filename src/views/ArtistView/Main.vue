@@ -1,5 +1,8 @@
 <template>
-    <div class="artist-page v-scroll-page" style="height: 100%">
+    <!-- desktop, default layout: the artist page of the Figma (hero, tabs, tracks). The other sizes and the alternative
+         layout keep the old page (the code of the genres, stats and similar artists stays there) -->
+    <ArtistPanel v-if="settings.is_panel_layout" />
+    <div v-else class="artist-page v-scroll-page" style="height: 100%">
         <DynamicScroller
             id="artist-scroller"
             :items="scrollerItems"
@@ -31,6 +34,7 @@ import { onBeforeRouteLeave, onBeforeRouteUpdate, useRoute } from 'vue-router'
 import useArtist from '@/stores/pages/artist'
 import useQueue from '@/stores/queue'
 import useTracklist from '@/stores/queue/tracklist'
+import useSettings from '@/stores/settings'
 
 import { discographyAlbumTypes, dropSources } from '@/enums'
 import { Album, ScrollerItem, StatItem } from '@/interfaces'
@@ -38,6 +42,7 @@ import { getArtistTracks } from '@/requests/artists'
 
 import GenreBanner from '@/components/AlbumView/GenreBanner.vue'
 import ArtistAlbumsFetcher from '@/components/ArtistView/AlbumsFetcher.vue'
+import ArtistPanel from '@/components/ArtistView/ArtistPanel.vue'
 import Header from '@/components/ArtistView/Header.vue'
 import TopTracks from '@/components/ArtistView/TopTracks.vue'
 import CardScroller from '@/components/shared/CardScroller.vue'
@@ -51,6 +56,7 @@ const route = useRoute()
 const queue = useQueue()
 const store = useArtist()
 const tracklist = useTracklist()
+const settings = useSettings()
 
 // function fetchArtistAlbums() {
 //   return store.getArtistAlbums();
@@ -262,7 +268,10 @@ async function handlePlay(index: number) {
     queue.play(index)
 }
 
-onBeforeRouteUpdate(async to => {
+onBeforeRouteUpdate(async (to, from) => {
+    // only the tab of the page changed (?tab=): the data is the same
+    if (to.params.hash === from.params.hash) return
+
     // fetch data and scroll to top
     await store.getData(to.params.hash as string).then(async () => {
         await nextTick()

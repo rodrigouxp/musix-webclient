@@ -1,17 +1,19 @@
 <template>
     <div
         class="songlist-item rounded-sm"
-        :class="[{ current: isCurrent() }, { contexton: context_menu_showing }, { reorderable, dragging }]"
-        @dblclick="emitUpdate"
+        :class="[{ current: isCurrent() }, { contexton: context_menu_showing }, { reorderable, dragging, panel }]"
+        @dblclick="!panel && emitUpdate()"
         @contextmenu.prevent="showMenu"
+        @click="onRowClick"
     >
-        <!-- small screens have no number, except in a playlist (the number is the handle of the drag) -->
+        <!-- small screens have no number, except in a playlist (the number is the handle of the drag) and in the panel row -->
         <TrackIndex
-            v-if="!isSmall || reorderable"
+            v-if="!isSmall || reorderable || panel"
             :index="index"
             :is_fav="is_fav"
             :show-inline-fav-icon="settings.showInlineFavIcon"
             :reorderable="reorderable"
+            :panel="panel"
             :held="isSmall && (held || dragging)"
             @add-to-fav="addToFav(track.trackhash)"
             @drag-start="emit('dragStart', $event)"
@@ -38,7 +40,8 @@
             :help_text="track.help_text"
             :is_fav="is_fav"
             :show-fav-icon="!isFavoritesPage"
-            :show-inline-fav-icon="settings.showInlineFavIcon"
+            :show-inline-fav-icon="settings.showInlineFavIcon || panel"
+            :panel="panel"
             :highlight-favorite-tracks="settings.highlightFavoriteTracks"
             @showMenu="showMenu"
             @toggleFav="addToFav(track.trackhash)"
@@ -82,6 +85,9 @@ const props = defineProps<{
     dragging?: boolean
     // the row that follows the pointer: the number is already the handle
     held?: boolean
+    // the row of the panels of the Figma (artist page, TrackList node 12462:2882): one click plays, the heart is always
+    // there, the number turns into the drag icon on hover (see components/ArtistView/ArtistPanel.vue for the layout)
+    panel?: boolean
 }>()
 
 const is_fav = ref(props.track.is_favorite || false)
@@ -95,6 +101,14 @@ const emit = defineEmits<{
 
 function emitUpdate() {
     emit('playThis')
+}
+
+// the panel row plays with one click, anywhere but on what has its own action (the title and the cover play by
+// themselves, the links go to their page, the heart and the options do theirs)
+function onRowClick(e: MouseEvent) {
+    if (!props.panel) return
+    if ((e.target as HTMLElement).closest('a, .tracktitle, .heart-icon, .options-icon')) return
+    emitUpdate()
 }
 
 function showMenu(e: MouseEvent) {

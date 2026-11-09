@@ -90,6 +90,17 @@
       "None": "No repeat",
       "One": "Repeat one"
     },
+    "Options": "Options",
+    "TabEmpty": "Nothing here yet",
+    "Tabs": {
+      "Albums": "Albums",
+      "Appearances": "Appearances",
+      "Compilations": "Compilations",
+      "Lives": "Lives",
+      "MostPlayed": "Most played tracks",
+      "Singles": "EPs & Singles",
+      "Soundtracks": "Soundtracks"
+    },
     "Title": "Artist"
   },
   "AuthLogin": {

@@ -1,19 +1,21 @@
 <template>
   <div
     class="index t-center ellip"
-    @click.prevent="!reorderable && $emit('addToFav')"
+    @click.prevent="!reorderable && !panel && $emit('addToFav')"
     @dblclick.prevent.stop="() => {}"
-    :class="{ 'ready': !showInlineFavIcon && !reorderable, reorderable, held }"
+    :class="{ 'ready': !showInlineFavIcon && !reorderable && !panel, reorderable, held, panel }"
     @pointerdown="rememberPointer"
     @contextmenu="stopTouchMenu"
   >
     <div class="text">
       {{ index }}
     </div>
+    <!-- the row of the panels: the number turns into the drag icon on hover (Figma TrackList, node 12462:2883) -->
+    <div v-if="panel" class="drag-icon" v-html="DragIcon"></div>
     <!-- a playlist: the number turns into the handle to drag the row (and the click does not favorite).
          With the mouse it happens on the hover; with a finger, on a long press (see useTrackDrag) -->
     <div
-      v-if="reorderable"
+      v-else-if="reorderable"
       class="drag-icon"
       @pointerenter="$emit('dragHover')"
       @pointerdown="$emit('dragStart', $event)"
@@ -36,6 +38,8 @@ const props = defineProps<{
   reorderable?: boolean;
   // the row is being dragged: the number is already the handle
   held?: boolean;
+  // the row of the panels of the Figma (artist page)
+  panel?: boolean;
 }>();
 
 // The long press of a finger opens the menu of the song on Android (the row listens to
@@ -126,6 +130,7 @@ defineEmits<{
 }
 
 .songlist-item:hover > .index.reorderable,
+.songlist-item:hover > .index.panel,
 .songlist-item > .index.reorderable.held {
   .text {
     opacity: 0;

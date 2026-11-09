@@ -317,4 +317,54 @@
   --text-paragraph-12px-size: 12px; // paragraph/paragraph-12px (Medium)
   --text-paragraph-12px-weight: 500;
   --text-paragraph-12px-line-height: normal;
+  --text-action-button-16px-size: 16px; // actions/action-button-16px (Bold): novo, as abas da página do artista (Rodrigo, 2026-11-09)
+  --text-action-button-16px-weight: 700;
+  --text-action-button-16px-line-height: normal;
+
+  // Página do artista (grade em painéis; Figma nós 12452:929 página, 12452:2138 ArtistHero, 12461:2631 TabBar,
+  // 12462:2882 TrackList). Medidas e estilos passados pelo Rodrigo em 2026-11-09 (o Figma estava fora do ar).
+  --artist-hero-height-max: 400px;
+  --artist-hero-height-min: 280px; // decisão do prompt: abaixo disso o hero perde a altura mínima
+  --artist-hero-ratio: 3.2975; // 1319 / 400: a proporção do Figma ("3,3 : 1"), a que vale quando o painel é mais estreito
+  --artist-hero-padding: 20px 12px;
+  --artist-hero-gradient-end: #070707; // sem estilo no Figma, confirmar com o Rodrigo (vem do prompt)
+  --artist-hero-check-size: 16px; // quadriculado enquanto não há imagem (etapa D traz o upload)
+  --artist-hero-check-a: var(--color-neutral-900);
+  --artist-hero-check-b: var(--color-neutral-700);
+  --artist-hero-color: var(--color-neutral-white);
+  --artist-hero-text-gap: 4px; // entre o nome, as infos e os botões
+  --artist-hero-buttons-gap: 14px;
+  --artist-hero-play-size: 40px;
+  --artist-hero-play-bg: var(--color-neutral-500);
+  --artist-hero-play-pad-left: 4px; // só o play (o pause não tem)
+  --artist-hero-play-icon-size: 21.47px; // caixa do ícone de 24 para o triângulo ficar com 15,88 x 17,89
+  --artist-hero-fav-size: 32px; // o coração tem 20 x 18 (o ícone de 24 sem escala)
+  --artist-hero-options-width: 14px; // o options tem 4 x 20 (o ícone de 24 sem escala), em uma caixa de 14 x 32
+  --artist-hero-fav-color: var(--color-error-300);
+  --artist-tabs-height: 44px;
+  --artist-tabs-padding: 8px 12px 0 12px;
+  --artist-tabs-gap: 16px;
+  --artist-tabs-line-width: 2px;
+  --artist-tabs-line-color: var(--color-neutral-700);
+  --artist-tab-padding: 6px 4px;
+  --artist-tab-color: var(--color-neutral-300);
+  --artist-tab-hover-color: var(--color-neutral-100); // sem hover no Figma: decisão minha
+  --artist-tab-active-color: var(--color-neutral-white);
+  --artist-tab-active-line-color: var(--color-neutral-300);
+  --artist-tab-empty-color: var(--color-neutral-300); // linha de aba vazia (paragraph-14px)
+  --artist-tracks-padding: 40px 8px 20px 8px; // do fim da barra de abas à primeira linha, laterais, fim da lista
+  --artist-tracks-gap: 4px;
+  --artist-track-height: 64px;
+  --artist-track-padding: 8px 20px;
+  --artist-track-gap: 20px;
+  --artist-track-radius: 8px;
+  --artist-track-hover-bg: var(--color-neutral-700); // hover, faixa tocando e menu aberto (a faixa tocando não está no Figma)
+  --artist-track-color: var(--color-neutral-white);
+  --artist-track-thumb-size: 48px;
+  --artist-track-thumb-radius: 4px;
+  --artist-track-name-gap: 12px; // entre a capa e o título
+  --artist-track-order-digit: 12px; // largura de um dígito do número de ordem (o Figma tem 12 para 1 dígito)
+  --artist-track-icon-size: 24px; // coração, drag e options
+  --artist-track-actions-gap: 20px; // coração, tempo e options
+  --artist-track-icon-color: var(--color-neutral-white); // coração sem favorito: decisão minha (o Figma só mostra o favorito, em error/300)
 }

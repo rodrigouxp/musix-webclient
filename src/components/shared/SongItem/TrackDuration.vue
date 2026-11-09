@@ -3,7 +3,7 @@
         <div
             v-if="showInlineFavIcon"
             class="heart-icon"
-            :class="{ showInlineFavIcon, 'is_fav': is_fav && highlightFavoriteTracks }"
+            :class="{ showInlineFavIcon, 'is_fav': is_fav && (highlightFavoriteTracks || panel) }"
             @click.stop="$emit('toggleFav')"
         >
             <HeartSvg :state="is_fav" :no_emit="true" />
@@ -13,13 +13,16 @@
             {{ help_text }}
         </div>
         <div class="options-icon circular" @click.stop="$emit('showMenu', $event)" @dblclick.stop="() => {}">
-            <OptionSvg />
+            <!-- the row of the panels uses the icon of the Figma (24 x 24, the dots are 4 x 20) -->
+            <OptionsFigmaSvg v-if="panel" />
+            <OptionSvg v-else />
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import OptionSvg from '@/assets/icons/more.svg'
+import OptionsFigmaSvg from '@/assets/icons/figma/options.svg'
 import { formatSeconds } from '@/utils'
 import HeartSvg from '../HeartSvg.vue'
 
@@ -30,6 +33,8 @@ defineProps<{
     highlightFavoriteTracks: boolean
     showFavIcon?: boolean
     help_text?: string
+    // the row of the panels of the Figma: the heart is always there (see SongItem and components/ArtistView/ArtistPanel.vue)
+    panel?: boolean
 }>()
 
 defineEmits<{
