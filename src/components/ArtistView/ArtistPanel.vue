@@ -275,11 +275,13 @@ watch(() => store.info.name, name => updatePageTitle(name), { immediate: true })
             font-size: inherit;
 
             .text {
+                @include text('paragraph-12px');
                 width: auto;
                 margin: 0;
                 opacity: 1;
                 transform: none;
                 text-align: left;
+                color: var(--artist-track-order-color);
             }
         }
 
@@ -357,13 +359,32 @@ watch(() => store.info.name, name => updatePageTitle(name), { immediate: true })
                 text-align: right;
             }
 
-            // "N plays" is not in the Figma: the time stays
-            .song-duration.help-text {
-                display: none;
-            }
-
+            // how many times the track was played ("12 plays", "unplayed"): on the hover of the row it takes the place of
+            // the heart, the time and the options, at the right end. With the pointer over those buttons they come
+            // back (a button that cannot be seen would still be there to click)
             .song-duration.has_help_text {
                 opacity: 1;
+            }
+
+            .song-duration.help-text {
+                @include text('paragraph-14px');
+                position: absolute;
+                top: 50%;
+                right: 0;
+                text-align: right;
+                text-transform: none;
+                white-space: nowrap;
+                color: var(--artist-track-plays-color);
+                opacity: 0;
+                pointer-events: none;
+                transform: translateY(-50%);
+                transition: opacity 0.15s ease-out;
+            }
+
+            > .heart-icon,
+            > .song-duration:not(.help-text),
+            > .options-icon {
+                transition: opacity 0.15s ease-out;
             }
 
             .options-icon {
@@ -382,6 +403,19 @@ watch(() => store.info.name, name => updatePageTitle(name), { immediate: true })
                     stroke: none;
                 }
             }
+        }
+    }
+
+    // the hover of the row (not of the buttons at the right end): the play count in place of the buttons
+    .songlist-item.panel:hover > .options-and-duration:not(:hover) {
+        .heart-icon,
+        .song-duration:not(.help-text),
+        .options-icon {
+            opacity: 0;
+        }
+
+        .song-duration.help-text {
+            opacity: 1;
         }
     }
 

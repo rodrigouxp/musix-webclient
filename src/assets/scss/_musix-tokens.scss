@@ -366,6 +366,8 @@
   --artist-track-radius: 8px;
   --artist-track-hover-bg: var(--color-neutral-700); // hover, faixa tocando e menu aberto (a faixa tocando não está no Figma)
   --artist-track-color: var(--color-neutral-white);
+  --artist-track-order-color: var(--color-neutral-300); // número de ordem, paragraph-12px (Rodrigo, 2026-11-09)
+  --artist-track-plays-color: var(--color-neutral-300); // quantas vezes tocou, no hover: estilo e cor são decisão minha (paragraph-14px, neutral-300)
   --artist-track-thumb-size: 48px;
   --artist-track-thumb-radius: 4px;
   --artist-track-name-gap: 12px; // entre a capa e o título
