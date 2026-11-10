@@ -55,7 +55,7 @@ defineEmits<{
 }>()
 
 onUpdated(() => {
-    if (settings.is_default_layout) {
+    if (settings.is_panel_layout) {
         focusElemByClass('inthisfolder')
     }
 })

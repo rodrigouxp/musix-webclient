@@ -1,28 +1,19 @@
 <template>
-    <div
-        class="topnav"
-        :class="{
-            use_links: settings.is_alt_layout,
-            use_sidebar: settings.use_sidebar && isSmall,
-            has_search: hasSearch,
-        }"
-    >
+    <div class="topnav">
         <div class="left">
             <NavButtons />
-            <NavLinks v-if="settings.is_alt_layout" />
-            <div v-if="settings.is_default_layout && $route.name == Routes.folder" class="info">
+            <div v-if="settings.is_panel_layout && $route.name == Routes.folder" class="info">
                 <Folder />
             </div>
-            <NavTitles v-else-if="settings.is_default_layout && !isSmall" />
+            <NavTitles v-else-if="settings.is_panel_layout && !isSmall" />
         </div>
         <div class="sidenav_toggle" @click="toggleSidenav">
             <MenuSvg />
         </div>
         <NavSidenav @close="toggleSidenav" :class="{ active: sidenavActive }" />
         <div class="dimmer noSelect" :class="{ active: sidenavActive }" @click="toggleSidenav"></div>
-        <RouterLink v-if="settings.is_alt_layout" to="/" class="logo rounded-sm"><LogoSvg /></RouterLink>
-        <div v-if="hasSearch" class="right">
-            <SearchInput :on_nav="true" />
+        <div class="right">
+            <SearchInput />
             <AvatarWithDropdown />
         </div>
     </div>
@@ -32,26 +23,19 @@
 import { Routes } from '@/router'
 import { computed, ref } from 'vue'
 
-import useAuth from '@/stores/auth'
 import { content_width } from '@/stores/content-width'
 import useSettings from '@/stores/settings'
-import { xl } from './../../composables/useBreakpoints'
 
-import LogoSvg from '@/assets/icons/logos/note.svg'
 import MenuSvg from '@/assets/icons/figma/menu.svg'
-import SearchInput from '../RightSideBar/SearchInput.vue'
+import SearchInput from './SearchInput.vue'
 import NavButtons from './NavButtons.vue'
-import NavLinks from './NavLinks.vue'
 import NavSidenav from './NavSidenav.vue'
 import NavTitles from './NavTitles.vue'
 import Folder from './Titles/Folder.vue'
 import AvatarWithDropdown from './AvatarWithDropdown.vue'
 
-const auth = useAuth()
 const settings = useSettings()
 const isSmall = computed(() => content_width.value < 800)
-// the search and the avatar live in the top bar, unless the right sidebar is open (it has its own search)
-const hasSearch = computed(() => settings.is_alt_layout || !settings.use_sidebar || !xl.value)
 
 const sidenavActive = ref(false)
 
@@ -72,10 +56,6 @@ function toggleSidenav() {
     align-items: center;
     gap: 1rem;
     font-size: 14px;
-
-    &.use_links {
-        grid-template-columns: 1fr max-content 1fr;
-    }
 
     .left {
         display: grid;
@@ -110,19 +90,6 @@ function toggleSidenav() {
         }
     }
 
-    .logo {
-        width: max-content;
-        margin: 0 auto;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        svg {
-            width: 2rem;
-            height: 2rem;
-        }
-    }
-
     .right {
         display: flex;
         justify-content: flex-end;
@@ -136,81 +103,76 @@ function toggleSidenav() {
         }
     }
 
-    // Default layout above the phone breakpoint, with the search in the top bar: back/forward on
-    // the left, search centered on 50% of the bar, avatar on the right edge. The alt layout keeps
-    // the logo in the middle. The left column grows to what cannot shrink (buttons, sort menu)
-    // and the search gives way (never under 14rem), so nothing is ever covered.
+    // Above the phone breakpoint: back/forward on the left, the search centered, the avatar on the right edge.
     // The TopBar of the Figma (node 12395:365): back and forward, 64 apart, the search (no fill and no stroke now),
     // and the avatar on the right edge. The search grows to 12px from the avatar. The title of the page (or the path
     // of the folder) is not in the Figma: it keeps its place between the search and the avatar, takes only the room
     // it needs and gives way first; when a page has no title the box is hidden. Tokens --topbar-*.
     @media only screen and (min-width: 601px) {
-        &.has_search:not(.use_links) {
-            --tb-gap: var(--topbar-gap);
-            display: flex;
-            align-items: center;
-            gap: var(--tb-gap);
+        --tb-gap: var(--topbar-gap);
+        display: flex;
+        align-items: center;
+        gap: var(--tb-gap);
 
-            // medium widths: tighter gaps, so the buttons, the search (14rem at least) and the avatar fit
-            @media only screen and (max-width: 1100px) {
-                --tb-gap: 1.5rem;
+        // medium widths: tighter gaps, so the buttons, the search (14rem at least) and the avatar fit
+        @media only screen and (max-width: 1100px) {
+            --tb-gap: 1.5rem;
+        }
+
+        .left {
+            display: contents;
+
+            #back-forward {
+                order: 0;
+                flex: none;
             }
 
-            .left {
-                display: contents;
+            .info {
+                order: 2;
+                flex: 0 1 auto;
+                min-width: min-content;
+                max-width: none;
+                margin: 0;
 
-                #back-forward {
-                    order: 0;
-                    flex: none;
+                &:empty {
+                    display: none;
                 }
+                // the sort menu of the folder is placed against this box (the .left is not a box here)
+                position: relative;
 
-                .info {
-                    order: 2;
-                    flex: 0 1 auto;
-                    min-width: min-content;
-                    max-width: none;
-                    margin: 0;
-
-                    &:empty {
-                        display: none;
-                    }
-                    // the sort menu of the folder is placed against this box (the .left is not a box here)
-                    position: relative;
-
-                    &:has(#folder-nav-title) {
-                        overflow: visible;
-                    }
+                &:has(#folder-nav-title) {
+                    overflow: visible;
                 }
             }
+        }
 
-            .right {
-                display: contents;
+        .right {
+            display: contents;
 
-                & > .gsearch-input {
-                    order: 1;
-                    flex: 1 1 var(--topbar-search-min-width);
-                    min-width: var(--topbar-search-min-width);
-                    max-width: var(--topbar-search-max-width);
-                }
-
-                // the search stops at 500px: what is left goes before the avatar, which stays on the right edge
-                & > .avatar {
-                    order: 3;
-                    flex: none;
-                    width: var(--topbar-avatar-size);
-                    margin-left: auto;
-                }
+            & > .gsearch-input {
+                order: 1;
+                flex: 1 1 var(--topbar-search-min-width);
+                min-width: var(--topbar-search-min-width);
+                max-width: var(--topbar-search-max-width);
             }
 
-            // with a title (settings, playlists, folder...) it is the title that takes what is left, and the avatar
-            // keeps the normal gap after it
-            &:has(.left .info:not(:empty)) .right > .avatar {
-                margin-left: 0;
-            }
-
-            &:has(.left .info:not(:empty)) .left .info {
+            // the search stops at 500px: what is left goes before the avatar, which stays on the right edge
+            & > .avatar {
+                order: 3;
+                flex: none;
+                width: var(--topbar-avatar-size);
                 margin-left: auto;
             }
+        }
+
+        // with a title (settings, playlists, folder...) it is the title that takes what is left, and the avatar
+        // keeps the normal gap after it
+        &:has(.left .info:not(:empty)) .right > .avatar {
+            margin-left: 0;
+        }
+
+        &:has(.left .info:not(:empty)) .left .info {
+            margin-left: auto;
         }
     }
 

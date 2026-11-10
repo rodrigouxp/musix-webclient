@@ -7,14 +7,11 @@ import albums from './albums'
 import restore from './backup'
 import circularArtistImg from './circular-artist-img'
 import contextChildrenShowMode from './context-children-show-mode'
-import extendWidth from './extend-width'
 import folderlistmode from './folderlistmode'
-import layout from './layout'
 import nowPlaying from './now-playing-group'
 import { SettingType } from '../enums'
 import rootDirSettings from './root-dirs'
 import artistSettings from './artists'
-import sidebarSettings from './sidebar'
 import tracks from './tracks'
 // icons
 import AlbumSvg from '@/assets/icons/figma/disc.svg?raw'
@@ -45,9 +42,6 @@ export const general = {
             desc: t("Settings.General.MainSettingsDescription"),
             icon: AppearanceSvg,
             settings: [
-                ...layout,
-                ...extendWidth,
-                ...sidebarSettings,
                 circularArtistImg,
                 ...contextChildrenShowMode,
                 ...folderlistmode,

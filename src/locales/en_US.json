@@ -588,7 +588,6 @@
     "top": "Top"
   },
   "SearchInput": {
-    "BackToQueue": "back to queue",
     "GoToSearch": "go to search"
   },
   "SetRootDirs": {
@@ -604,10 +603,6 @@
     "Accounts": {
       "Desc": "Login to the mobile client using QR code",
       "Title": "Accounts"
-    },
-    "AppWidth": {
-      "Extend": "Full width",
-      "ExtendDesc": "Extend app to use all available screen width"
     },
     "Audio": {
       "CrossfadeDuration": {
@@ -700,7 +695,6 @@
       },
       "MainSettingsDescription": "Settings for various parts of the user interface.",
       "NowPlaying": {
-        "DisableNPTitle": "Hide album art from the left sidebar",
         "FavoriteInline": {
           "Description": "Show the favorite button next to the track duration",
           "Title": "Show inline favorite icon"
@@ -730,10 +724,6 @@
         "Locked": "Always used as a separator",
         "Title": "Separators"
       },
-      "Sidebar": {
-        "Description": "CTRL + B",
-        "Title": "Toggle right sidebar"
-      },
       "TrackInfoSettingsDesc": "Settings relating to track information",
       "Tracks": {
         "HideRemaster": {
@@ -748,8 +738,7 @@
           "Description": "Remove 'prod.' from track titles",
           "Title": "Hide 'prod.'"
         }
-      },
-      "UseNoSidebarTitle": "Use no sidebar layout"
+      }
     },
     "List": {
       "RootNotConfigured": "Root directories not configured. Use the \"Configure\" button above to configure"
@@ -815,9 +804,6 @@
     "Save": "Save",
     "ShowFolders": {
       "As": "Show folders as"
-    },
-    "Sidebar": {
-      "UseSidebar": "Show right sidebar"
     }
   },
   "Stores": {
@@ -843,10 +829,6 @@
     "AddToFavorites": "Add to favorites",
     "RemoveFromFavorites": "Remove from favorites",
     "RemoveFromQueue": "Remove from queue"
-  },
-  "UpNext": {
-    "NextUp": "Next up",
-    "PlayNextSong": "play next song"
   },
   "UsePlayFrom": {
     "AlbumTracksNotFound": "Album tracks not found",

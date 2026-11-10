@@ -86,16 +86,16 @@
 /* The scrollbar of the pages in the panel of the content (FeedPanel of the Figma): 4px wide, round,
    neutral/700, with no track, 3px from the edge. Only above 900px, in the grid of panels. */
 @media only screen and (min-width: 601px) {
-    .designatedOS #app-grid:not(.is_alt_layout) #acontent ::-webkit-scrollbar {
+    .designatedOS #app-grid #acontent ::-webkit-scrollbar {
         width: 7px;
         background-color: transparent;
     }
 
-    .designatedOS #app-grid:not(.is_alt_layout) #acontent ::-webkit-scrollbar-track {
+    .designatedOS #app-grid #acontent ::-webkit-scrollbar-track {
         background-color: transparent;
     }
 
-    .designatedOS #app-grid:not(.is_alt_layout) #acontent ::-webkit-scrollbar-thumb {
+    .designatedOS #app-grid #acontent ::-webkit-scrollbar-thumb {
         background-color: var(--color-neutral-700);
         border-radius: 400px;
         border: 0;
@@ -105,8 +105,8 @@
 
     /* the thumb starts 4px under the top edge and ends 4px over the bottom one (Figma: y 5 in the panel of 780): the two
        buttons of the ends are empty boxes of 4px that the thumb cannot go over */
-    .designatedOS #app-grid:not(.is_alt_layout) #acontent ::-webkit-scrollbar-button:vertical:start:decrement,
-    .designatedOS #app-grid:not(.is_alt_layout) #acontent ::-webkit-scrollbar-button:vertical:end:increment {
+    .designatedOS #app-grid #acontent ::-webkit-scrollbar-button:vertical:start:decrement,
+    .designatedOS #app-grid #acontent ::-webkit-scrollbar-button:vertical:end:increment {
         display: block;
         width: 7px;
         height: var(--layout-scrollbar-inset);
@@ -114,7 +114,7 @@
     }
 
     /* the hover of the thumb is not in the Figma: the next grey of the system */
-    .designatedOS #app-grid:not(.is_alt_layout) #acontent ::-webkit-scrollbar-thumb:hover {
+    .designatedOS #app-grid #acontent ::-webkit-scrollbar-thumb:hover {
         background-color: var(--color-neutral-500);
         background-clip: padding-box;
     }

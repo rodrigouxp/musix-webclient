@@ -1,12 +1,11 @@
 import { defineStore } from 'pinia'
 
-import { xxl } from '@/composables/useBreakpoints'
 import { DBSettings, contextChildrenShowMode } from '@/enums'
 import { pluginSetActive, updatePluginSettings } from '@/requests/plugins'
 
 import { updateConfig } from '@/requests/settings'
 import { usePlayer } from '@/stores/player'
-import { content_width, isMobile, isNarrowWindow } from '../content-width'
+import { isMobile } from '../content-width'
 import useAxios from '@/requests/useAxios'
 import { paths } from '@/config'
 import { router } from '@/router'
@@ -16,9 +15,8 @@ export default defineStore('settings', {
     state: () => ({
         version: '',
         public_key: '',
-        extend_width: false,
-        // the QueuePanel of the desktop (default layout): open or closed, kept between sessions. The PlayerBar's
-        // thumbnail toggles it (the panel itself comes in the next step).
+        // the QueuePanel of the desktop (above 600px): open or closed, kept between sessions. The PlayerBar's
+        // thumbnail toggles it.
         queue_panel_open: false,
         contextChildrenShowMode: contextChildrenShowMode.hover,
         artist_top_tracks_count: 5,
@@ -65,12 +63,6 @@ export default defineStore('settings', {
         crossfade_duration: 1000, // milliseconds
         use_legacy_streaming_endpoint: false,
 
-        // layout
-        // INFO: Default to alternate layout from v2.0.0
-        layout: 'alternate',
-        use_np_img: false,
-        use_sidebar: false,
-
         // stats
         statsgroup: 'artists',
         statsperiod: 'week',
@@ -107,29 +99,15 @@ export default defineStore('settings', {
             this.separators = separators
         },
         // now playing 👇
-        toggleUseNPImg() {
-            this.use_np_img = !this.use_np_img
-        },
         toggleShowInlineFavIcon() {
             this.showInlineFavIcon = !this.showInlineFavIcon
         },
         toggleHighlightFavoriteTracks() {
             this._highlightFavoriteTracks = !this._highlightFavoriteTracks
         },
-        // sidebar 👇
-        toggleDisableSidebar() {
-            if (this.is_alt_layout) {
-                this.use_sidebar = false
-                return
-            }
-
-            this.use_sidebar = !this.use_sidebar
-        },
+        // queue panel 👇
         toggleQueuePanel() {
             this.queue_panel_open = !this.queue_panel_open
-        },
-        toggleExtendWidth() {
-            this.extend_width = !this.extend_width
         },
         // context menu 👇
         setContextChildrenShowMode(mode: contextChildrenShowMode) {
@@ -228,19 +206,6 @@ export default defineStore('settings', {
             this.use_legacy_streaming_endpoint = !this.use_legacy_streaming_endpoint
         },
 
-        // layout 👇
-        toggleLayout() {
-            if (this.layout == '') {
-                this.layout = 'alternate'
-                this.use_sidebar = false
-                this.use_np_img = false
-                return
-            }
-
-            this.layout = ''
-            this.use_np_img = true
-        },
-
         toggleNowPlayingTrackOnTabTitle() {
             this.nowPlayingTrackOnTabTitle = !this.nowPlayingTrackOnTabTitle
         },
@@ -322,9 +287,6 @@ export default defineStore('settings', {
         },
     },
     getters: {
-        can_extend_width(): boolean {
-            return this.is_default_layout && xxl.value
-        },
         crossfade_duration_seconds(): number {
             return this.crossfade_duration / 1000
         },
@@ -335,11 +297,9 @@ export default defineStore('settings', {
         volume_gain(): number {
             return volumeToGain(this.volume)
         },
-        // the alternative layout does not fit from 601 to 900px: there the default one (panels) is shown
-        is_default_layout: state => state.layout === '' || (isNarrowWindow.value && !isMobile.value),
-        is_alt_layout: state => state.layout === 'alternate' && content_width.value > 900,
-        // the grid of panels of the Figma: above 600px and the default layout (same test as assets/scss/Global/app-grid.scss)
-        is_panel_layout: state => !isMobile.value && (state.layout === '' || isNarrowWindow.value),
+        // the grid of panels of the Figma: every width above the phone breakpoint (600px, same as the `min-width: 601px`
+        // of assets/scss/Global/app-grid.scss). Up to 600px the app keeps the phone layout
+        is_panel_layout: () => !isMobile.value,
         highlightFavoriteTracks(): boolean {
             return (
                 !router.currentRoute.value.name?.toString().toLowerCase().startsWith('favorite') &&

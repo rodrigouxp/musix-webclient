@@ -1,7 +1,6 @@
 import useQueue from "@/stores/queue";
 import useModal from "@/stores/modal";
 import useContextMenu from "@/stores/context";
-import useSettings from "@/stores/settings";
 
 let key_down_fired = "";
 
@@ -115,18 +114,6 @@ export default function (queue: typeof useQueue, modal: typeof useModal) {
         if (!ctrlKey) return;
         e.preventDefault();
         focusPageSearchBox();
-        break;
-      }
-
-      case "b": {
-        if (!ctrlKey) return;
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        e.preventDefault();
-
-        const { toggleDisableSidebar } = useSettings();
-        toggleDisableSidebar();
-        setKeyFired();
         break;
       }
 

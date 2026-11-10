@@ -6,16 +6,13 @@ import { Routes, router } from '@/router'
 import { useDebounce } from '@vueuse/core'
 
 
-import useTabs from './tabs'
 import useLoader from './loader'
-import useSettings from './settings'
 import { maxAbumCards } from './content-width'
 import { Album, Artist, Playlist, Track } from '../interfaces'
 import { searchAlbums, searchArtists, searchTopResults, searchTracks } from '@/requests/searchMusic'
 
 export default defineStore('search', () => {
     const query = ref('')
-    const settings = useSettings()
     const route = computed(() => router.currentRoute.value)
     const debouncedQuery = useDebounce(query, 500)
     const { startLoading, stopLoading } = useLoader()
@@ -136,7 +133,7 @@ export default defineStore('search', () => {
         newQuery => {
             if (newQuery.trim() == '') return
 
-            if (!settings.use_sidebar && route.value.name !== Routes.search) {
+            if (route.value.name !== Routes.search) {
                 router.push({
                     name: Routes.search,
                     params: {
@@ -154,12 +151,6 @@ export default defineStore('search', () => {
                     },
                     query: { q: newQuery },
                 })
-            }
-
-            const tabs = useTabs()
-
-            if (route.value.name !== Routes.search && tabs.current !== 'search') {
-                tabs.switchToSearch()
             }
 
             switch (currentTab.value) {

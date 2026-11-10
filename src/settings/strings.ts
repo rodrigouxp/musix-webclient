@@ -22,19 +22,6 @@ export const nowPlayingStrings = {
   },
 } as S;
 
-export const appWidthStrings = {
-  settings: {
-    extend: t("Settings.AppWidth.Extend"),
-    extend_desc: t("Settings.AppWidth.ExtendDesc")
-  },
-} as S;
-
-export const sidebarStrings = <S>{
-  settings: {
-    use_sidebar: t("Settings.Sidebar.UseSidebar"),
-  },
-};
-
 export const contextChildrenShowModeStrings = <S>{
   settings: {
     show_mode: t('Settings.ContextChildren.ShowMode'),

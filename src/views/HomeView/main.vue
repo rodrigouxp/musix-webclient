@@ -1,5 +1,5 @@
 <template>
-    <!-- desktop, default layout: the FeedPanel of the Figma. The other sizes and the alternative layout keep the old page -->
+    <!-- above 600px: the FeedPanel of the Figma. The phone keeps the old page -->
     <FeedPanel v-if="panelLayout" :title="getGreetings(auth.user.username)" />
     <div v-else class="homepageview content-page">
         <GenericHeader>
@@ -72,7 +72,7 @@ onMounted(async () => {
     if (!panelLayout.value) await loadOldPage()
 })
 
-// the window or the layout changed while the Home is open
+// the window changed while the Home is open (it crossed the 600px)
 watch(panelLayout, isPanel => {
     if (!isPanel) loadOldPage()
 })

@@ -1,26 +1,17 @@
 <template>
     <div id="back-forward" class="">
         <button class="back" @click="$router.back()">
-            <component :is="icon" />
+            <ChevronSvg />
         </button>
         <button class="forward" @click="$router.forward()">
-            <component :is="icon" />
+            <ChevronSvg />
         </button>
     </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-
-import useSettings from '@/stores/settings'
-
+// the TopBar of the Figma uses the `chevron` Icon
 import ChevronSvg from '@/assets/icons/figma/chevron.svg'
-import ArrowSvg from '../../assets/icons/right-arrow.svg'
-
-const settings = useSettings()
-
-// the TopBar of the Figma (default layout) uses the `chevron` Icon; the alternative layout keeps its arrow
-const icon = computed(() => (settings.is_alt_layout ? ArrowSvg : ChevronSvg))
 </script>
 
 <style lang="scss">
@@ -67,7 +58,7 @@ const icon = computed(() => (settings.is_alt_layout ? ArrowSvg : ChevronSvg))
 // The TopBar of the Figma (node 12395:365, page-buttons): two circles of 36, 16 apart, with a border of 1 in
 // neutral/700, no separator and the `chevron` drawn at 26.18 (the glyph of 11.6 x 17.5). Tokens --topbar-*.
 @media only screen and (min-width: 601px) {
-    #app-grid:not(.is_alt_layout) #back-forward {
+    #app-grid #back-forward {
         display: flex;
         gap: var(--topbar-button-gap);
         padding-right: 0;

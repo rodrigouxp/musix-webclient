@@ -112,7 +112,7 @@ import QueueGroupHeader from './QueueGroupHeader.vue'
 import QueueTrack from './QueueTrack.vue'
 
 // QueuePanel of the Figma (node 12408:1964): the queue as a list, with the tracks of an album or of a playlist that
-// went in whole under a header. Only the desktop, in the default layout (App.vue). It opens and closes with the
+// went in whole under a header. Only the desktop, above 600px (App.vue). It opens and closes with the
 // thumbnail of the PlayerBar (settings.queue_panel_open).
 type Row =
     | { id: string; kind: 'header'; group: QueueGroup; start: number }

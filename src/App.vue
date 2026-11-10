@@ -10,16 +10,12 @@
         v-if="!hideUI"
         id="app-grid"
         :class="{
-            useSidebar: settings.use_sidebar && xl && !settings.is_panel_layout,
             'has-queue-panel': settings.is_panel_layout,
             'queue-open': settings.is_panel_layout && settings.queue_panel_open,
             'queue-animating': queueAnimating,
-            NoSideBorders: settings.is_alt_layout || !xxl,
-            extendWidth: settings.extend_width && settings.can_extend_width,
-            is_alt_layout: settings.is_alt_layout,
         }"
     >
-        <LeftSidebar v-if="settings.is_default_layout && !isMobile" />
+        <LeftSidebar v-if="settings.is_panel_layout" />
         <NavBar />
         <div id="acontent" v-element-size="updateContentElemSize">
             <div id="contentresizer" ref="appcontent"></div>
@@ -30,9 +26,8 @@
                 </RouterView>
             </BalancerProvider>
         </div>
-        <!-- above 600px in the default layout the right sidebar is the QueuePanel ("Use sidebar" has no effect there) -->
+        <!-- above 600px: the SidePanel on the left and the QueuePanel on the right; up to 600px, the phone layout -->
         <QueuePanel v-if="settings.is_panel_layout" />
-        <RightSideBar v-else-if="settings.use_sidebar && xl" />
         <BottomBar />
         <!-- <BubbleManager /> -->
     </section>
@@ -55,7 +50,7 @@ import { BalancerProvider } from 'vue-wrap-balancer'
 
 // @stores
 import useAuth from '@/stores/auth'
-import { content_height, content_width, isMobile, resizer_width, updateCardWidth } from '@/stores/content-width'
+import { content_height, content_width, resizer_width, updateCardWidth } from '@/stores/content-width'
 import useLyrics from '@/stores/lyrics'
 import useModal from '@/stores/modal'
 import useQueue from '@/stores/queue'
@@ -65,7 +60,6 @@ import useInterface from '@/stores/interface'
 
 // @utils
 import handleShortcuts from '@/helpers/useKeyboard'
-import { xl, xxl } from './composables/useBreakpoints'
 
 // @small-components
 import ConfirmDialog from '@/components/ConfirmDialog.vue'
@@ -80,7 +74,6 @@ import BottomBar from '@/components/BottomBar/BottomBar.vue'
 import LeftSidebar from '@/components/LeftSidebar/index.vue'
 import NavBar from '@/components/nav/NavBar.vue'
 import QueuePanel from '@/components/QueuePanel/QueuePanel.vue'
-import RightSideBar from '@/components/RightSideBar/Main.vue'
 
 import { getAllSettings } from '@/requests/settings'
 import { getRootDirs } from '@/requests/settings/rootdirs'
@@ -294,11 +287,6 @@ export default defineComponent({
 
 <style lang="scss">
 @import './assets/scss/mixins.scss';
-.designatedOS .r-sidebar {
-    &::-webkit-scrollbar {
-        display: none;
-    }
-}
 
 #noui {
     height: 100vh;

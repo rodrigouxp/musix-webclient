@@ -61,7 +61,7 @@ const { width: win_width } = useWindowSize()
 
 export const isSmallPhone = computed(() => win_width.value <= LARGE_MOBILE_WIDTH)
 export const isMobile = computed(() => win_width.value <= ALL_MOBILE_WIDTH)
-// up to 900px the alternative layout (a row of links in the top bar) does not fit: it shows the default one (panels)
+// from 601 to 900px the panels are narrow (the PlayerBar goes to two rows)
 export const isNarrowWindow = computed(() => win_width.value <= 900)
 export const isLargerMobile = computed(
     () => win_width.value >= LARGE_MOBILE_WIDTH && win_width.value <= ALL_MOBILE_WIDTH

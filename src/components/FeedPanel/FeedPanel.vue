@@ -34,7 +34,7 @@ import useFeed from '@/stores/feedpanel'
 import FeedRow from './FeedRow.vue'
 
 // FeedPanel of the Figma (node 12408:1935): the greeting and three blocks (most played artists, most played
-// albums, recently added). Only on the desktop, in the default layout (HomeView decides).
+// albums, recently added). Only on the desktop, above 600px (HomeView decides).
 defineProps<{ title: string }>()
 
 const feed = useFeed()

@@ -1,5 +1,5 @@
 <template>
-    <div class="folder-view v-scroll-page" style="height: 100%" :class="{ isSmall, isMedium, is_alt_layout }">
+    <div class="folder-view v-scroll-page" style="height: 100%" :class="{ isSmall, isMedium }">
         <NoItems
             :flag="folder.tracks.length === 0 && folder.dirs.length === 0"
             :title="folder.query === '' ? 
@@ -19,7 +19,7 @@
             class="scroller"
             style="height: 100%"
         >
-            <template v-if="is_alt_layout || isMedium || isSmall" #before>
+            <template v-if="isMedium || isSmall" #before>
                 <Folder />
             </template>
 
@@ -50,7 +50,6 @@ import { isMedium, isSmall, track_limit } from '@/stores/content-width'
 import useFolder from '@/stores/pages/folder'
 import useQueue from '@/stores/queue'
 import useTracklist from '@/stores/queue/tracklist'
-import useSettings from '@/stores/settings'
 
 import { dropSources } from '@/enums'
 import { Track, subPath } from '@/interfaces'
@@ -62,7 +61,6 @@ import FolderList from '@/components/FolderView/FolderList.vue'
 import Folder from '@/components/nav/Titles/Folder.vue'
 import NoItems from '@/components/shared/NoItems.vue'
 import SongItem from '@/components/shared/SongItem.vue'
-import { xl } from '@/composables/useBreakpoints'
 import AlbumsFetcher from '@/components/ArtistView/AlbumsFetcher.vue'
 import { getFiles } from '@/requests/folders'
 import { useT } from '@/i18n'
@@ -70,10 +68,7 @@ import { useT } from '@/i18n'
 const { t } = useT()
 const queue = useQueue()
 const folder = useFolder()
-const settings = useSettings()
 const tracklist = useTracklist()
-
-const is_alt_layout = computed(() => settings.is_alt_layout || !xl)
 
 interface ScrollerItem {
     id: any
@@ -163,19 +158,3 @@ onMounted(() => {
     updatePageTitle(t('Common.Folders'))
 })
 </script>
-
-<style lang="scss">
-.folder-view.is_alt_layout {
-    .scroller {
-        padding-top: 0 !important;
-    }
-
-    .scroller > div.vue-recycle-scroller__slot:first-child {
-        padding: 1rem 0;
-        background-color: $body;
-        position: sticky;
-        top: 0;
-        z-index: 1;
-    }
-}
-</style>

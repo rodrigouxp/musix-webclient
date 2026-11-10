@@ -2,8 +2,7 @@
     <div
         class="gsearch-input"
         @click="
-            !settings.use_sidebar &&
-                $route.name !== Routes.search &&
+            $route.name !== Routes.search &&
                 $router.push({
                     name: Routes.search,
                     params: { page: 'top' },
@@ -12,14 +11,9 @@
         "
     >
         <div id="ginner" ref="inputRef" tabindex="0">
-            <button
-                v-auto-animate
-                :title="tabs.current === tabs.tabs.search ? $t('SearchInput.BackToQueue') : $t('SearchInput.GoToSearch')"
-                :class="{ no_bg: on_nav }"
-                @click.prevent="handleButton"
-            >
-                <SearchSvg v-if="on_nav || tabs.current === tabs.tabs.queue" class="search-glyph" />
-                <BackSvg v-else />
+            <!-- only the magnifier: the field is the button (a click anywhere in the search goes to the search page) -->
+            <button class="no_bg" :title="$t('SearchInput.GoToSearch')">
+                <SearchSvg class="search-glyph" />
             </button>
             <input
                 id="globalsearch"
@@ -44,22 +38,13 @@
 
 <script setup lang="ts">
 import useSearch from '@/stores/search'
-import useSettings from '@/stores/settings'
-import useTabStore from '@/stores/tabs'
 import { ref } from 'vue'
 
 import CancelSvg from '@/assets/icons/figma/close.svg'
-import BackSvg from '@/assets/icons/arrow.svg'
 import SearchSvg from '@/assets/icons/figma/search.svg'
 import { Routes } from '@/router'
 
-const props = defineProps<{
-    on_nav?: boolean
-}>()
-
-const tabs = useTabStore()
 const search = useSearch()
-const settings = useSettings()
 
 // HANDLE FOCUS
 const inputRef = ref<HTMLInputElement | null>(null)
@@ -86,16 +71,6 @@ function clearInput() {
 }
 
 // @end
-
-function handleButton() {
-    if (props.on_nav) return
-
-    if (tabs.current === tabs.tabs.search) {
-        tabs.switchToQueue()
-    } else {
-        tabs.switchToSearch()
-    }
-}
 </script>
 
 <style>
@@ -107,14 +82,6 @@ function handleButton() {
 </style>
 
 <style lang="scss">
-.topnav.use_links .right > .gsearch-input > #ginner > input {
-    width: 150px;
-
-    @include allPhones {
-        width: 100%;
-    }
-}
-
 .gsearch-input {
     display: grid;
     grid-template-columns: 1fr max-content;
@@ -232,9 +199,9 @@ function handleButton() {
 
 // The search of the TopBar of the Figma (SearchBar, node 12394:348): no fill and no stroke (Rodrigo, 2026-11-07),
 // the magnifier (the glyph is 18 x 18, in a slot of 18) and the text (paragraph-16px) 12 apart; it grows to the avatar (500px at most)
-// (NavBar.vue). Only in the default layout above 900px; the search of the right sidebar and of the alt layout do not change.
+// (NavBar.vue). Only above 600px; the phone keeps its own search.
 @media only screen and (min-width: 601px) {
-    #app-grid:not(.is_alt_layout) .topnav.has_search:not(.use_links) .gsearch-input #ginner {
+    #app-grid .topnav .gsearch-input #ginner {
         box-sizing: border-box;
         height: var(--topbar-search-height);
         padding: var(--topbar-search-padding);

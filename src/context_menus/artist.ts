@@ -161,7 +161,7 @@ export default async (artisthash: string, artistname: string) => {
     }
 
     // the hero is placed on the page of the artist (from another page it goes there first); there is no hero on the
-    // small screens and in the alternative layout, so the option is not there
+    // phone (up to 600px), so the option is not there
     const update_hero: Option = {
         label: t('Menus.Artist.UpdateHero'),
         icon: MenuUpdateCoverIcon,

@@ -8,14 +8,6 @@ const { t } = useT()
 
 const settings = useSettingsStore
 
-const disable_np_img: Setting = {
-    title: t("Settings.General.NowPlaying.DisableNPTitle"),
-    type: SettingType.binary,
-    state: () => !settings().use_np_img,
-    action: () => settings().toggleUseNPImg(),
-    show_if: () => !settings().is_alt_layout,
-}
-
 const showNowPlayingOnTabTitle: Setting = {
     title: t("Settings.General.NowPlaying.OnTabTitle.Title"),
     desc: t("Settings.General.NowPlaying.OnTabTitle.Description"),
@@ -41,4 +33,4 @@ const highlightFavoriteTracks: Setting = {
     show_if: () => settings().showInlineFavIcon,
 }
 
-export default [disable_np_img, showNowPlayingOnTabTitle, showInlineFavIcon, highlightFavoriteTracks]
+export default [showNowPlayingOnTabTitle, showInlineFavIcon, highlightFavoriteTracks]

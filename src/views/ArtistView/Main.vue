@@ -1,6 +1,6 @@
 <template>
-    <!-- desktop, default layout: the artist page of the Figma (hero, tabs, tracks). The other sizes and the alternative
-         layout keep the old page (the code of the genres, stats and similar artists stays there) -->
+    <!-- above 600px: the artist page of the Figma (hero, tabs, tracks). The phone keeps the old page (the code of the
+         genres, stats and similar artists stays there) -->
     <ArtistPanel v-if="settings.is_panel_layout" />
     <div v-else class="artist-page v-scroll-page" style="height: 100%">
         <DynamicScroller

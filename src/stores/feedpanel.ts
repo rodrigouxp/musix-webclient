@@ -5,7 +5,7 @@ import { Album, Artist } from '@/interfaces'
 import { getHomePageData } from '@/requests/home'
 import { getChartItem } from '@/requests/stats'
 
-// The FeedPanel of the Home (desktop, default layout): three rows of 8 cards, always.
+// The FeedPanel of the Home (desktop, above 600px): three rows of 8 cards, always.
 export const FEED_CARDS = 8
 
 // The page "View history" lists everything that was played; the server has no cap on `limit`, and 500 is

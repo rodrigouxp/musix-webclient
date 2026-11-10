@@ -78,14 +78,6 @@ const current = computed(() => {
 </script>
 
 <style lang="scss">
-// .info > #folder-nav-title {
-//   display: grid;
-// }
-
-// .is_alt_layout #folder-nav-title {
-//   display: grid;
-// }
-
 #folder-nav-title {
     box-sizing: border-box;
     width: 100%;

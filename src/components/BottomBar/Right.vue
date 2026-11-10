@@ -1,10 +1,5 @@
 <template>
-    <!-- above 900px: lyrics, volume (shuffle and repeat are next to play, the favorite is by the song) -->
-    <div v-if="desktop" class="right-group desktop">
-        <LyricsButton />
-        <Volume inline />
-    </div>
-    <div v-else class="right-group">
+    <div class="right-group">
         <LyricsButton />
         <Volume />
         <button
@@ -45,8 +40,6 @@ const settings = useSettings()
 
 defineProps<{
     hideHeart?: boolean
-    // the bottom bar of the desktop and tablet (above 900px)
-    desktop?: boolean
 }>()
 
 defineEmits<{
@@ -114,38 +107,7 @@ defineEmits<{
         }
     }
 
-    // above 900px (the PlayerBar of the Figma): lyrics and the volume, 40px apart; each icon is 20px
-    // in a circle of 28px
-    &.desktop {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        gap: var(--playerbar-right-gap);
-        height: var(--playerbar-side-control-size);
-
-        // the hover circle is as big as the one of the central buttons (34px); the negative margin
-        // keeps the 28px of layout (and so the 40px and 8px of distance)
-        button.lyrics,
-        button.speaker-icon {
-            width: var(--playerbar-control-size) !important;
-            height: var(--playerbar-control-size) !important;
-            margin: calc((var(--playerbar-side-control-size) - var(--playerbar-control-size)) / 2);
-            padding: 0 !important;
-
-            &:hover {
-                background-color: var(--playerbar-hover-bg) !important;
-            }
-        }
-
-        .lyrics svg,
-        .speaker-icon svg {
-            height: var(--playerbar-icon-size);
-            width: var(--playerbar-icon-size);
-        }
-    }
-
-    .speaker svg,
-    .speaker-icon svg {
+    .speaker svg {
         height: 1.3rem;
         width: 1.3rem;
     }
