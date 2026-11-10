@@ -378,7 +378,7 @@
   --artist-track-thumb-size: 48px;
   --artist-track-thumb-radius: 4px;
   --artist-track-name-gap: 12px; // entre a capa e o título
-  --artist-track-order-digit: 12px; // largura de um dígito do número de ordem (o Figma tem 12 para 1 dígito)
+  --artist-track-order-digit: 8px; // largura de um dígito do número de ordem (paragraph-12px tabular = 7,92px). O Figma reserva 12 para 1 dígito; o Rodrigo pediu 20px entre o número e a capa (2026-11-10), então a coluna tem só a largura dos dígitos e o número fica à direita
   --artist-albums-padding: 40px 8px 20px 8px; // abas de lançamentos (nó 12462:3137): topo 40 e laterais 8 do Figma; o fim 20 é o da lista de faixas
   --artist-albums-columns: 8; // no máximo 8 cartões por linha (o Figma: "8 x Auto")
   --artist-albums-gap: 20px; // entre colunas e entre linhas

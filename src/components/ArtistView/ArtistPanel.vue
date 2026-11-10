@@ -349,9 +349,10 @@ watch(() => store.info.name, name => updatePageTitle(name), { immediate: true })
         padding: 0 8px var(--artist-tracks-gap) 8px;
     }
 
-    // ROW (Figma TrackList, node 12462:2882): number, cover and title, artist, album, heart, time and options
+    // ROW (Figma TrackList, node 12462:2882): number, cover and title, artist, album, heart, time and options.
+    // Title, artist and album are paragraph-16px (Rodrigo, 2026-11-10); the three inherit it from the row
     .songlist-item.panel {
-        @include text('track-title-18px');
+        @include text('paragraph-16px');
         box-sizing: border-box;
         display: grid;
         grid-template-columns:
@@ -377,16 +378,19 @@ watch(() => store.info.name, name => updatePageTitle(name), { immediate: true })
         > .index {
             width: auto;
             height: auto;
-            justify-content: flex-start;
+            // the number sits at the right edge of its column, so the gap to the cover is always the column-gap (20px),
+            // whatever the number of digits (the digits are tabular: every one has the same width)
+            justify-content: flex-end;
             font-size: inherit;
 
             .text {
                 @include text('paragraph-12px');
+                font-variant-numeric: tabular-nums;
                 width: auto;
                 margin: 0;
                 opacity: 1;
                 transform: none;
-                text-align: left;
+                text-align: right;
                 color: var(--artist-track-order-color);
             }
         }
