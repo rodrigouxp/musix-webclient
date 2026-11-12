@@ -3,7 +3,7 @@
     v-for="playlist in pinned"
     :key="playlist.id"
     :to="{ name: 'PlaylistView', params: { pid: playlist.id } }"
-    class="circular pinned-playlist"
+    class="pinned-playlist"
     :title="playlist.name"
     @contextmenu="showMenu($event, playlist)"
   >
@@ -79,16 +79,18 @@ watch(
 </script>
 
 <style lang="scss">
-// A pinned playlist (SidePanel > playlists > playlist of the Figma): 28 of height, padding 0 12, 8 between
-// the cover (28, corners 4) and the name (the text style action-button-14px, white).
+// A pinned playlist (SidePanel > playlists > playlist of the Figma): padding 8 12, corners 4, 8 between the cover
+// (28, corners 4) and the name (the text style action-button-14px, white). The hover and the open playlist
+// are neutral/700 (Rodrigo, 2026-11-11).
 .sidepanel-nav .pinned-playlist {
   display: flex;
   align-items: center;
   gap: var(--sidepanel-playlist-gap);
   width: 100%;
-  height: var(--sidepanel-playlist-height);
+  box-sizing: border-box;
   flex-shrink: 0;
-  padding: 0 var(--sidepanel-playlist-padding-x);
+  padding: var(--sidepanel-playlist-padding-y) var(--sidepanel-playlist-padding-x);
+  border-radius: var(--sidepanel-item-radius);
   @include text('action-button-14px');
   color: var(--sidepanel-playlist-color);
   text-transform: none;
@@ -109,8 +111,9 @@ watch(
     white-space: nowrap;
   }
 
-  &:hover {
-    background-color: $gray;
+  &:hover,
+  &.router-link-active {
+    background-color: var(--sidepanel-item-active-bg);
   }
 
   &:focus-visible {

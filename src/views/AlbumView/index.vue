@@ -1,5 +1,8 @@
 <template>
-    <div class="album-virtual-scroller v-scroll-page" :class="{ isSmall }" style="height: 100%">
+    <!-- above 600px: the album page of the Figma (the album on the left, its tracks on the right). The phone keeps the old
+         page (other versions, more from the artist, similar albums and stats stay there) -->
+    <AlbumPanel v-if="settings.is_panel_layout" />
+    <div v-else class="album-virtual-scroller v-scroll-page" :class="{ isSmall }" style="height: 100%">
         <DynamicScroller
             id="album-scroller"
             style="height: 100%"
@@ -35,8 +38,10 @@ import { Track } from '@/interfaces'
 import useAlbumStore from '@/stores/pages/album'
 import useQueueStore from '@/stores/queue'
 import useTracklist from '@/stores/queue/tracklist'
+import useSettings from '@/stores/settings'
 
 import AlbumDiscBar from '@/components/AlbumView/AlbumDiscBar.vue'
+import AlbumPanel from '@/components/AlbumView/AlbumPanel.vue'
 import GenreBanner from '@/components/AlbumView/GenreBanner.vue'
 import Header from '@/components/AlbumView/main.vue'
 import AlbumsFetcher from '@/components/ArtistView/AlbumsFetcher.vue'
@@ -53,6 +58,7 @@ const { t } = useT()
 const album = useAlbumStore()
 const queue = useQueueStore()
 const tracklist = useTracklist()
+const settings = useSettings()
 const route = useRoute()
 
 interface ScrollerItem {

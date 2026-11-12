@@ -341,10 +341,15 @@ function onGroupDragStart(event: PointerEvent, group: QueueGroup, start: number)
             background: transparent;
         }
 
+        // the thumb shows while the list scrolls and fades out after it (Global/scrollbars.scss), or with the pointer on it
         &::-webkit-scrollbar-thumb {
-            background-color: var(--color-neutral-700);
+            background-color: var(--scrollbar-thumb);
             border-radius: 400px;
             border: 0;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+            background-color: var(--color-neutral-500);
         }
     }
 

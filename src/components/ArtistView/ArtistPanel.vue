@@ -1,5 +1,5 @@
 <template>
-    <div class="artist-panel" :style="{ '--artist-track-digits': digits }">
+    <div class="artist-panel panel-tracks" :style="{ '--artist-track-digits': digits }">
         <DynamicScroller id="artist-scroller" :items="items" :min-item-size="68" class="artist-scroller">
             <!-- the hero and the tab bar are one block; it is sticky and moves up by the height of the hero,
                  so only the tab bar stays on the top (see .vue-recycle-scroller__slot below) -->
@@ -298,6 +298,9 @@ watch(() => store.info.name, name => updatePageTitle(name), { immediate: true })
         width: var(--artist-scrollbar-thumb);
         z-index: 6;
         pointer-events: none;
+        // it shows while the page scrolls and fades out after it, as the native ones (Global/scrollbars.scss)
+        opacity: 0;
+        transition: opacity 0.3s ease-out;
 
         .bar-thumb {
             width: 100%;
@@ -310,6 +313,11 @@ watch(() => store.info.name, name => updatePageTitle(name), { immediate: true })
                 background-color: var(--color-neutral-500);
             }
         }
+    }
+
+    .artist-scroller[data-scrolling='true'] ~ .artist-scrollbar,
+    .artist-scrollbar:hover {
+        opacity: 1;
     }
 
     // the hero and the tab bar scroll away together, except for the bar: the block sticks when only the bar is left
@@ -347,224 +355,6 @@ watch(() => store.info.name, name => updatePageTitle(name), { immediate: true })
     .artist-track-item {
         box-sizing: border-box;
         padding: 0 8px var(--artist-tracks-gap) 8px;
-    }
-
-    // ROW (Figma TrackList, node 12462:2882): number, cover and title, artist, album, heart, time and options.
-    // Title, artist and album are paragraph-16px (Rodrigo, 2026-11-10); the three inherit it from the row
-    .songlist-item.panel {
-        @include text('paragraph-16px');
-        box-sizing: border-box;
-        display: grid;
-        grid-template-columns:
-            calc(var(--artist-track-digits) * var(--artist-track-order-digit))
-            minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) max-content;
-        align-items: center;
-        column-gap: var(--artist-track-gap);
-        height: var(--artist-track-height);
-        padding: var(--artist-track-padding);
-        border-radius: var(--artist-track-radius);
-        color: var(--artist-track-color);
-        cursor: pointer;
-
-        &:hover,
-        &.current {
-            background-color: var(--artist-track-hover-bg);
-        }
-
-        &.contexton {
-            background-color: var(--artist-track-hover-bg) !important;
-        }
-
-        > .index {
-            width: auto;
-            height: auto;
-            // the number sits at the right edge of its column, so the gap to the cover is always the column-gap (20px),
-            // whatever the number of digits (the digits are tabular: every one has the same width)
-            justify-content: flex-end;
-            font-size: inherit;
-
-            .text {
-                @include text('paragraph-12px');
-                font-variant-numeric: tabular-nums;
-                width: auto;
-                margin: 0;
-                opacity: 1;
-                transform: none;
-                text-align: right;
-                color: var(--artist-track-order-color);
-            }
-        }
-
-        > .tracktitle {
-            min-width: 0;
-            gap: var(--artist-track-name-gap);
-
-            .thumbnail {
-                margin-right: 0;
-                flex: none;
-
-                .album-art {
-                    width: var(--artist-track-thumb-size);
-                    height: var(--artist-track-thumb-size);
-                    border-radius: var(--artist-track-thumb-radius);
-                }
-            }
-
-            .song-title {
-                min-width: 0;
-                font: inherit;
-
-                .with-flag {
-                    min-width: 0;
-                }
-            }
-        }
-
-        > .song-artists {
-            width: auto;
-            max-width: 100%;
-            min-width: 0;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-        }
-
-        > .song-album {
-            display: block;
-            max-width: 100%;
-            min-width: 0;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-        }
-
-        > .options-and-duration {
-            gap: var(--artist-track-actions-gap);
-            margin: 0;
-
-            // the heart is always there: the outline when it is not a favorite, filled (error/300) when it is
-            .heart-icon {
-                display: grid;
-                place-items: center;
-                width: var(--artist-track-icon-size);
-                height: var(--artist-track-icon-size);
-                margin: 0;
-                transform: none;
-                cursor: pointer;
-
-                svg {
-                    display: block;
-                    width: var(--artist-track-icon-size);
-                    height: var(--artist-track-icon-size);
-                    color: var(--artist-track-icon-color);
-                }
-
-                .heart-button.favorited svg {
-                    color: var(--artist-hero-fav-color);
-                }
-            }
-
-            .song-duration {
-                @include text('paragraph-14px');
-                text-align: right;
-                color: var(--artist-track-meta-color);
-            }
-
-            // how many times the track was played ("12 plays", "unplayed"): on the hover of the row it takes the place of
-            // the heart, the time and the options, at the right end. With the pointer over those buttons they come
-            // back (a button that cannot be seen would still be there to click)
-            .song-duration.has_help_text {
-                opacity: 1;
-            }
-
-            .song-duration.help-text {
-                @include text('paragraph-14px');
-                position: absolute;
-                top: 50%;
-                right: 0;
-                text-align: right;
-                text-transform: none;
-                white-space: nowrap;
-                color: var(--artist-track-plays-color);
-                opacity: 0;
-                pointer-events: none;
-                transform: translateY(-50%);
-                transition: opacity 0.15s ease-out;
-            }
-
-            > .heart-icon,
-            > .song-duration:not(.help-text),
-            > .options-icon {
-                transition: opacity 0.15s ease-out;
-            }
-
-            .options-icon {
-                width: var(--artist-track-icon-size);
-                height: var(--artist-track-icon-size);
-                aspect-ratio: auto;
-                color: var(--artist-track-meta-color);
-
-                &:hover {
-                    background-color: transparent;
-                }
-
-                svg {
-                    width: var(--artist-track-icon-size);
-                    height: var(--artist-track-icon-size);
-                    stroke: none;
-                }
-            }
-        }
-    }
-
-    // the hover of the row (not of the buttons at the right end): the play count in place of the buttons
-    .songlist-item.panel:hover > .options-and-duration:not(:hover) {
-        .heart-icon,
-        .song-duration:not(.help-text),
-        .options-icon {
-            opacity: 0;
-        }
-
-        .song-duration.help-text {
-            opacity: 1;
-        }
-    }
-
-    // narrow panel (own decision, the Figma only has the wide one): the album goes first, then the artist
-    @container artist-panel (max-width: 760px) {
-        .songlist-item.panel {
-            grid-template-columns:
-                calc(var(--artist-track-digits) * var(--artist-track-order-digit))
-                minmax(0, 1fr) minmax(0, 1fr) max-content;
-
-            > .song-album {
-                display: none;
-            }
-        }
-    }
-
-    @container artist-panel (max-width: 540px) {
-        .songlist-item.panel {
-            grid-template-columns:
-                calc(var(--artist-track-digits) * var(--artist-track-order-digit))
-                minmax(0, 1fr) max-content;
-
-            > .song-artists {
-                display: none;
-            }
-        }
-    }
-
-    // very narrow panel (a small window with both side panels open): only the cover and the title, the time and the options
-    @container artist-panel (max-width: 420px) {
-        .songlist-item.panel {
-            grid-template-columns: minmax(0, 1fr) max-content;
-
-            > .index,
-            > .options-and-duration .heart-icon {
-                display: none;
-            }
-        }
     }
 }
 </style>

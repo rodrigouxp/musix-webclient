@@ -35,17 +35,15 @@ import Logo from "@/components/Logo.vue";
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
 
+    // the thumb shows while the panel scrolls and fades out after it (Global/scrollbars.scss), or with the pointer on it
     &::-webkit-scrollbar-thumb {
-      background-color: transparent;
+      background-color: var(--scrollbar-thumb);
+      border-radius: 400px;
     }
-  }
 
-  &:hover .scrollable::-webkit-scrollbar-thumb {
-    background-color: $gray2;
-  }
-
-  &:hover .scrollable::-webkit-scrollbar-thumb:hover {
-    background-color: $gray1;
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: var(--color-neutral-500);
+    }
   }
 }
 </style>

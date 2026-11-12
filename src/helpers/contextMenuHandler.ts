@@ -6,7 +6,7 @@ import { ContextSrc } from '@/enums'
 import { Album, Playlist, Track } from '@/interfaces'
 import useContextStore from '@/stores/context'
 
-import albumContextItems from '@/context_menus/album'
+import albumContextItems, { getAlbumAddOptions } from '@/context_menus/album'
 import artistContextItems from '@/context_menus/artist'
 import folderContextItems from '@/context_menus/folder'
 import trackContextItems, { getTrackAddOptions } from '@/context_menus/track'
@@ -60,6 +60,23 @@ export const showAlbumContextMenu = (e: MouseEvent, flag: Ref<boolean>, album?: 
 
     const options = () => albumContextItems(album)
     menu.showContextMenu(e, options, ContextSrc.AlbumHeader)
+
+    flagWatcher(menu, flag)
+}
+
+// The menu of the add button of the album page: it opens downward, from the bottom of the button
+export const showAlbumAddMenu = (button: HTMLElement, album: Album, flag: Ref<boolean>) => {
+    const menu = useContextStore()
+    const rect = button.getBoundingClientRect()
+
+    const options = async () => {
+        const { add_to_queue, add_to_playlist } = getAlbumAddOptions(album)
+        return [add_to_queue, add_to_playlist]
+    }
+
+    // the menu only needs the point it opens from
+    const point = { x: rect.left, y: rect.bottom + 4 } as MouseEvent
+    menu.showContextMenu(point, options, ContextSrc.AlbumHeader, 'bottom-start', ['top-start'])
 
     flagWatcher(menu, flag)
 }

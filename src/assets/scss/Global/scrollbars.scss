@@ -1,3 +1,24 @@
+/* The colour of the thumb of the scrollbars that hide (the panels above 600px): a registered colour, so it can fade.
+   It is transparent until the list scrolls; composables/useAutoHideScrollbars.ts sets `data-scrolling` on the element
+   that scrolls ("true" while it scrolls, "false" a moment after) and the thumb fades in and out with it. */
+@property --scrollbar-thumb {
+    syntax: '<color>';
+    inherits: true;
+    initial-value: transparent;
+}
+
+[data-scrolling] {
+    transition: --scrollbar-thumb 0.3s ease-out;
+}
+
+[data-scrolling='true'] {
+    --scrollbar-thumb: var(--color-neutral-700);
+}
+
+[data-scrolling='false'] {
+    --scrollbar-thumb: transparent;
+}
+
 /* Total width */
 .designatedOS ::-webkit-scrollbar {
     background-color: $body;
@@ -95,8 +116,9 @@
         background-color: transparent;
     }
 
+    /* the thumb only shows while the list scrolls (--scrollbar-thumb, above) or with the pointer on it */
     .designatedOS #app-grid #acontent ::-webkit-scrollbar-thumb {
-        background-color: var(--color-neutral-700);
+        background-color: var(--scrollbar-thumb);
         border-radius: 400px;
         border: 0;
         border-right: 3px solid transparent;

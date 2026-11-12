@@ -46,17 +46,7 @@
 
         <div class="hero-content">
             <h1 class="hero-name" :title="artist.name">{{ artist.name }}</h1>
-            <div class="hero-infos">
-                <span v-if="artist.trackcount">
-                    {{ artist.trackcount.toLocaleString() }} {{ $t('Common.Track', artist.trackcount) }}
-                </span>
-                <span v-if="artist.trackcount && artist.albumcount" class="bullet">•</span>
-                <span v-if="artist.albumcount">
-                    {{ artist.albumcount.toLocaleString() }} {{ $t('Common.Album', artist.albumcount) }}
-                </span>
-                <span v-if="artist.duration && (artist.trackcount || artist.albumcount)" class="bullet">•</span>
-                <span v-if="artist.duration">{{ formatSeconds(artist.duration, true) }}</span>
-            </div>
+            <InfoLine class="hero-infos" :items="infos" />
             <div class="hero-buttons">
                 <button
                     class="hero-btn hero-play"
@@ -114,6 +104,8 @@ import useQueue from '@/stores/queue'
 import useTracklist from '@/stores/queue/tracklist'
 import formatSeconds from '@/utils/useFormatSeconds'
 
+import InfoLine from '@/components/shared/InfoLine.vue'
+
 // ArtistHero of the Figma (node 12452:2138): the image with a gradient, and at the bottom left the name, the numbers
 // and the buttons (play or pause, favorite, options). The play plays "Most played tracks" in order.
 // The image is the hero chosen by hand ("Update artist's hero"): it is never stretched, `object-fit: cover` cuts it
@@ -126,6 +118,18 @@ const artistEdit = useArtistEdit()
 
 const artist = computed(() => store.info)
 const contextOpen = ref(false)
+
+// "120 tracks • 12 albums • 8 hours": only the numbers the artist has (the words in lowercase, as in the Figma)
+const infos = computed(() => {
+    const { trackcount, albumcount, duration } = store.info
+    const list: string[] = []
+
+    if (trackcount) list.push(`${trackcount.toLocaleString()} ${t('Common.Track', trackcount).toLowerCase()}`)
+    if (albumcount) list.push(`${albumcount.toLocaleString()} ${t('Common.Album', albumcount).toLowerCase()}`)
+    if (duration) list.push(formatSeconds(duration, true))
+
+    return list
+})
 const canEdit = computed(() => useAuth().is_admin)
 
 // the queue is the one of this artist (it was started from the page, a card or this button)
@@ -377,83 +381,10 @@ onBeforeUnmount(clearDraft)
         text-overflow: ellipsis;
     }
 
+    // the line itself is components/shared/InfoLine.vue; the buttons are in assets/scss/Global/panels.scss
     .hero-infos {
-        @include text('paragraph-14px');
-        display: flex;
-        flex-wrap: wrap;
-        gap: var(--artist-hero-text-gap);
         padding-bottom: var(--artist-hero-text-gap);
         color: var(--artist-hero-color);
-    }
-
-    .hero-buttons {
-        display: flex;
-        align-items: center;
-        gap: var(--artist-hero-buttons-gap);
-    }
-
-    .hero-btn {
-        display: grid;
-        place-items: center;
-        flex: none;
-        padding: 0;
-        border: none;
-        border-radius: 400px;
-        background: transparent;
-        color: var(--artist-hero-color);
-        cursor: pointer;
-        transition: background-color 0.2s ease-out;
-
-        svg {
-            flex: none;
-            display: block;
-            overflow: visible;
-        }
-
-        &:hover,
-        &.context-open {
-            background-color: var(--hover-bg);
-        }
-    }
-
-    .hero-play {
-        width: var(--artist-hero-play-size);
-        height: var(--artist-hero-play-size);
-        background-color: var(--artist-hero-play-bg);
-
-        svg {
-            width: var(--artist-hero-play-icon-size);
-            height: var(--artist-hero-play-icon-size);
-        }
-
-        // the triangle is moved 4px to the right of the center; the pause has no padding
-        &:not(.is-pause) {
-            padding-left: var(--artist-hero-play-pad-left);
-        }
-    }
-
-    .hero-fav {
-        width: var(--artist-hero-fav-size);
-        height: var(--artist-hero-fav-size);
-
-        svg {
-            width: var(--artist-track-icon-size);
-            height: var(--artist-track-icon-size);
-        }
-
-        &.favorited svg {
-            color: var(--artist-hero-fav-color);
-        }
-    }
-
-    .hero-options {
-        width: var(--artist-hero-options-width);
-        height: var(--artist-hero-fav-size);
-
-        svg {
-            width: var(--artist-track-icon-size);
-            height: var(--artist-track-icon-size);
-        }
     }
 
     // the buttons with text over the image: transparent, a 1px white border, white text, radius 8, action-button-14px.

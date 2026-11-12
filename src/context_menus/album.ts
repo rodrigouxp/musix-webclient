@@ -87,6 +87,41 @@ async function refreshCurrentPage(album: Album) {
     }
 }
 
+/**
+ * "Add to queue" and "Add to playlist" of an album: the same two items in the menu of the album and in
+ * the menu of the add button of the album page.
+ */
+export function getAlbumAddOptions(album: Album) {
+    const add_to_queue = <Option>{
+        label: t('Menus.Common.AddToQueue'),
+        action: async () => {
+            const tracks = await getAlbumTracks(album.albumhash)
+
+            useTracklist().addTracks(tracks, newGroup('album', album.title, { albumhash: album.albumhash }))
+        },
+        icon: MenuAddToQueueIcon,
+        menuIcon: true,
+    }
+
+    // Action for each playlist option
+    const AddToPlaylistAction = (playlist: Playlist) => {
+        addAlbumToPlaylist(playlist, album.albumhash)
+    }
+
+    const add_to_playlist: Option = {
+        label: t('Menus.Common.AddToPlaylist'),
+        children: () =>
+            getAddToPlaylistOptions(AddToPlaylistAction, {
+                albumhash: album.albumhash,
+                playlist_name: album.title,
+            }),
+        icon: MenuAddToPlaylistIcon,
+        menuIcon: true,
+    }
+
+    return { add_to_queue, add_to_playlist }
+}
+
 export default async (album?: Album) => {
     const albumStore = useAlbum()
 
@@ -111,38 +146,7 @@ export default async (album?: Album) => {
         menuIcon: true,
     }
 
-    const add_to_queue = <Option>{
-        label: t('Menus.Common.AddToQueue'),
-        action: async () => {
-            let tracks: Track[] = []
-
-            if (album) {
-                tracks = await getAlbumTracks(album.albumhash)
-            } else {
-                tracks = albumStore.tracks.filter(track => !track.is_album_disc_number)
-            }
-
-            useTracklist().addTracks(tracks, newGroup('album', album!.title, { albumhash: album!.albumhash }))
-        },
-        icon: MenuAddToQueueIcon,
-        menuIcon: true,
-    }
-
-    // Action for each playlist option
-    const AddToPlaylistAction = (playlist: Playlist) => {
-        addAlbumToPlaylist(playlist, album.albumhash)
-    }
-
-    const add_to_playlist: Option = {
-        label: t('Menus.Common.AddToPlaylist'),
-        children: () =>
-            getAddToPlaylistOptions(AddToPlaylistAction, {
-                albumhash: album.albumhash,
-                playlist_name: album.title,
-            }),
-        icon: MenuAddToPlaylistIcon,
-        menuIcon: true,
-    }
+    const { add_to_queue, add_to_playlist } = getAlbumAddOptions(album)
 
     const addToPageAction = (page: Collection) => {
         addOrRemoveItemFromCollection(page.id, album, 'album', 'add')

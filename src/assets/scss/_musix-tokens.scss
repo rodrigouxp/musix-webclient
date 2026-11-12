@@ -123,11 +123,11 @@
   --sidepanel-gap: 12px; // entre os blocos (cabeçalho, botões, divisor, playlists, cartão)
   --sidepanel-bg: var(--color-neutral-900);
   --sidepanel-header-height: 60px; // sem fundo no Figma
-  --sidepanel-header-radius: 13px;
+  --sidepanel-header-radius: 4px; // todo botão do SidePanel tem cantos de 4 (Rodrigo, 2026-11-11)
   --sidepanel-logo-width: 169.091px; // a palavra MUSIX; encolhe se o painel ficar mais estreito
   --sidepanel-item-height: 34px;
   --sidepanel-item-padding: 8px;
-  --sidepanel-item-radius: 400px; // a pílula do item ativo (raio total no desenho renderizado)
+  --sidepanel-item-radius: 4px; // era a pílula de 400; todo botão do SidePanel tem cantos de 4 (Rodrigo, 2026-11-11)
   --sidepanel-item-active-bg: var(--color-neutral-700);
   --sidepanel-divider: var(--color-neutral-700);
   --sidepanel-favorite-color: var(--color-error-300); // o coração de Favorites é cheio e vermelho, mesmo inativo
@@ -136,8 +136,8 @@
   --sidepanel-icon-size: 20px;
   --sidepanel-nav-color: var(--color-neutral-100);
   --sidepanel-playlists-gap: 8px;
-  --sidepanel-playlist-height: 28px;
   --sidepanel-playlist-padding-x: 12px;
+  --sidepanel-playlist-padding-y: 8px; // a linha fica com 44: a capa de 28 e 8 em cima e embaixo (Rodrigo, 2026-11-11)
   --sidepanel-playlist-gap: 8px; // entre a capa e o nome
   --sidepanel-playlist-cover-size: 28px;
   --sidepanel-playlist-cover-radius: 4px;
@@ -386,4 +386,35 @@
   --artist-track-icon-size: 24px; // coração, drag e options
   --artist-track-actions-gap: 20px; // coração, tempo e options
   --artist-track-icon-color: var(--color-neutral-white); // coração sem favorito: decisão minha (o Figma só mostra o favorito, em error/300)
+
+  // Página do álbum (grade em painéis; Figma nós 12502:2000 página, 12506:4909 AlbumPanel, 12508:5721 album-cover-expanded).
+  // Duas colunas com rolagem própria: "album" (capa, título, botões, gêneros, artistas) e "tracks" (as linhas da página do artista).
+  --album-panel-padding: 20px;
+  --album-panel-gap: 20px; // entre as duas colunas
+  --album-panel-side-gap: 8px; // entre a capa e o bloco de textos
+  --album-panel-side-max: 400px; // largura da coluna "album": a capa do Figma
+  --album-panel-side-share: 40cqw; // em painéis estreitos a coluna não passa de 40% da largura (decisão minha, o Figma só tem o largo)
+  --album-panel-cover-min: 120px; // a capa encolhe com a altura da janela até aqui; abaixo disso a coluna rola (decisão minha)
+  --album-panel-cover-radius: 6px;
+  --album-panel-text-gap: 4px; // entre título, infos, botões, gêneros e artistas
+  --album-panel-title-size: 40px; // Satoshi Bold 40, sem estilo de texto no Figma
+  --album-panel-title-weight: 700;
+  --album-panel-title-color: var(--color-neutral-white);
+  --album-panel-title-gap: 10px; // entre o título e o ano
+  --album-panel-meta-color: var(--color-neutral-300); // ano (album-title-24px), infos e gêneros (paragraph-14px)
+  --album-panel-infos-pad-bottom: 8px;
+  --album-panel-buttons-gap: 8px;
+  --album-panel-genres-gap: 8px;
+  --album-panel-genres-padding: 8px 0;
+  --album-panel-pill-padding: 8px;
+  --album-panel-pill-border: 2px solid var(--color-neutral-500);
+  --album-panel-artists-gap: 12px;
+  --album-panel-artist-width: 71px;
+  --album-panel-artist-color: var(--color-neutral-100); // nome do artista, album-title-16px
+  --album-panel-tracks-gap: 4px; // entre as linhas
+  --album-cover-overlay-bg: rgb(0 0 0 / 35%); // protótipo: fundo 000000 a 35%
+  --album-cover-overlay-size: 796px; // a capa aberta no quadro de 956 de altura
+  --album-cover-overlay-margin-y: 160px; // 80 acima e abaixo (956 - 796)
+  --album-cover-overlay-margin-x: 40px;
+  --album-cover-overlay-fade: 150ms; // protótipo: dissolve, ease out, 150 ms
 }

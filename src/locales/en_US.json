@@ -13,10 +13,12 @@
   "AlbumView": {
     "AlbumBy": "Album by ",
     "DiskNumber": "Disc {num}",
+    "ExpandCover": "Expand album cover",
     "GenreBanner": {
       "GenreDoesNotExist": "No Genres",
       "GenreExists": "Genres"
     },
+    "Options": "Album options",
     "PlayDisc": "Play Disc",
     "RenameAlbum": {
       "BackToName": "Back",

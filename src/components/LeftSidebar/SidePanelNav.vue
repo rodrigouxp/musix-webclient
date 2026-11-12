@@ -10,7 +10,7 @@
           params: menu?.params,
           query: menu.query && menu.query(),
         }"
-        class="circular nav-item"
+        class="nav-item"
         :class="{
           active: $route.name === menu.route_name,
           'icon-active nav-favorite': menu.route_name === Routes.favorites,
@@ -33,7 +33,7 @@
           params: menu?.params,
           query: menu.query && menu.query(),
         }"
-        class="circular nav-item"
+        class="nav-item"
         :class="{ active: $route.name === menu.route_name }"
       >
         <component :is="menu.icon" />

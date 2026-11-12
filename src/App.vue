@@ -57,6 +57,7 @@ import useQueue from '@/stores/queue'
 import useSettings from '@/stores/settings'
 import useTracker from '@/stores/tracker'
 import useInterface from '@/stores/interface'
+import useAutoHideScrollbars from '@/composables/useAutoHideScrollbars'
 
 // @utils
 import handleShortcuts from '@/helpers/useKeyboard'
@@ -88,6 +89,9 @@ const lyrics = useLyrics()
 const router = useRouter()
 const route = useRoute()
 const settings = useSettings()
+
+// the scrollbars of the panels show while a list scrolls and fade out after it
+useAutoHideScrollbars()
 const UIStore = useInterface()
 const { hideUI } = storeToRefs(UIStore)
 useTracker()
