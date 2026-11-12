@@ -105,10 +105,11 @@
 }
 
 /* The scrollbar of the pages in the panel of the content (FeedPanel of the Figma): 4px wide, round,
-   neutral/700, with no track, 3px from the edge. Only above 900px, in the grid of panels. */
+   neutral/700, with no track, 3px from the edge (--scrollbar-edge: a page can set another, the album page uses 2px).
+   Only above 600px, in the grid of panels. */
 @media only screen and (min-width: 601px) {
     .designatedOS #app-grid #acontent ::-webkit-scrollbar {
-        width: 7px;
+        width: calc(4px + var(--scrollbar-edge, 3px));
         background-color: transparent;
     }
 
@@ -121,7 +122,7 @@
         background-color: var(--scrollbar-thumb);
         border-radius: 400px;
         border: 0;
-        border-right: 3px solid transparent;
+        border-right: var(--scrollbar-edge, 3px) solid transparent;
         background-clip: padding-box;
     }
 
@@ -130,7 +131,7 @@
     .designatedOS #app-grid #acontent ::-webkit-scrollbar-button:vertical:start:decrement,
     .designatedOS #app-grid #acontent ::-webkit-scrollbar-button:vertical:end:increment {
         display: block;
-        width: 7px;
+        width: calc(4px + var(--scrollbar-edge, 3px));
         height: var(--layout-scrollbar-inset);
         background-color: transparent;
     }

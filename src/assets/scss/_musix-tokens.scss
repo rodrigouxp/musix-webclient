@@ -384,25 +384,30 @@
   --artist-albums-card-min: 120px; // largura mínima do cartão: abaixo dela a grade perde colunas (decisão minha, o Figma só tem a larga)
   --artist-track-icon-size: 24px; // coração, drag e options
   --artist-track-actions-gap: 20px; // coração, tempo e options
-  --artist-track-icon-color: var(--color-neutral-white); // coração sem favorito: decisão minha (o Figma só mostra o favorito, em error/300)
+  --artist-track-icon-color: var(--color-neutral-300); // coração sem favorito: neutral-300 (Rodrigo, 2026-11-12; antes branco, decisão minha)
+  --artist-track-heart-stroke: 1.5; // traço do coração sem favorito na linha de faixa, sem unidade (px; Rodrigo, 2026-11-12; o do ícone é 2)
 
   // Página do álbum (grade em painéis; Figma nós 12502:2000 página, 12506:4909 AlbumPanel, 12508:5721 album-cover-expanded).
   // Duas colunas com rolagem própria: "album" (capa, título, botões, gêneros, artistas) e "tracks" (as linhas da página do artista).
-  --album-panel-padding: 20px;
-  --album-panel-gap: 20px; // entre as duas colunas
+  --album-panel-padding-x: 8px; // laterais do AlbumPanel (Rodrigo, 2026-11-12); as barras de rolagem ficam dentro desses 8
+  --album-panel-padding-top: 8px;
+  --album-panel-padding-bottom: 20px;
+  --album-panel-gap: 20px; // entre o conteúdo da coluna "album" e o das faixas (a barra de rolagem da coluna "album" fica dentro dele)
+  --album-panel-scrollbar-gap: 2px; // do conteúdo de cada coluna até a sua barra de rolagem (Rodrigo, 2026-11-12)
+  --album-panel-scrollbar-thumb: 4px; // largura da barra (a mesma fina da grade em painéis)
+  --album-panel-scrollbar-edge: 2px; // da barra até a borda do painel (e, na coluna "album", até o que vem depois)
   --album-panel-side-gap: 8px; // entre a capa e o bloco de textos
-  --album-panel-side-max: 400px; // largura da coluna "album" e da capa: sempre 400 x 400 (Rodrigo, 2026-11-12); em janela baixa a coluna rola
+  --album-panel-side-max: 400px; // largura máxima da coluna "album" e da capa (a coluna e as faixas dividem a largura; a capa mantém 1:1 e enche a coluna)
   --album-panel-cover-radius: 6px;
-  --album-panel-text-gap: 4px; // entre título, infos, botões, gêneros e artistas
+  --album-panel-text-gap: 8px; // entre "top" (título e infos), botões, gêneros e artistas (era 4; Rodrigo, 2026-11-12)
+  --album-panel-top-gap: 0; // entre o título (com o ano) e a linha de faixas e tempo, dentro de "top"
   --album-panel-title-size: 40px; // Satoshi Bold 40, sem estilo de texto no Figma
   --album-panel-title-weight: 700;
   --album-panel-title-color: var(--color-neutral-white);
   --album-panel-title-gap: 12px; // entre o título e o ano, que fica ao lado da última palavra (Rodrigo, 2026-11-11)
   --album-panel-meta-color: var(--color-neutral-300); // ano (album-title-24px), infos e gêneros (paragraph-14px)
-  --album-panel-infos-pad-bottom: 8px;
   --album-panel-buttons-gap: 8px;
   --album-panel-genres-gap: 8px;
-  --album-panel-genres-padding: 8px 0;
   --album-panel-pill-padding: 8px;
   --album-panel-pill-border: 2px solid var(--color-neutral-500);
   --album-panel-artists-gap: 12px;

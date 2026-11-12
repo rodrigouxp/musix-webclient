@@ -9,13 +9,16 @@
                 <div class="album-functions">
                     <!-- the year is part of the text of the title: it stays next to its last word, and goes to the next line
                          with the words when the title is too long -->
-                    <h1 class="album-title">
-                        {{ album.title }}<template v-if="year"
-                            ><span class="album-year-gap">{{ ' ' }}</span
-                            ><span class="album-year">{{ year }}</span></template
-                        >
-                    </h1>
-                    <InfoLine class="album-infos" :items="infos" />
+                    <!-- "top" of the Figma: the title with the year, and under it the tracks and the time (no gap) -->
+                    <div class="album-top">
+                        <h1 class="album-title">
+                            {{ album.title }}<template v-if="year"
+                                ><span class="album-year-gap">{{ ' ' }}</span
+                                ><span class="album-year">{{ year }}</span></template
+                            >
+                        </h1>
+                        <InfoLine class="album-infos" :items="infos" />
+                    </div>
                     <div class="hero-buttons album-buttons">
                         <button
                             class="hero-btn hero-play"
@@ -123,8 +126,10 @@ import AlbumCoverOverlay from './AlbumCoverOverlay.vue'
 import AlbumDiscBar from './AlbumDiscBar.vue'
 
 // The album page of the Figma (AlbumPanel, node 12506:4909) for the grid of panels: on the left the album (cover, title
-// and year, numbers, buttons, genres, artists), on the right its tracks. Each side scrolls by itself; the cover is
-// always 400 x 400, so in a short window the left side scrolls.
+// and year, numbers, buttons, genres, artists), on the right its tracks. Each side scrolls by itself. The two sides share
+// the width (Figma: both fill the container) and the album is 400 at most; the cover keeps 1:1 and fills it, so on a
+// smaller window the album shrinks and the tracks stay next to it. The cover grows with the width, so in a short window
+// the left side scrolls.
 const { t } = useT()
 const store = useAlbumStore()
 const queue = useQueue()
@@ -256,31 +261,38 @@ watch(
 .album-panel-page {
     container: album-panel / inline-size;
     height: 100%;
+    // the scrollbars of the two sides sit 2px from the edge (see Global/scrollbars.scss)
+    --scrollbar-edge: var(--album-panel-scrollbar-edge);
 }
 
 .album-panel {
+    // what a scrollbar takes at the right of its column: the 2px from the content, the bar and the 2px of the edge
+    --album-scrollbar: calc(var(--album-panel-scrollbar-thumb) + var(--album-panel-scrollbar-edge));
+    --album-scrollbar-box: calc(var(--album-panel-scrollbar-gap) + var(--album-scrollbar));
+
     display: flex;
     align-items: stretch;
-    gap: var(--album-panel-gap);
+    // 20 between the content of the album and the one of the tracks; the scrollbar of the album is inside it
+    gap: calc(var(--album-panel-gap) - var(--album-scrollbar-box));
     height: 100%;
-    // the padding of the Figma (20) is in the two sides, so the scrollbar of each one runs the whole height of the panel
-    // and the one of the tracks stays at the edge
-    padding-left: var(--album-panel-padding);
+    // the top and bottom padding are in the two sides, so the scrollbar of each one runs the whole height of the panel;
+    // there is none at the right: the scrollbar of the tracks is at the edge
+    padding-left: var(--album-panel-padding-x);
 
     .album-side {
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
         gap: var(--album-panel-side-gap);
-        flex: none;
-        // 400 for the cover and the texts, plus the room of the scrollbar (always kept, so the cover never gets
-        // narrower when the side scrolls); the negative margin leaves the tracks at the 20 of the Figma from the cover
-        width: calc(var(--album-panel-side-max) + var(--feedpanel-scrollbar-width));
-        margin-right: calc(-1 * var(--feedpanel-scrollbar-width));
+        // "album" of the Figma: it fills the width, up to 400 for the content (plus the room of its scrollbar)
+        flex: 1 1 0;
+        min-width: 0;
+        max-width: calc(var(--album-panel-side-max) + var(--album-scrollbar-box));
         height: 100%;
-        padding: var(--album-panel-padding) 0;
+        padding: var(--album-panel-padding-top) var(--album-panel-scrollbar-gap) var(--album-panel-padding-bottom) 0;
         overflow-x: hidden;
         overflow-y: auto;
+        // the room of the scrollbar is always kept, so the cover never gets narrower when the side starts to scroll
         scrollbar-gutter: stable;
     }
 
@@ -288,7 +300,7 @@ watch(
     .album-cover {
         display: block;
         flex: none;
-        // always the 400 x 400 of the Figma (Rodrigo, 2026-11-12): in a short window the side scrolls
+        // "album-cover" of the Figma: fills the width of the album and locks the 1:1
         width: 100%;
         height: auto;
         aspect-ratio: 1;
@@ -320,12 +332,23 @@ watch(
         }
     }
 
+    // "functions" of the Figma: top, buttons, genres and artists, 8 apart, all filling the width
     .album-functions {
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
         gap: var(--album-panel-text-gap);
         flex: none;
+        width: 100%;
+        min-width: 0;
+    }
+
+    // "top" of the Figma: the title (with the year) and under it the tracks and the time, no gap
+    .album-top {
+        display: flex;
+        flex-direction: column;
+        gap: var(--album-panel-top-gap);
+        width: 100%;
         min-width: 0;
     }
 
@@ -354,11 +377,11 @@ watch(
     }
 
     .album-infos {
-        padding-bottom: var(--album-panel-infos-pad-bottom);
         color: var(--album-panel-meta-color);
     }
 
     .album-buttons {
+        width: 100%;
         gap: var(--album-panel-buttons-gap);
     }
 
@@ -366,7 +389,7 @@ watch(
         display: flex;
         flex-wrap: wrap;
         gap: var(--album-panel-genres-gap);
-        padding: var(--album-panel-genres-padding);
+        width: 100%;
     }
 
     .genre-pill {
@@ -382,7 +405,7 @@ watch(
         display: flex;
         flex-wrap: wrap;
         gap: var(--album-panel-artists-gap);
-        max-width: 100%;
+        width: 100%;
 
         .artist-thumb {
             width: var(--album-panel-artist-width);
@@ -395,18 +418,18 @@ watch(
         }
     }
 
+    // "tracks" of the Figma: fills the rest of the width. The scrollbar is at the edge of the panel (2px from it) and the
+    // rows end 2px before it
     .album-tracks {
         container-type: inline-size;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
         gap: var(--album-panel-tracks-gap);
-        flex: 1;
+        flex: 1 1 0;
         min-width: 0;
         height: 100%;
-        // the scrollbar (7 of track, the thumb at 3 from the edge) is inside the 20 of the right padding
-        padding: var(--album-panel-padding) calc(var(--album-panel-padding) - var(--feedpanel-scrollbar-width))
-            var(--album-panel-padding) 0;
+        padding: var(--album-panel-padding-top) var(--album-panel-scrollbar-gap) var(--album-panel-padding-bottom) 0;
         overflow-x: hidden;
         overflow-y: scroll;
 
@@ -430,30 +453,28 @@ watch(
     }
 }
 
-// narrow panel (own decision, the Figma only has the wide one): one column, the album over its tracks, one scroll
-@container album-panel (max-width: 900px) {
+// a very narrow panel (own decision, the Figma only has the wide one): one column, the album over its tracks, one scroll
+@container album-panel (max-width: 600px) {
     .album-panel {
         flex-direction: column;
-        padding: 0 calc(var(--album-panel-padding) - var(--feedpanel-scrollbar-width)) 0 var(--album-panel-padding);
+        gap: var(--album-panel-gap);
+        padding: 0 var(--album-panel-scrollbar-gap) 0 var(--album-panel-padding-x);
         overflow-x: hidden;
         overflow-y: scroll;
 
         .album-side {
+            flex: none;
             width: 100%;
-            margin-right: 0;
+            max-width: var(--album-panel-side-max);
             height: auto;
-            padding-bottom: 0;
+            padding: var(--album-panel-padding-top) 0 0 0;
             overflow: visible;
-        }
-
-        .album-cover {
-            width: min(var(--album-panel-side-max), 100%);
         }
 
         .album-tracks {
             flex: none;
             height: auto;
-            padding: 0 0 var(--album-panel-padding) 0;
+            padding: 0 0 var(--album-panel-padding-bottom) 0;
             overflow: visible;
         }
     }

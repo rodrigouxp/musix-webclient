@@ -185,6 +185,27 @@
                     color: var(--artist-track-icon-color);
                 }
 
+                // not a favorite: the same heart as a line of --artist-track-heart-stroke (the outline of the icon is 2, drawn
+                // as a shape, so it cannot be thinner). The line is the outer shape of the heart, shrunk by half of the
+                // stroke on each side (the stroke is centered on the path and does not scale), so the heart keeps the size
+                // of the outline of the icon (20 of 24)
+                .heart-button:not(.favorited) svg {
+                    [data-state='inactive'] {
+                        display: none;
+                    }
+
+                    [data-state='active'] {
+                        display: inline;
+                        fill: none;
+                        stroke: currentColor;
+                        stroke-width: var(--artist-track-heart-stroke);
+                        stroke-linejoin: round;
+                        vector-effect: non-scaling-stroke;
+                        transform-origin: 12px 12px;
+                        transform: scale(calc((20 - var(--artist-track-heart-stroke)) / 20));
+                    }
+                }
+
                 .heart-button.favorited svg {
                     color: var(--artist-hero-fav-color);
                 }
