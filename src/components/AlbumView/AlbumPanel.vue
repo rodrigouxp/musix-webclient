@@ -63,7 +63,7 @@
                         <span v-for="genre in genres" :key="genre.genrehash" class="genre-pill">{{ genre.name }}</span>
                     </div>
                     <div v-if="artists.length" class="album-artists">
-                        <ArtistThumb v-for="artist in artists" :key="artist.artisthash" :artist="artist" />
+                        <ArtistThumb v-for="artist in artists" :key="artist.artisthash" :artist="artist" no-play />
                     </div>
                 </div>
             </div>

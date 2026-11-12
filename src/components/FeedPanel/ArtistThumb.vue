@@ -7,8 +7,10 @@
     >
         <div class="image">
             <img class="img" :src="imguri + artist.image" alt="" loading="lazy" />
-            <div class="overlay" :style="{ background: `linear-gradient(to top, ${artist.color} 20%, transparent)` }"></div>
-            <PlayBtn :artisthash="artist.artisthash" :artistname="artist.name" :source="playSources.artist" />
+            <template v-if="!noPlay">
+                <div class="overlay" :style="{ background: `linear-gradient(to top, ${artist.color} 20%, transparent)` }"></div>
+                <PlayBtn :artisthash="artist.artisthash" :artistname="artist.name" :source="playSources.artist" />
+            </template>
         </div>
         <div class="name">{{ artist.name }}</div>
         <div v-if="showHelp && artist.help_text" class="help">{{ artist.help_text }}</div>
@@ -29,9 +31,11 @@ import PlayBtn from '@/components/shared/PlayBtn.vue'
 // ArtistThumb of the Figma (node 12408:1934): the round image, with the name 4px under it. It keeps what the
 // old ArtistCard did: click opens the artist, right click opens the artist menu, the play button shows on hover.
 // `showHelp` is for the pages "View history": the number of plays goes under the name.
+// `noPlay` takes out the play button (and the shade it comes with): the card only opens the artist (album page).
 const props = defineProps<{
     artist: Artist
     showHelp?: boolean
+    noPlay?: boolean
 }>()
 
 const imguri = paths.images.artist.medium
