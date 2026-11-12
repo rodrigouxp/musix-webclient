@@ -7,10 +7,14 @@
                     <img v-if="album.image" :src="coverSrc" alt="" draggable="false" />
                 </button>
                 <div ref="functions" class="album-functions">
-                    <div class="album-heading">
-                        <h1 class="album-title">{{ album.title }}</h1>
-                        <span v-if="year" class="album-year">{{ year }}</span>
-                    </div>
+                    <!-- the year is part of the text of the title: it stays next to its last word, and goes to the next line
+                         with the words when the title is too long -->
+                    <h1 class="album-title">
+                        {{ album.title }}<template v-if="year"
+                            ><span class="album-year-gap">{{ ' ' }}</span
+                            ><span class="album-year">{{ year }}</span></template
+                        >
+                    </h1>
                     <InfoLine class="album-infos" :items="infos" />
                     <div class="hero-buttons album-buttons">
                         <button
@@ -335,17 +339,8 @@ watch(
         min-width: 0;
     }
 
-    // the year sits on the line of the title (on its last line, when a long title takes more than one)
-    .album-heading {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: flex-end;
-        column-gap: var(--album-panel-title-gap);
-        max-width: 100%;
-    }
-
     .album-title {
-        min-width: 0;
+        max-width: 100%;
         margin: 0;
         font-size: var(--album-panel-title-size);
         font-weight: var(--album-panel-title-weight);
@@ -354,11 +349,18 @@ watch(
         overflow-wrap: anywhere;
     }
 
+    // the space between the title and the year: a space character as wide as the gap of the Figma (it has no width of
+    // its own, the letter-spacing gives it), so a line can break there and no gap is left at the start of a line
+    .album-year-gap {
+        font-size: 0;
+        letter-spacing: var(--album-panel-title-gap);
+        white-space: pre-wrap;
+    }
+
     .album-year {
         @include text('album-title-24px');
-        // the baseline of the 24 next to the 40 of the title (the Figma aligns the two boxes at the bottom)
-        padding-bottom: 5px;
         color: var(--album-panel-meta-color);
+        white-space: nowrap;
     }
 
     .album-infos {
