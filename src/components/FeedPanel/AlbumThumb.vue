@@ -110,15 +110,6 @@ function showMenu(e: MouseEvent) {
             object-position: top left;
         }
 
-        // the stroke of 1 inside the cover
-        &::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border: var(--feedpanel-image-border);
-            border-radius: inherit;
-            pointer-events: none;
-        }
 
         .overlay {
             position: absolute;

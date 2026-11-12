@@ -64,15 +64,6 @@ function showContextMenu(e: MouseEvent) {
             object-fit: cover;
         }
 
-        // the stroke of 1 inside the image
-        &::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border: var(--feedpanel-image-border);
-            border-radius: inherit;
-            pointer-events: none;
-        }
 
         .overlay {
             position: absolute;
