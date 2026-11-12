@@ -391,9 +391,7 @@
   --album-panel-padding: 20px;
   --album-panel-gap: 20px; // entre as duas colunas
   --album-panel-side-gap: 8px; // entre a capa e o bloco de textos
-  --album-panel-side-max: 400px; // largura da coluna "album": a capa do Figma
-  --album-panel-side-share: 40cqw; // em painéis estreitos a coluna não passa de 40% da largura (decisão minha, o Figma só tem o largo)
-  --album-panel-cover-min: 120px; // a capa encolhe com a altura da janela até aqui; abaixo disso a coluna rola (decisão minha)
+  --album-panel-side-max: 400px; // largura da coluna "album" e da capa: sempre 400 x 400 (Rodrigo, 2026-11-12); em janela baixa a coluna rola
   --album-panel-cover-radius: 6px;
   --album-panel-text-gap: 4px; // entre título, infos, botões, gêneros e artistas
   --album-panel-title-size: 40px; // Satoshi Bold 40, sem estilo de texto no Figma

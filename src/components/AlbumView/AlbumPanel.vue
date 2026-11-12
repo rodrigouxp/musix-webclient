@@ -2,11 +2,11 @@
     <div class="album-panel-page">
         <div class="album-panel">
             <!-- "album" of the Figma: the cover and what the album is; it scrolls by itself only when it cannot fit -->
-            <div ref="side" class="album-side" :style="{ '--album-cover-fit': coverFit }">
+            <div ref="side" class="album-side">
                 <button class="album-cover" :aria-label="$t('AlbumView.ExpandCover')" @click="coverOpen = true">
                     <img v-if="album.image" :src="coverSrc" alt="" draggable="false" />
                 </button>
-                <div ref="functions" class="album-functions">
+                <div class="album-functions">
                     <!-- the year is part of the text of the title: it stays next to its last word, and goes to the next line
                          with the words when the title is too long -->
                     <h1 class="album-title">
@@ -97,7 +97,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 
 import AddSvg from '@/assets/icons/figma/add.svg'
 import FavoriteSvg from '@/assets/icons/figma/favorite.svg'
@@ -123,8 +123,8 @@ import AlbumCoverOverlay from './AlbumCoverOverlay.vue'
 import AlbumDiscBar from './AlbumDiscBar.vue'
 
 // The album page of the Figma (AlbumPanel, node 12506:4909) for the grid of panels: on the left the album (cover, title
-// and year, numbers, buttons, genres, artists), on the right its tracks. Each side scrolls by itself; the cover gets
-// smaller in a short window so the left side fits without scrolling.
+// and year, numbers, buttons, genres, artists), on the right its tracks. Each side scrolls by itself; the cover is
+// always 400 x 400, so in a short window the left side scrolls.
 const { t } = useT()
 const store = useAlbumStore()
 const queue = useQueue()
@@ -227,37 +227,9 @@ function rowKey(item: Track) {
     return item.is_album_disc_number ? `disc-${item.album_page_disc_number}` : `${item.trackhash}-${item.master_index}`
 }
 
-// SECTION: the size of the cover
-// The cover is a square as wide as the column (400px in the Figma). In a short window it takes what the texts under it
-// leave of the height, down to --album-panel-cover-min; only then the column scrolls.
+// the two sides, to take them back to the top when the album changes
 const side = ref<HTMLElement | null>(null)
-const functions = ref<HTMLElement | null>(null)
 const tracks = ref<HTMLElement | null>(null)
-const coverFit = ref('100%')
-let observer: ResizeObserver | undefined
-
-function fitCover() {
-    if (!side.value || !functions.value) return
-
-    const style = getComputedStyle(side.value)
-    const room =
-        side.value.clientHeight -
-        parseFloat(style.paddingTop) -
-        parseFloat(style.paddingBottom) -
-        parseFloat(style.rowGap || '0') -
-        functions.value.offsetHeight
-
-    coverFit.value = `${Math.max(Math.floor(room), 0)}px`
-}
-
-onMounted(() => {
-    observer = new ResizeObserver(fitCover)
-    if (side.value) observer.observe(side.value)
-    if (functions.value) observer.observe(functions.value)
-    fitCover()
-})
-
-onBeforeUnmount(() => observer?.disconnect())
 
 // another album in the same page: both sides start at the top, the open cover closes
 watch(
@@ -301,19 +273,23 @@ watch(
         flex-direction: column;
         gap: var(--album-panel-side-gap);
         flex: none;
-        width: min(var(--album-panel-side-max), var(--album-panel-side-share));
+        // 400 for the cover and the texts, plus the room of the scrollbar (always kept, so the cover never gets
+        // narrower when the side scrolls); the negative margin leaves the tracks at the 20 of the Figma from the cover
+        width: calc(var(--album-panel-side-max) + var(--feedpanel-scrollbar-width));
+        margin-right: calc(-1 * var(--feedpanel-scrollbar-width));
         height: 100%;
         padding: var(--album-panel-padding) 0;
         overflow-x: hidden;
         overflow-y: auto;
-        scrollbar-gutter: auto;
+        scrollbar-gutter: stable;
     }
 
     // the checkerboard of the hero while there is no cover
     .album-cover {
         display: block;
         flex: none;
-        width: clamp(min(var(--album-panel-cover-min), 100%), var(--album-cover-fit, 100%), 100%);
+        // always the 400 x 400 of the Figma (Rodrigo, 2026-11-12): in a short window the side scrolls
+        width: 100%;
         height: auto;
         aspect-ratio: 1;
         padding: 0;
@@ -455,7 +431,7 @@ watch(
 }
 
 // narrow panel (own decision, the Figma only has the wide one): one column, the album over its tracks, one scroll
-@container album-panel (max-width: 760px) {
+@container album-panel (max-width: 900px) {
     .album-panel {
         flex-direction: column;
         padding: 0 calc(var(--album-panel-padding) - var(--feedpanel-scrollbar-width)) 0 var(--album-panel-padding);
@@ -464,6 +440,7 @@ watch(
 
         .album-side {
             width: 100%;
+            margin-right: 0;
             height: auto;
             padding-bottom: 0;
             overflow: visible;

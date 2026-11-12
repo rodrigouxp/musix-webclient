@@ -26,10 +26,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, watch } from 'vue'
 
 import { Routes } from '@/router'
 import useFeed from '@/stores/feedpanel'
+import useTracker from '@/stores/tracker'
 
 import FeedRow from './FeedRow.vue'
 
@@ -40,6 +41,17 @@ defineProps<{ title: string }>()
 const feed = useFeed()
 
 onMounted(() => feed.fetchAll())
+
+// a play was counted while the Home is open: the lists of the most played are asked again (before, they only
+// changed when the page was opened again)
+const tracker = useTracker()
+
+watch(
+    () => tracker.lastLogged,
+    logged => {
+        if (logged) feed.fetchAll()
+    }
+)
 </script>
 
 <style lang="scss">
