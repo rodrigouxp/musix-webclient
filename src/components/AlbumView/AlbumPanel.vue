@@ -153,10 +153,24 @@ const infos = computed(() => {
 // the genres of the tags of the tracks (the server joins them in the album)
 const genres = computed(() => album.value.genres ?? [])
 
-// the album answer has no image in its artists: it is the file of the artist (its hash)
-const artists = computed(() =>
-    (album.value.albumartists ?? []).map(artist => <Artist>{ ...artist, image: artist.image || `${artist.artisthash}.webp` })
-)
+// First the artists of the album, then everyone who takes part in any of its tracks (in the order of the tracks),
+// each one once. The album answer has no image in its artists: it is the file of the artist (its hash).
+const artists = computed(() => {
+    const seen = new Set<string>()
+    const list: Artist[] = []
+
+    const add = (artist: Artist) => {
+        if (!artist?.artisthash || seen.has(artist.artisthash)) return
+
+        seen.add(artist.artisthash)
+        list.push(<Artist>{ ...artist, image: artist.image || `${artist.artisthash}.webp` })
+    }
+
+    ;(album.value.albumartists ?? []).forEach(add)
+    store.srcTracks.forEach(track => (track.artists ?? []).forEach(add))
+
+    return list
+})
 
 // SECTION: buttons
 const contextOpen = ref(false)

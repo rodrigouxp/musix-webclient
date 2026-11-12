@@ -53,6 +53,7 @@ import useArtistPageStore from '@/stores/pages/artist'
 import useQueue from '@/stores/queue'
 import useTracklist from '@/stores/queue/tracklist'
 import useSettings from '@/stores/settings'
+import useTracker from '@/stores/tracker'
 import updatePageTitle from '@/utils/updatePageTitle'
 
 import AlbumThumb from '@/components/FeedPanel/AlbumThumb.vue'
@@ -126,6 +127,21 @@ async function loadTracks() {
 }
 
 watch(() => store.info.artisthash, loadTracks, { immediate: true })
+
+// a play was counted while the page is open: the number of that track ("12 plays", on the hover of the row) follows
+// it. The order of the list stays as it is until the page is opened again, so a row does not move under the pointer.
+const tracker = useTracker()
+
+watch(
+    () => tracker.lastLogged,
+    logged => {
+        if (!logged) return
+
+        for (const track of [...allTracks.value, ...store.tracks]) {
+            if (track.trackhash === logged.trackhash) track.help_text = logged.help_text
+        }
+    }
+)
 
 // the column of the number is as wide as the widest number (12px per digit, the 12px of the Figma for one digit)
 const digits = computed(() => String(Math.max(allTracks.value.length, 1)).length)
