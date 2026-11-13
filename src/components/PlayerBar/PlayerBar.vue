@@ -98,7 +98,7 @@
                 :class="{ open: settings.queue_panel_open }"
                 :aria-label="settings.queue_panel_open ? $t('BottomBar.HideQueue') : $t('BottomBar.ShowQueue')"
                 :aria-expanded="settings.queue_panel_open"
-                @click="settings.toggleQueuePanel"
+                @click="settings.togglePlayingPanel"
             >
                 <ImageLoader
                     :image="paths.images.thumb.small + queue.currenttrack?.image"
@@ -561,7 +561,7 @@ function showAddMenu() {
         }
     }
 
-    // the thumbnail is a button: it opens and closes the QueuePanel (node 12408:1358: the chevron on a circle of 24)
+    // the thumbnail is a button: it opens and closes the PlayingPanel (node 12408:1358: the chevron on a circle of 24)
     .pb-artwork {
         position: relative;
         width: var(--playerbar-artwork-size);

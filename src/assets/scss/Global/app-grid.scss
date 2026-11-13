@@ -140,7 +140,7 @@ $g-border: solid 1px $gray5;
 // ====== GRID OF PANELS (desktop) =======
 // Above 600px the app is a set of independent panels (Figma "Home", node 12384:168): 8 around everything and
 // 8 between the panels, corners of 8, on the `background` color. SidePanel (l-sidebar) and PlayerBar have their
-// own fill; the TopBar (nav) and the content (FeedPanel) have no fill and a border of 1 inside; the QueuePanel
+// own fill; the TopBar (nav) and the content (FeedPanel) have no fill and a border of 1 inside; the PlayingPanel
 // (r-sidebar) is the third column. Tokens --layout-panel-* and --topbar-height (_musix-tokens.scss).
 @media only screen and (min-width: 601px) {
     body:has(#app-grid) {
@@ -176,10 +176,10 @@ $g-border: solid 1px $gray5;
             min-height: 0;
         }
 
-        // the QueuePanel: a third column that goes from 0 to its width (and the gap of 8) when it opens. The gap of
-        // the grid is 0 on this axis and the panels carry their own 8 (SidePanel and QueuePanel), so a closed
+        // the PlayingPanel: a third column that goes from 0 to its width (and the gap of 8) when it opens. The gap of
+        // the grid is 0 on this axis and the panels carry their own 8 (SidePanel and PlayingPanel), so a closed
         // column leaves no space. The TopBar runs over the two last columns, as in the Figma.
-        &.has-queue-panel {
+        &.has-playing-panel {
             column-gap: 0;
             grid-template-columns: calc(var(--sidepanel-width) + var(--layout-panel-gap)) minmax(0, 1fr) 0px;
             grid-template-areas:
@@ -188,13 +188,13 @@ $g-border: solid 1px $gray5;
                 'bottombar bottombar bottombar';
 
             &.queue-animating {
-                transition: grid-template-columns var(--queuepanel-transition);
+                transition: grid-template-columns var(--playingpanel-transition);
             }
 
             &.queue-open {
                 grid-template-columns:
                     calc(var(--sidepanel-width) + var(--layout-panel-gap)) minmax(0, 1fr)
-                    calc(var(--queuepanel-width) + var(--layout-panel-gap));
+                    calc(var(--playingpanel-width) + var(--layout-panel-gap));
             }
 
             .l-sidebar,

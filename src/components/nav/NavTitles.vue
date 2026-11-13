@@ -6,7 +6,6 @@
       v-if="$route.name == Routes.artistTracks"
       :text="$route.query.artist as string || $t('NavTitles.ArtistTracks')"
     />
-    <SimpleNav v-if="$route.name === Routes.nowPlaying" :text="$t('NavTitles.NowPlaying')" />
   </div>
 </template>
 

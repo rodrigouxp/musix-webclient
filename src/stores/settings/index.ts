@@ -15,7 +15,7 @@ export default defineStore('settings', {
     state: () => ({
         version: '',
         public_key: '',
-        // the QueuePanel of the desktop (above 600px): open or closed, kept between sessions. The PlayerBar's
+        // the PlayingPanel of the desktop (above 600px): open or closed, kept between sessions. The PlayerBar's
         // thumbnail toggles it.
         queue_panel_open: false,
         contextChildrenShowMode: contextChildrenShowMode.hover,
@@ -106,7 +106,7 @@ export default defineStore('settings', {
             this._highlightFavoriteTracks = !this._highlightFavoriteTracks
         },
         // queue panel 👇
-        toggleQueuePanel() {
+        togglePlayingPanel() {
             this.queue_panel_open = !this.queue_panel_open
         },
         // context menu 👇

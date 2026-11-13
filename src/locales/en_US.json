@@ -340,13 +340,13 @@
     "Title": "Home",
     "title": "Home"
   },
-  "QueuePanel": {
+  "PlayingPanel": {
     "Clear": "Clear queue",
     "Move": "Move",
     "RemoveGroup": "Remove from queue",
     "RepeatGroup": "Repeat",
     "RepeatTrack": "Repeat",
-    "Title": "Queue"
+    "Title": "Now playing"
   },
   "ImageLoader": {
     "NextPanel": "Next cover panel",

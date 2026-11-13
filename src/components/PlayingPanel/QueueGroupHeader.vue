@@ -19,17 +19,17 @@
             <button
                 class="qg-button"
                 :class="{ on: repeating }"
-                :title="$t('QueuePanel.RepeatGroup')"
-                :aria-label="$t('QueuePanel.RepeatGroup')"
+                :title="$t('PlayingPanel.RepeatGroup')"
+                :aria-label="$t('PlayingPanel.RepeatGroup')"
                 :aria-pressed="repeating"
                 @click="tracklist.toggleGroupRepeat(group.id)"
             >
                 <RepeatSvg />
             </button>
-            <button class="qg-button" :title="$t('QueuePanel.RemoveGroup')" :aria-label="$t('QueuePanel.RemoveGroup')" @click="tracklist.removeGroup(group.id)">
+            <button class="qg-button" :title="$t('PlayingPanel.RemoveGroup')" :aria-label="$t('PlayingPanel.RemoveGroup')" @click="tracklist.removeGroup(group.id)">
                 <DeleteSvg />
             </button>
-            <button class="qg-button qg-drag" :aria-label="$t('QueuePanel.Move')" @pointerdown="$emit('dragstart', $event)">
+            <button class="qg-button qg-drag" :aria-label="$t('PlayingPanel.Move')" @pointerdown="$emit('dragstart', $event)">
                 <DragSvg />
             </button>
         </div>
@@ -144,24 +144,24 @@ watch(
 .queue-group-header {
     display: flex;
     align-items: center;
-    gap: var(--queuepanel-header-gap);
+    gap: var(--playingpanel-header-gap);
     box-sizing: border-box;
-    height: calc(var(--queuepanel-header-height) + var(--queuepanel-header-pad-top));
-    padding: var(--queuepanel-header-pad-top) 4px 0;
-    color: var(--queuepanel-group-color);
+    height: calc(var(--playingpanel-header-height) + var(--playingpanel-header-pad-top));
+    padding: var(--playingpanel-header-pad-top) 4px 0;
+    color: var(--playingpanel-group-color);
 
     .qg-name {
         display: flex;
         align-items: center;
         flex: 1 1 0;
-        gap: var(--queuepanel-header-name-gap);
+        gap: var(--playingpanel-header-name-gap);
         min-width: 0;
     }
 
     .qg-icon {
         flex-shrink: 0;
-        width: var(--queuepanel-header-icon-size);
-        height: var(--queuepanel-header-icon-size);
+        width: var(--playingpanel-header-icon-size);
+        height: var(--playingpanel-header-icon-size);
     }
 
     // soundtrack: half a turn counterclockwise in 2s, ease-in-out, in a loop (the drawing is the same every 180°)
@@ -195,35 +195,35 @@ watch(
         display: flex;
         align-items: center;
         flex-shrink: 0;
-        gap: var(--queuepanel-button-gap);
+        gap: var(--playingpanel-button-gap);
     }
 
     .qg-button {
         flex-shrink: 0;
         display: grid;
         place-items: center;
-        width: var(--queuepanel-button-hit);
-        height: var(--queuepanel-button-hit);
-        margin: calc((var(--queuepanel-button-size) - var(--queuepanel-button-hit)) / 2);
+        width: var(--playingpanel-button-hit);
+        height: var(--playingpanel-button-hit);
+        margin: calc((var(--playingpanel-button-size) - var(--playingpanel-button-hit)) / 2);
         padding: 0;
         border: none;
         background: transparent;
-        color: var(--queuepanel-icon-color);
+        color: var(--playingpanel-icon-color);
         transition: color 0.2s ease-out;
 
         svg {
-            width: var(--queuepanel-button-size);
-            height: var(--queuepanel-button-size);
+            width: var(--playingpanel-button-size);
+            height: var(--playingpanel-button-size);
         }
 
         &:hover,
         &:focus-visible {
-            color: var(--queuepanel-icon-hover);
+            color: var(--playingpanel-icon-hover);
         }
 
         // a repeat that is on (not in the Figma: the color of the hover)
         &.on {
-            color: var(--queuepanel-icon-on);
+            color: var(--playingpanel-icon-on);
         }
     }
 

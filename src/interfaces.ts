@@ -88,7 +88,7 @@ export interface Album {
 
 /**
  * A whole album or a whole playlist that went into the queue at once. `id` is new every time (the same album added
- * twice is two groups). The QueuePanel shows the tracks of a group under a header.
+ * twice is two groups). The PlayingPanel shows the tracks of a group under a header.
  */
 export interface QueueGroup {
     id: string
@@ -98,7 +98,7 @@ export interface QueueGroup {
     pid?: number
 }
 
-/** `repeat`: this track repeats (the repeat button of its row in the QueuePanel). */
+/** `repeat`: this track repeats (the repeat button of its row in the PlayingPanel). */
 export type QueueItem = Track & { group?: QueueGroup; repeat?: boolean }
 
 export interface HomePageItem {

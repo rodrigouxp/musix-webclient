@@ -13,8 +13,8 @@
             <button
                 class="qt-button"
                 :class="{ on: track.repeat }"
-                :title="$t('QueuePanel.RepeatTrack')"
-                :aria-label="$t('QueuePanel.RepeatTrack')"
+                :title="$t('PlayingPanel.RepeatTrack')"
+                :aria-label="$t('PlayingPanel.RepeatTrack')"
                 :aria-pressed="!!track.repeat"
                 @click.stop="tracklist.toggleTrackRepeat(index)"
             >
@@ -30,7 +30,7 @@
             </button>
             <button
                 class="qt-button qt-drag"
-                :aria-label="$t('QueuePanel.Move')"
+                :aria-label="$t('PlayingPanel.Move')"
                 @click.stop
                 @pointerdown="$emit('dragstart', $event)"
             >
@@ -80,11 +80,11 @@ function showMenu(e: MouseEvent) {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--queuepanel-track-gap);
+    gap: var(--playingpanel-track-gap);
     box-sizing: border-box;
-    height: var(--queuepanel-track-height);
-    padding: var(--queuepanel-track-padding);
-    border-radius: var(--queuepanel-track-radius);
+    height: var(--playingpanel-track-height);
+    padding: var(--playingpanel-track-padding);
+    border-radius: var(--playingpanel-track-radius);
     cursor: pointer;
     transition: background-color 0.2s ease-out;
 
@@ -93,28 +93,28 @@ function showMenu(e: MouseEvent) {
     &.menu-open,
     &.current,
     &.held {
-        background-color: var(--queuepanel-track-current-bg);
+        background-color: var(--playingpanel-track-current-bg);
     }
 
     .qt-name {
         display: flex;
         align-items: center;
-        gap: var(--queuepanel-name-gap);
+        gap: var(--playingpanel-name-gap);
         min-width: 0;
     }
 
     .qt-picture {
         flex-shrink: 0;
-        width: var(--queuepanel-picture-size);
-        height: var(--queuepanel-picture-size);
-        border-radius: var(--queuepanel-picture-radius);
+        width: var(--playingpanel-picture-size);
+        height: var(--playingpanel-picture-size);
+        border-radius: var(--playingpanel-picture-radius);
         object-fit: cover;
     }
 
     .qt-title {
         @include text('paragraph-14px');
         min-width: 0;
-        color: var(--queuepanel-track-color);
+        color: var(--playingpanel-track-color);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -124,7 +124,7 @@ function showMenu(e: MouseEvent) {
         display: flex;
         align-items: center;
         flex-shrink: 0;
-        gap: var(--queuepanel-button-gap);
+        gap: var(--playingpanel-button-gap);
     }
 
     // the icon is 12 (the glyph of 10); the click area is 24, with a negative margin that keeps the 12 of layout
@@ -132,28 +132,28 @@ function showMenu(e: MouseEvent) {
         flex-shrink: 0;
         display: grid;
         place-items: center;
-        width: var(--queuepanel-button-hit);
-        height: var(--queuepanel-button-hit);
-        margin: calc((var(--queuepanel-button-size) - var(--queuepanel-button-hit)) / 2);
+        width: var(--playingpanel-button-hit);
+        height: var(--playingpanel-button-hit);
+        margin: calc((var(--playingpanel-button-size) - var(--playingpanel-button-hit)) / 2);
         padding: 0;
         border: none;
         background: transparent;
-        color: var(--queuepanel-icon-color);
+        color: var(--playingpanel-icon-color);
         transition: color 0.2s ease-out;
 
         svg {
-            width: var(--queuepanel-button-size);
-            height: var(--queuepanel-button-size);
+            width: var(--playingpanel-button-size);
+            height: var(--playingpanel-button-size);
         }
 
         &:hover:not(:disabled),
         &:focus-visible {
-            color: var(--queuepanel-icon-hover);
+            color: var(--playingpanel-icon-hover);
         }
 
         // a repeat that is on (not in the Figma: the color of the hover)
         &.on {
-            color: var(--queuepanel-icon-on);
+            color: var(--playingpanel-icon-on);
         }
 
         &:disabled {

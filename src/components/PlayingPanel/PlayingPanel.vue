@@ -1,12 +1,20 @@
 <template>
-    <aside class="queue-panel" :class="{ open }" :aria-hidden="!open" :inert="!open">
-        <div class="qp-inner">
-            <div class="qp-title">
-                <h2 class="qp-heading">{{ $t('QueuePanel.Title') }}</h2>
-                <button v-if="hasItems" class="qp-clear" @click="queue.clearQueueKeepingCurrent()">{{ $t('QueuePanel.Clear') }}</button>
+    <aside class="playing-panel" :class="{ open }" :aria-hidden="!open" :inert="!open">
+        <div class="pp-inner">
+            <div class="pp-title">
+                <h2 class="pp-heading">{{ $t('PlayingPanel.Title') }}</h2>
+                <button
+                    v-if="hasItems"
+                    class="pp-clear"
+                    :title="$t('PlayingPanel.Clear')"
+                    :aria-label="$t('PlayingPanel.Clear')"
+                    @click="queue.clearQueueKeepingCurrent()"
+                >
+                    <DeleteSvg />
+                </button>
             </div>
 
-            <div class="qp-list" :style="fadeStyle">
+            <div class="pp-list" :style="fadeStyle">
                 <NoItems
                     :flag="!hasItems"
                     :title="$t('RightSidebar.NoQueueTitle')"
@@ -16,7 +24,7 @@
                 <DynamicScroller
                     v-if="hasItems"
                     ref="scroller"
-                    class="qp-scroller"
+                    class="pp-scroller"
                     :items="rows"
                     :min-item-size="16"
                     @mouseover="mouseover = true"
@@ -24,15 +32,15 @@
                 >
                     <template #default="{ item, index: at, active }">
                         <DynamicScrollerItem :item="item" :active="active" :size-dependencies="[item.kind]" :data-index="at" :data-track="item.index ?? -1">
-                            <div v-if="item.kind === 'header'" class="qp-row qp-row-header">
+                            <div v-if="item.kind === 'header'" class="pp-row pp-row-header">
                                 <QueueGroupHeader
                                     :group="item.group"
                                     :repeating="tracklist.repeatGroups.includes(item.group.id)"
                                     @dragstart="onGroupDragStart($event, item.group, item.start)"
                                 />
                             </div>
-                            <div v-else-if="item.kind === 'divider'" class="qp-row qp-row-divider"></div>
-                            <div v-else class="qp-row qp-row-track">
+                            <div v-else-if="item.kind === 'divider'" class="pp-row pp-row-divider"></div>
+                            <div v-else class="pp-row pp-row-track">
                                 <QueueTrack
                                     :track="item.track"
                                     :index="item.index"
@@ -47,15 +55,15 @@
             </div>
 
             <!-- the album that is playing, with a vinyl behind it that turns while the music plays -->
-            <div v-if="hasItems && queue.currenttrack" class="qp-thumb">
-                <img class="qp-disc" :class="{ spinning: queue.playing }" :src="discUrl" alt="" />
+            <div v-if="hasItems && queue.currenttrack" class="pp-thumb">
+                <img class="pp-disc" :class="{ spinning: queue.playing }" :src="discUrl" alt="" />
                 <component
                     :is="queue.currenttrack.albumhash ? 'RouterLink' : 'div'"
-                    class="qp-cover-link"
+                    class="pp-cover-link"
                     :to="queue.currenttrack.albumhash ? { name: Routes.album, params: { albumhash: queue.currenttrack.albumhash } } : undefined"
                     :title="$t('BottomBar.GoToAlbum')"
                 >
-                    <img class="qp-cover" :src="paths.images.thumb.large + queue.currenttrack.image" alt="" />
+                    <img class="pp-cover" :src="paths.images.thumb.large + queue.currenttrack.image" alt="" />
                     <Bitrate />
                 </component>
             </div>
@@ -64,28 +72,28 @@
         <!-- while a row is dragged: the row that follows the pointer and the line of the destination -->
         <template v-if="drag.state.active && dragTrack">
             <div
-                class="qp-ghost"
+                class="pp-ghost"
                 :style="{ left: drag.state.left + 'px', width: drag.state.width + 'px', top: drag.state.pointerY - 18 + 'px' }"
             >
                 <QueueTrack :track="dragTrack" :index="drag.state.from" held />
             </div>
             <div
                 v-if="drag.state.lineY >= 0"
-                class="qp-line"
+                class="pp-line"
                 :style="{ left: drag.state.left + 'px', width: drag.state.width + 'px', top: drag.state.lineY + 'px' }"
             ></div>
         </template>
         <!-- the same for a whole group: its header follows the pointer -->
         <template v-if="groupDrag.state.active && draggedGroup">
             <div
-                class="qp-ghost qp-ghost-group"
+                class="pp-ghost pp-ghost-group"
                 :style="{ left: groupDrag.state.left + 'px', width: groupDrag.state.width + 'px', top: groupDrag.state.pointerY - 8 + 'px' }"
             >
                 <QueueGroupHeader :group="draggedGroup" />
             </div>
             <div
                 v-if="groupDrag.state.lineY >= 0"
-                class="qp-line"
+                class="pp-line"
                 :style="{ left: groupDrag.state.left + 'px', width: groupDrag.state.width + 'px', top: groupDrag.state.lineY + 'px' }"
             ></div>
         </template>
@@ -104,6 +112,7 @@ import useSettings from '@/stores/settings'
 import useQueue from '@/stores/queue'
 import useTracklist from '@/stores/queue/tracklist'
 
+import DeleteSvg from '@/assets/icons/figma/delete.svg'
 import QueueSvg from '@/assets/icons/queue.svg'
 import discUrl from '@/assets/images/queue-disc.png'
 import Bitrate from '@/components/LeftSidebar/NP/Bitrate.vue'
@@ -111,7 +120,7 @@ import NoItems from '@/components/shared/NoItems.vue'
 import QueueGroupHeader from './QueueGroupHeader.vue'
 import QueueTrack from './QueueTrack.vue'
 
-// QueuePanel of the Figma (node 12408:1964): the queue as a list, with the tracks of an album or of a playlist that
+// PlayingPanel of the Figma (node 12408:1964): the queue as a list, with the tracks of an album or of a playlist that
 // went in whole under a header. Only the desktop, above 600px (App.vue). It opens and closes with the
 // thumbnail of the PlayerBar (settings.queue_panel_open).
 type Row =
@@ -154,8 +163,8 @@ const mouseover = ref(false)
 const fade = ref({ top: false, bottom: false })
 
 const fadeStyle = computed(() => ({
-    '--qp-fade-top': fade.value.top ? 'var(--queuepanel-fade)' : '0px',
-    '--qp-fade-bottom': fade.value.bottom ? 'var(--queuepanel-fade)' : '0px',
+    '--pp-fade-top': fade.value.top ? 'var(--playingpanel-fade)' : '0px',
+    '--pp-fade-bottom': fade.value.bottom ? 'var(--playingpanel-fade)' : '0px',
 }))
 
 function updateFade() {
@@ -249,91 +258,108 @@ function onGroupDragStart(event: PointerEvent, group: QueueGroup, start: number)
 <style lang="scss">
 // The panel is a column of the grid of the app (see app-grid.scss): its width goes from 0 to 280 (+ the gap of 8)
 // when it opens, and what is inside keeps its size and is clipped.
-.queue-panel {
+.playing-panel {
     grid-area: r-sidebar;
     min-width: 0;
     min-height: 0;
     margin-left: var(--layout-panel-gap);
     overflow: hidden;
     visibility: hidden;
-    transition: visibility 0s var(--queuepanel-duration);
+    transition: visibility 0s var(--playingpanel-duration);
 
     &.open {
         visibility: visible;
         transition-delay: 0s;
     }
 
-    .qp-inner {
+    .pp-inner {
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
-        gap: var(--queuepanel-gap);
-        width: var(--queuepanel-width);
+        gap: var(--playingpanel-gap);
+        width: var(--playingpanel-width);
         height: 100%;
-        padding: var(--queuepanel-padding);
+        padding: var(--playingpanel-padding);
         border: var(--layout-panel-border);
         border-radius: var(--layout-panel-radius);
     }
 
-    .qp-title {
+    // "Now playing" centered; the delete button (clear the queue) sits at the right end of the same line
+    .pp-title {
+        position: relative;
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: center;
         flex-shrink: 0;
-        padding-right: 4px;
     }
 
-    .qp-heading {
+    .pp-heading {
         @include text('paragraph-18px');
         margin: 0;
-        color: var(--queuepanel-title-color);
+        color: var(--playingpanel-title-color);
     }
 
-    .qp-clear {
-        @include text('action-button-14px');
-        height: auto;
+    // the icon "delete" is 14 x 14 (its vector is 9.33 x 12); the click area is bigger (24, own decision) and goes out of
+    // the line by what it has over the icon, so the icon keeps the right edge
+    .pp-clear {
+        position: absolute;
+        top: 50%;
+        right: calc(var(--playingpanel-clear-pad-right) - (var(--playingpanel-button-hit) - var(--playingpanel-clear-size)) / 2);
+        display: grid;
+        place-items: center;
+        width: var(--playingpanel-button-hit);
+        height: var(--playingpanel-button-hit);
         padding: 0;
         border: none;
+        border-radius: 400px;
         background: transparent;
-        color: var(--queuepanel-clear-color);
+        color: var(--playingpanel-clear-color);
+        cursor: pointer;
+        transform: translateY(-50%);
+
+        svg {
+            display: block;
+            width: var(--playingpanel-clear-size);
+            height: var(--playingpanel-clear-size);
+        }
 
         &:hover {
-            text-decoration: underline;
+            background-color: var(--hover-bg);
         }
     }
 
     // the list ends before the thumbnail. The fade is a mask: transparent at the edge that has more to show
-    .qp-list {
+    .pp-list {
         flex: 1 1 0;
         min-height: 0;
-        --qp-fade-top: 0px;
-        --qp-fade-bottom: 0px;
+        --pp-fade-top: 0px;
+        --pp-fade-bottom: 0px;
         mask-image: linear-gradient(
             to bottom,
             transparent 0,
-            #000 var(--qp-fade-top),
-            #000 calc(100% - var(--qp-fade-bottom)),
+            #000 var(--pp-fade-top),
+            #000 calc(100% - var(--pp-fade-bottom)),
             transparent 100%
         );
-        transition: --qp-fade-top 0.2s, --qp-fade-bottom 0.2s;
+        transition: --pp-fade-top 0.2s, --pp-fade-bottom 0.2s;
 
         .nothing {
             max-width: none;
         }
     }
 
-    .qp-scroller {
+    .pp-scroller {
         height: 100%;
         box-sizing: border-box;
         // 4 of the scrollbar and 4 of room: the 8 of the right padding of the Figma
-        padding-right: calc(var(--queuepanel-list-pad-right) - var(--queuepanel-scrollbar-width));
+        padding-right: calc(var(--playingpanel-list-pad-right) - var(--playingpanel-scrollbar-width));
         // not the side margin that the other lists of the app get
         padding-left: 0;
         scrollbar-gutter: auto;
         overflow-x: hidden;
 
         &::-webkit-scrollbar {
-            width: var(--queuepanel-scrollbar-width);
+            width: var(--playingpanel-scrollbar-width);
             background: transparent;
         }
 
@@ -354,24 +380,24 @@ function onGroupDragStart(event: PointerEvent, group: QueueGroup, start: number)
     }
 
     // the rows of the virtual list keep the spaces of the Figma as padding (4 between tracks, 8 under a header)
-    .qp-row-track {
-        padding-bottom: var(--queuepanel-item-gap);
+    .pp-row-track {
+        padding-bottom: var(--playingpanel-item-gap);
     }
 
-    .qp-row-header {
-        padding-bottom: var(--queuepanel-group-gap);
+    .pp-row-header {
+        padding-bottom: var(--playingpanel-group-gap);
     }
 
-    .qp-row-divider {
+    .pp-row-divider {
         height: 1px;
-        margin-bottom: var(--queuepanel-item-gap);
+        margin-bottom: var(--playingpanel-item-gap);
         background-color: var(--color-neutral-700);
     }
 
     // the vinyl is a square of the width, 55 above the cover; the cover is a square under it. 8 from each border of
     // the panel (the padding of the panel has 4 on the right: the thumbnail takes the other 4 itself). On a short
     // window it gets smaller (never more than 45% of the height)
-    .qp-thumb {
+    .pp-thumb {
         position: relative;
         display: flex;
         flex-direction: column;
@@ -380,12 +406,12 @@ function onGroupDragStart(event: PointerEvent, group: QueueGroup, start: number)
         align-self: flex-start;
         // the cover is a square of the width; the vinyl peeks out above it by 55/264 of that width (the Figma numbers
         // at 280), so the whole set scales with the panel. On a short window it is never taller than 45% of it
-        width: min(calc(100% - var(--queuepanel-thumb-gap-right)), calc(45vh * var(--queuepanel-thumb-ratio)));
-        aspect-ratio: calc(1 / (1 + var(--queuepanel-disc-lift-ratio)));
-        border-radius: var(--queuepanel-cover-radius);
+        width: min(calc(100% - var(--playingpanel-thumb-gap-right)), calc(45vh * var(--playingpanel-thumb-ratio)));
+        aspect-ratio: calc(1 / (1 + var(--playingpanel-disc-lift-ratio)));
+        border-radius: var(--playingpanel-cover-radius);
     }
 
-    .qp-disc {
+    .pp-disc {
         position: absolute;
         top: 0;
         left: 0;
@@ -393,7 +419,7 @@ function onGroupDragStart(event: PointerEvent, group: QueueGroup, start: number)
         aspect-ratio: 1;
         object-fit: contain;
         // clockwise, one turn in 8s, only while the music plays (paused it stays where it is)
-        animation: qp-disc-spin var(--queuepanel-disc-duration) linear infinite;
+        animation: pp-disc-spin var(--playingpanel-disc-duration) linear infinite;
         animation-play-state: paused;
 
         &.spinning {
@@ -401,7 +427,7 @@ function onGroupDragStart(event: PointerEvent, group: QueueGroup, start: number)
         }
     }
 
-    .qp-cover-link {
+    .pp-cover-link {
         position: relative;
         display: block;
         cursor: pointer;
@@ -409,32 +435,32 @@ function onGroupDragStart(event: PointerEvent, group: QueueGroup, start: number)
 
     // the file type and the bitrate (FLAC • 3200) over the lower left corner of the cover; the component is the one of
     // the old card of the left panel (LeftSidebar/NP/Bitrate.vue), here with the tag tokens of the app
-    .qp-cover-link .bitrate {
+    .pp-cover-link .bitrate {
         @include text('paragraph-12px');
-        bottom: var(--queuepanel-format-inset);
-        left: var(--queuepanel-format-inset);
-        max-width: calc(100% - 2 * var(--queuepanel-format-inset));
-        padding: var(--queuepanel-format-padding);
-        border-radius: var(--queuepanel-format-radius);
-        background-color: var(--queuepanel-format-bg);
-        color: var(--queuepanel-format-color);
+        bottom: var(--playingpanel-format-inset);
+        left: var(--playingpanel-format-inset);
+        max-width: calc(100% - 2 * var(--playingpanel-format-inset));
+        padding: var(--playingpanel-format-padding);
+        border-radius: var(--playingpanel-format-radius);
+        background-color: var(--playingpanel-format-bg);
+        color: var(--playingpanel-format-color);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
 
-    .qp-cover {
+    .pp-cover {
         display: block;
         width: 100%;
         aspect-ratio: 1;
         box-sizing: border-box;
         object-fit: cover;
-        border: var(--queuepanel-cover-border);
-        border-radius: var(--queuepanel-cover-radius);
+        border: var(--playingpanel-cover-border);
+        border-radius: var(--playingpanel-cover-radius);
     }
 }
 
-@keyframes qp-disc-spin {
+@keyframes pp-disc-spin {
     from {
         transform: rotate(0deg);
     }
@@ -445,22 +471,22 @@ function onGroupDragStart(event: PointerEvent, group: QueueGroup, start: number)
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .queue-panel .qp-disc {
+    .playing-panel .pp-disc {
         animation: none;
     }
 }
 
 // the row that follows the pointer while it is dragged, and the line of the destination
-.qp-ghost {
+.pp-ghost {
     position: fixed;
     z-index: 30;
     pointer-events: none;
     background: var(--menu-bg);
-    border-radius: var(--queuepanel-track-radius);
+    border-radius: var(--playingpanel-track-radius);
     box-shadow: var(--menu-shadow);
 }
 
-.qp-line {
+.pp-line {
     position: fixed;
     z-index: 31;
     height: 2px;

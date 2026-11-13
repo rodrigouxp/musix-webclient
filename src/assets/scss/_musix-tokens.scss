@@ -13,7 +13,7 @@
   --layout-gutter: 1rem;
 
   // Grade em painéis (acima de 600px, layout padrão; Figma "Home", nó 12384:168): 8 em volta de tudo e
-  // 8 entre os painéis, cantos de 8. Painéis sem fundo (TopBar, FeedPanel, QueuePanel) têm borda de 1 por dentro.
+  // 8 entre os painéis, cantos de 8. Painéis sem fundo (TopBar, FeedPanel, PlayingPanel) têm borda de 1 por dentro.
   --layout-panel-gap: 8px;
   --layout-panel-radius: 8px;
   --layout-panel-border: 1px solid var(--color-neutral-700);
@@ -215,52 +215,54 @@
   --playerbar-paused-artist: var(--color-neutral-500);
   --playerbar-playing-artist: var(--color-neutral-300);
 
-  // QueuePanel (nó 12408:1964; faixa TrackQueue 12408:961, grupo AlbumQueue 12408:964)
-  --queuepanel-width: min(25vw, 280px); // 25% da largura da janela, no máximo 280 (Figma); a capa e o disco escalam com o painel
-  --queuepanel-padding: 8px 4px 8px 8px;
-  --queuepanel-gap: 20px; // entre o título, a lista e a miniatura
-  --queuepanel-duration: 300ms; // abrir e fechar (decisão minha)
-  --queuepanel-transition: var(--queuepanel-duration) ease-in-out;
-  --queuepanel-title-color: var(--color-neutral-white);
-  --queuepanel-clear-color: var(--color-error-300); // "Clear queue"
-  --queuepanel-item-gap: 4px; // entre as faixas e os itens da lista
-  --queuepanel-list-pad-right: 8px; // inclui a barra de rolagem
-  --queuepanel-scrollbar-width: 4px;
-  --queuepanel-fade: 24px; // degradê no limite da rolagem (decisão minha)
-  --queuepanel-track-height: 36px;
-  --queuepanel-track-padding: 4px;
-  --queuepanel-track-radius: 4px;
-  --queuepanel-track-gap: 10px; // entre o nome e os botões
-  --queuepanel-name-gap: 8px; // entre a capa e o nome
-  --queuepanel-picture-size: 28px;
-  --queuepanel-picture-radius: 4px;
-  --queuepanel-track-color: var(--color-neutral-white);
-  --queuepanel-track-current-bg: var(--hover-bg); // faixa que toca (neutral-700); o hover da linha não está no Figma: o mesmo
-  --queuepanel-button-size: 12px; // caixa do ícone (glifo de 10 no viewBox de 24)
-  --queuepanel-button-hit: 24px; // área de clique (decisão minha)
-  --queuepanel-button-gap: 4px;
-  --queuepanel-icon-color: var(--color-neutral-500);
-  --queuepanel-icon-hover: var(--color-neutral-100);
-  --queuepanel-icon-on: var(--color-neutral-100); // repeat ligado (não está no Figma: a cor do hover)
-  --queuepanel-header-height: 16px;
-  --queuepanel-header-gap: 12px; // entre o nome do grupo e os botões
-  --queuepanel-header-name-gap: 4px; // entre o ícone e o nome
-  --queuepanel-header-icon-size: 16px;
-  --queuepanel-group-gap: 8px; // entre o cabeçalho e as faixas
-  --queuepanel-group-color: var(--color-neutral-300);
-  --queuepanel-disc-lift-ratio: 0.2083; // o disco aparece acima da capa por 55/264 da largura dela (números do Figma a 280): escala com o painel
-  --queuepanel-thumb-ratio: 0.8276; // capa / (capa + disco) = 264/319: altura da miniatura inteira em função da largura
-  --queuepanel-thumb-gap-right: 4px; // o painel tem 4 de padding à direita (barra da lista); a miniatura devolve 4: 8 de cada lado
-  --queuepanel-header-pad-top: 4px; // acima do cabeçalho do grupo
-  --queuepanel-cover-radius: 4.914px;
-  --queuepanel-cover-border: 0.614px solid var(--color-neutral-700);
+  // PlayingPanel (nó 12408:1964; faixa TrackQueue 12408:961, grupo AlbumQueue 12408:964)
+  --playingpanel-width: min(25vw, 280px); // 25% da largura da janela, no máximo 280 (Figma); a capa e o disco escalam com o painel
+  --playingpanel-padding: 8px 4px 8px 8px;
+  --playingpanel-gap: 20px; // entre o título, a lista e a miniatura
+  --playingpanel-duration: 300ms; // abrir e fechar (decisão minha)
+  --playingpanel-transition: var(--playingpanel-duration) ease-in-out;
+  --playingpanel-title-color: var(--color-neutral-white);
+  --playingpanel-clear-color: var(--color-error-300); // botão de limpar a fila (ícone delete)
+  --playingpanel-clear-size: 14px; // caixa do ícone delete (o vetor tem 9,33 x 12; Rodrigo, 2026-11-13)
+  --playingpanel-clear-pad-right: 4px; // do ícone até a borda direita do conteúdo do painel (decisão minha)
+  --playingpanel-item-gap: 4px; // entre as faixas e os itens da lista
+  --playingpanel-list-pad-right: 8px; // inclui a barra de rolagem
+  --playingpanel-scrollbar-width: 4px;
+  --playingpanel-fade: 24px; // degradê no limite da rolagem (decisão minha)
+  --playingpanel-track-height: 36px;
+  --playingpanel-track-padding: 4px;
+  --playingpanel-track-radius: 4px;
+  --playingpanel-track-gap: 10px; // entre o nome e os botões
+  --playingpanel-name-gap: 8px; // entre a capa e o nome
+  --playingpanel-picture-size: 28px;
+  --playingpanel-picture-radius: 4px;
+  --playingpanel-track-color: var(--color-neutral-white);
+  --playingpanel-track-current-bg: var(--hover-bg); // faixa que toca (neutral-700); o hover da linha não está no Figma: o mesmo
+  --playingpanel-button-size: 12px; // caixa do ícone (glifo de 10 no viewBox de 24)
+  --playingpanel-button-hit: 24px; // área de clique (decisão minha)
+  --playingpanel-button-gap: 4px;
+  --playingpanel-icon-color: var(--color-neutral-500);
+  --playingpanel-icon-hover: var(--color-neutral-100);
+  --playingpanel-icon-on: var(--color-neutral-100); // repeat ligado (não está no Figma: a cor do hover)
+  --playingpanel-header-height: 16px;
+  --playingpanel-header-gap: 12px; // entre o nome do grupo e os botões
+  --playingpanel-header-name-gap: 4px; // entre o ícone e o nome
+  --playingpanel-header-icon-size: 16px;
+  --playingpanel-group-gap: 8px; // entre o cabeçalho e as faixas
+  --playingpanel-group-color: var(--color-neutral-300);
+  --playingpanel-disc-lift-ratio: 0.2083; // o disco aparece acima da capa por 55/264 da largura dela (números do Figma a 280): escala com o painel
+  --playingpanel-thumb-ratio: 0.8276; // capa / (capa + disco) = 264/319: altura da miniatura inteira em função da largura
+  --playingpanel-thumb-gap-right: 4px; // o painel tem 4 de padding à direita (barra da lista); a miniatura devolve 4: 8 de cada lado
+  --playingpanel-header-pad-top: 4px; // acima do cabeçalho do grupo
+  --playingpanel-cover-radius: 4.914px;
+  --playingpanel-cover-border: 0.614px solid var(--color-neutral-700);
   // formato e bitrate sobre a capa ("FLAC • 3200"): sem desenho no Figma, aguardando confirmação do Rodrigo
-  --queuepanel-format-inset: 8px; // do canto inferior esquerdo da capa
-  --queuepanel-format-padding: 1px 4px;
-  --queuepanel-format-radius: 4px;
-  --queuepanel-format-bg: var(--color-neutral-700);
-  --queuepanel-format-color: var(--color-neutral-100);
-  --queuepanel-disc-duration: 8s;
+  --playingpanel-format-inset: 8px; // do canto inferior esquerdo da capa
+  --playingpanel-format-padding: 1px 4px;
+  --playingpanel-format-radius: 4px;
+  --playingpanel-format-bg: var(--color-neutral-700);
+  --playingpanel-format-color: var(--color-neutral-100);
+  --playingpanel-disc-duration: 8s;
 
   // FeedPanel (painel da Home, nó 12408:1935; cartões ArtistThumb e AlbumThumb). Textos: ver os estilos de texto abaixo.
   --feedpanel-padding-top: 8px;
@@ -399,7 +401,7 @@
   --album-panel-side-gap: 8px; // entre a capa e o bloco de textos
   --album-panel-side-max: 400px; // largura máxima da coluna "album" e da capa (a coluna e as faixas dividem a largura; a capa mantém 1:1 e enche a coluna)
   --album-panel-cover-radius: 6px;
-  --album-panel-text-gap: 8px; // entre "top" (título e infos), botões, gêneros e artistas (era 4; Rodrigo, 2026-11-12)
+  --album-panel-text-gap: 12px; // entre "top" (título e infos), botões, gêneros e artistas (era 8; Rodrigo, 2026-11-13)
   --album-panel-top-gap: 0; // entre o título (com o ano) e a linha de faixas e tempo, dentro de "top"
   --album-panel-title-size: 40px; // Satoshi Bold 40, sem estilo de texto no Figma
   --album-panel-title-weight: 700;

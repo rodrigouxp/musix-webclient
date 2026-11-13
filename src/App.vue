@@ -10,7 +10,7 @@
         v-if="!hideUI"
         id="app-grid"
         :class="{
-            'has-queue-panel': settings.is_panel_layout,
+            'has-playing-panel': settings.is_panel_layout,
             'queue-open': settings.is_panel_layout && settings.queue_panel_open,
             'queue-animating': queueAnimating,
         }"
@@ -26,8 +26,8 @@
                 </RouterView>
             </BalancerProvider>
         </div>
-        <!-- above 600px: the SidePanel on the left and the QueuePanel on the right; up to 600px, the phone layout -->
-        <QueuePanel v-if="settings.is_panel_layout" />
+        <!-- above 600px: the SidePanel on the left and the PlayingPanel on the right; up to 600px, the phone layout -->
+        <PlayingPanel v-if="settings.is_panel_layout" />
         <BottomBar />
         <!-- <BubbleManager /> -->
     </section>
@@ -74,7 +74,7 @@ import Notification from '@/components/Notification.vue'
 import BottomBar from '@/components/BottomBar/BottomBar.vue'
 import LeftSidebar from '@/components/LeftSidebar/index.vue'
 import NavBar from '@/components/nav/NavBar.vue'
-import QueuePanel from '@/components/QueuePanel/QueuePanel.vue'
+import PlayingPanel from '@/components/PlayingPanel/PlayingPanel.vue'
 
 import { getAllSettings } from '@/requests/settings'
 import { getRootDirs } from '@/requests/settings/rootdirs'
@@ -96,7 +96,7 @@ const UIStore = useInterface()
 const { hideUI } = storeToRefs(UIStore)
 useTracker()
 
-// the column of the QueuePanel only animates while the panel opens or closes: its width is a share of the window
+// the column of the PlayingPanel only animates while the panel opens or closes: its width is a share of the window
 // (vw), and a transition that always runs would make the columns lag behind when the window is resized
 const queueAnimating = ref(false)
 let queueAnimationTimer: ReturnType<typeof setTimeout> | undefined
@@ -105,7 +105,7 @@ watch(
     () => {
         queueAnimating.value = true
         clearTimeout(queueAnimationTimer)
-        queueAnimationTimer = setTimeout(() => (queueAnimating.value = false), 400) // --queuepanel-duration is 300ms
+        queueAnimationTimer = setTimeout(() => (queueAnimating.value = false), 400) // --playingpanel-duration is 300ms
     }
 )
 

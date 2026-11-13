@@ -221,7 +221,7 @@ export default defineStore('tracklist', {
             queue.setCurrentIndex(current)
             usePlayer().clearNextAudio()
         },
-        // ---- groups (the buttons of the header in the QueuePanel) ----
+        // ---- groups (the buttons of the header in the PlayingPanel) ----
         /** The positions of the tracks of a group. */
         groupIndexes(id: string): number[] {
             return this.tracklist.reduce<number[]>((all, t, i) => (t.group?.id === id ? [...all, i] : all), [])
