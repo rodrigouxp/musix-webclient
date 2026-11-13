@@ -12,7 +12,8 @@
         :class="{
             'has-playing-panel': settings.is_panel_layout,
             'queue-open': settings.is_panel_layout && settings.queue_panel_open,
-            'queue-animating': queueAnimating,
+            'sidepanel-collapsed': settings.is_panel_layout && settings.side_panel_collapsed,
+            'panels-animating': panelsAnimating,
         }"
     >
         <LeftSidebar v-if="settings.is_panel_layout" />
@@ -96,16 +97,17 @@ const UIStore = useInterface()
 const { hideUI } = storeToRefs(UIStore)
 useTracker()
 
-// the column of the PlayingPanel only animates while the panel opens or closes: its width is a share of the window
-// (vw), and a transition that always runs would make the columns lag behind when the window is resized
-const queueAnimating = ref(false)
-let queueAnimationTimer: ReturnType<typeof setTimeout> | undefined
+// the columns of the SidePanel and of the PlayingPanel only animate while one of them opens, closes, collapses or
+// expands: their widths are a share of the window (vw), and a transition that always runs would make the columns lag
+// behind when the window is resized
+const panelsAnimating = ref(false)
+let panelsAnimationTimer: ReturnType<typeof setTimeout> | undefined
 watch(
-    () => settings.queue_panel_open,
+    () => [settings.queue_panel_open, settings.side_panel_collapsed],
     () => {
-        queueAnimating.value = true
-        clearTimeout(queueAnimationTimer)
-        queueAnimationTimer = setTimeout(() => (queueAnimating.value = false), 400) // --playingpanel-duration is 300ms
+        panelsAnimating.value = true
+        clearTimeout(panelsAnimationTimer)
+        panelsAnimationTimer = setTimeout(() => (panelsAnimating.value = false), 400) // --panel-toggle-duration is 300ms
     }
 )
 

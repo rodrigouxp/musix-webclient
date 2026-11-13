@@ -80,7 +80,10 @@ const hasItems = computed(() => tracklist.tracklist.length > 0)
         display: flex;
         flex-direction: column;
         gap: var(--playingpanel-gap);
-        width: var(--playingpanel-width);
+        // fills the column: at the overshoot of the motion (--panel-toggle-easing) the column is wider than the panel
+        // and an empty strip would show at the right
+        width: 100%;
+        min-width: var(--playingpanel-width);
         height: 100%;
         padding: var(--playingpanel-padding);
         border: var(--layout-panel-border);

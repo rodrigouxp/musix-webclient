@@ -116,9 +116,17 @@
   --menu-divider: var(--color-neutral-700);
   --menu-divider-width: 0.8px;
 
+  // Abrir e fechar painéis: o protótipo do Figma usa Smart animate, "Ease in and out back", 300ms. O easing do Figma
+  // é este cubic-bezier: começa indo um pouco para o lado errado e passa uns 10% do alvo antes de assentar.
+  // SidePanel, PlayingPanel, NowPlaying (celular) e a gaveta do menu usam estes três.
+  --panel-toggle-duration: 300ms;
+  --panel-toggle-easing: cubic-bezier(0.7, -0.4, 0.4, 1.4);
+  --panel-toggle-transition: var(--panel-toggle-duration) var(--panel-toggle-easing);
+
   // Painel da esquerda (componente SidePanel do Figma, nó 12329:437). Tudo em px, como no desenho. Nada
   // tem largura fixa dentro do painel: os itens ocupam a largura que ele tiver menos o padding.
   --sidepanel-width: min(25vw, 224px); // 25% da largura da janela, no máximo 224 (Figma); o que há dentro escala com o painel
+  --sidepanel-collapsed-width: 52px; // SidePanel fechado (nó 12546:5413): 36 de conteúdo + 8 + 8 de padding
   --sidepanel-padding: 8px;
   --sidepanel-gap: 12px; // entre os blocos (cabeçalho, botões, divisor, playlists, cartão)
   --sidepanel-bg: var(--color-neutral-900);
@@ -141,6 +149,15 @@
   --sidepanel-playlist-gap: 8px; // entre a capa e o nome
   --sidepanel-playlist-cover-size: 28px;
   --sidepanel-playlist-cover-radius: 4px;
+  // SidePanel fechado (nó 12546:5413): cada playlist é 36 x 34 com padding 8 e só a capa de 18
+  --sidepanel-playlist-collapsed-padding-x: 9px; // 36 de largura com a capa de 18 no meio: 9 de cada lado (decisão minha: o Figma diz padding 8; assim a capa fica alinhada com os ícones de cima)
+  --sidepanel-playlist-collapsed-padding-y: 8px;
+  --sidepanel-playlist-collapsed-cover-size: 18px;
+  --sidepanel-header-collapsed-width: 36px; // botão do cabeçalho fechado: 36 de largura, padding 8, cantos de 8
+  --sidepanel-header-collapsed-height: 48px; // o ícone de 32 e o padding de 8 em cima e embaixo (decisão minha: o Figma só dá a largura e o padding)
+  --sidepanel-header-collapsed-radius: 8px;
+  --sidepanel-header-icon-width: 27px; // a nota musical do cabeçalho fechado: 27 x 32
+  --sidepanel-header-icon-height: 32px;
   --sidepanel-playlist-color: var(--color-neutral-white);
   --sidepanel-art-radius: 10px;
 
@@ -218,8 +235,8 @@
   --playingpanel-width: min(25vw, 280px); // 25% da largura da janela, no máximo 280 (Figma); a capa e o disco escalam com o painel
   --playingpanel-padding: 8px 4px 8px 8px;
   --playingpanel-gap: 20px; // entre o título, a lista e a miniatura
-  --playingpanel-duration: 300ms; // abrir e fechar (decisão minha)
-  --playingpanel-transition: var(--playingpanel-duration) ease-in-out;
+  --playingpanel-duration: var(--panel-toggle-duration); // abrir e fechar: o movimento do protótipo (ver --panel-toggle-*)
+  --playingpanel-transition: var(--panel-toggle-transition);
   --playingpanel-title-color: var(--color-neutral-white);
   --playingpanel-clear-color: var(--color-error-300); // botão de limpar a fila (ícone delete)
   --playingpanel-clear-size: 14px; // caixa do ícone delete (o vetor tem 9,33 x 12; Rodrigo, 2026-11-13)
@@ -272,9 +289,9 @@
   --feedpanel-block-gap: 40px; // entre o título e as linhas
   --feedpanel-header-gap: 20px; // entre o cabeçalho da linha e os cartões
   --feedpanel-card-gap: 20px;
-  --feedpanel-play-size: 40px; // botão de play que aparece sobre a miniatura (álbum e artista): redondo, 40 x 40 (Rodrigo, 2026-11-07)
-  --feedpanel-play-radius: 400px;
-  --feedpanel-card-columns: 8; // sempre 8 cartões por linha, cada um com 1/8 da largura
+  --feedpanel-card-columns: 8; // no máximo 8 cartões por linha, cada um com 1/8 da largura quando há espaço
+  --feedpanel-card-columns-min: 2; // com pouco espaço os cartões quebram de linha, até 2 por linha (como no celular)
+  --feedpanel-card-min-width: 111px; // o cartão nunca fica menor que isto: a largura dele a 1600 x 900 com os dois painéis abertos, o caso mais estreito com 8 por linha (decisão minha)
   --feedpanel-history-card-min: 10.75rem; // páginas "View history": largura mínima do cartão (a do $cardwidth das grades do app)
   --feedpanel-title-color: var(--color-neutral-white);
   --feedpanel-link-color: var(--color-neutral-300); // "View history"
@@ -463,8 +480,9 @@
   --nowplaying-actions-padding: 4px 0;
   --nowplaying-actions-gap: 12px; // entre o favorite e o add
   --nowplaying-actions-icon-size: 24px;
-  --nowplaying-slide-duration: 300ms; // subir ao abrir, descer ao fechar (decisão minha)
-  --nowplaying-slide-easing: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --nowplaying-slide-duration: var(--panel-toggle-duration); // subir ao abrir, descer ao fechar pelo botão: o movimento do protótipo
+  --nowplaying-slide-easing: var(--panel-toggle-easing);
+  --nowplaying-release-easing: cubic-bezier(0.2, 0.8, 0.2, 1); // soltar o dedo depois de arrastar: sem o passo para trás do "back" (decisão minha)
   --nowplaying-tab-gap: 12px; // entre o cabeçalho, o corpo da aba e os controles
   --nowplaying-tab-padding-bottom: 20px; // sob o corpo das abas Lyrics e Queue
 

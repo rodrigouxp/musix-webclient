@@ -5,6 +5,7 @@
     :to="{ name: 'PlaylistView', params: { pid: playlist.id } }"
     class="pinned-playlist"
     :title="playlist.name"
+    :aria-label="settings.side_panel_collapsed ? playlist.name : undefined"
     @contextmenu="showMenu($event, playlist)"
   >
     <img :src="coverOf(playlist)" alt="" class="pinned-cover" :class="{ border: !hasCover(playlist) }" />
@@ -22,7 +23,9 @@ import { router } from "@/router";
 import useAuth from "@/stores/auth";
 import usePlaylistPage from "@/stores/pages/playlist";
 import usePlaylistsStore from "@/stores/pages/playlists";
+import useSettings from "@/stores/settings";
 
+const settings = useSettings();
 const store = usePlaylistsStore();
 const auth = useAuth();
 
@@ -94,7 +97,12 @@ watch(
   @include text('action-button-14px');
   color: var(--sidepanel-playlist-color);
   text-transform: none;
-  transition: background-color 0.2s ease-out;
+  // the panel collapses to 36 of content: the name is clipped, not wrapped
+  overflow: hidden;
+  // the same motion as the panel (the sizes change with it)
+  transition:
+    background-color 0.2s ease-out,
+    padding var(--panel-toggle-transition);
 
   .pinned-cover {
     flex-shrink: 0;
@@ -102,6 +110,9 @@ watch(
     height: var(--sidepanel-playlist-cover-size);
     border-radius: var(--sidepanel-playlist-cover-radius);
     object-fit: cover;
+    transition:
+      width var(--panel-toggle-transition),
+      height var(--panel-toggle-transition);
   }
 
   span {
@@ -109,6 +120,7 @@ watch(
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    transition: opacity var(--panel-toggle-duration) ease-in-out;
   }
 
   &:hover,
@@ -119,6 +131,25 @@ watch(
   &:focus-visible {
     outline: solid 2px var(--color-neutral-100);
     outline-offset: -2px;
+  }
+}
+
+// SidePanel Closed (node 12546:5413): 36 x 34 each, padding 8 and only the cover of 18. The tokens
+// --sidepanel-playlist-collapsed-* hold these sizes.
+.l-sidebar.collapsed .sidepanel-nav .pinned-playlist {
+  padding: var(--sidepanel-playlist-collapsed-padding-y) var(--sidepanel-playlist-collapsed-padding-x);
+
+  .pinned-cover {
+    width: var(--sidepanel-playlist-collapsed-cover-size);
+    height: var(--sidepanel-playlist-collapsed-cover-size);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidepanel-nav .pinned-playlist,
+  .sidepanel-nav .pinned-playlist .pinned-cover,
+  .sidepanel-nav .pinned-playlist span {
+    transition: none;
   }
 }
 </style>

@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { onMounted, onUpdated } from 'vue'
+import { onMounted, onUpdated, watch } from 'vue'
 
 import useTrackDrag from '@/composables/useTrackDrag'
 import { FromOptions } from '@/enums'
@@ -68,12 +68,27 @@ import AfterHeader from '@/components/PlaylistView/AfterHeader.vue'
 import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
 import AlbumsFetcher from '@/components/ArtistView/AlbumsFetcher.vue'
 import { useT } from '@/i18n'
+import useTracker from '@/stores/tracker'
 
 const { t } = useT()
 
 const queue = useQueue()
 const tracklist = useTracklist()
 const playlist = usePlaylistStore()
+
+// the number of plays comes with each track from the server; a play counted while the page is open updates that track
+const tracker = useTracker()
+
+watch(
+    () => tracker.lastLogged,
+    logged => {
+        if (!logged) return
+
+        for (const track of playlist.allTracks) {
+            if (track.trackhash === logged.trackhash) track.help_text = logged.help_text
+        }
+    }
+)
 
 interface ScrollerItem {
     id: string | number

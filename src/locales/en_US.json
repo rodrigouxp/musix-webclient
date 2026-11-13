@@ -353,6 +353,8 @@
     "PrevPanel": "Previous cover panel"
   },
   "LeftSidebar": {
+    "CollapseSidebar": "Collapse sidebar",
+    "ExpandSidebar": "Expand sidebar",
     "FileTypeBitrate": "file type • bitrate",
     "NavItems": {
       "Albums": "Albums",

@@ -15,6 +15,8 @@
           active: $route.name === menu.route_name,
           'icon-active nav-favorite': menu.route_name === Routes.favorites,
         }"
+        :aria-label="settings.side_panel_collapsed ? menu.name : undefined"
+        :title="settings.side_panel_collapsed ? menu.name : undefined"
       >
         <component :is="menu.icon" />
         <span>{{ menu.name }}</span>
@@ -35,6 +37,8 @@
         }"
         class="nav-item"
         :class="{ active: $route.name === menu.route_name }"
+        :aria-label="settings.side_panel_collapsed ? menu.name : undefined"
+        :title="settings.side_panel_collapsed ? menu.name : undefined"
       >
         <component :is="menu.icon" />
         <span>{{ menu.name }}</span>
@@ -48,7 +52,9 @@
 import { Routes } from "@/router";
 import PinnedPlaylists from "./PinnedPlaylists.vue";
 import { useNavItems } from "./navitems";
+import useSettings from "@/stores/settings";
 
+const settings = useSettings();
 const { menus } = useNavItems();
 
 // the divider splits the menu in the group of the buttons and the group of Playlists
@@ -94,6 +100,8 @@ const playlists = menus.slice(dividerAt + 1).filter((menu) => !("separator" in m
     flex-shrink: 0;
     padding: var(--sidepanel-item-padding);
     border-radius: var(--sidepanel-item-radius);
+    // the panel collapses to 36 of content: what does not fit (the name) is clipped, not wrapped
+    overflow: hidden;
     @include text('action-button-14px');
     color: var(--sidepanel-nav-color);
     transition: background-color 0.2s ease-out;
@@ -110,6 +118,7 @@ const playlists = menus.slice(dividerAt + 1).filter((menu) => !("separator" in m
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      transition: opacity var(--panel-toggle-duration) ease-in-out;
     }
 
     // Favorites: the heart is always filled and red in the Figma (the item is not "active" for the colors)
@@ -131,6 +140,21 @@ const playlists = menus.slice(dividerAt + 1).filter((menu) => !("separator" in m
       outline: solid 2px var(--color-neutral-100);
       outline-offset: -2px;
     }
+  }
+}
+
+// SidePanel Closed (node 12546:5413): the same buttons with only the icon. At 52 of panel the item is already the
+// 36 x 34 of the Figma; the name fades out and the item clips it.
+.l-sidebar.collapsed .sidepanel-nav {
+  .nav-item span,
+  .pinned-playlist span {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidepanel-nav .nav-item span {
+    transition: none;
   }
 }
 </style>

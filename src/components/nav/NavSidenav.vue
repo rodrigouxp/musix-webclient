@@ -85,7 +85,10 @@ function closeSidenav() {
         flex-direction: column;
         background-color: $body;
         transform: translateX(-240px);
-        transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        // the motion of the prototype (--panel-toggle-*): it goes about 24px past its place before it settles, and the
+        // shadow paints the gap that opens at the left edge
+        box-shadow: -40px 0 0 0 $body;
+        transition: transform var(--panel-toggle-transition);
 
         .sidenav_header {
             position: relative;
@@ -161,5 +164,11 @@ function closeSidenav() {
 
 .sidenav.active {
     transform: translateX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sidenav {
+        transition: none;
+    }
 }
 </style>

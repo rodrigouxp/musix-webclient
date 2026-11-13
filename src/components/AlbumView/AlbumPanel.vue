@@ -63,7 +63,7 @@
                         <span v-for="genre in genres" :key="genre.genrehash" class="genre-pill">{{ genre.name }}</span>
                     </div>
                     <div v-if="artists.length" class="album-artists">
-                        <ArtistThumb v-for="artist in artists" :key="artist.artisthash" :artist="artist" no-play />
+                        <ArtistThumb v-for="artist in artists" :key="artist.artisthash" :artist="artist" />
                     </div>
                 </div>
             </div>
@@ -115,6 +115,7 @@ import { useT } from '@/i18n'
 import { Artist, Track } from '@/interfaces'
 import useAlbumStore from '@/stores/pages/album'
 import useQueue from '@/stores/queue'
+import useTracker from '@/stores/tracker'
 import useTracklist from '@/stores/queue/tracklist'
 import updatePageTitle from '@/utils/updatePageTitle'
 import formatSeconds from '@/utils/useFormatSeconds'
@@ -136,6 +137,21 @@ const queue = useQueue()
 const tracklist = useTracklist()
 
 const album = computed(() => store.info)
+
+// the number of plays ("12 plays", "unplayed") comes with each track from the server and takes the place of the buttons on
+// the hover of the row. A play counted while the page is open updates that track.
+const tracker = useTracker()
+
+watch(
+    () => tracker.lastLogged,
+    logged => {
+        if (!logged) return
+
+        for (const track of store.srcTracks) {
+            if (track.trackhash === logged.trackhash) track.help_text = logged.help_text
+        }
+    }
+)
 
 // SECTION: the album
 const coverSrc = computed(() => paths.images.thumb.large + album.value.image + store.coverQuery)

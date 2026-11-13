@@ -71,7 +71,23 @@ defineProps<{
 
     .feed-row-cards {
         display: grid;
-        grid-template-columns: repeat(var(--feedpanel-card-columns), minmax(0, 1fr));
+        // Up to 8 cards per row, each one 1/8 of the width when there is room. When the 8 would be smaller than
+        // --feedpanel-card-min-width the cards wrap to fewer columns (never fewer than 2) instead of shrinking; the
+        // 8 items are always there, so it ends in up to 4 rows. The track minimum is the larger of the two limits (the
+        // 1/8 share and the minimum width), capped at half the width so 2 per row always fit.
+        grid-template-columns: repeat(
+            auto-fill,
+            minmax(
+                min(
+                    max(
+                        var(--feedpanel-card-min-width),
+                        calc((100% - (var(--feedpanel-card-columns) - 1) * var(--feedpanel-card-gap)) / var(--feedpanel-card-columns))
+                    ),
+                    calc((100% - (var(--feedpanel-card-columns-min) - 1) * var(--feedpanel-card-gap)) / var(--feedpanel-card-columns-min))
+                ),
+                1fr
+            )
+        );
         gap: var(--feedpanel-card-gap);
         align-items: start;
     }

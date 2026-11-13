@@ -18,6 +18,9 @@ export default defineStore('settings', {
         // the PlayingPanel of the desktop (above 600px): open or closed, kept between sessions. The PlayerBar's
         // thumbnail toggles it.
         queue_panel_open: false,
+        // the SidePanel of the desktop: collapsed to a strip of icons or not, kept between sessions. The header of the panel
+        // toggles it.
+        side_panel_collapsed: false,
         contextChildrenShowMode: contextChildrenShowMode.hover,
         artist_top_tracks_count: 5,
         // repeat_all: true,
@@ -108,6 +111,10 @@ export default defineStore('settings', {
         // queue panel 👇
         togglePlayingPanel() {
             this.queue_panel_open = !this.queue_panel_open
+        },
+        // side panel 👇
+        toggleSidePanel() {
+            this.side_panel_collapsed = !this.side_panel_collapsed
         },
         // context menu 👇
         setContextChildrenShowMode(mode: contextChildrenShowMode) {

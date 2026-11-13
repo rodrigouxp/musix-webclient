@@ -2,12 +2,12 @@
     <div
         ref="root"
         class="nowplaying-mobile"
-        :class="{ dragging, settling, closing }"
+        :class="{ dragging, settling, closing, released: releasedOut || (settling && !closing) }"
         :style="offset > 0 || settling ? { transform: `translateY(${offset}px)` } : undefined"
     >
         <div class="npm-top">
             <header class="npm-header">
-                <button class="npm-close" :aria-label="$t('NowPlayingMobile.Close')" :title="$t('NowPlayingMobile.Close')" @click="close">
+                <button class="npm-close" :aria-label="$t('NowPlayingMobile.Close')" :title="$t('NowPlayingMobile.Close')" @click="close()">
                     <ChevronSvg />
                 </button>
                 <component
@@ -68,6 +68,8 @@ const root = ref<HTMLElement | null>(null)
 const closing = ref(false)
 // after a release the sheet goes back (or out) with a transition; during the swipe it follows the finger without one
 const settling = ref(false)
+// the sheet leaves by the release of a swipe: it uses the easing of the release, not the one of the chevron
+const releasedOut = ref(false)
 
 const tab = computed<Tab>(() => {
     const current = route.params.tab
@@ -104,9 +106,11 @@ function leave() {
 }
 
 // slides down and then leaves
-function close() {
+// `released`: the sheet leaves after a swipe, so it keeps the easing of the release (the finger started the movement)
+function close(released = false) {
     if (closing.value) return
 
+    releasedOut.value = released
     closing.value = true
     settling.value = true
     offset.value = window.innerHeight
@@ -132,7 +136,7 @@ const { offset, dragging, reset } = useSwipeDown({
     // the sliders, the handles that move the rows, and the controls are not part of the swipe
     ignore: 'input, .qt-drag, .qg-drag, .playing-controls',
     onRelease(shouldClose) {
-        if (shouldClose) return close()
+        if (shouldClose) return close(true)
 
         settling.value = true
         reset()
@@ -160,6 +164,10 @@ const { offset, dragging, reset } = useSwipeDown({
         calc(var(--nowplaying-padding) + env(safe-area-inset-bottom, 0px))
         calc(var(--nowplaying-padding) + env(safe-area-inset-left, 0px));
     background-color: var(--nowplaying-bg);
+    // the motion goes about 10% past its place at the end of the rise and at the start of the way out: the shadow
+    // paints the background below the sheet so the page never shows under it (a pseudo-element would be cut by the
+    // overflow: clip of the root)
+    box-shadow: 0 20vh 0 0 var(--nowplaying-bg);
     z-index: 1000;
     // clip, not hidden: nothing can scroll this screen by script (scrollIntoView of a lyrics line)
     overflow: clip;
@@ -179,6 +187,13 @@ const { offset, dragging, reset } = useSwipeDown({
     &.settling,
     &.closing {
         transition: transform var(--nowplaying-slide-duration) var(--nowplaying-slide-easing);
+    }
+
+    // coming back to place or going out after a swipe: the finger already started the movement and a step backwards
+    // would look like a glitch (own decision)
+    &.released.settling,
+    &.released.closing {
+        transition-timing-function: var(--nowplaying-release-easing);
     }
 
     &.closing {
@@ -297,8 +312,11 @@ const { offset, dragging, reset } = useSwipeDown({
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .nowplaying-mobile {
+    .nowplaying-mobile,
+    .nowplaying-mobile.settling,
+    .nowplaying-mobile.closing {
         animation: none;
+        transition: none;
     }
 }
 </style>
