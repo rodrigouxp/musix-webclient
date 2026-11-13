@@ -43,7 +43,7 @@
 
         <!-- 2. actions: volume, lyrics, favorite and add -->
         <div class="pb-actions">
-            <Volume inline />
+            <Volume />
             <LyricsButton />
             <HeartSvg
                 :title="$t('BottomBar.Favorite')"
@@ -594,7 +594,6 @@ function showAddMenu() {
             svg {
                 width: var(--playerbar-badge-icon-size);
                 height: var(--playerbar-badge-icon-size);
-                opacity: var(--playerbar-badge-icon-opacity);
                 // the chevron points right: up when the queue is closed, down when it is open
                 transform: rotate(-90deg);
                 transition: transform var(--playerbar-badge-fade) ease-out;

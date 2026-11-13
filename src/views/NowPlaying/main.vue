@@ -1,5 +1,7 @@
 <template>
-    <div class="now-playing-view content-page" :class="{ isSmall, isMedium }" style="height: 100%">
+    <!-- phone (up to 600px): the NowPlaying screen of the Figma. Above that: only the lyrics, as before -->
+    <NowPlayingMobile v-if="isMobile" />
+    <div v-else class="now-playing-view content-page" :class="{ isSmall, isMedium }" style="height: 100%">
         <div class="now-playing-content rounded">
             <div
                 class="npbgimage"
@@ -28,54 +30,28 @@
                     })`,
                 }"
             ></div>
-            <component :is="routeMap[$route.params.tab as keyof typeof routeMap].component"> </component>
+            <LyricsView />
         </div>
-        <!-- <div class="tracklist">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut repudiandae accusamus dolorum impedit sapiente deleniti deserunt magni repellendus, aperiam ducimus accusantium esse quas. Repellendus id enim atque quaerat minus distinctio?
-        </div> -->
-        <!-- <DynamicScroller :items="scrollerItems" :min-item-size="64" class="scroller" style="height: 100%">
-            <template #before> </template>
-            <template #default="{ item, index, active }">
-                <DynamicScrollerItem
-                    :item="item"
-                    :active="active"
-                    :size-dependencies="[item.props]"
-                    :data-index="index"
-                >
-                    <component
-                        :is="item.component"
-                        :key="index"
-                        v-bind="item.props"
-                        @playThis="playFromQueue(item.props.index - 1)"
-                    ></component>
-                </DynamicScrollerItem>
-            </template>
-        </DynamicScroller> -->
     </div>
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, ref } from 'vue'
+import { ref } from 'vue'
 
 import { paths } from '@/config'
 import useColor from '@/stores/colors'
 import useQueueStore from '@/stores/queue'
 import { transitionColor } from '@/utils/colortools'
-import { isMedium, isSmall } from '@/stores/content-width'
+import { isMedium, isMobile, isSmall } from '@/stores/content-width'
+
+import NowPlayingMobile from '@/components/NowPlayingMobile/NowPlayingMobile.vue'
+import LyricsView from '@/views/LyricsView/main.vue'
 
 const colors = useColor()
 const queue = useQueueStore()
 
 const darkMuted = ref<string>('rgb(0, 0, 0)')
 const darkVibrant = ref<string>('rgb(0, 0, 0)')
-
-const routeMap = {
-    home: {
-        component: defineAsyncComponent(() => import('@/components/NowPlaying/HomeScreen.vue')),
-        class: 'np-route-view',
-    },
-    lyrics: { component: defineAsyncComponent(() => import('@/views/LyricsView/main.vue')) },
-}
 
 // watch for changes to the colors.darkVibrant using pinia watcher and transition the currentColor to the new color
 colors.$subscribe((_mutation, state) => {
@@ -102,32 +78,6 @@ colors.$subscribe((_mutation, state) => {
 function rgba(color: string, transparency: number) {
     return color.replace('rgb', 'rgba').replace(')', `, ${transparency})`)
 }
-
-// function playFromQueue(index: number) {
-//     queue.play(index)
-// }
-
-// const scrollerItems = computed(() => {
-//     const items: ScrollerItem[] = []
-
-//     const trackComponents = store.tracklist.map((track, index) => {
-//         track.index = index // used in context menu to remove from queue
-//         return {
-//             id: index,
-//             component: SongItem,
-//             props: {
-//                 track,
-//                 index: index + 1,
-//                 isCurrent: index === queue.currentindex,
-//                 isCurrentPlaying: index === queue.currentindex && queue.playing,
-//                 isQueueTrack: true,
-//                 source: store.from.type,
-//             },
-//         }
-//     })
-
-//     return items.concat(trackComponents)
-// })
 </script>
 
 <style lang="scss">
@@ -140,12 +90,6 @@ function rgba(color: string, transparency: number) {
 
     @include allPhones {
         height: calc(100% + 3rem);
-    }
-
-    .np-route-view {
-        z-index: 10;
-        width: 100%;
-        height: 100%;
     }
 
     .npbgimage,

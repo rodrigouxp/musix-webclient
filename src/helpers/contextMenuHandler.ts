@@ -1,4 +1,5 @@
 import { Store } from 'pinia'
+import type { Placement } from '@popperjs/core'
 import { Ref } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -30,11 +31,19 @@ function flagWatcher(menu: Store, flag: Ref<boolean>) {
     })
 }
 
-export const showTrackContextMenu = (e: MouseEvent, track: Track, flag: Ref<boolean>) => {
+// `placement` and `fallbacks` are for a menu that opens from a button instead of from the point of a click (the options
+// of NowPlaying, at the bottom of the screen, open upward)
+export const showTrackContextMenu = (
+    e: MouseEvent,
+    track: Track,
+    flag: Ref<boolean>,
+    placement?: Placement,
+    fallbacks?: Placement[]
+) => {
     const menu = useContextStore()
     const options = () => trackContextItems(track)
 
-    menu.showContextMenu(e, options, ContextSrc.Track)
+    menu.showContextMenu(e, options, ContextSrc.Track, placement, fallbacks)
 
     flagWatcher(menu, flag)
 }

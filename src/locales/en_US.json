@@ -450,11 +450,16 @@
     "PlaylistName": "Playlist name",
     "Title": "New Playlist"
   },
-  "NowPlaying": {
-    "GoToAlbum": "Go to album",
-    "GoToPlaySource": "Go to play source",
-    "Queue": "Queue",
-    "UpNext": "Up Next"
+  "NowPlayingMobile": {
+    "Close": "Close Now Playing",
+    "GoToSource": "Go to play source",
+    "Options": "More options",
+    "Tabs": {
+      "Lyrics": "Lyrics",
+      "NowPlaying": "Now playing",
+      "Queue": "Queue"
+    },
+    "Timeline": "Seek"
   },
   "Onboarding": {
     "CreateAccountDesc": "This account will be used to manage your server.",

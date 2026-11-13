@@ -103,12 +103,16 @@ const NowPlayingView = {
     path: '/nowplaying/:tab',
     name: 'NowPlaying',
     component: NowPlaying,
-    // the page of Now Playing is not on the desktop of the grid of panels (for now); the lyrics are one of its tabs
-    // and stay
+    // phone (up to 600px): the NowPlaying screen with its three tabs (home, lyrics, queue). Above that the page of Now
+    // Playing is not on the desktop of the grid of panels (for now); the lyrics are the only tab that stays
     beforeEnter: async (to: any) => {
         const { default: useSettings } = await import('@/stores/settings')
 
-        if (useSettings().is_panel_layout && to.params.tab !== 'lyrics') return { name: 'Home' }
+        if (useSettings().is_panel_layout) {
+            if (to.params.tab !== 'lyrics') return { name: 'Home' }
+        } else if (!['home', 'lyrics', 'queue'].includes(to.params.tab)) {
+            return { name: 'NowPlaying', params: { tab: 'home' }, replace: true }
+        }
     },
 }
 

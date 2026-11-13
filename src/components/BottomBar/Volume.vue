@@ -1,6 +1,6 @@
 <template>
-    <!-- desktop and tablet: the speaker and, always open and horizontal, the slider next to it -->
-    <div v-if="inline" class="speaker-inline" :title="`${volume_percent}%`" @wheel.passive="handleMouseWheel">
+    <!-- the speaker and, always open and horizontal, the slider next to it -->
+    <div class="speaker-inline" :title="`${volume_percent}%`" @wheel.passive="handleMouseWheel">
         <button class="speaker-icon" :aria-label="$t('BottomBar.VolumeLabel', { percent: volume_percent })" @click="settings.toggleMute">
             <VolumeMuteSvg v-if="settings.mute || settings.volume == 0.0" />
             <VolumeMidSvg v-else-if="settings.volume > 0.75" />
@@ -23,31 +23,6 @@
             @input="changeVolume"
         />
     </div>
-    <button v-else class="speaker" @wheel.passive="handleMouseWheel">
-        <div class="icon" @click="settings.toggleMute">
-            <VolumeMuteSvg v-if="settings.mute || settings.volume == 0.0" />
-            <VolumeMidSvg v-else-if="settings.volume > 0.75" />
-            <VolumeLowSvg v-else-if="settings.volume > 0" />
-        </div>
-        <div class="dialog rounded-sm pad-sm">
-            <input
-                id="volume"
-                type="range"
-                name="volume"
-                max="1"
-                min="0"
-                step="0.01"
-                :value="settings.volume"
-                :aria-label="$t('BottomBar.VolumeLabel', { percent: volume_percent })"
-                :aria-valuetext="`${volume_percent}%`"
-                :style="{
-                    backgroundSize: `${volume_percent}% 100%`,
-                }"
-                @input="changeVolume"
-            />
-            <div className="volume_indicator">{{ volume_percent }}</div>
-        </div>
-    </button>
 </template>
 
 <script setup lang="ts">
@@ -58,12 +33,6 @@ import VolumeLowSvg from '@/assets/icons/figma/speaker-min.svg'
 import VolumeMuteSvg from '@/assets/icons/figma/speaker-mute.svg'
 import useSettingsStore from '@/stores/settings'
 import { clamp } from '@/utils/audio/volume'
-
-defineProps<{
-    // the slider is always open next to the speaker (above 900px); without it the slider is the
-    // popover that opens over the speaker
-    inline?: boolean
-}>()
 
 const settings = useSettingsStore()
 
@@ -99,13 +68,7 @@ const handleMouseWheel = (event: WheelEvent) => {
 </script>
 
 <style lang="scss">
-.b-bar .right-group button.speaker {
-    border-top: 1px solid transparent !important;
-    border-top-left-radius: 0 !important;
-    border-top-right-radius: 0 !important;
-}
-
-// the speaker and the slider that is always open (desktop and tablet)
+// the speaker and the slider that is always open (the PlayerBar and the controls of NowPlaying on the phone)
 .speaker-inline {
     display: flex;
     align-items: center;
@@ -136,75 +99,6 @@ const handleMouseWheel = (event: WheelEvent) => {
             width: var(--playerbar-thumb-size);
             cursor: pointer;
         }
-    }
-}
-
-.speaker {
-    position: relative;
-
-    .icon {
-        height: 100%;
-        width: 100%;
-        display: grid;
-        place-items: center;
-    }
-
-    .dialog {
-        position: absolute;
-        cursor: default;
-        bottom: 56px;
-        left: -1px;
-        height: 48px;
-        padding: 0 6px;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        background-color: $gray;
-        border-top: 1px solid $gray3;
-        border-bottom: 1px solid $gray3;
-        border-right: 1px solid $gray3;
-        border-bottom-left-radius: 0;
-        border-top-left-radius: 0;
-        -webkit-font-smoothing: antialiased;
-        transform: rotate(270deg) translateX(-50%) perspective(1px);
-        transform-origin: left top;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.2s ease-out, visibility 0.2s ease-out;
-
-        input {
-            width: max-content;
-            max-width: 87px;
-            margin: 0;
-            touch-action: pan-x;
-            background: linear-gradient(to top, #ffffff, #ffffff) 0% 50% no-repeat, $gray4;
-
-            &::-webkit-slider-thumb {
-                height: 1rem;
-                width: 1rem;
-                cursor: pointer;
-            }
-
-            &::-moz-range-thumb {
-                height: 1rem;
-                width: 1rem;
-                cursor: pointer;
-            }
-        }
-    }
-
-    &:hover {
-        .dialog {
-            opacity: 1;
-            visibility: visible;
-        }
-    }
-
-    .volume_indicator {
-        font-weight: 600;
-        width: 24px;
-        height: 18px;
-        transform: rotate(90deg) translate3d(0, 0, 0);
     }
 }
 </style>

@@ -1,6 +1,4 @@
-$g-border: solid 1px $gray5;
-
-// The phone layout (up to 600px): the bar of the top, the page and the bar of the player, one over the other.
+// The phone layout (up to 600px): the bar of the top, the page and the FixedControls, one over the other.
 // Above 600px the app is the grid of panels (see the end of this file).
 #app-grid {
     display: grid;
@@ -41,12 +39,6 @@ $g-border: solid 1px $gray5;
         border-radius: 5rem;
         background-color: $gray;
     }
-}
-
-.b-bar {
-    grid-area: bottombar;
-    border-top: $g-border;
-    // background-color: $bars;
 }
 
 .content-page {

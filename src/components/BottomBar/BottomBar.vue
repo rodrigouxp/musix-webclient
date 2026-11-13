@@ -1,13 +1,7 @@
 <template>
-    <!-- above 600px: the PlayerBar of the Figma (in two rows up to 900px). Up to 600px, the phone keeps the old bar -->
+    <!-- above 600px: the PlayerBar of the Figma (in two rows up to 900px). Up to 600px: the FixedControls of the phone -->
     <PlayerBar v-if="settings.is_panel_layout" :tablet="narrow" @handleFav="handleFav" />
-    <div v-else class="b-bar">
-        <LeftGroup @handleFav="handleFav" />
-        <div class="center">
-            <Progress />
-        </div>
-        <Navigation />
-    </div>
+    <FixedControls v-else />
 </template>
 
 <script setup lang="ts">
@@ -19,12 +13,8 @@ import { isNarrowWindow } from '@/stores/content-width'
 import useQStore from '@/stores/queue'
 import useSettings from '@/stores/settings'
 
-import Progress from '@/components/LeftSidebar/NP/Progress.vue'
-import Navigation from '@/components/LeftSidebar/NavButtons.vue'
-
+import FixedControls from '@/components/FixedControls/FixedControls.vue'
 import PlayerBar from '@/components/PlayerBar/PlayerBar.vue'
-
-import LeftGroup from './Left.vue'
 
 const queue = useQStore()
 const settings = useSettings()
@@ -42,138 +32,3 @@ function handleFav() {
     )
 }
 </script>
-
-<style lang="scss">
-.b-bar {
-    display: grid;
-    grid-template-columns: 1fr max-content 1fr;
-    align-items: center;
-    z-index: 1;
-
-    @include allPhones {
-        display: flex;
-        flex-direction: column;
-        align-items: unset;
-        gap: $small;
-        padding: $medium 1rem;
-
-        /* Hiding the dot/thumb/handle for readonly input */
-        /* Webkit browsers, Firefox, IE etc */
-        &:hover > .center > #progress::-webkit-slider-thumb {
-            display: none;
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        &:hover > .center > #progress::-moz-range-thumb {
-            display: none;
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        &:hover > .center > #progress::-ms-thumb {
-            display: none;
-            opacity: 0;
-            visibility: hidden;
-        }
-    }
-
-    button {
-        background: transparent;
-        // round (pill) hover on every control of the bar
-        border-radius: 400px;
-        width: 3rem;
-        transition: background-color 0.2s ease-out, border-color 0.2s ease-out;
-
-        // the hover is only the fill, with no border (until 900px it keeps its border)
-        &:hover {
-            background-color: $gray !important;
-
-            @include allPhones {
-                border: solid 1px $gray3 !important;
-            }
-        }
-
-        &:focus-visible {
-            outline: 2px solid var(--color-primary-300);
-            outline-offset: -2px;
-        }
-
-        &:disabled {
-            opacity: 0.4;
-            pointer-events: none;
-        }
-
-        @include allPhones {
-            height: 3rem;
-        }
-
-        @include largePhones {
-            width: 2.5rem;
-            height: 2.5rem;
-
-            &:nth-child(2) {
-                width: 3.5rem;
-            }
-        }
-
-        @include smallestPhones {
-            &:first-child {
-                display: none;
-            }
-
-            &:nth-child(2) {
-                margin-left: $smaller;
-            }
-
-            &:last-child {
-                display: none;
-            }
-        }
-    }
-
-    &:hover {
-        // INFO: Show the progress bar when hovering over the bottom bar
-        #progress::-moz-range-thumb {
-            height: 1rem;
-            width: 1rem;
-        }
-
-        #progress::-webkit-slider-thumb {
-            height: 1rem;
-            width: 1rem;
-        }
-
-        #progress::-ms-thumb {
-            height: 1rem;
-            width: 1rem;
-        }
-
-        // INFO: Also show the expand button
-        .np-image .expandicon {
-            opacity: 1;
-        }
-    }
-
-    .center {
-        display: grid;
-        align-items: center;
-        gap: 0.625rem;
-
-        width: 30rem;
-
-        @include allPhones {
-            width: 100% !important;
-            margin: 4px -16px;
-            user-select: none;
-            pointer-events: none;
-
-            > #progress {
-                height: 1px !important;
-                width: 100vw !important;
-                margin: unset;
-            }
-        }
-    }
-}
-</style>

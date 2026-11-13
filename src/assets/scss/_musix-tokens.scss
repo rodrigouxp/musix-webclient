@@ -195,8 +195,7 @@
   --playerbar-play-pad-left: 4px; // só o play: o triângulo fica mais centrado; o pause não tem padding (Rodrigo, 2026-11-07)
   --playerbar-volume-pad-right: 7px; // folga da bolinha do volume (Figma: padding-right do grupo)
   --playerbar-badge-size: 24px; // círculo do chevron sobre a miniatura (hover, nó 12408:1358)
-  --playerbar-badge-bg: var(--color-neutral-300);
-  --playerbar-badge-icon-opacity: 0.25; // o chevron do badge está com 25% de opacidade (Figma, nó 12385:255)
+  --playerbar-badge-bg: color-mix(in srgb, var(--color-neutral-300) 25%, transparent); // o círculo é neutral-300 a 25% e o chevron é branco, sem opacidade (Figma, 2026-11-13)
   --playerbar-badge-icon-size: 18px; // o chevron em traço de 1,5 (o glifo de 8 x 12) desenhado a 0,75x
   --playerbar-badge-fade: 150ms;
   --playerbar-transition: 400ms ease-in-out; // pausado <-> tocando (decisão minha: o Figma não tem transição)
@@ -421,4 +420,96 @@
   --album-cover-overlay-margin-y: 160px; // 80 acima e abaixo (956 - 796)
   --album-cover-overlay-margin-x: 40px;
   --album-cover-overlay-fade: 150ms; // protótipo: dissolve, ease out, 150 ms
+
+  // FixedControls (Figma nó 12540:4132, 412 de largura): o bloco fixo de baixo do celular (até 600px), com a
+  // PlayerBar mobile e a NavBarMobile, dois blocos de neutral-900
+  --fixedcontrols-padding: 4px;
+  --fixedcontrols-gap: 8px;
+  --fixedcontrols-bg: var(--color-neutral-900);
+  --fixedcontrols-radius: 8px;
+
+  // PlayerBar mobile (type=default-mobile, nó 12535:3645). O play é o da PlayerBar do desktop (--playerbar-play-*)
+  --playerbarmobile-padding: 8px;
+  --playerbarmobile-add-size: 20px; // caixa do ícone add (o glifo de 20 no viewBox de 24 fica em 16,7)
+  --playerbarmobile-track-gap: 14px; // entre os textos e a capa
+  --playerbarmobile-timeline-height: 2px; // linha de progresso, só de exibição
+  --playerbarmobile-timeline-inset: 4px; // da borda esquerda e da direita do bloco
+  --playerbarmobile-timeline-color: var(--color-neutral-300);
+  --playerbarmobile-timeline-radius: 8px;
+  // o chevron para cima sobre a capa é o mesmo badge da PlayerBar (--playerbar-badge-*: círculo de 24, neutral-300 a 25%, chevron branco)
+
+  // NavBarMobile (nó 12536:3896)
+  --navbarmobile-padding: 20px;
+  --navbarmobile-button-size: 48px;
+  --navbarmobile-icon-size: 24px; // caixa do ícone (glifo de 20)
+  --navbarmobile-active-bg: var(--color-neutral-700);
+
+  // NowPlaying mobile (nó 12294:355, 412 x 780)
+  --nowplaying-bg: var(--color-background);
+  --nowplaying-padding: 20px;
+  --nowplaying-gap: 12px; // entre o cabeçalho, a capa e o título
+  --nowplaying-close-size: 14px; // chevron para baixo, no canto de cima à esquerda
+  --nowplaying-close-inset: 2px; // do canto do conteúdo até o chevron
+  --nowplaying-close-hit: 44px; // área de toque do chevron (decisão minha: o ícone de 14 é pequeno demais para o dedo)
+  --nowplaying-source-gap: 4px; // entre o ícone e o nome da origem
+  --nowplaying-source-icon-size: 18px;
+  --nowplaying-source-color: var(--color-neutral-300);
+  --nowplaying-playing-color: var(--color-success-500); // as barrinhas de "tocando" das abas Lyrics e Queue
+  --nowplaying-cover-radius: 8px;
+  --nowplaying-cover-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
+  --nowplaying-info-gap: 4px; // entre o título e o artista
+  --nowplaying-title-color: var(--color-neutral-white);
+  --nowplaying-artist-color: var(--color-neutral-300);
+  --nowplaying-actions-padding: 4px 0;
+  --nowplaying-actions-gap: 12px; // entre o favorite e o add
+  --nowplaying-actions-icon-size: 24px;
+  --nowplaying-slide-duration: 300ms; // subir ao abrir, descer ao fechar (decisão minha)
+  --nowplaying-slide-easing: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --nowplaying-tab-gap: 12px; // entre o cabeçalho, o corpo da aba e os controles
+  --nowplaying-tab-padding-bottom: 20px; // sob o corpo das abas Lyrics e Queue
+
+  // PlayingControls (nó 12540:4287): iguais em todas as abas
+  --playingcontrols-gap: 20px;
+  --playingcontrols-padding-top: 8px;
+  --playingcontrols-timeline-gap: 8px; // entre a barra e os tempos
+  --playingcontrols-bar-height: 4px;
+  --playingcontrols-thumb-size: 14px; // a bolinha da barra, como na PlayerBar
+  --playingcontrols-button-size: 34px; // shuffle, anterior, próxima, repeat e as abas
+  --playingcontrols-icon-size: 20px; // caixa do svg (glifo de 20 no viewBox de 24)
+  --playingcontrols-play-size: 52px;
+  --playingcontrols-play-icon-size: 30.59px; // o ícone do play desenhado em 52/34, como na PlayerBar (23,53 a 40/34)
+  --playingcontrols-play-pad-left: 5px; // só o play: o triângulo fica mais centrado (4 a 40, como na PlayerBar)
+  --playingcontrols-play-bg: var(--color-neutral-700);
+  --playingcontrols-actions-height: 52px;
+  --playingcontrols-volume-gap: 8px; // entre o alto-falante e a barra
+  --playingcontrols-volume-icon-box: 32px;
+  --playingcontrols-volume-width: 94px;
+  --playingcontrols-options-gap: 20px; // entre as três abas e as opções
+  --playingcontrols-options-width: 12px; // os três pontinhos (12 x 34)
+  --playingcontrols-tab-active-bg: var(--color-neutral-700);
+  --playingcontrols-time-bg: var(--color-neutral-700);
+
+  // NowPlaying:Lyrics (nó 12540:4213)
+  --nplyrics-width: 354px;
+  --nplyrics-gap: 18px; // entre as linhas
+  --nplyrics-padding: 20px 0;
+  --nplyrics-past: var(--color-neutral-white);
+  --nplyrics-next: var(--color-neutral-500);
+  --nplyrics-current-start: #dbdbdb; // degradê horizontal da linha atual (o cinza não tem estilo no Figma)
+  --nplyrics-current-end: rgb(219 219 219 / 20%);
+  --nplyrics-edge: 8%; // a borda suave do degradê: de 22% a 30% da largura no Figma
+}
+
+// NowPlaying:Queue (nó 12541:4686): a mesma lista da PlayingPanel (QueueList), em tamanho de toque. A aba só troca os
+// tokens da lista; o desktop segue com os de cima
+.np-queue {
+  --playingpanel-track-height: 48px; // capa de 40 + padding de 4
+  --playingpanel-track-gap: 12px; // entre o nome e os botões
+  --playingpanel-picture-size: 40px;
+  --playingpanel-button-size: 20px; // repeat, delete e drag
+  --playingpanel-button-hit: 32px; // área de toque: 20 do ícone + 12 de espaço, sem sobrepor o vizinho (decisão minha)
+  --playingpanel-button-gap: 12px;
+  --playingpanel-header-height: 20px;
+  --playingpanel-header-gap: 12px; // entre o nome do grupo e os botões
+  --playingpanel-header-icon-size: 20px;
 }
