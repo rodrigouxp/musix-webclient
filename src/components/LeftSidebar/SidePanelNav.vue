@@ -11,10 +11,7 @@
           query: menu.query && menu.query(),
         }"
         class="nav-item"
-        :class="{
-          active: $route.name === menu.route_name,
-          'icon-active nav-favorite': menu.route_name === Routes.favorites,
-        }"
+        :class="{ active: $route.name === menu.route_name }"
         :aria-label="settings.side_panel_collapsed ? menu.name : undefined"
         :title="settings.side_panel_collapsed ? menu.name : undefined"
       >
@@ -26,30 +23,12 @@
     <div class="sidepanel-divider" role="separator"></div>
 
     <div class="sidepanel-playlists">
-      <router-link
-        v-for="menu in playlists"
-        :key="menu.name"
-        v-wave
-        :to="{
-          name: menu.route_name || '',
-          params: menu?.params,
-          query: menu.query && menu.query(),
-        }"
-        class="nav-item"
-        :class="{ active: $route.name === menu.route_name }"
-        :aria-label="settings.side_panel_collapsed ? menu.name : undefined"
-        :title="settings.side_panel_collapsed ? menu.name : undefined"
-      >
-        <component :is="menu.icon" />
-        <span>{{ menu.name }}</span>
-      </router-link>
       <PinnedPlaylists />
     </div>
   </nav>
 </template>
 
 <script setup lang="ts">
-import { Routes } from "@/router";
 import PinnedPlaylists from "./PinnedPlaylists.vue";
 import { useNavItems } from "./navitems";
 import useSettings from "@/stores/settings";
@@ -57,10 +36,8 @@ import useSettings from "@/stores/settings";
 const settings = useSettings();
 const { menus } = useNavItems();
 
-// the divider splits the menu in the group of the buttons and the group of Playlists
-const dividerAt = menus.findIndex((menu) => "separator" in menu && menu.separator);
-const buttons = menus.slice(0, dividerAt).filter((menu) => !("separator" in menu));
-const playlists = menus.slice(dividerAt + 1).filter((menu) => !("separator" in menu));
+// the divider splits the menu in the group of the buttons (Home to Favorites) and the pinned playlists under it
+const buttons = menus.filter((menu) => !("separator" in menu));
 </script>
 
 <style lang="scss">
@@ -121,15 +98,15 @@ const playlists = menus.slice(dividerAt + 1).filter((menu) => !("separator" in m
       transition: opacity var(--panel-toggle-duration) ease-in-out;
     }
 
-    // Favorites: the heart is always filled and red in the Figma (the item is not "active" for the colors)
-    &.nav-favorite svg {
-      color: var(--sidepanel-favorite-color);
-    }
-
     // the active item is the neutral/700 pill of the Figma; the hover is not in the Figma and keeps the grey
     // the app already had
     &.active {
       background-color: var(--sidepanel-item-active-bg);
+
+      // the filled vector of the icon (the "active" one of the Figma) is white
+      svg {
+        color: var(--sidepanel-icon-active-color);
+      }
     }
 
     &:hover:not(.active) {

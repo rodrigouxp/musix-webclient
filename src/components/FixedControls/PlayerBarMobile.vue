@@ -11,6 +11,17 @@
             <PlaySvg v-else />
         </button>
         <button
+            class="pbm-fav"
+            :class="{ favorited: queue.currenttrack?.is_favorite }"
+            :title="$t('BottomBar.Favorite')"
+            :aria-label="$t('BottomBar.Favorite')"
+            :aria-pressed="!!queue.currenttrack?.is_favorite"
+            :disabled="!hasTrack"
+            @click="toggleFavorite"
+        >
+            <FavoriteSvg :class="{ 'icon-active': queue.currenttrack?.is_favorite }" />
+        </button>
+        <button
             ref="addButton"
             class="pbm-add"
             :title="$t('BottomBar.Add')"
@@ -23,8 +34,12 @@
 
         <div class="pbm-track">
             <div class="pbm-info">
-                <span class="pbm-title">{{ queue.currenttrack?.title || $t('BottomBar.PlaceholderTitle') }}</span>
-                <span class="pbm-artists">{{ artists }}</span>
+                <MarqueeText class="pbm-title" align="end" :text="queue.currenttrack?.title || $t('BottomBar.PlaceholderTitle')" />
+                <ArtistName
+                    :artists="queue.currenttrack?.artists || []"
+                    :albumartists="queue.currenttrack?.albumartists || $t('BottomBar.PlaceholderArtist')"
+                    class="pbm-artists"
+                />
             </div>
             <button
                 class="pbm-artwork"
@@ -39,7 +54,6 @@
                     img-class="rounded-xsm"
                     :style="{ width: 'var(--playerbar-artwork-size)', aspectRatio: '1' }"
                 />
-                <span class="pbm-badge"><ChevronSvg /></span>
             </button>
         </div>
 
@@ -55,6 +69,8 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { paths } from '@/config'
+import { favType } from '@/enums'
+import favoriteHandler from '@/helpers/favoriteHandler'
 import { showPlayingAddMenu } from '@/helpers/contextMenuHandler'
 import { Routes } from '@/router'
 
@@ -62,37 +78,40 @@ import { buffering } from '@/stores/player'
 import useQueue from '@/stores/queue'
 
 import AddSvg from '@/assets/icons/figma/add.svg'
-import ChevronSvg from '@/assets/icons/figma/chevron.svg'
+import FavoriteSvg from '@/assets/icons/figma/favorite.svg'
 import PauseSvg from '@/assets/icons/figma/pause.svg'
 import PlaySvg from '@/assets/icons/figma/play.svg'
+import ArtistName from '@/components/shared/ArtistName.vue'
 import ImageLoader from '@/components/shared/ImageLoader.vue'
+import MarqueeText from '@/components/shared/MarqueeText.vue'
 import Spinner from '@/components/shared/Spinner.vue'
 
-// PlayerBar type=default-mobile of the Figma (node 12535:3645): play, add, and on the right the name and artists (right
-// aligned) and the artwork, which opens NowPlaying. Tokens --playerbarmobile-*; the play button and the artwork are
-// the sizes of the desktop bar (--playerbar-*).
+// PlayerBar type=default-mobile of the Figma (node 12535:3645): play, favorite and add (12 between them) and the frame of
+// the song, which fills the rest: the title (a long one runs in a loop, like the albums of the PlayingPanel), the artists
+// (links, neutral/300) and the artwork, which opens NowPlaying (no chevron over it on the phone). While a song plays the
+// bar takes the dynamic-playbar color, as the desktop one. Tokens --playerbarmobile-*; the play button and the artwork
+// are the sizes of the desktop bar (--playerbar-*).
 const queue = useQueue()
 const router = useRouter()
 
 const addButton = ref<HTMLElement>()
 const hasTrack = computed(() => !!queue.currenttrack?.trackhash)
 
-// the artists as plain text: a link in a bar this small would be an accidental tap
-const artists = computed(() => {
-    const list = queue.currenttrack?.artists
-
-    if (list?.length) return list.map(artist => artist.name).join(', ')
-
-    const albumartists = queue.currenttrack?.albumartists
-
-    return typeof albumartists === 'string' ? albumartists : ''
-})
-
 const progress = computed(() => {
     const { current, full } = queue.duration
 
     return full ? Math.min(100, Math.max(0, (current / full) * 100)) : 0
 })
+
+function toggleFavorite() {
+    favoriteHandler(
+        queue.currenttrack?.is_favorite,
+        favType.track,
+        queue.currenttrack?.trackhash || '',
+        () => null,
+        () => null
+    )
+}
 
 function showAddMenu() {
     if (!addButton.value || !queue.currenttrack) return
@@ -110,21 +129,23 @@ function openNowPlaying() {
     --pbm-play-bg: var(--playerbar-paused-play-bg);
     --pbm-play-icon: var(--playerbar-paused-play-icon);
     --pbm-play-hover: var(--playerbar-paused-play-hover);
+    --pbm-bg: var(--playerbar-paused-bg);
 
     position: relative;
     min-width: 0;
     box-sizing: border-box;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    // the least space between the buttons and the song (own decision: the Figma has the three groups at space-between)
-    gap: var(--playerbarmobile-track-gap);
+    // play, favorite and add are 12 apart; the frame of the song fills what is left
+    gap: var(--playerbarmobile-actions-gap);
     padding: var(--playerbarmobile-padding);
     border-radius: var(--fixedcontrols-radius);
-    background-color: var(--fixedcontrols-bg);
+    background-color: var(--pbm-bg);
     font-family: var(--playerbar-font);
+    transition: background-color var(--playerbar-transition);
 
     &.is-playing {
+        --pbm-bg: var(--playerbar-playing-bg);
         --pbm-play-bg: var(--playerbar-playing-play-bg);
         --pbm-play-icon: var(--playerbar-playing-play-icon);
         --pbm-play-hover: var(--playerbar-playing-play-hover);
@@ -185,6 +206,7 @@ function openNowPlaying() {
     }
 
     // the icon is 20; the tap area is the one of the other controls, and the negative margin keeps the layout of 20
+    .pbm-fav,
     .pbm-add {
         display: grid;
         place-items: center;
@@ -203,18 +225,27 @@ function openNowPlaying() {
         }
     }
 
+    // favorited: error/300, as in the other heart buttons
+    .pbm-fav.favorited {
+        color: var(--color-error-300);
+    }
+
+    // the frame of the song (fill x hug): the text, right aligned next to the artwork (as in the Penpot), and the artwork
+    // on the right. The gap from the add is its own
     .pbm-track {
         display: flex;
         align-items: center;
-        flex: 0 1 auto;
+        flex: 1 1 0;
         gap: var(--playerbarmobile-track-gap);
         min-width: 0;
+        margin-left: calc(var(--playerbarmobile-track-gap) - var(--playerbarmobile-actions-gap));
     }
 
     .pbm-info {
         display: flex;
         flex-direction: column;
         align-items: flex-end;
+        flex: 1 1 0;
         min-width: 0;
         text-align: right;
     }
@@ -224,19 +255,25 @@ function openNowPlaying() {
         @include text('action-button-14px');
         max-width: 100%;
         white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
     }
 
     .pbm-title {
+        width: 100%;
         color: var(--playerbar-title-color);
     }
 
+    // the artists: links, neutral/300 (the name of the artist opens the page of the artist)
     .pbm-artists {
-        color: var(--playerbar-artist-color);
+        display: block;
+        color: var(--playerbarmobile-artist-color);
+
+        > div {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     }
 
-    // the artwork is a button that opens NowPlaying; the chevron (up, 24) is over it all the time
+    // the artwork is a button that opens NowPlaying
     .pbm-artwork {
         position: relative;
         width: var(--playerbar-artwork-size);
@@ -247,30 +284,6 @@ function openNowPlaying() {
         .il-image,
         .blurhash-placeholder {
             border-radius: var(--playerbar-artwork-radius);
-        }
-
-        // the badge of the desktop bar: a circle of 24 with the white chevron (up), over the artwork all the time
-        .pbm-badge {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            display: grid;
-            place-items: center;
-            width: var(--playerbar-badge-size);
-            height: var(--playerbar-badge-size);
-            margin: calc(var(--playerbar-badge-size) / -2) 0 0 calc(var(--playerbar-badge-size) / -2);
-            border-radius: 400px;
-            background-color: var(--playerbar-badge-bg);
-            // over the image of the ImageLoader (its z-index is 1)
-            z-index: 2;
-            pointer-events: none;
-
-            svg {
-                width: var(--playerbar-badge-icon-size);
-                height: var(--playerbar-badge-icon-size);
-                // the chevron points right: -90deg is up
-                transform: rotate(-90deg);
-            }
         }
     }
 

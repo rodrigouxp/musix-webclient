@@ -1,11 +1,15 @@
 <template>
     <div class="npm-home">
-        <div class="npm-cover">
-            <ImageLoader
-                :image="paths.images.thumb.large + queue.currenttrack?.image"
-                :blurhash="queue.currenttrack?.blurhash"
-                :duration="1000"
-            />
+        <!-- the cover is the only thing that changes its size: a square as wide as the screen, or as tall as the room
+             left by the rest, always centered -->
+        <div class="npm-cover-box">
+            <div class="npm-cover">
+                <ImageLoader
+                    :image="paths.images.thumb.large + queue.currenttrack?.image"
+                    :blurhash="queue.currenttrack?.blurhash"
+                    :duration="1000"
+                />
+            </div>
         </div>
 
         <div class="npm-info">
@@ -43,6 +47,16 @@
                 >
                     <AddSvg />
                 </button>
+                <button
+                    ref="optionsButton"
+                    class="npm-action npm-options"
+                    :title="$t('NowPlayingMobile.Options')"
+                    :aria-label="$t('NowPlayingMobile.Options')"
+                    :disabled="!hasTrack"
+                    @click="showOptions"
+                >
+                    <OptionsSvg />
+                </button>
             </div>
         </div>
     </div>
@@ -55,12 +69,13 @@ import { RouteLocationRaw, useRouter } from 'vue-router'
 import { paths } from '@/config'
 import { favType } from '@/enums'
 import favoriteHandler from '@/helpers/favoriteHandler'
-import { showPlayingAddMenu } from '@/helpers/contextMenuHandler'
+import { showPlayingAddMenu, showTrackContextMenu } from '@/helpers/contextMenuHandler'
 import { Routes } from '@/router'
 import useQueue from '@/stores/queue'
 
 import AddSvg from '@/assets/icons/figma/add.svg'
 import FavoriteSvg from '@/assets/icons/figma/favorite.svg'
+import OptionsSvg from '@/assets/icons/figma/options.svg'
 import ImageLoader from '@/components/shared/ImageLoader.vue'
 
 // The home tab of NowPlaying (Figma node 12294:355): the cover, the name and the artist of the song, and its favorite
@@ -73,6 +88,7 @@ const emit = defineEmits<{
 const queue = useQueue()
 const router = useRouter()
 const addButton = ref<HTMLElement>()
+const optionsButton = ref<HTMLElement>()
 
 const hasTrack = computed(() => !!queue.currenttrack?.trackhash)
 const artists = computed(() => queue.currenttrack?.artists ?? [])
@@ -101,18 +117,41 @@ function showAddMenu() {
     if (!addButton.value || !queue.currenttrack) return
     showPlayingAddMenu(addButton.value, queue.currenttrack)
 }
+
+// the menu of the song, opened upward from the button (the buttons are low on the screen)
+function showOptions() {
+    const track = queue.currenttrack
+
+    if (!optionsButton.value || !track) return
+
+    const rect = optionsButton.value.getBoundingClientRect()
+    const point = { x: rect.right, y: rect.top - 4 } as MouseEvent
+
+    showTrackContextMenu(point, track, ref(false), 'top-end', ['top-start'])
+}
 </script>
 
 <style lang="scss">
 .npm-home {
     display: flex;
     flex-direction: column;
+    flex: 1 1 0;
     gap: var(--nowplaying-gap);
+    min-height: 0;
 
-    // a square of the width of the screen
+    // the room for the cover: what the info leaves; the cover is centered in it
+    .npm-cover-box {
+        container-type: size;
+        display: grid;
+        place-items: center;
+        flex: 1 1 0;
+        min-height: 0;
+    }
+
+    // a square of the width of the screen, never taller than the room (then it gets smaller)
     .npm-cover {
         flex-shrink: 0;
-        width: 100%;
+        width: min(100cqw, 100cqh);
         aspect-ratio: 1;
         border-radius: var(--nowplaying-cover-radius);
         box-shadow: var(--nowplaying-cover-shadow);
@@ -201,6 +240,11 @@ function showAddMenu() {
             opacity: 0.4;
             pointer-events: none;
         }
+    }
+
+    // the three dots are 12 wide in the layout (the icon box is 24): the negative margin keeps the 12
+    .npm-options {
+        margin: 0 calc((var(--nowplaying-options-width) - var(--nowplaying-actions-icon-size)) / 2);
     }
 }
 </style>

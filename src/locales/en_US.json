@@ -106,7 +106,7 @@
       "Albums": "Albums",
       "Appearances": "Appearances",
       "Compilations": "Compilations",
-      "Lives": "Lives",
+      "Lives": "Live Albums",
       "MostPlayed": "Most played tracks",
       "Singles": "EPs & Singles",
       "Soundtracks": "Soundtracks"
@@ -308,6 +308,7 @@
     "MostPlayedAlbums": "Most played albums",
     "MostPlayedArtists": "Most played artists",
     "NothingPlayed": "Nothing played yet.",
+    "RecentlyPlayed": "Recently played",
     "RecentlyAdded": "Recently added",
     "ViewHistory": "View history"
   },
@@ -377,11 +378,11 @@
       "EmbedCoverConfirm": "Write cover",
       "MarkAsCompilation": "Mark as Compilation",
       "MarkAsEps": "Mark as EPs & Singles",
-      "MarkAsLive": "Mark as Live album",
+      "MarkAsLive": "Mark as Live Album",
       "MarkAsSoundtrack": "Mark as Soundtrack",
       "RemoveFromCompilation": "Remove from Compilations",
       "RemoveFromEps": "Remove from EPs & Singles",
-      "RemoveFromLive": "Remove from Live album",
+      "RemoveFromLive": "Remove from Live Album",
       "RemoveFromSoundtrack": "Remove from Soundtrack"
     },
     "Artist": {
@@ -458,7 +459,6 @@
     "Options": "More options",
     "Tabs": {
       "Lyrics": "Lyrics",
-      "NowPlaying": "Now playing",
       "Queue": "Queue"
     },
     "Timeline": "Seek"

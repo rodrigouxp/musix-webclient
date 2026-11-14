@@ -138,7 +138,7 @@
   --sidepanel-item-radius: 4px; // era a pílula de 400; todo botão do SidePanel tem cantos de 4 (Rodrigo, 2026-11-11)
   --sidepanel-item-active-bg: var(--color-neutral-700);
   --sidepanel-divider: var(--color-neutral-700);
-  --sidepanel-favorite-color: var(--color-error-300); // o coração de Favorites é cheio e vermelho, mesmo inativo
+  --sidepanel-icon-active-color: var(--color-neutral-white); // o vetor cheio (active) do ícone da página aberta é branco; o coração de Favorites é só contorno quando inativo (Rodrigo, 2026-11-14)
   --sidepanel-item-gap: 12px; // entre o ícone e o texto
   --sidepanel-items-gap: 10px; // entre os botões de navegação
   --sidepanel-icon-size: 20px;
@@ -237,7 +237,9 @@
   --playingpanel-gap: 20px; // entre o título, a lista e a miniatura
   --playingpanel-duration: var(--panel-toggle-duration); // abrir e fechar: o movimento do protótipo (ver --panel-toggle-*)
   --playingpanel-transition: var(--panel-toggle-transition);
-  --playingpanel-title-color: var(--color-neutral-white);
+  --playingpanel-title-color: var(--color-neutral-300); // ícone queue e "Now playing" em neutral/300 (print do Figma do Rodrigo, 2026-11-14; decisão minha: o texto também, como no print)
+  --playingpanel-title-gap: 8px; // entre o ícone queue e o texto
+  --playingpanel-title-icon-size: 20px; // caixa do ícone queue (o vetor de 20 x 16 do Figma desenhado a 20/24: 16,67 x 13,33)
   --playingpanel-clear-color: var(--color-error-300); // botão de limpar a fila (ícone delete)
   --playingpanel-clear-size: 14px; // caixa do ícone delete (o vetor tem 9,33 x 12; Rodrigo, 2026-11-13)
   --playingpanel-clear-pad-right: 4px; // do ícone até a borda direita do conteúdo do painel (decisão minha)
@@ -297,6 +299,8 @@
   --feedpanel-link-color: var(--color-neutral-300); // "View history"
   --feedpanel-name-color: var(--color-neutral-100); // nome do artista e título do álbum
   --feedpanel-subtitle-color: var(--color-neutral-300); // artista do álbum e texto de apoio (reproduções)
+  --feedpanel-track-gap: 4px; // entre a capa e o texto do TrackThumb (Penpot)
+  --feedpanel-track-border: var(--color-neutral-900); // borda de 1px por dentro da capa do TrackThumb (Penpot)
   --feedpanel-card-text-gap: 0px; // entre a imagem e o texto e entre as linhas: o cartão novo não tem gaps (Rodrigo, 2026-11-09)
   --feedpanel-album-radius: 8px;
   --feedpanel-album-ratio: 164 / 172; // a imagem (quadrada) fica colada embaixo; a placa aparece atrás, em cima
@@ -374,6 +378,8 @@
   --artist-tabs-line-width: 2px;
   --artist-tabs-line-color: var(--color-neutral-700);
   --artist-tab-padding: 6px 4px;
+  --artist-tab-icon-size: 18px; // ícone de cada aba, caixa de 18 (TabBarButton do Penpot, 2026-11-14)
+  --artist-tab-icon-gap: 4px; // entre o ícone e o nome da aba (Penpot)
   --artist-tab-color: var(--color-neutral-300);
   --artist-tab-hover-color: var(--color-neutral-100); // sem hover no Figma: decisão minha
   --artist-tab-active-color: var(--color-neutral-white);
@@ -412,6 +418,7 @@
   --album-panel-padding-bottom: 20px;
   --album-panel-gap: 20px; // entre o conteúdo da coluna "album" e o das faixas (a barra de rolagem da coluna "album" fica dentro dele)
   --album-panel-scrollbar-gap: 2px; // do conteúdo de cada coluna até a sua barra de rolagem (Rodrigo, 2026-11-12)
+  --album-panel-side-scrollbar-gap: 4px; // da capa até a barra de rolagem da coluna "album" (Rodrigo, 2026-11-14); a coluna das faixas segue com os 2 acima
   --album-panel-scrollbar-thumb: 4px; // largura da barra (a mesma fina da grade em painéis)
   --album-panel-scrollbar-edge: 2px; // da barra até a borda do painel (e, na coluna "album", até o que vem depois)
   --album-panel-side-gap: 8px; // entre a capa e o bloco de textos
@@ -448,12 +455,14 @@
   // PlayerBar mobile (type=default-mobile, nó 12535:3645). O play é o da PlayerBar do desktop (--playerbar-play-*)
   --playerbarmobile-padding: 8px;
   --playerbarmobile-add-size: 20px; // caixa do ícone add (o glifo de 20 no viewBox de 24 fica em 16,7)
-  --playerbarmobile-track-gap: 14px; // entre os textos e a capa
+  --playerbarmobile-actions-gap: 12px; // entre o play, o favorite e o add (Rodrigo, 2026-11-14)
+  --playerbarmobile-track-gap: 14px; // entre o add e o frame da faixa, e entre os textos e a capa (decisão minha: o Figma não dá esse espaço)
+  --playerbarmobile-artist-color: var(--color-neutral-300); // os artistas, links para a página do artista (Rodrigo, 2026-11-14)
   --playerbarmobile-timeline-height: 2px; // linha de progresso, só de exibição
   --playerbarmobile-timeline-inset: 4px; // da borda esquerda e da direita do bloco
   --playerbarmobile-timeline-color: var(--color-neutral-300);
   --playerbarmobile-timeline-radius: 8px;
-  // o chevron para cima sobre a capa é o mesmo badge da PlayerBar (--playerbar-badge-*: círculo de 24, neutral-300 a 25%, chevron branco)
+  // sem o chevron sobre a capa no celular (Rodrigo, 2026-11-14); tocando, o fundo é o --playerbar-playing-bg (dynamic-playbar)
 
   // NavBarMobile (nó 12536:3896)
   --navbarmobile-padding: 20px;
@@ -465,9 +474,18 @@
   --nowplaying-bg: var(--color-background);
   --nowplaying-padding: 20px;
   --nowplaying-gap: 12px; // entre o cabeçalho, a capa e o título
-  --nowplaying-close-size: 14px; // chevron para baixo, no canto de cima à esquerda
-  --nowplaying-close-inset: 2px; // do canto do conteúdo até o chevron
-  --nowplaying-close-hit: 44px; // área de toque do chevron (decisão minha: o ícone de 14 é pequeno demais para o dedo)
+  // o drawer do Penpot (tela de 412 x 780, drawer de 404 x 740): 4 de cada lado, 40 do topo, encostado embaixo
+  --nowplaying-drawer-top: 40px;
+  --nowplaying-drawer-inset: 4px;
+  --nowplaying-drawer-radius: 12px;
+  --nowplaying-drawer-border: 1px solid var(--color-neutral-500);
+  --nowplaying-backdrop: rgb(0 0 0 / 80%); // a página atrás do drawer, escurecida (Rodrigo, 2026-11-14)
+  --nowplaying-handle-width: 83px; // a alça do topo
+  --nowplaying-handle-height: 5px;
+  --nowplaying-handle-radius: 4px;
+  --nowplaying-handle-color: var(--color-neutral-500);
+  --nowplaying-handle-gap: 20px; // entre a alça e o conteúdo
+  --nowplaying-handle-hit: 20px; // a área de toque da alça passa 20 acima e abaixo dela (decisão minha: 5 de altura é pouco para o dedo)
   --nowplaying-source-gap: 4px; // entre o ícone e o nome da origem
   --nowplaying-source-icon-size: 18px;
   --nowplaying-source-color: var(--color-neutral-300);
@@ -478,7 +496,8 @@
   --nowplaying-title-color: var(--color-neutral-white);
   --nowplaying-artist-color: var(--color-neutral-300);
   --nowplaying-actions-padding: 4px 0;
-  --nowplaying-actions-gap: 12px; // entre o favorite e o add
+  --nowplaying-actions-gap: 16px; // entre o favorite, o add e o options (Penpot, 2026-11-14)
+  --nowplaying-options-width: 12px; // os três pontinhos ocupam 12 de largura (o ícone tem 24)
   --nowplaying-actions-icon-size: 24px;
   --nowplaying-slide-duration: var(--panel-toggle-duration); // subir ao abrir, descer ao fechar pelo botão: o movimento do protótipo
   --nowplaying-slide-easing: var(--panel-toggle-easing);
@@ -502,8 +521,7 @@
   --playingcontrols-volume-gap: 8px; // entre o alto-falante e a barra
   --playingcontrols-volume-icon-box: 32px;
   --playingcontrols-volume-width: 94px;
-  --playingcontrols-options-gap: 20px; // entre as três abas e as opções
-  --playingcontrols-options-width: 12px; // os três pontinhos (12 x 34)
+  --playingcontrols-options-gap: 16px; // entre as duas abas (Lyrics e Queue; Penpot, 2026-11-14)
   --playingcontrols-tab-active-bg: var(--color-neutral-700);
   --playingcontrols-time-bg: var(--color-neutral-700);
 

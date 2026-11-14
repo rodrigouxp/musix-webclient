@@ -10,14 +10,13 @@
     <div class="text">
       {{ index }}
     </div>
-    <!-- a playlist: the number turns into the handle to drag the row (and the click does not favorite).
-         With the mouse it happens on the hover; with a finger, on a long press (see useTrackDrag) -->
+    <!-- a playlist: the number is the handle to drag the row (and the click does not favorite). The handle has no
+         icon (Rodrigo, 2026-11-14): with the mouse it works on the hover; with a finger, on a long press (see useTrackDrag) -->
     <div
       v-if="reorderable"
       class="drag-icon"
       @pointerenter="$emit('dragHover')"
       @pointerdown="$emit('dragStart', $event)"
-      v-html="DragIcon"
     ></div>
     <div class="heart-icon" v-else-if="!showInlineFavIcon">
       <HeartSvg :state="is_fav" :no_emit="true" />
@@ -26,7 +25,6 @@
 </template>
 
 <script setup lang="ts">
-import { DragIcon } from "@/icons";
 import HeartSvg from "../HeartSvg.vue";
 
 const props = defineProps<{
@@ -80,24 +78,11 @@ defineEmits<{
     width: 100%;
   }
 
-  // the handle of the rows that can be dragged: it takes the place of the number on the hover
+  // the handle of the rows that can be dragged: the whole cell of the number, with no icon
   .drag-icon {
     position: absolute;
     inset: 0;
-    display: grid;
-    place-items: center;
-    opacity: 0;
     cursor: grab;
-    color: var(--menu-item-icon);
-    // the number is 4px to the right of the center of its cell (the row has 8px of padding on the
-    // left and 16px of gap on the right): the same 4px balances the space at both sides of the icon
-    transform: translateX($smaller);
-    transition: opacity 0.2s;
-
-    svg {
-      height: 16px;
-      width: 16px;
-    }
   }
 
   &.reorderable {
@@ -127,14 +112,4 @@ defineEmits<{
   }
 }
 
-.songlist-item:hover > .index.reorderable,
-.songlist-item > .index.reorderable.held {
-  .text {
-    opacity: 0;
-  }
-
-  .drag-icon {
-    opacity: 1;
-  }
-}
 </style>

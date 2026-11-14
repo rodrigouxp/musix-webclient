@@ -2,7 +2,10 @@
     <aside class="playing-panel" :class="{ open }" :aria-hidden="!open" :inert="!open">
         <div class="pp-inner">
             <div class="pp-title">
-                <h2 class="pp-heading">{{ $t('PlayingPanel.Title') }}</h2>
+                <h2 class="pp-heading">
+                    <QueueSvg class="pp-heading-icon" aria-hidden="true" />
+                    {{ $t('PlayingPanel.Title') }}
+                </h2>
                 <button
                     v-if="hasItems"
                     class="pp-clear"
@@ -43,6 +46,7 @@ import useQueue from '@/stores/queue'
 import useTracklist from '@/stores/queue/tracklist'
 
 import DeleteSvg from '@/assets/icons/figma/delete.svg'
+import QueueSvg from '@/assets/icons/figma/queue.svg'
 import discUrl from '@/assets/images/queue-disc.png'
 import Bitrate from '@/components/LeftSidebar/NP/Bitrate.vue'
 import QueueList from './QueueList.vue'
@@ -99,10 +103,20 @@ const hasItems = computed(() => tracklist.tracklist.length > 0)
         flex-shrink: 0;
     }
 
+    // the icon "queue" (20 x 20 box, its vector is 16.67 x 13.54), 8 from the text, both in neutral/300
     .pp-heading {
         @include text('paragraph-18px');
+        display: flex;
+        align-items: center;
+        gap: var(--playingpanel-title-gap);
         margin: 0;
         color: var(--playingpanel-title-color);
+
+        .pp-heading-icon {
+            flex-shrink: 0;
+            width: var(--playingpanel-title-icon-size);
+            height: var(--playingpanel-title-icon-size);
+        }
     }
 
     // the icon "delete" is 14 x 14 (its vector is 9.33 x 12); the click area is bigger (24, own decision) and goes out of

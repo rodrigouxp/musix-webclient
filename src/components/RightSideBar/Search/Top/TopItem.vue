@@ -48,20 +48,8 @@
             >
                 <Moresvg />
             </button>
-            <PlayBtn
-                :source="
-                    res_type == 'album'
-                        ? playSources.album
-                        : res_type == 'artist'
-                        ? playSources.artist
-                        : playSources.track
-                "
-                :album-hash="item.albumhash"
-                :album-name="item.title"
-                :artisthash="item.artisthash"
-                :artistname="item.name"
-                :track="item"
-            />
+            <!-- albums and artists have no play button (Rodrigo, 2026-11-14): the card only opens the page -->
+            <PlayBtn v-if="res_type === 'track'" :source="playSources.track" :track="item" />
         </div>
     </RouterLink>
 </template>

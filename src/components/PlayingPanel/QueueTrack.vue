@@ -33,9 +33,7 @@
                 :aria-label="$t('PlayingPanel.Move')"
                 @click.stop
                 @pointerdown="$emit('dragstart', $event)"
-            >
-                <DragSvg />
-            </button>
+            ></button>
         </div>
     </div>
 </template>
@@ -49,7 +47,6 @@ import { QueueItem } from '@/interfaces'
 import useTracklist from '@/stores/queue/tracklist'
 
 import DeleteSvg from '@/assets/icons/figma/delete.svg'
-import DragSvg from '@/assets/icons/figma/drag.svg'
 import RepeatSvg from '@/assets/icons/figma/repeat.svg'
 
 // TrackQueue of the Figma (node 12408:961): 36 high, the cover of 28, the name and the three small buttons. The
@@ -161,6 +158,7 @@ function showMenu(e: MouseEvent) {
         }
     }
 
+    // the handle has no icon (Rodrigo, 2026-11-14): the button is an invisible hit area, the drag still works
     .qt-drag {
         cursor: grab;
         touch-action: none;

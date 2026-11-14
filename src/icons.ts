@@ -32,7 +32,7 @@ export { default as MenuAddToQueueIcon } from "@/assets/icons/figma/add-to-queue
 export { default as MenuAddToPlaylistIcon } from "@/assets/icons/figma/add-to-playlist.svg?raw";
 export { default as MenuAddToCollectionIcon } from "@/assets/icons/figma/add-to-collection.svg?raw";
 export { default as MenuUpdateCoverIcon } from "@/assets/icons/figma/update-album-cover.svg?raw";
-export { default as MenuEpsSinglesIcon } from "@/assets/icons/figma/disc.svg?raw";
+export { default as MenuEpsSinglesIcon } from "@/assets/icons/figma/ep.svg?raw";
 export { default as MenuSoundtrackIcon } from "@/assets/icons/figma/soundtrack.svg?raw";
 export { default as MenuLiveIcon } from "@/assets/icons/figma/live-album.svg?raw";
 export { default as MenuCompilationIcon } from "@/assets/icons/figma/compilation.svg?raw";
@@ -43,10 +43,12 @@ export { default as MenuSubmenuIcon } from "@/assets/icons/figma/chevron.svg?raw
 // the mark of the playlists that already have the song (submenu "Add to playlist")
 export { default as CheckIcon } from "@/assets/icons/figma/check.svg?raw";
 
-// icons of the song menu: the album one is the same drawing as the "EPs & Singles" mark; the artist
-// one is not in the Figma icon set
-export { default as MenuGoToAlbumIcon } from "@/assets/icons/figma/disc.svg?raw";
-export { default as MenuGoToArtistIcon } from "@/assets/icons/menu/go-to-artist.svg?raw";
+// icons of the song menu: the album and artist icons of the Figma. They have two vectors (active, filled, and
+// inactive, outline): the menu shows the filled one, the one the Figma has visible by default
+import AlbumRaw from "@/assets/icons/figma/album.svg?raw";
+import ArtistRaw from "@/assets/icons/figma/artist.svg?raw";
+export const MenuGoToAlbumIcon = AlbumRaw.replace("<svg ", '<svg class="icon-active" ');
+export const MenuGoToArtistIcon = ArtistRaw.replace("<svg ", '<svg class="icon-active" ');
 
 // the user menu
 export { default as RefreshIcon } from "@/assets/icons/figma/refresh.svg?raw";

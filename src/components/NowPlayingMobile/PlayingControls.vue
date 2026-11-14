@@ -58,25 +58,14 @@
                 >
                     <component :is="item.icon" :class="item.tab" />
                 </button>
-                <button
-                    ref="optionsButton"
-                    class="pc-more"
-                    :title="$t('NowPlayingMobile.Options')"
-                    :aria-label="$t('NowPlayingMobile.Options')"
-                    :disabled="!queue.currenttrack?.trackhash"
-                    @click="showOptions"
-                >
-                    <OptionsSvg />
-                </button>
             </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 
-import { showTrackContextMenu } from '@/helpers/contextMenuHandler'
 import { useT } from '@/i18n'
 import { formatSeconds } from '@/utils'
 
@@ -86,8 +75,6 @@ import useSettings from '@/stores/settings'
 
 import LyricsSvg from '@/assets/icons/figma/lyrics.svg'
 import NextSvg from '@/assets/icons/figma/play-next.svg'
-import NowPlayingSvg from '@/assets/icons/figma/now-playing.svg'
-import OptionsSvg from '@/assets/icons/figma/options.svg'
 import PauseSvg from '@/assets/icons/figma/pause.svg'
 import PlaySvg from '@/assets/icons/figma/play.svg'
 import PrevSvg from '@/assets/icons/figma/play-previous.svg'
@@ -100,7 +87,8 @@ import Volume from '@/components/BottomBar/Volume.vue'
 import Spinner from '@/components/shared/Spinner.vue'
 
 // PlayingControls of the Figma (node 12540:4287): the same on every tab of NowPlaying. The timeline, the five main
-// controls and a row with the volume, the three tabs (the open one has a round background) and the options of the song.
+// controls and a row with the volume, the two tabs (Lyrics and Queue: the open one has a round background and a second
+// press closes it, back to the main screen) and the options of the song.
 // Tokens --playingcontrols-*.
 type Tab = 'home' | 'lyrics' | 'queue'
 
@@ -115,10 +103,8 @@ defineEmits<{
 const { t } = useT()
 const queue = useQueue()
 const settings = useSettings()
-const optionsButton = ref<HTMLElement>()
 
 const tabs = computed(() => [
-    { tab: 'home' as Tab, icon: NowPlayingSvg, label: t('NowPlayingMobile.Tabs.NowPlaying') },
     { tab: 'lyrics' as Tab, icon: LyricsSvg, label: t('NowPlayingMobile.Tabs.Lyrics') },
     { tab: 'queue' as Tab, icon: QueueSvg, label: t('NowPlayingMobile.Tabs.Queue') },
 ])
@@ -130,18 +116,6 @@ const repeatTitle = computed(() => {
         ? t('BottomBar.RepeatOptions.One')
         : t('BottomBar.RepeatOptions.None')
 })
-
-// the menu of the song, opened upward from the button (the controls are at the bottom of the screen)
-function showOptions() {
-    const track = queue.currenttrack
-
-    if (!optionsButton.value || !track) return
-
-    const rect = optionsButton.value.getBoundingClientRect()
-    const point = { x: rect.right, y: rect.top - 4 } as MouseEvent
-
-    showTrackContextMenu(point, track, ref(false), 'top-end', ['top-start'])
-}
 </script>
 
 <style lang="scss">
@@ -316,31 +290,8 @@ function showOptions() {
     }
 
     .pc-tab {
-        // the icons of the Figma for now playing and queue come in the box of 34
-        svg.home,
-        svg.queue {
-            width: var(--playingcontrols-button-size);
-            height: var(--playingcontrols-button-size);
-        }
-
         &.active {
             background-color: var(--playingcontrols-tab-active-bg);
-        }
-    }
-
-    // the three dots are 12 wide; the tap area is a circle of 34 and the negative margin keeps the 12 of layout
-    .pc-more {
-        display: grid;
-        place-items: center;
-        width: var(--playingcontrols-button-size);
-        height: var(--playingcontrols-button-size);
-        margin: 0 calc((var(--playingcontrols-options-width) - var(--playingcontrols-button-size)) / 2);
-        border-radius: 400px;
-        -webkit-tap-highlight-color: transparent;
-
-        svg {
-            width: var(--playingcontrols-icon-size);
-            height: var(--playingcontrols-icon-size);
         }
     }
 }

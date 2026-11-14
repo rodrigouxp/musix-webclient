@@ -282,9 +282,9 @@ watch(
 }
 
 .album-panel {
-    // what a scrollbar takes at the right of its column: the 2px from the content, the bar and the 2px of the edge
+    // what the scrollbar takes at the right of the album column: the 4px from the cover, the bar and the 2px of the edge
     --album-scrollbar: calc(var(--album-panel-scrollbar-thumb) + var(--album-panel-scrollbar-edge));
-    --album-scrollbar-box: calc(var(--album-panel-scrollbar-gap) + var(--album-scrollbar));
+    --album-scrollbar-box: calc(var(--album-panel-side-scrollbar-gap) + var(--album-scrollbar));
 
     display: flex;
     align-items: stretch;
@@ -305,7 +305,8 @@ watch(
         min-width: 0;
         max-width: calc(var(--album-panel-side-max) + var(--album-scrollbar-box));
         height: 100%;
-        padding: var(--album-panel-padding-top) var(--album-panel-scrollbar-gap) var(--album-panel-padding-bottom) 0;
+        // 4px between the cover and the scrollbar of this column (Rodrigo, 2026-11-14)
+        padding: var(--album-panel-padding-top) var(--album-panel-side-scrollbar-gap) var(--album-panel-padding-bottom) 0;
         overflow-x: hidden;
         overflow-y: auto;
         // the room of the scrollbar is always kept, so the cover never gets narrower when the side starts to scroll
@@ -445,7 +446,8 @@ watch(
         flex: 1 1 0;
         min-width: 0;
         height: 100%;
-        padding: var(--album-panel-padding-top) var(--album-panel-scrollbar-gap) var(--album-panel-padding-bottom) 0;
+        // 4px between the cover and the scrollbar of this column (Rodrigo, 2026-11-14)
+        padding: var(--album-panel-padding-top) var(--album-panel-side-scrollbar-gap) var(--album-panel-padding-bottom) 0;
         overflow-x: hidden;
         overflow-y: scroll;
 

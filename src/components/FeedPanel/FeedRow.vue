@@ -8,6 +8,9 @@
             <template v-if="type === 'artist'">
                 <ArtistThumb v-for="artist in (items as Artist[])" :key="artist.artisthash" :artist="artist" />
             </template>
+            <template v-else-if="type === 'track'">
+                <TrackThumb v-for="track in (items as Track[])" :key="track.trackhash" :track="track" />
+            </template>
             <template v-else>
                 <AlbumThumb v-for="album in (items as Album[])" :key="album.albumhash" :album="album" />
             </template>
@@ -18,18 +21,19 @@
 <script setup lang="ts">
 import { RouteLocationRaw } from 'vue-router'
 
-import { Album, Artist } from '@/interfaces'
+import { Album, Artist, Track } from '@/interfaces'
 
 import AlbumThumb from './AlbumThumb.vue'
 import ArtistThumb from './ArtistThumb.vue'
+import TrackThumb from './TrackThumb.vue'
 
 // One block of the FeedPanel (Figma "most-played-artists", node 12397:368): the header (title and, when the
 // block has a history page, "View history") and the 8 cards, 20px under it.
 defineProps<{
     title: string
-    type: 'artist' | 'album'
-    items: Artist[] | Album[]
-    // the page of the history; "Recently added" has none and shows no link
+    type: 'artist' | 'album' | 'track'
+    items: Artist[] | Album[] | Track[]
+    // the page of the history (the "recently played" one for the tracks); "Recently added" has none and shows no link
     route?: RouteLocationRaw
 }>()
 </script>

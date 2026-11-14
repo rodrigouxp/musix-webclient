@@ -18,7 +18,6 @@
                     background: `linear-gradient(to top, ${artist.color} 20%, transparent)`,
                 }"
             ></div>
-            <PlayBtn :artisthash="artist.artisthash" :artistname="artist.name" :source="playSources.artist" />
         </div>
         <div v-if="artist.help_text" class="rhelp t-center">
             <span class="help" :class="{ keep: !artist.time }">{{ artist.help_text }}</span>
@@ -38,8 +37,6 @@ import { paths } from '@/config'
 import { Artist } from '@/interfaces'
 import { Routes } from '@/router'
 
-import { playSources } from '@/enums'
-import PlayBtn from './PlayBtn.vue'
 import { ref } from 'vue'
 import { showArtistContextMenu } from '@/helpers/contextMenuHandler'
 
@@ -87,24 +84,8 @@ const showContextMenu = (e: MouseEvent) => {
         }
     }
 
-    $btnwidth: 4rem;
-
-    .play-btn {
-        opacity: 0;
-        position: absolute;
-        width: 4rem;
-        bottom: 0;
-        left: calc(50% - ($btnwidth / 2));
-        transition: all 0.25s;
-    }
-
     &:hover {
         background-color: $gray5;
-
-        .play-btn {
-            opacity: 1;
-            transform: translateY(-1.25rem);
-        }
 
         .overlay {
             opacity: 1;

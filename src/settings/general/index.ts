@@ -14,7 +14,7 @@ import rootDirSettings from './root-dirs'
 import artistSettings from './artists'
 import tracks from './tracks'
 // icons
-import AlbumSvg from '@/assets/icons/figma/disc.svg?raw'
+import AlbumSvg from '@/assets/icons/figma/album.svg?raw'
 import AvatarSvg from '@/assets/icons/figma/user.svg?raw'
 import FolderRawSvg from '@/assets/icons/folder.svg?raw'
 import TrackSvg from '@/assets/icons/figma/mic.svg?raw'

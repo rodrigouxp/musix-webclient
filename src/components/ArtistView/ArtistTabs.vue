@@ -5,13 +5,14 @@
             :id="`artist-tab-${tab.id}`"
             :key="tab.id"
             class="artist-tab"
-            :class="{ active: tab.id === modelValue }"
+:class="{ active: tab.id === modelValue, 'icon-active': tab.id === modelValue }"
             role="tab"
             type="button"
             :aria-selected="tab.id === modelValue"
             :tabindex="tab.id === modelValue ? 0 : -1"
             @click="$emit('update:modelValue', tab.id)"
         >
+            <component :is="tab.icon" v-if="tab.icon" class="artist-tab-icon" aria-hidden="true" />
             {{ tab.label }}
         </button>
     </div>
@@ -19,11 +20,12 @@
 
 <script setup lang="ts">
 import { nextTick, ref, watch } from 'vue'
+import type { Component } from 'vue'
 
-// TabBar of the Figma (node 12461:2631): one tab per kind of release, the open one in white with a line on the
-// bar. Left and right arrows (and Home and End) move between the tabs; if they do not fit, the bar scrolls sideways.
+// TabBar of the Figma (node 12461:2631): one tab per kind of release, each with its icon, the open one in white with a
+// line on the bar (and the filled vector of the icons that have two). Left and right arrows (and Home and End) move between the tabs; if they do not fit, the bar scrolls sideways.
 const props = defineProps<{
-    tabs: { id: string; label: string }[]
+    tabs: { id: string; label: string; icon?: Component }[]
     modelValue: string
 }>()
 
@@ -93,6 +95,9 @@ watch(
         height: auto;
         position: relative;
         flex: none;
+        display: flex;
+        align-items: center;
+        gap: var(--artist-tab-icon-gap);
         box-sizing: border-box;
         padding: var(--artist-tab-padding);
         border: none;
@@ -104,6 +109,12 @@ watch(
         white-space: nowrap;
         cursor: pointer;
         transition: color 0.15s ease-out;
+
+        .artist-tab-icon {
+            flex-shrink: 0;
+            width: var(--artist-tab-icon-size);
+            height: var(--artist-tab-icon-size);
+        }
 
         &:hover {
             color: var(--artist-tab-hover-color);

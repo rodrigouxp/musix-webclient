@@ -31,7 +31,6 @@
                 <ArrowSvg class="trend" :class="item.trend" /> 1
             </div> -->
         </div>
-        <PlayBtn />
     </div>
 </template>
 
@@ -45,7 +44,6 @@ import listToRgbString from '@/utils/colortools/listToRgbString'
 
 import ArrowSvg from '@/assets/icons/arrow.svg'
 import ArtistName from '../shared/ArtistName.vue'
-import PlayBtn from '../shared/PlayBtn.vue'
 
 type name = 'artist' | 'album' | 'track'
 type ChartItem = Artist | Album | Track

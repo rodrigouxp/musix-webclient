@@ -56,6 +56,13 @@ import useSettings from '@/stores/settings'
 import useTracker from '@/stores/tracker'
 import updatePageTitle from '@/utils/updatePageTitle'
 
+import AlbumSvg from '@/assets/icons/figma/album.svg'
+import CompilationSvg from '@/assets/icons/figma/compilation.svg'
+import EpSvg from '@/assets/icons/figma/ep.svg'
+import FeaturingSvg from '@/assets/icons/figma/featuring.svg'
+import LiveAlbumSvg from '@/assets/icons/figma/live-album.svg'
+import AiSvg from '@/assets/icons/figma/ai.svg'
+import SoundtrackSvg from '@/assets/icons/figma/soundtrack.svg'
 import AlbumThumb from '@/components/FeedPanel/AlbumThumb.vue'
 import SongItem from '@/components/shared/SongItem.vue'
 import ArtistHero from './ArtistHero.vue'
@@ -75,15 +82,15 @@ const settings = useSettings()
 // six tabs always (even if one is empty), Soundtracks only when the artist has some; the first is always the tracks
 const tabs = computed(() => {
     const list = [
-        { id: 'tracks', label: t('ArtistView.Tabs.MostPlayed') },
-        { id: 'albums', label: t('ArtistView.Tabs.Albums') },
-        { id: 'singles', label: t('ArtistView.Tabs.Singles') },
-        { id: 'live', label: t('ArtistView.Tabs.Lives') },
-        { id: 'appearances', label: t('ArtistView.Tabs.Appearances') },
-        { id: 'compilations', label: t('ArtistView.Tabs.Compilations') },
+        { id: 'tracks', label: t('ArtistView.Tabs.MostPlayed'), icon: AiSvg },
+        { id: 'albums', label: t('ArtistView.Tabs.Albums'), icon: AlbumSvg },
+        { id: 'singles', label: t('ArtistView.Tabs.Singles'), icon: EpSvg },
+        { id: 'live', label: t('ArtistView.Tabs.Lives'), icon: LiveAlbumSvg },
+        { id: 'appearances', label: t('ArtistView.Tabs.Appearances'), icon: FeaturingSvg },
+        { id: 'compilations', label: t('ArtistView.Tabs.Compilations'), icon: CompilationSvg },
     ]
 
-    if (store.soundtracks.length) list.push({ id: 'soundtracks', label: t('ArtistView.Tabs.Soundtracks') })
+    if (store.soundtracks.length) list.push({ id: 'soundtracks', label: t('ArtistView.Tabs.Soundtracks'), icon: SoundtrackSvg })
 
     return list
 })

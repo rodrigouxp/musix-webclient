@@ -16,12 +16,6 @@
                 }"
             ></div>
             <img class="shadow-lg" :src="imguri + album.image" alt="" />
-            <PlayBtn
-                :store="useAlbumStore"
-                :source="playSources.album"
-                :album-hash="album.albumhash"
-                :album-name="album.title"
-            />
         </div>
         <div>
             <div v-if="album.help_text" class="rhelp album">
@@ -62,9 +56,7 @@ import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { Album } from '../../interfaces'
-import PlayBtn from './PlayBtn.vue'
 
-import { playSources } from '@/enums'
 import useAlbumStore from '@/stores/pages/album'
 import { paths } from '../../config'
 import MasterFlag from './MasterFlag.vue'
@@ -138,26 +130,10 @@ function showMenu(e: MouseEvent) {
         }
 
         &:hover {
-            .play-btn {
-                transform: translateY(0);
-                opacity: 1;
-            }
-
             .gradient {
                 opacity: 1;
             }
         }
-    }
-
-    .play-btn {
-        $btn-width: 4rem;
-        position: absolute;
-        bottom: 1rem;
-        right: calc((100% - $btn-width) / 2);
-        opacity: 0;
-        transform: translateY(1rem);
-        transition: all 0.25s;
-        width: $btn-width;
     }
 
     &:hover {
