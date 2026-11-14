@@ -311,6 +311,8 @@ function showAddMenu() {
             background-color: var(--pb-play-hover);
         }
 
+        @include press;
+
         svg {
             flex-shrink: 0;
             width: var(--playerbar-play-icon-size);
@@ -336,6 +338,8 @@ function showAddMenu() {
         &:hover {
             background-color: var(--playerbar-hover-bg);
         }
+
+        @include press;
 
         svg {
             flex-shrink: 0;
@@ -442,6 +446,8 @@ function showAddMenu() {
                 background-color: var(--playerbar-hover-bg);
             }
 
+            @include press;
+
             svg {
                 width: var(--playerbar-icon-size);
                 height: var(--playerbar-icon-size);
@@ -466,6 +472,8 @@ function showAddMenu() {
             &:hover {
                 background-color: var(--playerbar-hover-bg);
             }
+
+            @include press;
 
             svg {
                 width: var(--playerbar-icon-size);

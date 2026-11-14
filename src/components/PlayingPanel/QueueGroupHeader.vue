@@ -1,8 +1,7 @@
 <template>
     <div class="queue-group-header">
         <div class="qg-name">
-            <!-- the album icon turns while the header is shown (the playlist one stands still) -->
-            <SoundtrackSvg v-if="group.type === 'album'" class="qg-icon qg-spin" />
+            <AlbumSvg v-if="group.type === 'album'" class="qg-icon" />
             <PlaylistSvg v-else class="qg-icon" />
             <MarqueeText class="qg-text" :text="group.name" />
         </div>
@@ -33,14 +32,15 @@
 import { QueueGroup } from '@/interfaces'
 import useTracklist from '@/stores/queue/tracklist'
 
+import AlbumSvg from '@/assets/icons/figma/album.svg'
 import DeleteSvg from '@/assets/icons/figma/delete.svg'
 import PlaylistSvg from '@/assets/icons/figma/playlist.svg'
 import RepeatSvg from '@/assets/icons/figma/repeat.svg'
 import ShuffleSvg from '@/assets/icons/figma/shuffle.svg'
-import SoundtrackSvg from '@/assets/icons/figma/soundtrack.svg'
 import MarqueeText from '@/components/shared/MarqueeText.vue'
 
-// AlbumQueue header of the Figma (node 12408:964): the icon, the name (one line) and the buttons of the group.
+// AlbumQueue header of the Figma (node 12408:964): the icon (the `album` of the collection for an album, the `playlist`
+// for a playlist; both at rest, in the inactive state), the name (one line) and the buttons of the group.
 // A name that does not fit runs to the left in a loop, like a marquee (MarqueeText).
 defineProps<{
     group: QueueGroup
@@ -77,11 +77,6 @@ const tracklist = useTracklist()
         flex-shrink: 0;
         width: var(--playingpanel-header-icon-size);
         height: var(--playingpanel-header-icon-size);
-    }
-
-    // soundtrack: half a turn counterclockwise in 2s, ease-in-out, in a loop (the drawing is the same every 180°)
-    .qg-spin {
-        animation: qg-spin 2s ease-in-out infinite;
     }
 
     .qg-text {
@@ -130,22 +125,6 @@ const tracklist = useTracklist()
     .qg-drag {
         cursor: grab;
         touch-action: none;
-    }
-}
-
-@keyframes qg-spin {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(-180deg);
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .queue-group-header .qg-spin {
-        animation: none;
     }
 }
 </style>

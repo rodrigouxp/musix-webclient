@@ -62,6 +62,8 @@ const items = menus.filter(
             background-color: var(--navbarmobile-active-bg);
         }
 
+        @include press;
+
         &:focus-visible {
             outline: 2px solid var(--color-primary-300);
             outline-offset: -2px;

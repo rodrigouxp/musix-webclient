@@ -190,6 +190,8 @@ function openNowPlaying() {
             background-color: var(--pbm-play-hover);
         }
 
+        @include press;
+
         svg {
             flex-shrink: 0;
             width: var(--playerbar-play-icon-size);
@@ -214,6 +216,10 @@ function openNowPlaying() {
         height: var(--playerbar-control-size);
         margin: calc((var(--playerbarmobile-add-size) - var(--playerbar-control-size)) / 2);
         border-radius: 400px;
+        transition: background-color 0.2s ease-out;
+        -webkit-tap-highlight-color: transparent;
+
+        @include press;
 
         svg {
             width: var(--playerbarmobile-add-size);

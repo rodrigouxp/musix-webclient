@@ -91,6 +91,10 @@
   // Hover padrão dos botões do app (o círculo atrás dos botões do PlayerBar no Figma: neutral/700)
   --hover-bg: var(--color-neutral-700);
 
+  // Retorno do toque (Rodrigo, 2026-11-14): enquanto o botão está pressionado o fundo vai a neutral/500 na hora e, ao soltar,
+  // volta com a transição do próprio botão (mixin `press` em _mixins.scss); é o sinal de que o toque foi recebido
+  --press-bg: var(--color-neutral-500);
+
   // Menu de contexto (protótipo "Album context menu")
   --menu-bg: var(--color-neutral-900);
   --menu-radius: 10px;
@@ -228,7 +232,7 @@
   --playerbar-playing-track: var(--color-neutral-500);
   --playerbar-paused-loaded: var(--color-neutral-500); // trecho carregado: não existe no Figma (decisão minha)
   --playerbar-playing-loaded: var(--color-neutral-300);
-  --playerbar-paused-artist: var(--color-neutral-500);
+  --playerbar-paused-artist: var(--color-neutral-300); // neutral/300 também pausado (Rodrigo, 2026-11-14; era neutral/500)
   --playerbar-playing-artist: var(--color-neutral-300);
 
   // PlayingPanel (nó 12408:1964; faixa TrackQueue 12408:961, grupo AlbumQueue 12408:964)
@@ -522,7 +526,7 @@
   --playingcontrols-volume-icon-box: 32px;
   --playingcontrols-volume-width: 94px;
   --playingcontrols-options-gap: 16px; // entre as duas abas (Lyrics e Queue; Penpot, 2026-11-14)
-  --playingcontrols-tab-active-bg: var(--color-neutral-700);
+  --playingcontrols-tab-active-bg: var(--color-neutral-500); // aba aberta (Rodrigo, 2026-11-14; era neutral/700)
   --playingcontrols-time-bg: var(--color-neutral-700);
 
   // NowPlaying:Lyrics (nó 12540:4213)

@@ -7,6 +7,16 @@
   line-height: var(--text-#{$name}-line-height);
 }
 
+// Press feedback of a round button (Rodrigo, 2026-11-14): the background goes to --press-bg at once while it is pressed
+// and fades back on release with the transition the button already has (a quick tap still shows). Put it after the
+// `:hover` and `.active` rules of the button, which have the same weight.
+@mixin press {
+  &:active {
+    background-color: var(--press-bg);
+    transition-duration: 0s;
+  }
+}
+
 @mixin ximage {
   background-position: center;
   background-size: cover;

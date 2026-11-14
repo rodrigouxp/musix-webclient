@@ -202,6 +202,8 @@ const repeatTitle = computed(() => {
         transition: background-color 0.2s ease-out;
         -webkit-tap-highlight-color: transparent;
 
+        @include press;
+
         svg {
             flex-shrink: 0;
             width: var(--playingcontrols-icon-size);
@@ -226,7 +228,10 @@ const repeatTitle = computed(() => {
         border-radius: 400px;
         background-color: var(--playingcontrols-play-bg);
         color: var(--playerbar-paused-play-icon);
+        transition: background-color 0.2s ease-out;
         -webkit-tap-highlight-color: transparent;
+
+        @include press;
 
         // only the play has a padding on the left (the triangle looks more centered); the pause has none
         &.is-play {
@@ -261,7 +266,11 @@ const repeatTitle = computed(() => {
                 place-items: center;
                 width: var(--playingcontrols-volume-icon-box);
                 height: var(--playingcontrols-volume-icon-box);
+                border-radius: 400px;
+                transition: background-color 0.2s ease-out;
                 -webkit-tap-highlight-color: transparent;
+
+                @include press;
 
                 svg {
                     width: var(--playingcontrols-icon-size);

@@ -42,3 +42,6 @@ app.component("DynamicScroller", DynamicScroller);
 app.component("DynamicScrollerItem", DynamicScrollerItem);
 
 app.mount("#app");
+
+// Safari on iOS only applies `:active` (the press feedback of the buttons, mixin `press`) when the page has a touch listener
+document.addEventListener("touchstart", () => {}, { passive: true });
