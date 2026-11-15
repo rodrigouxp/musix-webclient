@@ -16,7 +16,14 @@
                 <button class="pb-round prev" :aria-label="$t('BottomBar.Previous')" @click.prevent="queue.playPrev">
                     <PrevSvg />
                 </button>
-                <button class="pb-round next" :aria-label="$t('BottomBar.Next')" @click.prevent="queue.playNext">
+                <!-- last track and nothing repeats: Next does nothing (disabled, 40%, no feedback) -->
+                <button
+                    class="pb-round next"
+                    :aria-label="$t('BottomBar.Next')"
+                    :disabled="!queue.hasNext"
+                    :aria-disabled="!queue.hasNext"
+                    @click.prevent="queue.playNext"
+                >
                     <NextSvg />
                 </button>
             </div>
@@ -146,7 +153,7 @@ import TextLoader from '@/components/shared/TextLoader.vue'
 import Progress from '@/components/LeftSidebar/NP/Progress.vue'
 import Volume from '@/components/BottomBar/Volume.vue'
 
-// PlayerBar of the Figma (default-2 paused, playing-2 playing; nodes 12408:1175 and 12408:1263): the desktop
+// PlayerBar of the Figma/Penpot (default-2 paused, playing-2 playing; nodes 12408:1175 and 12408:1263): the desktop
 // above 600px and, in two rows (`tablet`, up to 900px), the narrow windows (BottomBar decides). Tokens --playerbar-*.
 defineProps<{
     // narrow (601 to 900px): the controls on the first row; the actions and the song on the second
@@ -197,13 +204,13 @@ function showAddMenu() {
 .player-bar {
     --pb-track: var(--playerbar-paused-track);
     --pb-loaded: var(--playerbar-paused-loaded);
-    --pb-bg: var(--playerbar-paused-bg);
     --pb-play-bg: var(--playerbar-paused-play-bg);
     --pb-play-icon: var(--playerbar-paused-play-icon);
     --pb-play-hover: var(--playerbar-paused-play-hover);
     --pb-artist: var(--playerbar-paused-artist);
 
     grid-area: bottombar;
+    position: relative;
     box-sizing: border-box;
     display: flex;
     align-items: center;
@@ -212,16 +219,17 @@ function showAddMenu() {
     min-width: 0;
     padding: var(--playerbar-panel-padding);
     border-radius: var(--layout-panel-radius);
-    background-color: var(--pb-bg);
+    // paused: solid neutral/900; playing: the dynamic gradient on a layer behind the content that fades in (mixin)
+    background-color: var(--playerbar-paused-bg);
     font-family: var(--playerbar-font);
     z-index: 1;
-    transition: background-color var(--playerbar-transition), --pb-track var(--playerbar-transition),
-        --pb-loaded var(--playerbar-transition);
+    transition: --pb-track var(--playerbar-transition), --pb-loaded var(--playerbar-transition);
+
+    @include playing-layer('.is-playing');
 
     &.is-playing {
         --pb-track: var(--playerbar-playing-track);
         --pb-loaded: var(--playerbar-playing-loaded);
-        --pb-bg: var(--playerbar-playing-bg);
         --pb-play-bg: var(--playerbar-playing-play-bg);
         --pb-play-icon: var(--playerbar-playing-play-icon);
         --pb-play-hover: var(--playerbar-playing-play-hover);
@@ -363,6 +371,9 @@ function showAddMenu() {
         flex: 1 1 0;
         gap: var(--playerbar-row-gap);
         min-width: 0;
+        // it fills the room up to 780 (Penpot); the rest of the room stays inside `controls`, after it, so the actions and the
+        // song sit together at the right
+        max-width: var(--playerbar-timeline-max-width);
 
         #progress {
             --progress-track: var(--pb-track);

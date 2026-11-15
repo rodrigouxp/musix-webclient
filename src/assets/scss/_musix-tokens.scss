@@ -57,7 +57,12 @@
   --color-neutral-900: #111111;
   --color-neutral-black: #000000;
   --color-background: #0d0d0d; // fundo do painel da esquerda (estilo "background" do Figma)
-  --color-dynamic-playbar: #1f1e1f; // fundo da PlayerBar tocando (estilo "dynamic-playbar" do Figma); hoje fixo
+  // Estilo de cor "dynamic" do Penpot (biblioteca do arquivo App MUSIX; decisão do Rodrigo, 2026-11-15): degradê linear de cima
+  // para baixo, sempre este, em todo lugar (não vem da capa do álbum). Tem 20% de opacidade e no Penpot é o único preenchimento
+  // sobre o fundo do app: aqui vai sempre por cima de --color-background (`background: var(--color-dynamic-gradient), var(--color-background)`),
+  // nunca sobre outro conteúdo. Substitui o --color-dynamic-playbar (#1f1e1f) fixo.
+  --color-dynamic-gradient: linear-gradient(to bottom, rgb(51 56 66 / 20%), rgb(17 17 17 / 20%));
+  --color-dynamic-bg: var(--color-dynamic-gradient), var(--color-background); // o degradê já pintado sobre o fundo (a lista de camadas do `background`)
 
   // Valores antigos dos cinzas, só para os lugares que NÃO têm desenho no Figma e usavam estes tokens.
   // Sem desenho no Figma, aguardando decisão do Rodrigo: quando houver desenho, trocar pelo token novo e apagar.
@@ -169,7 +174,7 @@
   --playerbar-height: 80px;
   --playerbar-border: 0px; // sem borda de cima na grade em painéis (Etapa 1)
   --playerbar-border-color: var(--color-neutral-900);
-  --playerbar-bg: var(--color-neutral-900); // PlayerBar pausada no Figma (default-2); a tocando é --color-dynamic-playbar (Etapa 4)
+  --playerbar-bg: var(--color-neutral-900); // PlayerBar pausada no Figma (default-2); a tocando é o --color-dynamic-gradient
   --playerbar-padding: 12px 20px;
   --playerbar-font: var(--font-sans);
   --playerbar-text-size: 14px;
@@ -187,7 +192,7 @@
   --playerbar-control-gap: 28px;
   --playerbar-side-control-size: 28px; // caixa de layout de lyrics e do speaker (o círculo do hover é o de --playerbar-control-size)
   --playerbar-hover-bg: var(--hover-bg);
-  --playerbar-timeline-width: 502px; // tempo + barra + tempo
+  --playerbar-timeline-max-width: 780px; // a linha do tempo (tempo, barra, tempo, shuffle e repeat) enche o espaço livre até aqui (Penpot 1609 x 80); o que sobra fica dentro de `controls`, depois dela
   --playerbar-timeline-gap: 12px;
   --playerbar-progress-height: 4px;
   --playerbar-progress-bg: var(--color-neutral-700); // trilha e pílulas dos tempos: neutral/700 na PlayerBar nova (default-2)
@@ -221,7 +226,7 @@
   --playerbar-badge-fade: 150ms;
   --playerbar-transition: 400ms ease-in-out; // pausado <-> tocando (decisão minha: o Figma não tem transição)
   --playerbar-paused-bg: var(--color-neutral-900);
-  --playerbar-playing-bg: var(--color-dynamic-playbar);
+  --playerbar-playing-bg: var(--color-dynamic-bg); // camada atrás do conteúdo que aparece com opacidade (um degradê não anima por `background-color`)
   --playerbar-paused-play-bg: var(--color-neutral-700); // play (Figma, nó 12385:255)
   --playerbar-paused-play-icon: var(--color-neutral-100);
   --playerbar-paused-play-hover: var(--color-neutral-500);
@@ -236,9 +241,9 @@
   --playerbar-playing-artist: var(--color-neutral-300);
 
   // PlayingPanel (nó 12408:1964; faixa TrackQueue 12408:961, grupo AlbumQueue 12408:964)
-  --playingpanel-width: min(25vw, 280px); // 25% da largura da janela, no máximo 280 (Figma); a capa e o disco escalam com o painel
+  --playingpanel-width: min(25vw, 280px); // 25% da largura da janela, no máximo 280 (Figma); a capa escala com o painel
   --playingpanel-padding: 8px 4px 8px 8px;
-  --playingpanel-gap: 20px; // entre o título, a lista e a miniatura
+  --playingpanel-gap: 8px; // entre o título, a lista e a capa (Penpot, 2026-11-15; era 20)
   --playingpanel-duration: var(--panel-toggle-duration); // abrir e fechar: o movimento do protótipo (ver --panel-toggle-*)
   --playingpanel-transition: var(--panel-toggle-transition);
   --playingpanel-title-color: var(--color-neutral-300); // ícone queue e "Now playing" em neutral/300 (print do Figma do Rodrigo, 2026-11-14; decisão minha: o texto também, como no print)
@@ -272,9 +277,7 @@
   --playingpanel-header-icon-size: 16px;
   --playingpanel-group-gap: 8px; // entre o cabeçalho e as faixas
   --playingpanel-group-color: var(--color-neutral-300);
-  --playingpanel-disc-lift-ratio: 0.2083; // o disco aparece acima da capa por 55/264 da largura dela (números do Figma a 280): escala com o painel
-  --playingpanel-thumb-ratio: 0.8276; // capa / (capa + disco) = 264/319: altura da miniatura inteira em função da largura
-  --playingpanel-thumb-gap-right: 4px; // o painel tem 4 de padding à direita (barra da lista); a miniatura devolve 4: 8 de cada lado
+  --playingpanel-thumb-gap-right: 4px; // o painel tem 4 de padding à direita (barra da lista); a capa devolve 4: 8 de cada lado
   --playingpanel-header-pad-top: 4px; // acima do cabeçalho do grupo
   --playingpanel-cover-radius: 4.914px;
   --playingpanel-cover-border: 0.614px solid var(--color-neutral-700);
@@ -284,7 +287,6 @@
   --playingpanel-format-radius: 4px;
   --playingpanel-format-bg: var(--color-neutral-700);
   --playingpanel-format-color: var(--color-neutral-100);
-  --playingpanel-disc-duration: 8s;
 
   // FeedPanel (painel da Home, nó 12408:1935; cartões ArtistThumb e AlbumThumb). Textos: ver os estilos de texto abaixo.
   --feedpanel-padding-top: 8px;
@@ -469,13 +471,13 @@
   // sem o chevron sobre a capa no celular (Rodrigo, 2026-11-14); tocando, o fundo é o --playerbar-playing-bg (dynamic-playbar)
 
   // NavBarMobile (nó 12536:3896)
-  --navbarmobile-padding: 20px;
-  --navbarmobile-button-size: 48px;
+  --navbarmobile-padding: 8px 20px; // Penpot 412 x 56 (era 20)
+  --navbarmobile-button-size: 40px; // o círculo da página aberta; também a área de toque dos botões inativos (decisão minha: o Penpot só desenha o ícone de 24)
   --navbarmobile-icon-size: 24px; // caixa do ícone (glifo de 20)
   --navbarmobile-active-bg: var(--color-neutral-700);
 
   // NowPlaying mobile (nó 12294:355, 412 x 780)
-  --nowplaying-bg: var(--color-background);
+  --nowplaying-bg: var(--color-background); // o fundo sob o degradê do drawer e a cor da sombra que cobre a folga de baixo
   --nowplaying-padding: 20px;
   --nowplaying-gap: 12px; // entre o cabeçalho, a capa e o título
   // o drawer do Penpot (tela de 412 x 780, drawer de 404 x 740): 4 de cada lado, 40 do topo, encostado embaixo
@@ -510,7 +512,7 @@
   --nowplaying-tab-padding-bottom: 20px; // sob o corpo das abas Lyrics e Queue
 
   // PlayingControls (nó 12540:4287): iguais em todas as abas
-  --playingcontrols-gap: 20px;
+  --playingcontrols-gap: 8px; // entre a linha do tempo, os controles e as ações (Penpot, 2026-11-15; era 20)
   --playingcontrols-padding-top: 8px;
   --playingcontrols-timeline-gap: 8px; // entre a barra e os tempos
   --playingcontrols-bar-height: 4px;
@@ -521,7 +523,7 @@
   --playingcontrols-play-icon-size: 30.59px; // o ícone do play desenhado em 52/34, como na PlayerBar (23,53 a 40/34)
   --playingcontrols-play-pad-left: 5px; // só o play: o triângulo fica mais centrado (4 a 40, como na PlayerBar)
   --playingcontrols-play-bg: var(--color-neutral-700);
-  --playingcontrols-actions-height: 52px;
+  --playingcontrols-actions-height: 34px; // Penpot 2026-11-15 (era 52)
   --playingcontrols-volume-gap: 8px; // entre o alto-falante e a barra
   --playingcontrols-volume-icon-box: 32px;
   --playingcontrols-volume-width: 94px;

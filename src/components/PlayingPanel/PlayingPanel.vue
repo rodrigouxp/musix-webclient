@@ -19,9 +19,8 @@
 
             <QueueList :shown="open" />
 
-            <!-- the album that is playing, with a vinyl behind it that turns while the music plays -->
+            <!-- the album that is playing: only the cover (the spinning disc is gone, Penpot 2026-11-15) -->
             <div v-if="hasItems && queue.currenttrack" class="pp-thumb">
-                <img class="pp-disc" :class="{ spinning: queue.playing }" :src="discUrl" alt="" />
                 <component
                     :is="queue.currenttrack.albumhash ? 'RouterLink' : 'div'"
                     class="pp-cover-link"
@@ -47,7 +46,6 @@ import useTracklist from '@/stores/queue/tracklist'
 
 import DeleteSvg from '@/assets/icons/figma/delete.svg'
 import QueueSvg from '@/assets/icons/figma/queue.svg'
-import discUrl from '@/assets/images/queue-disc.png'
 import Bitrate from '@/components/LeftSidebar/NP/Bitrate.vue'
 import QueueList from './QueueList.vue'
 
@@ -84,6 +82,8 @@ const hasItems = computed(() => tracklist.tracklist.length > 0)
         display: flex;
         flex-direction: column;
         gap: var(--playingpanel-gap);
+        // the dynamic gradient over the app background, always (Penpot PlayingPanel 280 x 792)
+        background: var(--color-dynamic-bg);
         // fills the column: at the overshoot of the motion (--panel-toggle-easing) the column is wider than the panel
         // and an empty strip would show at the right
         width: 100%;
@@ -103,9 +103,9 @@ const hasItems = computed(() => tracklist.tracklist.length > 0)
         flex-shrink: 0;
     }
 
-    // the icon "queue" (20 x 20 box, its vector is 16.67 x 13.54), 8 from the text, both in neutral/300
+    // the icon "queue" (20 x 20 box, its vector is 16.67 x 13.54), 8 from the text (16px/500), both in neutral/300
     .pp-heading {
-        @include text('paragraph-18px');
+        @include text('paragraph-16px');
         display: flex;
         align-items: center;
         gap: var(--playingpanel-title-gap);
@@ -148,37 +148,14 @@ const hasItems = computed(() => tracklist.tracklist.length > 0)
         }
     }
 
-    // the vinyl is a square of the width, 55 above the cover; the cover is a square under it. 8 from each border of
-    // the panel (the padding of the panel has 4 on the right: the thumbnail takes the other 4 itself). On a short
-    // window it gets smaller (never more than 45% of the height)
+    // the cover is a square as wide as the panel, 8 from each border (the padding of the panel has 4 on the right: the thumbnail
+    // takes the other 4 itself). On a short window it gets smaller (never more than 45% of the height)
     .pp-thumb {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
         flex-shrink: 0;
         align-self: flex-start;
-        // the cover is a square of the width; the vinyl peeks out above it by 55/264 of that width (the Figma numbers
-        // at 280), so the whole set scales with the panel. On a short window it is never taller than 45% of it
-        width: min(calc(100% - var(--playingpanel-thumb-gap-right)), calc(45vh * var(--playingpanel-thumb-ratio)));
-        aspect-ratio: calc(1 / (1 + var(--playingpanel-disc-lift-ratio)));
-        border-radius: var(--playingpanel-cover-radius);
-    }
-
-    .pp-disc {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
+        width: min(calc(100% - var(--playingpanel-thumb-gap-right)), 45vh);
         aspect-ratio: 1;
-        object-fit: contain;
-        // clockwise, one turn in 8s, only while the music plays (paused it stays where it is)
-        animation: pp-disc-spin var(--playingpanel-disc-duration) linear infinite;
-        animation-play-state: paused;
-
-        &.spinning {
-            animation-play-state: running;
-        }
+        border-radius: var(--playingpanel-cover-radius);
     }
 
     .pp-cover-link {
@@ -211,22 +188,6 @@ const hasItems = computed(() => tracklist.tracklist.length > 0)
         object-fit: cover;
         border: var(--playingpanel-cover-border);
         border-radius: var(--playingpanel-cover-radius);
-    }
-}
-
-@keyframes pp-disc-spin {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .playing-panel .pp-disc {
-        animation: none;
     }
 }
 </style>

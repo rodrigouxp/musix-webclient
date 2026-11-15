@@ -20,7 +20,7 @@ import { Routes } from '@/router'
 
 import { useNavItems } from '@/components/LeftSidebar/navitems'
 
-// NavBarMobile of the Figma (node 12536:3896): four buttons, Home, Albums, Artists and Playlists (no Favorites on the
+// NavBarMobile of the Figma/Penpot (412 x 56; padding 8px 20px, buttons of 40, icons in a 24 box; node 12536:3896): four buttons, Home, Albums, Artists and Playlists (no Favorites on the
 // phone, Rodrigo's decision; they stay in the drawer of the top bar). The one of the open page has the filled icon on a
 // round background; the icons with two states swap by the class `icon-active` (Global/basic.scss).
 const { menus } = useNavItems()

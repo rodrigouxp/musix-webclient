@@ -153,7 +153,7 @@ export default defineStore('tracklist', {
             this.tracklist = shuffle(this.tracklist)
         },
         removeByIndex(index: number) {
-            const { currentindex, nextindex, playing, playNext, moveForward, setCurrentIndex } = useQueue()
+            const { currentindex, nextindex, playing, play, moveForward, setCurrentIndex } = useQueue()
             const player = usePlayer()
 
             if (this.tracklist.length == 1) {
@@ -162,7 +162,8 @@ export default defineStore('tracklist', {
 
             if (index == currentindex) {
                 if (playing) {
-                    playNext()
+                    // not `playNext`: removing the song that plays goes on to the next place, with or without repeat
+                    play(nextindex)
                 } else {
                     moveForward()
                 }

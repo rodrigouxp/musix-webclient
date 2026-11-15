@@ -89,7 +89,7 @@ import Spinner from '@/components/shared/Spinner.vue'
 // PlayerBar type=default-mobile of the Figma (node 12535:3645): play, favorite and add (12 between them) and the frame of
 // the song, which fills the rest: the title (a long one runs in a loop, like the albums of the PlayingPanel), the artists
 // (links, neutral/300) and the artwork, which opens NowPlaying (no chevron over it on the phone). While a song plays the
-// bar takes the dynamic-playbar color, as the desktop one. Tokens --playerbarmobile-*; the play button and the artwork
+// bar takes the dynamic gradient, as the desktop one. Tokens --playerbarmobile-*; the play button and the artwork
 // are the sizes of the desktop bar (--playerbar-*).
 const queue = useQueue()
 const router = useRouter()
@@ -129,9 +129,9 @@ function openNowPlaying() {
     --pbm-play-bg: var(--playerbar-paused-play-bg);
     --pbm-play-icon: var(--playerbar-paused-play-icon);
     --pbm-play-hover: var(--playerbar-paused-play-hover);
-    --pbm-bg: var(--playerbar-paused-bg);
-
     position: relative;
+    // the layer of the playing gradient (mixin) goes behind the content and above the solid background
+    isolation: isolate;
     min-width: 0;
     box-sizing: border-box;
     display: flex;
@@ -140,12 +140,12 @@ function openNowPlaying() {
     gap: var(--playerbarmobile-actions-gap);
     padding: var(--playerbarmobile-padding);
     border-radius: var(--fixedcontrols-radius);
-    background-color: var(--pbm-bg);
+    background-color: var(--playerbar-paused-bg);
     font-family: var(--playerbar-font);
-    transition: background-color var(--playerbar-transition);
+
+    @include playing-layer('.is-playing');
 
     &.is-playing {
-        --pbm-bg: var(--playerbar-playing-bg);
         --pbm-play-bg: var(--playerbar-playing-play-bg);
         --pbm-play-icon: var(--playerbar-playing-play-icon);
         --pbm-play-hover: var(--playerbar-playing-play-hover);

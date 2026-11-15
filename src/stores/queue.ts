@@ -75,46 +75,31 @@ export default defineStore('Queue', {
             audioSource.pausePlayingSource()
             this.playing = false
         },
-        autoPlayNext() {
+        /**
+         * The last track ended and nothing repeats: the music stops. The cursor goes back to the first track, loaded and paused,
+         * so Play starts the queue again only when the user asks for it.
+         */
+        stopAtEnd() {
             const settings = useSettings()
             const { focusCurrentInSidebar } = useInterface()
-            const { tracklist } = useTracklist()
-            const is_last = this.currentindex === tracklist.length - 1
-            const localRepeat = this.localRepeatTarget
 
-            // the repeat of the track and of the group come before the general one of the PlayerBar
-            if (localRepeat !== null) {
-                this.play(localRepeat, false)
-                return
-            }
+            this.playing = false
+            this.currentindex = 0
+            this.direction = 'down'
+            this.duration.current = 0
 
-            if (settings.repeat == 'one') {
-                this.play(this.currentindex, false)
-                return
-            }
+            const first = this.currenttrack
+            audioSource.playingSource.src = getUrl(first.filepath, first.trackhash, settings.use_legacy_streaming_endpoint)
+            audioSource.pausePlayingSource()
 
-            if (settings.repeat == 'all') {
-                this.play(is_last ? 0 : this.currentindex + 1, false)
-                return
-            }
-
-            const resetQueue = () => {
-                this.currentindex = 0
-                audioSource.playingSource.src = getUrl(
-                    this.next.filepath,
-                    this.next.trackhash,
-                    settings.use_legacy_streaming_endpoint
-                )
-                audioSource.pausePlayingSource()
-                this.playing = false
-
-                updateMediaNotif()
-                focusCurrentInSidebar()
-            }
-
-            !is_last ? this.play(this.currentindex + 1, false) : resetQueue()
+            updateMediaNotif()
+            focusCurrentInSidebar()
         },
+        // the one place of the rule "Next does nothing on the last track when nothing repeats" (`hasNext`): the buttons, the keyboard
+        // shortcut, the media keys and the lock screen all end here
         playNext() {
+            if (!this.hasNext) return
+
             this.play(this.nextindex)
         },
         playPrev() {
@@ -207,6 +192,19 @@ export default defineStore('Queue', {
             if (tracklist.tracklist[this.currentindex]?.repeat) return this.currentindex
 
             return tracklist.groupRepeatTarget(this.currentindex)
+        },
+        /**
+         * Whether Next has somewhere to go. It does not on the last track when nothing repeats (the repeat of the PlayerBar is
+         * off and the track and its group do not repeat): the queue ends there, it does not jump to the first track.
+         */
+        hasNext(): boolean {
+            const { tracklist } = useTracklist()
+            const { repeat } = useSettings()
+
+            if (tracklist.length === 0) return false
+            if (repeat !== 'none' || this.localRepeatTarget !== null) return true
+
+            return this.currentindex < tracklist.length - 1
         },
         next(): Track {
             const { tracklist } = useTracklist()

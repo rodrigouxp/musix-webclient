@@ -25,7 +25,12 @@ export default defineStore('settings', {
         artist_top_tracks_count: 5,
         // repeat_all: true,
         // repeat_one: false,
-        repeat: <'all' | 'one' | 'none'>'all',
+        // off by default (Rodrigo, 2026-11-15): the last track of the queue ends and the music stops. It only repeats
+        // when the repeat button of the PlayerBar is on, or the repeat of a group or a track of the queue
+        repeat: <'all' | 'one' | 'none'>'none',
+        // the old default was 'all': a browser that had it saved is switched to 'none' once (see `persist.afterRestore`);
+        // after that this is true and a later choice of the user is never overwritten
+        repeat_reset_done: false,
         root_dir_set: false,
         root_dirs: <string[]>[],
 
@@ -127,20 +132,19 @@ export default defineStore('settings', {
                     : contextChildrenShowMode.click
         },
         // repeat 👇
+        // none -> all -> one -> none
         toggleRepeatMode() {
             if (this.repeat == 'all') {
                 this.repeat = 'one'
-                return
-            }
-
-            if (this.repeat == 'one') {
+            } else if (this.repeat == 'one') {
                 this.repeat = 'none'
-                return
-            }
-
-            if (this.repeat == 'none') {
+            } else {
                 this.repeat = 'all'
             }
+
+            // the track that follows depends on the repeat: what was loaded for it (and its timer to move forward, which on the
+            // last track would otherwise jump to the first one after repeat was turned off) is loaded again
+            usePlayer().clearNextAudio()
         },
         setRootDirs(dirs: string[]) {
             this.root_dirs = dirs
@@ -317,6 +321,14 @@ export default defineStore('settings', {
     persist: {
         afterRestore: context => {
             let store = context.store
+
+            // repeat off by default: switch the 'all' of the old default to 'none' one time. The flag is saved with the
+            // state on the first change (the user's own choice of repeat is one), so it never runs over that choice
+            if (!store.repeat_reset_done) {
+                store.repeat = 'none'
+                store.repeat_reset_done = true
+            }
+
             store.root_dirs = []
             store.root_dir_set = false
 

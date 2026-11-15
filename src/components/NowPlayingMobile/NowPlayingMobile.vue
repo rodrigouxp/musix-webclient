@@ -194,8 +194,9 @@ const { offset, dragging, reset } = useSwipeDown({
         justify-content: space-between;
         padding: var(--nowplaying-padding) var(--nowplaying-padding) calc(var(--nowplaying-padding) + env(safe-area-inset-bottom, 0px));
         border: var(--nowplaying-drawer-border);
-        border-radius: var(--nowplaying-drawer-radius);
-        background-color: var(--nowplaying-bg);
+        border-radius: var(--nowplaying-drawer-radius) var(--nowplaying-drawer-radius) 0 0; // the top corners only (it touches the bottom)
+        // the dynamic gradient over the app background (Penpot, all three tabs): opaque, so the dimmed page behind never shows through
+        background: var(--color-dynamic-bg);
         // the motion goes about 10% past its place at the end of the rise and at the start of the way out: the shadow
         // paints the background below the drawer so the page never shows under it (a pseudo-element would be cut by the
         // overflow: clip of the root)

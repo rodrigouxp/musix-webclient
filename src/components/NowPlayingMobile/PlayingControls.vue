@@ -27,7 +27,15 @@
                 <PauseSvg v-else-if="queue.playing" class="pausesvg" />
                 <PlaySvg v-else />
             </button>
-            <button class="pc-round" :title="$t('BottomBar.Next')" :aria-label="$t('BottomBar.Next')" @click.prevent="queue.playNext">
+            <!-- last track and nothing repeats: Next does nothing (disabled, 40%, no feedback) -->
+            <button
+                class="pc-round"
+                :title="$t('BottomBar.Next')"
+                :aria-label="$t('BottomBar.Next')"
+                :disabled="!queue.hasNext"
+                :aria-disabled="!queue.hasNext"
+                @click.prevent="queue.playNext"
+            >
                 <NextSvg />
             </button>
             <button

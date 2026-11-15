@@ -17,6 +17,27 @@
   }
 }
 
+// The dynamic gradient of the PlayerBar while a song plays (Penpot, "dynamic" color style). A gradient does not animate with
+// `background-color`, so it is a layer behind the content of the bar (which needs `isolation: isolate` or a z-index, and a
+// `position`) whose opacity goes from 0 (paused: the bar is solid neutral/900) to 1 (playing) with the same transition.
+@mixin playing-layer($playing) {
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: var(--playerbar-playing-bg);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--playerbar-transition);
+  }
+
+  &#{$playing}::before {
+    opacity: 1;
+  }
+}
+
 @mixin ximage {
   background-position: center;
   background-size: cover;

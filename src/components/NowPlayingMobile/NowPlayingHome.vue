@@ -1,7 +1,7 @@
 <template>
     <div class="npm-home">
         <!-- the cover is the only thing that changes its size: a square as wide as the screen, or as tall as the room
-             left by the rest, always centered -->
+             left by the rest. It stays right under the source name and above the texts; the free room is under all of it -->
         <div class="npm-cover-box">
             <div class="npm-cover">
                 <ImageLoader
@@ -135,16 +135,22 @@ function showOptions() {
 .npm-home {
     display: flex;
     flex-direction: column;
-    flex: 1 1 0;
+    // Penpot: the group "top" is packed at the top with a gap of 12 (the name of the source above is the first of it); it
+    // does not grow, so the free room goes between it and the PlayingControls, not between the cover and the texts. It
+    // only shrinks (the cover gets smaller) when the screen is too short
+    flex: 0 1 auto;
     gap: var(--nowplaying-gap);
     min-height: 0;
 
-    // the room for the cover: what the info leaves; the cover is centered in it
+    // a square box as wide as the screen; on a short screen it shrinks in height and the cover (a square that fits in it)
+    // gets smaller, centered
     .npm-cover-box {
         container-type: size;
         display: grid;
         place-items: center;
-        flex: 1 1 0;
+        flex: 0 1 auto;
+        width: 100%;
+        aspect-ratio: 1;
         min-height: 0;
     }
 

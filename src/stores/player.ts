@@ -288,12 +288,13 @@ export const usePlayer = defineStore('player', () => {
     }
 
     const onAudioEnded = () => {
-        const { submitData } = tracker
-        submitData()
+        // (the plays are logged while the track plays and closed by `tracker.changeKey` on the next one: `submitData`, which this
+        // called, is gone from the tracker, and the call threw here on every end, before anything below could run)
 
-        if (settings.repeat == 'none' && queue.localRepeatTarget === null) {
-            queue.playPause()
-            queue.moveForward()
+        // the last track and nothing repeats (the PlayerBar, the track and its group): the queue stops here. Any other track whose
+        // next audio was not loaded in time (a seek near the end, a slow load) goes on below
+        if (!queue.hasNext) {
+            queue.stopAtEnd()
             return
         }
 
