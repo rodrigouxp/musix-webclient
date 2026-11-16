@@ -40,11 +40,16 @@
 
 // The hover of the cards of artists, albums and playlists: the card goes up by --card-lift, ease in and out. It is the only hover
 // effect they have, and it is the same on the desktop and on the phone.
+//
+// Only where there is a real hover (a mouse): on a touch screen the first tap leaves the element "hovered" and the card would
+// stay raised (and, on iOS, the first tap would only be the hover and the click would need a second one).
 @mixin card-lift {
   transition: transform var(--card-lift-duration) ease-in-out;
 
-  &:hover {
-    transform: translateY(calc(-1 * var(--card-lift)));
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      transform: translateY(calc(-1 * var(--card-lift)));
+    }
   }
 }
 
