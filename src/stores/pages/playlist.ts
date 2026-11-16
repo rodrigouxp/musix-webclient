@@ -18,6 +18,11 @@ export default defineStore('playlist-tracks', {
         // the title is a text field (the pencil, or "Rename" of the menu)
         renaming: false,
         allTracks: <Track[]>[],
+        // Where the next page of tracks starts, in positions of the playlist on the server. It is not `allTracks.length`: a
+        // playlist can have tracks that are not in the library anymore (they do not come in the pages), so the rows that are
+        // loaded are fewer than the positions that were read, and asking from `allTracks.length` brought the last tracks of
+        // the page again (the same tracks twice at the end of each page)
+        nextStart: 0,
         colors: {
             bg: '',
             btn: '',
@@ -31,10 +36,21 @@ export default defineStore('playlist-tracks', {
          */
         async fetchAll(id: number, no_tracks = false, fetchAll = false) {
             if (this.allTracks.length === 0) this.renaming = false
+
+            const start = this.allTracks.length === 0 ? 0 : this.nextStart
             // if fetchAll, use -1 to fetch all tracks
-            const playlist = await getPlaylist(id, no_tracks, this.allTracks.length, fetchAll ? -1 : track_limit.value)
+            const playlist = await getPlaylist(id, no_tracks, start, fetchAll ? -1 : track_limit.value)
+
             if (this.allTracks.length !== 0) {
-                this.allTracks.push(...(playlist?.tracks || []))
+                // without tracks (the header only) nothing was loaded: the next page does not move
+                if (no_tracks) return
+
+                // a track that is already there is not added again (a playlist never has the same track twice)
+                const have = new Set(this.allTracks.map(track => track.trackhash))
+                const next = (playlist?.tracks || []).filter(track => !have.has(track.trackhash))
+
+                this.allTracks.push(...next)
+                this.nextStart = playlist?.next_start ?? start + (playlist?.tracks.length ?? 0)
                 return
             }
 
@@ -47,6 +63,7 @@ export default defineStore('playlist-tracks', {
             if (no_tracks) return
 
             this.allTracks = playlist?.tracks || []
+            this.nextStart = playlist?.next_start ?? this.allTracks.length
         },
         /**
          * Loads every track of the playlist, replacing the ones that are loaded. It starts from the
@@ -58,6 +75,7 @@ export default defineStore('playlist-tracks', {
             if (this.info.id !== id) return
 
             this.allTracks = playlist?.tracks || []
+            this.nextStart = playlist?.next_start ?? this.allTracks.length
         },
         createImageLink() {
             this.info.image = paths.images.playlist + this.info.image
@@ -124,6 +142,8 @@ export default defineStore('playlist-tracks', {
         },
         removeTrackByIndex(index: number) {
             this.allTracks.splice(index, 1)
+            // the positions of the server list move up by one too
+            this.nextStart = Math.max(0, this.nextStart - 1)
         },
         addTrack(track: Track) {
             this.allTracks.push(track)

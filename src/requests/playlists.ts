@@ -68,6 +68,8 @@ export async function getPlaylist(pid: number | string, no_tracks = false, start
     interface PlaylistData {
         info: Playlist
         tracks: Track[]
+        // where the next page starts, in positions of the playlist (the playlist can have tracks that are not in the library)
+        next_start?: number
     }
 
     const { data, status } = await useAxios({

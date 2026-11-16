@@ -52,7 +52,7 @@ import { FromOptions } from '@/enums'
 import { movePlaylistTrack } from '@/requests/playlists'
 import { NotifType, useToast } from '@/stores/notification'
 
-import { isMedium, isSmall, isSmallPhone, track_limit } from '@/stores/content-width'
+import { isMedium, isSmall, isSmallPhone } from '@/stores/content-width'
 import { dropSources } from '@/enums'
 import useQueue from '@/stores/queue'
 import useTracklist from '@/stores/queue/tracklist'
@@ -220,7 +220,9 @@ const scrollerItems = computed(() => {
 
     const body = playlist.tracks.length === 0 ? [getNoItemsComponent()] : tracks
 
-    if (playlist.tracks.length >= track_limit.value) {
+    // more pages while there are positions of the playlist that were not read (not `tracks.length`: a playlist can have tracks
+    // that are not in the library, which come in no page, so a page can have fewer tracks than its size and the list stopped early)
+    if (playlist.nextStart < playlist.info.count) {
         body.push({
             id: Math.random(),
             size: 1,
