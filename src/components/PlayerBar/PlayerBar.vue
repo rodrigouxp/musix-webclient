@@ -102,10 +102,16 @@
             </div>
             <button
                 class="pb-artwork"
-                :class="{ open: settings.queue_panel_open }"
-                :aria-label="settings.queue_panel_open ? $t('BottomBar.HideQueue') : $t('BottomBar.ShowQueue')"
-                :aria-expanded="settings.queue_panel_open"
-                @click="settings.togglePlayingPanel"
+                :class="{ open: settings.playing_panel_open }"
+                :aria-label="
+                    compactWindow
+                        ? $t('BottomBar.OpenNowPlaying')
+                        : settings.queue_panel_open
+                        ? $t('BottomBar.HideQueue')
+                        : $t('BottomBar.ShowQueue')
+                "
+                :aria-expanded="compactWindow ? undefined : settings.queue_panel_open"
+                @click="onArtworkClick"
             >
                 <ImageLoader
                     :image="paths.images.thumb.small + queue.currenttrack?.image"
@@ -122,12 +128,14 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 import { paths } from '@/config'
 import { showPlayingAddMenu } from '@/helpers/contextMenuHandler'
 import { Routes } from '@/router'
 import { useT } from '@/i18n'
 import { formatSeconds } from '@/utils'
+import { isCompactWindow } from '@/stores/content-width'
 
 import { buffering } from '@/stores/player'
 import useQStore from '@/stores/queue'
@@ -167,6 +175,19 @@ defineEmits<{
 const { t } = useT()
 const queue = useQStore()
 const settings = useSettingsStore()
+
+const router = useRouter()
+const compactWindow = isCompactWindow
+
+// the thumbnail opens the PlayingPanel; under 1000px, the NowPlaying of the phone (a push, so back comes back to the page)
+function onArtworkClick() {
+    if (compactWindow.value) {
+        router.push({ name: Routes.nowPlaying, params: { tab: 'home' } })
+        return
+    }
+
+    settings.togglePlayingPanel()
+}
 
 const hasTrack = computed(() => !!queue.currenttrack?.trackhash)
 const albumhash = computed(() => queue.currenttrack?.albumhash)

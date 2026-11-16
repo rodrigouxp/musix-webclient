@@ -128,6 +128,7 @@
     "VolumeLabel": "Volume {percent} percent",
     "Favorite": "Favorite",
     "GoToNowPlaying": "Go to Now Playing",
+    "OpenNowPlaying": "Open Now Playing",
     "HideQueue": "Hide queue",
     "Next": "Next",
     "Pause": "Pause",

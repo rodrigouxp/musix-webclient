@@ -58,6 +58,7 @@ function showMenu(e: MouseEvent) {
 
 <style lang="scss">
 .track-thumb {
+    @include card-lift;
     display: flex;
     flex-direction: column;
     gap: var(--feedpanel-track-gap);

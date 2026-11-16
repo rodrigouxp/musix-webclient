@@ -103,12 +103,14 @@ const NowPlayingView = {
     path: '/nowplaying/:tab',
     name: 'NowPlaying',
     component: NowPlaying,
-    // phone (up to 600px): the NowPlaying screen with its three tabs (home, lyrics, queue). Above that the page of Now
+    // up to 1000px: the NowPlaying screen of the phone with its three tabs (home, lyrics, queue). Above that the page of Now
     // Playing is not on the desktop of the grid of panels (for now); the lyrics are the only tab that stays
     beforeEnter: async (to: any) => {
         const { default: useSettings } = await import('@/stores/settings')
+        const { isCompactWindow } = await import('@/stores/content-width')
 
-        if (useSettings().is_panel_layout) {
+        // above 1000px the page of Now Playing is only the lyrics; up to 1000px it is the NowPlaying of the phone, with its three tabs
+        if (useSettings().is_panel_layout && !isCompactWindow.value) {
             if (to.params.tab !== 'lyrics') return { name: 'Home' }
         } else if (!['home', 'lyrics', 'queue'].includes(to.params.tab)) {
             return { name: 'NowPlaying', params: { tab: 'home' }, replace: true }

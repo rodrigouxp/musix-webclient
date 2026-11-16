@@ -5,7 +5,7 @@ import { pluginSetActive, updatePluginSettings } from '@/requests/plugins'
 
 import { updateConfig } from '@/requests/settings'
 import { usePlayer } from '@/stores/player'
-import { isMobile } from '../content-width'
+import { isCompactWindow, isMobile } from '../content-width'
 import useAxios from '@/requests/useAxios'
 import { paths } from '@/config'
 import { router } from '@/router'
@@ -311,6 +311,10 @@ export default defineStore('settings', {
         // the grid of panels of the Figma: every width above the phone breakpoint (600px, same as the `min-width: 601px`
         // of assets/scss/Global/app-grid.scss). Up to 600px the app keeps the phone layout
         is_panel_layout: () => !isMobile.value,
+        // the PlayingPanel is open: the user opened it, and the window is wide enough (under 1000px the PlayerBar opens the NowPlaying of the phone)
+        playing_panel_open(): boolean {
+            return this.is_panel_layout && !isCompactWindow.value && this.queue_panel_open
+        },
         highlightFavoriteTracks(): boolean {
             return (
                 !router.currentRoute.value.name?.toString().toLowerCase().startsWith('favorite') &&

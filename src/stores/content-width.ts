@@ -61,6 +61,9 @@ const { width: win_width } = useWindowSize()
 
 export const isSmallPhone = computed(() => win_width.value <= LARGE_MOBILE_WIDTH)
 export const isMobile = computed(() => win_width.value <= ALL_MOBILE_WIDTH)
+// Under 1000px the PlayerBar opens the NowPlaying of the phone (the drawer with its three tabs) instead of the PlayingPanel,
+// which is not shown (Rodrigo, 2026-11-16)
+export const isCompactWindow = computed(() => win_width.value < 1000)
 // from 601 to 900px the panels are narrow (the PlayerBar goes to two rows)
 export const isNarrowWindow = computed(() => win_width.value <= 900)
 export const isLargerMobile = computed(

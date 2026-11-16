@@ -11,7 +11,7 @@
         id="app-grid"
         :class="{
             'has-playing-panel': settings.is_panel_layout,
-            'queue-open': settings.is_panel_layout && settings.queue_panel_open,
+            'queue-open': settings.playing_panel_open,
             'sidepanel-collapsed': settings.is_panel_layout && settings.side_panel_collapsed,
             'panels-animating': panelsAnimating,
         }"

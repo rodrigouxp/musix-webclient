@@ -56,7 +56,7 @@ const settings = useSettings()
 const queue = useQueue()
 const tracklist = useTracklist()
 
-const open = computed(() => settings.queue_panel_open)
+const open = computed(() => settings.playing_panel_open)
 const hasItems = computed(() => tracklist.tracklist.length > 0)
 </script>
 

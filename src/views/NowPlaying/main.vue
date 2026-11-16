@@ -1,6 +1,6 @@
 <template>
-    <!-- phone (up to 600px): the NowPlaying screen of the Figma. Above that: only the lyrics, as before -->
-    <NowPlayingMobile v-if="isMobile" />
+    <!-- up to 1000px: the NowPlaying screen of the Penpot (the drawer). Above that: only the lyrics, as before -->
+    <NowPlayingMobile v-if="drawer" />
     <div v-else class="now-playing-view content-page" :class="{ isSmall, isMedium }" style="height: 100%">
         <div class="now-playing-content rounded">
             <div
@@ -36,19 +36,30 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 import { paths } from '@/config'
 import useColor from '@/stores/colors'
 import useQueueStore from '@/stores/queue'
 import { transitionColor } from '@/utils/colortools'
-import { isMedium, isMobile, isSmall } from '@/stores/content-width'
+import { isCompactWindow, isMedium, isSmall } from '@/stores/content-width'
 
 import NowPlayingMobile from '@/components/NowPlayingMobile/NowPlayingMobile.vue'
 import LyricsView from '@/views/LyricsView/main.vue'
 
 const colors = useColor()
 const queue = useQueueStore()
+const route = useRoute()
+const router = useRouter()
+
+// the drawer up to 1000px of window (it is the phone's NowPlaying, with the three tabs)
+const drawer = computed(() => isCompactWindow.value)
+
+// the window got wider than 1000px with the drawer open: above it the page is only the lyrics, the other tabs go back Home
+watch(drawer, isDrawer => {
+    if (!isDrawer && route.params.tab !== 'lyrics') router.replace({ name: 'Home' })
+})
 
 const darkMuted = ref<string>('rgb(0, 0, 0)')
 const darkVibrant = ref<string>('rgb(0, 0, 0)')

@@ -47,7 +47,8 @@ defineEmits<{
   padding: $medium;
   cursor: pointer;
   height: max-content;
-  transition: background-color 0.2s ease-out;
+  // the card goes up on the hover, like the other cards (mixin `card-lift`); the play button still shows
+  @include card-lift;
 
   .image {
     position: relative;
@@ -66,8 +67,6 @@ defineEmits<{
   }
 
   &:hover {
-    background-color: $gray4;
-
     .play-btn {
       opacity: 1;
       transform: translateY(-0.75rem);
