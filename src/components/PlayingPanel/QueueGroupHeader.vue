@@ -1,5 +1,5 @@
 <template>
-    <div class="queue-group-header">
+    <div class="queue-group-header" @pointerdown="!held && $emit('dragstart', $event)" @dragstart.prevent>
         <div class="qg-name">
             <AlbumSvg v-if="group.type === 'album'" class="qg-icon" />
             <PlaylistSvg v-else class="qg-icon" />
@@ -7,8 +7,6 @@
         </div>
         <!-- the buttons act only on the tracks of this group -->
         <div class="qg-functions">
-            <!-- the handle has no icon: it is first, so the empty room it takes is not between the last icon and the border -->
-            <button class="qg-button qg-drag" :aria-label="$t('PlayingPanel.Move')" @pointerdown="$emit('dragstart', $event)"></button>
             <button class="qg-button" :title="$t('BottomBar.Shuffle')" :aria-label="$t('BottomBar.Shuffle')" @click="tracklist.shuffleGroup(group.id)">
                 <ShuffleSvg />
             </button>
@@ -47,6 +45,8 @@ defineProps<{
     group: QueueGroup
     // the group repeats
     repeating?: boolean
+    // the copy that follows the pointer while the group is dragged
+    held?: boolean
 }>()
 
 defineEmits<{
@@ -65,6 +65,10 @@ const tracklist = useTracklist()
     height: calc(var(--playingpanel-header-height) + var(--playingpanel-header-pad-top));
     padding: var(--playingpanel-header-pad-top) 4px 0;
     color: var(--playingpanel-group-color);
+    // the whole header is the handle of the drag of the group: its text is not selected
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
 
     .qg-name {
         display: flex;
@@ -120,12 +124,6 @@ const tracklist = useTracklist()
         &.on {
             color: var(--playingpanel-icon-on);
         }
-    }
-
-    // the handle has no icon (Rodrigo, 2026-11-14): the button is an invisible hit area, the drag still works
-    .qg-drag {
-        cursor: grab;
-        touch-action: none;
     }
 }
 </style>

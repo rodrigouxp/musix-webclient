@@ -343,7 +343,6 @@
   },
   "PlayingPanel": {
     "Clear": "Clear queue",
-    "Move": "Move",
     "RemoveGroup": "Remove from queue",
     "RepeatGroup": "Repeat",
     "RepeatTrack": "Repeat",

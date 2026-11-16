@@ -61,7 +61,7 @@
                 class="pp-ghost pp-ghost-group"
                 :style="{ left: groupDrag.state.left + 'px', width: groupDrag.state.width + 'px', top: groupDrag.state.pointerY - 8 + 'px' }"
             >
-                <QueueGroupHeader :group="draggedGroup" />
+                <QueueGroupHeader :group="draggedGroup" held />
             </div>
             <div
                 v-if="groupDrag.state.lineY >= 0"
@@ -76,6 +76,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 import useTrackDrag from '@/composables/useTrackDrag'
+import { showTrackContextMenu } from '@/helpers/contextMenuHandler'
 import { QueueGroup, Track } from '@/interfaces'
 import useInterface from '@/stores/interface'
 import useQueue from '@/stores/queue'
@@ -200,12 +201,19 @@ const drag = useTrackDrag({
     // the rows of tracks carry their position in the queue; headers and dividers are not slots
     rowIndex: el => Number(el.dataset.track ?? -1),
     onDrop: (from, to) => tracklist.moveTrack(from, to),
+    // a finger that is held and let go without moving opens the menu of the track (the long press is the drag now)
+    onHold: (from, x, y) => {
+        const track = tracklist.tracklist[from]
+
+        if (track) showTrackContextMenu({ x, y } as MouseEvent, track, ref(false))
+    },
 })
 
 const dragTrack = computed(() => tracklist.tracklist[drag.state.from])
 
+// the whole row is the handle: a mouse drags it after moving a few pixels (a click still plays), a finger after a long press
 function onDragStart(event: PointerEvent, index: number) {
-    drag.begin(event, index)
+    drag.begin(event, index, undefined, true)
 }
 
 // drag of a whole group: the slots are the same as for a track, and the group goes to the one that is chosen
@@ -223,7 +231,7 @@ const groupDrag = useTrackDrag({
 
 function onGroupDragStart(event: PointerEvent, group: QueueGroup, start: number) {
     draggedGroup.value = group
-    groupDrag.begin(event, start)
+    groupDrag.begin(event, start, undefined, true)
 }
 </script>
 

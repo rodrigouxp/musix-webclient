@@ -3,20 +3,15 @@
         class="queue-track"
         :class="{ current: isCurrent, 'menu-open': menuOpen, held }"
         @click.prevent.stop="$emit('play')"
-        @contextmenu.prevent="showMenu"
+        @pointerdown="onPointerDown"
+        @contextmenu.prevent="onContextMenu"
+        @dragstart.prevent
     >
         <div class="qt-name">
-            <img class="qt-picture" :src="paths.images.thumb.small + track.image" alt="" loading="lazy" />
+            <img class="qt-picture" :src="paths.images.thumb.small + track.image" alt="" draggable="false" loading="lazy" />
             <span v-tooltip class="qt-title">{{ track.title }}</span>
         </div>
         <div class="qt-functions">
-            <!-- the handle has no icon: it is first, so the empty room it takes is not between the last icon and the border -->
-            <button
-                class="qt-button qt-drag"
-                :aria-label="$t('PlayingPanel.Move')"
-                @click.stop
-                @pointerdown="$emit('dragstart', $event)"
-            ></button>
             <button
                 class="qt-button"
                 :class="{ on: track.repeat }"
@@ -60,7 +55,7 @@ const props = defineProps<{
     held?: boolean
 }>()
 
-defineEmits<{
+const emit = defineEmits<{
     (e: 'play'): void
     (e: 'dragstart', event: PointerEvent): void
 }>()
@@ -70,6 +65,22 @@ const menuOpen = ref(false)
 
 function showMenu(e: MouseEvent) {
     showTrackContextMenu(e, props.track, menuOpen)
+}
+
+// the whole row is the handle of the drag (a mouse that moves, a finger that is held). A long press with a finger is the drag,
+// so the `contextmenu` that Android fires for it is thrown away (the list opens the menu when the finger lets go without moving)
+let lastPointer = ''
+
+function onPointerDown(e: PointerEvent) {
+    lastPointer = e.pointerType
+
+    if (!props.held) emit('dragstart', e)
+}
+
+function onContextMenu(e: MouseEvent) {
+    if (lastPointer === 'touch' || lastPointer === 'pen') return
+
+    showMenu(e)
 }
 </script>
 
@@ -85,6 +96,15 @@ function showMenu(e: MouseEvent) {
     border-radius: var(--playingpanel-track-radius);
     cursor: pointer;
     transition: background-color 0.2s ease-out;
+    // the text and the cover are not selected or dragged by themselves: the row is dragged as a whole
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+
+    img {
+        pointer-events: none;
+        -webkit-user-drag: none;
+    }
 
     // the hover is not in the Figma: the standard one of the app (--hover-bg), like the track that is playing
     &:hover,
@@ -157,12 +177,6 @@ function showMenu(e: MouseEvent) {
         &:disabled {
             cursor: default;
         }
-    }
-
-    // the handle has no icon (Rodrigo, 2026-11-14): the button is an invisible hit area, the drag still works
-    .qt-drag {
-        cursor: grab;
-        touch-action: none;
     }
 }
 </style>

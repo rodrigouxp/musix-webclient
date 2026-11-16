@@ -5,6 +5,7 @@
         @dblclick="!panel && emitUpdate()"
         @contextmenu.prevent="onContextMenu"
         @pointerdown="onRowPointerDown"
+        @dragstart.prevent
         @click="onRowClick"
     >
         <!-- small screens have no number, except in a playlist (the number is the handle of the drag) and in the panel row -->
@@ -96,7 +97,7 @@ const is_fav = ref(props.track.is_favorite || false)
 const emit = defineEmits<{
     (e: 'playThis'): void
     (e: 'trackDropped', source: dropSources, track: Track, newIndex: number, oldIndex: number): void
-    (e: 'dragStart', event: PointerEvent): void
+    (e: 'dragStart', event: PointerEvent, fromRow?: boolean): void
     (e: 'dragHover'): void
 }>()
 
@@ -130,8 +131,14 @@ function onContextMenu(e: MouseEvent) {
 function onRowPointerDown(e: PointerEvent) {
     lastPointer = e.pointerType
 
-    // touch: the long press drags the row, wherever it is (the number, which is the handle of the mouse, did it already)
-    if (props.reorderable && !props.held && (e.pointerType === 'touch' || e.pointerType === 'pen')) emit('dragStart', e)
+    if (!props.reorderable || props.held) return
+
+    // the whole row is the handle (the number was the only one before): a finger drags it after a long press, a mouse after
+    // moving a few pixels, so a click still plays the track. The names of the artists and the album are links, and the heart and the
+    // options are buttons: a mouse that presses on them is a click, not a drag (a finger held on them does drag)
+    if (e.pointerType === 'mouse' && (e.target as HTMLElement).closest('a, button, .heart-icon, .options-icon')) return
+
+    emit('dragStart', e, true)
 }
 
 function isCurrent() {

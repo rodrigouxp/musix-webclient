@@ -7,6 +7,8 @@ const MAX_SPEED = 18
 // touch: how long the finger has to stay on the handle before the drag starts, and how much it can move
 const HOLD_MS = 350
 const HOLD_SLOP = 8
+// mouse, a drag that starts on the row itself (not on a handle): how far the pointer goes with the button down before it starts
+const ROW_SLOP = 6
 
 interface Options {
     /** The element that scrolls (the DynamicScroller). */
@@ -17,6 +19,8 @@ interface Options {
     rowIndex?: (el: HTMLElement) => number
     /** The drop: the track at `from` goes to `to` (both are positions of the list, after the move). */
     onDrop: (from: number, to: number) => void
+    /** Touch: a long press that is let go without moving (it was the menu of the row before the drag took the long press). */
+    onHold?: (from: number, x: number, y: number) => void
 }
 
 /**
@@ -24,7 +28,8 @@ interface Options {
  * touch). The list is virtual: the position under the pointer comes from the rows that are on
  * the screen (the `data-index` of each one), and the list scrolls by itself near its edges.
  *
- * With a mouse the drag starts at once. With a finger it starts after a long press (350 ms without
+ * With a mouse the drag starts at once on a handle, or, when the whole row is the handle (`row` in `begin`), after the pointer
+ * moves a few pixels (a plain click on the row still plays it). With a finger it starts after a long press (350 ms without
  * moving more than 8px): until then the list scrolls as always. From the moment the drag is on, the
  * scroll of the page is blocked (a non passive `touchmove`, which iOS needs).
  *
@@ -56,6 +61,10 @@ export default function useTrackDrag(options: Options) {
     let startY = 0
     let previousSelect = ''
     let previousCursor = ''
+    // a mouse press on a whole row: the drag starts when the pointer has moved ROW_SLOP
+    let rowStart: { index: number; before?: () => Promise<void> } | null = null
+    let fromRow = false
+    let travelled = 0
 
     function rows() {
         const scroller = options.scroller()
@@ -119,10 +128,20 @@ export default function useTrackDrag(options: Options) {
 
     function onMove(e: PointerEvent) {
         state.pointerY = e.clientY
+        travelled = Math.max(travelled, Math.hypot(e.clientX - startX, e.clientY - startY))
 
         if (state.active) {
             e.preventDefault()
             update()
+            return
+        }
+
+        // mouse, pressed on a row: it is a drag once the pointer has moved, a click until then
+        if (rowStart && travelled > ROW_SLOP) {
+            const start = rowStart
+
+            rowStart = null
+            startFromRow(start.index, start.before)
             return
         }
 
@@ -137,8 +156,11 @@ export default function useTrackDrag(options: Options) {
         if (state.active && e.cancelable) e.preventDefault()
     }
 
-    function onUp() {
+    function onUp(e: PointerEvent) {
         released = true
+
+        const from = state.from
+        const wasTouchHold = state.active && touching && travelled <= HOLD_SLOP
 
         if (state.active && state.slot >= 0) {
             const to = state.slot > state.from ? state.slot - 1 : state.slot
@@ -147,6 +169,9 @@ export default function useTrackDrag(options: Options) {
         }
 
         finish()
+
+        // a finger that pressed and let go without moving: the menu of the row
+        if (wasTouchHold) options.onHold?.(from, e.clientX, e.clientY)
     }
 
     function onKey(e: KeyboardEvent) {
@@ -170,9 +195,12 @@ export default function useTrackDrag(options: Options) {
         if (state.active) {
             document.body.style.userSelect = previousSelect
             document.body.style.cursor = previousCursor
+            delete document.body.dataset.trackDrag
         }
 
         touching = false
+        rowStart = null
+        fromRow = false
         state.pending = false
         state.active = false
         state.from = -1
@@ -202,7 +230,7 @@ export default function useTrackDrag(options: Options) {
     function activate(index: number) {
         const box = options.scroller()?.getBoundingClientRect()
 
-        if (touching) guardClick()
+        if (touching || fromRow) guardClick()
 
         state.left = box?.left ?? 0
         state.width = box?.width ?? 0
@@ -213,28 +241,47 @@ export default function useTrackDrag(options: Options) {
         previousCursor = document.body.style.cursor
         document.body.style.userSelect = 'none'
         document.body.style.cursor = 'grabbing'
+        // NowPlaying (phone) looks at this: a swipe down that started on the row must not pull the sheet too
+        document.body.dataset.trackDrag = '1'
 
         update()
         frame = requestAnimationFrame(autoscroll)
     }
 
+    // mouse, pressed on a whole row and moved: `before` runs (it can load the rest of the list) and the drag starts
+    async function startFromRow(index: number, before?: () => Promise<void>) {
+        fromRow = true
+
+        if (before) await before()
+
+        if (released || !state.pending) {
+            finish()
+            return
+        }
+
+        activate(index)
+    }
+
     /**
-     * Call it on `pointerdown` of the handle of the row at `index`. `before` runs first (it can load
-     * the rest of the list): with a mouse the drag waits for it, with a finger it runs while the
-     * finger is held. If the button is up when everything is ready, there is no drag.
+     * Call it on `pointerdown` of the handle of the row at `index`, or of the row itself when `row` is true (the whole row is
+     * the handle). `before` runs first (it can load the rest of the list): with a mouse the drag waits for it, with a finger it
+     * runs while the finger is held. If the button is up when everything is ready, there is no drag. A mouse press on a whole
+     * row does not start the drag until the pointer moves, so a click on the row still works (and its text is not selected:
+     * the rows have `user-select: none`).
      */
-    async function begin(e: PointerEvent, index: number, before?: () => Promise<void>) {
+    async function begin(e: PointerEvent, index: number, before?: () => Promise<void>, row = false) {
         if (e.button !== undefined && e.button !== 0) return
         if (state.pending || state.active) return
 
         released = false
+        travelled = 0
         state.pending = true
         state.pointerY = e.clientY
+        startX = e.clientX
+        startY = e.clientY
 
         if (e.pointerType === 'touch' || e.pointerType === 'pen') {
             touching = true
-            startX = e.clientX
-            startY = e.clientY
 
             listen()
             // not passive: it is how iOS lets a page stop the scroll
@@ -254,17 +301,17 @@ export default function useTrackDrag(options: Options) {
             return
         }
 
-        e.preventDefault()
-        listen()
-
-        if (before) await before()
-
-        if (released || !state.pending) {
-            finish()
+        if (row) {
+            // not a handle: the press may be a click, so nothing is prevented and the drag waits for the pointer to move
+            listen()
+            rowStart = { index, before }
             return
         }
 
-        activate(index)
+        e.preventDefault()
+        listen()
+
+        await startFromRow(index, before)
     }
 
     onBeforeUnmount(finish)

@@ -19,7 +19,7 @@
                         :key="index"
                         v-bind="item.props"
                         @playThis="playFromPlaylistPage(item.props.index - 1)"
-                        @dragStart="onDragStart($event, item.props.index - 1)"
+                        @dragStart="(event: PointerEvent, fromRow?: boolean) => onDragStart(event, item.props.index - 1, fromRow)"
                         @dragHover="ensureAllLoaded"
                     ></component>
                 </DynamicScrollerItem>
@@ -135,10 +135,10 @@ const drag = useTrackDrag({
 
 const dragTrack = computed(() => playlist.allTracks[drag.state.from])
 
-function onDragStart(event: PointerEvent, index: number) {
+function onDragStart(event: PointerEvent, index: number, fromRow = false) {
     if (!reorderable.value) return
 
-    drag.begin(event, index, ensureAllLoaded)
+    drag.begin(event, index, ensureAllLoaded, fromRow)
 }
 
 /**

@@ -69,6 +69,14 @@ export default function useSwipeDown(options: Options) {
     function move(x: number, y: number): boolean {
         if (!tracking) return false
 
+        // a row of the queue is being dragged (useTrackDrag): the finger is its, not the sheet's
+        if (document.body.dataset.trackDrag) {
+            tracking = false
+            dragging.value = false
+            offset.value = 0
+            return false
+        }
+
         const dx = x - startX
         const dy = y - startY
 
