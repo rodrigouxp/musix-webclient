@@ -298,10 +298,21 @@ export async function removeBannerImage(playlistid: number) {
  * none. It is said by neighbor, not by position, because a playlist can have tracks that are not
  * in the library anymore: the page does not show them, so its positions are not the list's.
  */
-export async function movePlaylistTrack(pid: number, trackhash: string, afterTrackhash: string | null) {
+export async function movePlaylistTrack(
+    pid: number,
+    trackhash: string,
+    afterTrackhash: string | null,
+    // a playlist can have the same track more than once: which one of them moves, and which one of them is the anchor
+    // (0 is the first of them in the list)
+    occurrence = 0,
+    afterOccurrence = 0
+) {
     const { status } = await useAxios({
         url: paths.api.playlist.base + `/${pid}/move-track`,
-        props: afterTrackhash === null ? { trackhash, to_index: 0 } : { trackhash, after_trackhash: afterTrackhash },
+        props:
+            afterTrackhash === null
+                ? { trackhash, occurrence, to_index: 0 }
+                : { trackhash, occurrence, after_trackhash: afterTrackhash, after_occurrence: afterOccurrence },
     })
 
     return status === 200

@@ -158,13 +158,19 @@ async function dropTrack(from: number, to: number) {
         tracklist.tracklist.length === before.length &&
         before.every((trackhash, i) => tracklist.tracklist[i].trackhash === trackhash)
 
+    // the same track can be in the playlist more than once: the server is told which one of them moves (and which one it goes
+    // after), counted among the ones with the same trackhash
+    const timesBefore = (list: string[], index: number) => list.slice(0, index).filter(h => h === list[index]).length
+    const occurrence = timesBefore(before, from)
+
     playlist.moveTrack(from, to)
     if (queued) tracklist.moveTrack(from, to)
 
     // "right after the one above" (the start has none)
-    const after = to > 0 ? playlist.allTracks[to - 1].trackhash : null
+    const hashes = playlist.allTracks.map(track => track.trackhash)
+    const after = to > 0 ? hashes[to - 1] : null
 
-    if (await movePlaylistTrack(pid, hash, after)) return
+    if (await movePlaylistTrack(pid, hash, after, occurrence, to > 0 ? timesBefore(hashes, to - 1) : 0)) return
 
     // the server did not move it: the list goes back to what it was
     playlist.moveTrack(to, from)
@@ -186,9 +192,18 @@ const scrollerItems = computed(() => {
         size: 4 * 16,
     }
 
+    // The scroller needs a different `id` for each row. A playlist can have the same track more than once (the same file), so
+    // the file alone is not one: the same file twice made the scroller draw only one of the rows and leave the other blank. The
+    // key is the file plus how many times it came before in the list.
+    const seen = new Map<string, number>()
+
     const tracks = playlist.tracks.map(track => {
+        const times = seen.get(track.filepath) ?? 0
+
+        seen.set(track.filepath, times + 1)
+
         return {
-            id: track.filepath,
+            id: `${track.filepath}#${times}`,
             component: SongItem,
             props: {
                 track: track,
