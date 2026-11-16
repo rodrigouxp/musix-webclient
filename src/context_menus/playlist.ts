@@ -1,6 +1,7 @@
 import { getAllPlaylistTracks, togglePlaylistPin } from '@/helpers/playlistActions'
+import { playFromPlaylist } from '@/helpers/usePlayFrom'
 import { useT } from '@/i18n'
-import { DeleteIcon, EditIcon, MenuAddToQueueIcon, MenuPlayNextIcon, PinIcon } from '@/icons'
+import { DeleteIcon, EditIcon, MenuAddToQueueIcon, MenuPlayIcon, MenuPlayNextIcon, PinIcon } from '@/icons'
 import { Option, Playlist } from '@/interfaces'
 import useModal from '@/stores/modal'
 import usePlaylistPage from '@/stores/pages/playlist'
@@ -74,11 +75,17 @@ export default async (): Promise<Option[]> => {
 }
 
 /**
- * The menu of the card of a playlist (right click): pin, rename and add to queue, and, after a
- * divider, delete. ``rename`` puts the name of the card in a text field.
+ * The menu of the card of a playlist (right click, or a long press without dragging): play (the card has no play
+ * button), pin, rename and add to queue, and, after a divider, delete. ``rename`` puts the name of the card in a text field.
  */
 export async function playlistCardItems(playlist: Playlist, rename: () => void): Promise<Option[]> {
     return [
+        {
+            label: t('Menus.Common.Play'),
+            action: () => playFromPlaylist(String(playlist.id)),
+            icon: MenuPlayIcon,
+            menuIcon: true,
+        },
         getPin(playlist),
         {
             label: t('Menus.PlayList.Rename'),

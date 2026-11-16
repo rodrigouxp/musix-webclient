@@ -100,6 +100,11 @@
   // volta com a transição do próprio botão (mixin `press` em _mixins.scss); é o sinal de que o toque foi recebido
   --press-bg: var(--color-neutral-500);
 
+  // Cartões de artista, álbum e playlist (Rodrigo, 2026-11-15): ao passar o mouse o cartão sobe 4px, com ease-in-out. É o único
+  // efeito de hover deles, igual no desktop e no celular (mixin `card-lift` em _mixins.scss). A duração não foi informada: decisão minha.
+  --card-lift: 4px;
+  --card-lift-duration: 200ms;
+
   // Menu de contexto (protótipo "Album context menu")
   --menu-bg: var(--color-neutral-900);
   --menu-radius: 10px;
@@ -253,7 +258,7 @@
   --playingpanel-clear-size: 14px; // caixa do ícone delete (o vetor tem 9,33 x 12; Rodrigo, 2026-11-13)
   --playingpanel-clear-pad-right: 4px; // do ícone até a borda direita do conteúdo do painel (decisão minha)
   --playingpanel-item-gap: 4px; // entre as faixas e os itens da lista
-  --playingpanel-list-pad-right: 8px; // inclui a barra de rolagem
+  --playingpanel-list-pad-right: 4px; // só a barra de rolagem (4): as linhas terminam a 9 da borda do painel, como começam a 9 na esquerda e como a capa (Rodrigo, 2026-11-15; era 8 e as linhas terminavam a 13)
   --playingpanel-scrollbar-width: 4px;
   --playingpanel-fade: 24px; // degradê no limite da rolagem (decisão minha)
   --playingpanel-track-height: 36px;

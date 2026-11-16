@@ -1,14 +1,16 @@
 <template>
   <router-link
-    v-for="playlist in pinned"
+    v-for="(playlist, index) in pinned"
     :key="playlist.id"
     :to="{ name: 'PlaylistView', params: { pid: playlist.id } }"
-    class="pinned-playlist"
+    class="pinned-playlist reorderable"
+    draggable="false"
     :title="playlist.name"
     :aria-label="settings.side_panel_collapsed ? playlist.name : undefined"
+    @pointerdown="reorder.begin($event, index)"
     @contextmenu="showMenu($event, playlist)"
   >
-    <img :src="coverOf(playlist)" alt="" class="pinned-cover" :class="{ border: !hasCover(playlist) }" />
+    <img :src="coverOf(playlist)" alt="" draggable="false" class="pinned-cover" :class="{ border: !hasCover(playlist) }" />
     <span>{{ playlist.name }}</span>
   </router-link>
 </template>
@@ -20,6 +22,7 @@ import { paths } from "@/config";
 import { showPlaylistCardContextMenu } from "@/helpers/contextMenuHandler";
 import { Playlist } from "@/interfaces";
 import { router } from "@/router";
+import useReorder from "@/composables/useReorder";
 import useAuth from "@/stores/auth";
 import usePlaylistPage from "@/stores/pages/playlist";
 import usePlaylistsStore from "@/stores/pages/playlists";
@@ -48,6 +51,7 @@ function coverOf(playlist: Playlist) {
 // the right click is the menu of the card (pin, rename, add to queue, delete); "Rename" opens the
 // playlist with its title in a text field, because the panel has no field of its own
 function showMenu(e: MouseEvent, playlist: Playlist) {
+  if (reorder.blocksMenu(e)) return;
   if (!Number.isInteger(playlist.id)) return;
 
   e.preventDefault();
@@ -56,6 +60,15 @@ function showMenu(e: MouseEvent, playlist: Playlist) {
     usePlaylistPage().renaming = true;
   });
 }
+
+// The pinned playlists can be dragged to another position (a long press with a finger, a drag with the mouse): the order is
+// kept on the server and is the one of the group "Pinned" of the Playlists page. A long press that is let go without moving
+// still opens the menu (useReorder sends the `contextmenu` event itself).
+const reorder = useReorder({
+  itemSelector: ".pinned-playlist",
+  layout: "column",
+  onDrop: (from, to) => store.moveInGroup(true, from, to),
+});
 
 // The panel is always on screen: it asks for the playlists once, without waiting for the Playlists
 // page. Pinning, renaming, changing the cover or deleting one (anywhere) already reload the store.

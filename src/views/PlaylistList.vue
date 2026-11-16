@@ -20,9 +20,17 @@
                 <button class="playlist-button" @click="showNewPlaylistModal()"><PlusSvg />{{ $t('NewPlaylist.Title') }}</button>
             </template>
         </Header>
-        <PlaylistCardGroup v-if="!query && pinnedPlaylists.length" :playlists="pinnedPlaylists" :title="$t('Common.Pinned')" />
+        <PlaylistCardGroup
+            v-if="!query && pinnedPlaylists.length"
+            :playlists="pinnedPlaylists"
+            :title="$t('Common.Pinned')"
+            pinned
+            reorderable
+        />
         <PlaylistCardGroup
             v-if="playlists.length"
+            :pinned="false"
+            :reorderable="!query"
             :playlists="playlists"
             :title="query ? $t('Common.SearchResults') : `${ pinnedPlaylists.length ? $t('Views.PlaylistList.OtherPlaylists') : $t('Views.PlaylistList.AllPlaylists') }`"
         />

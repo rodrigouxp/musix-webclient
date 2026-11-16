@@ -3,7 +3,8 @@
         class="songlist-item rounded-sm"
         :class="[{ current: isCurrent() }, { contexton: context_menu_showing }, { reorderable, dragging, panel }]"
         @dblclick="!panel && emitUpdate()"
-        @contextmenu.prevent="showMenu"
+        @contextmenu.prevent="onContextMenu"
+        @pointerdown="onRowPointerDown"
         @click="onRowClick"
     >
         <!-- small screens have no number, except in a playlist (the number is the handle of the drag) and in the panel row -->
@@ -115,6 +116,24 @@ function showMenu(e: MouseEvent) {
     showContext(e, props.track, context_menu_showing)
 }
 
+// In a playlist (the rows that can be dragged) a finger does two things: a long press anywhere on the row drags it (see
+// onRowPointerDown), and the menu of the track opens only on the options button (the three dots). So the `contextmenu` event
+// that a long press fires on Android is thrown away; the mouse keeps its right click.
+let lastPointer = ''
+
+function onContextMenu(e: MouseEvent) {
+    if (props.reorderable && (lastPointer === 'touch' || lastPointer === 'pen')) return
+
+    showMenu(e)
+}
+
+function onRowPointerDown(e: PointerEvent) {
+    lastPointer = e.pointerType
+
+    // touch: the long press drags the row, wherever it is (the number, which is the handle of the mouse, did it already)
+    if (props.reorderable && !props.held && (e.pointerType === 'touch' || e.pointerType === 'pen')) emit('dragStart', e)
+}
+
 function isCurrent() {
     if (props.is_queue_track) {
         return queue.currentindex == parseInt(props.index as string) - 1
@@ -167,6 +186,11 @@ const isFavoritesPage = route.path.startsWith('/favorites')
     padding-left: $small;
     position: relative;
     transition: background-color 0.2s ease-out;
+
+    // a long press on a row of a playlist is the drag, not the menu or the iOS preview of a link
+    &.reorderable {
+        -webkit-touch-callout: none;
+    }
 
     &:hover {
         background-color: $gray;

@@ -64,6 +64,7 @@ function showMenu(e: MouseEvent) {
 
 <style lang="scss">
 .album-thumb {
+    @include card-lift;
     display: flex;
     flex-direction: column;
     gap: var(--feedpanel-card-text-gap);

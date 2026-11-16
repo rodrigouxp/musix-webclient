@@ -258,11 +258,12 @@ function onGroupDragStart(event: PointerEvent, group: QueueGroup, start: number)
     .pp-scroller {
         height: 100%;
         box-sizing: border-box;
-        // 4 of the scrollbar and 4 of room: the 8 of the right padding of the Figma
+        // the scrollbar (4) takes all the right padding: the rows end where the cover does, and the scrollbar is always
+        // reserved, so they do not change width when the list starts to scroll
         padding-right: calc(var(--playingpanel-list-pad-right) - var(--playingpanel-scrollbar-width));
         // not the side margin that the other lists of the app get
         padding-left: 0;
-        scrollbar-gutter: auto;
+        scrollbar-gutter: stable;
         overflow-x: hidden;
         // a finger that scrolls past the end of the list does not scroll what is behind it (the swipe down of NowPlaying
         // only starts when the list is at its top, and decides that itself)

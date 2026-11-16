@@ -307,6 +307,18 @@ export async function movePlaylistTrack(pid: number, trackhash: string, afterTra
     return status === 200
 }
 
+/**
+ * Saves the order the user dragged a list of playlists to (the pinned ones, or the others): the ids, first to last.
+ */
+export async function reorderPlaylists(ids: number[]) {
+    const { status } = await useAxios({
+        url: paths.api.playlist.base + '/reorder',
+        props: { ids },
+    })
+
+    return status === 200
+}
+
 export async function pinUnpinPlaylist(pid: number) {
     const { status } = await useAxios({
         url: paths.api.playlist.base + `/${pid}/pin_unpin`,

@@ -9,12 +9,6 @@
         @contextmenu.prevent="showMenu"
     >
         <div class="with-img rounded-sm no-scroll">
-            <div
-                class="gradient"
-                :style="{
-                    background: `linear-gradient(to top, ${album.color} 20%, transparent)`,
-                }"
-            ></div>
             <img class="shadow-lg" :src="imguri + album.image" alt="" />
         </div>
         <div>
@@ -103,7 +97,7 @@ function showMenu(e: MouseEvent) {
     padding: $medium;
     border-radius: 1rem;
     height: max-content;
-    transition: background-color 0.2s ease-out;
+    @include card-lift;
 
     &.context-menu-open {
         background-color: $gray5;
@@ -121,23 +115,6 @@ function showMenu(e: MouseEvent) {
             object-position: top left;
         }
 
-        .gradient {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            transition: opacity 0.25s ease;
-        }
-
-        &:hover {
-            .gradient {
-                opacity: 1;
-            }
-        }
-    }
-
-    &:hover {
-        background-color: $gray5;
     }
 
     img {

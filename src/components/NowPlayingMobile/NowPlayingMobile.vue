@@ -4,8 +4,8 @@
         class="nowplaying-mobile"
         :class="{ dragging, settling, closing, released: releasedOut || (settling && !closing) }"
     >
-        <!-- the page behind, darkened -->
-        <div class="npm-backdrop" aria-hidden="true"></div>
+        <!-- the page behind, darkened: a tap on it (above the drawer, and the 4px at the sides) closes the drawer -->
+        <div class="npm-backdrop" aria-hidden="true" @click="close()"></div>
 
         <!-- the drawer of the Penpot: it comes up over the page, with a handle at the top (the handle also closes it) -->
         <div
@@ -26,7 +26,7 @@
                         @click="onSourceClick"
                     >
                         <PlayingSvg v-if="tab !== 'home'" class="npm-playing" />
-                        <AlbumSvg v-else class="icon-active" />
+                        <component :is="source.icon" v-else class="icon-active" />
                         <span class="npm-source-name">{{ source.name }}</span>
                     </component>
                 </header>
@@ -55,6 +55,11 @@ import useTracklist from '@/stores/queue/tracklist'
 import playingFrom from '@/utils/playingFrom'
 
 import AlbumSvg from '@/assets/icons/figma/album.svg'
+import ArtistSvg from '@/assets/icons/figma/artist.svg'
+import FavoriteSvg from '@/assets/icons/figma/favorite.svg'
+import FolderSvg from '@/assets/icons/folder.svg'
+import PlaylistSvg from '@/assets/icons/figma/playlist.svg'
+import SearchSvg from '@/assets/icons/figma/search.svg'
 import PlayingSvg from '@/assets/icons/figma/playing.svg'
 import NowPlayingHome from './NowPlayingHome.vue'
 import NowPlayingLyrics from './NowPlayingLyrics.vue'
@@ -93,14 +98,25 @@ function setTab(next: Tab) {
     if (target !== tab.value) router.replace({ name: Routes.nowPlaying, params: { tab: target } })
 }
 
-// the header: the name of the source (album, playlist...) on the home tab, the name of the song on the others
+// the icon of the source: the one of what the queue was played from (the artist, the album, the playlist...)
+const sourceIcons = {
+    [FromOptions.album]: AlbumSvg,
+    [FromOptions.artist]: ArtistSvg,
+    [FromOptions.playlist]: PlaylistSvg,
+    [FromOptions.folder]: FolderSvg,
+    [FromOptions.search]: SearchSvg,
+    [FromOptions.favorite]: FavoriteSvg,
+}
+
+// the header: the name of the source (album, playlist...) and its icon on the home tab, the name of the song on the others
 const source = computed(() => {
-    if (tab.value !== 'home') return { name: queue.currenttrack?.title ?? '', link: undefined }
+    if (tab.value !== 'home') return { name: queue.currenttrack?.title ?? '', link: undefined, icon: PlayingSvg }
 
     const from = playingFrom(tracklist.from)
     const hasLink = !!tracklist.from.type && tracklist.from.type !== FromOptions.search && !!Object.keys(from.location).length
+    const icon = sourceIcons[tracklist.from.type as keyof typeof sourceIcons] ?? AlbumSvg
 
-    return { name: from.name, link: hasLink ? from.location : undefined }
+    return { name: from.name, link: hasLink ? from.location : undefined, icon }
 })
 
 // ---- leaving ----

@@ -27,6 +27,7 @@ export { default as ArrowRightIcon } from "@/assets/icons/arrow-right.svg?raw";
 export { default as SaveIcon } from "@/assets/icons/save.svg?raw";
 
 // icons of the album menu
+export { default as MenuPlayIcon } from "@/assets/icons/figma/play.svg?raw";
 export { default as MenuPlayNextIcon } from "@/assets/icons/figma/play-next.svg?raw";
 export { default as MenuAddToQueueIcon } from "@/assets/icons/figma/add-to-queue.svg?raw";
 export { default as MenuAddToPlaylistIcon } from "@/assets/icons/figma/add-to-playlist.svg?raw";

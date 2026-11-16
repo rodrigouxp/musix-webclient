@@ -40,6 +40,7 @@ function showContextMenu(e: MouseEvent) {
 
 <style lang="scss">
 .artist-thumb {
+    @include card-lift;
     display: flex;
     flex-direction: column;
     align-items: center;

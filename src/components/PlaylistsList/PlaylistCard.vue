@@ -2,15 +2,16 @@
   <router-link
     :to="{ name: 'PlaylistView', params: { pid: playlist.id } }"
     class="p-card rounded no-scroll"
+    :class="{ reorderable: !!reorder }"
+    draggable="false"
+    @pointerdown="reorder?.begin($event, index)"
     @contextmenu="showMenu"
   >
     <div v-if="!playlist.has_image && playlist.images.length" class="image-grid rounded-sm no-scroll">
-      <img v-for="(img, index) in playlist.images" :key="index" :src="paths.images.thumb.smallish + (img['image'] || img)" />
-      <PlayBtn :source="playSources.playlist" :playlist="playlist.id.toString()"/>
+      <img v-for="(img, i) in playlist.images" :key="i" draggable="false" :src="paths.images.thumb.smallish + (img['image'] || img)" />
     </div>
     <div v-else class="image">
-      <img :src="imguri + playlist.thumb" class="rounded-sm" :class="{ border: !playlist.thumb }" />
-      <PlayBtn :source="playSources.playlist" :playlist="playlist.id.toString()"/>
+      <img :src="imguri + playlist.thumb" draggable="false" class="rounded-sm" :class="{ border: !playlist.thumb }" />
     </div>
     <div class="overlay rounded">
       <div v-if="playlist.help_text" class="rhelp playlist">
@@ -43,18 +44,20 @@
 import { Ref, nextTick, ref } from "vue";
 
 import { paths } from "../../config";
+import useReorder from "@/composables/useReorder";
 import { Playlist } from "../../interfaces";
-import { playSources } from '@/enums'
 import { showPlaylistCardContextMenu } from '@/helpers/contextMenuHandler'
 import { updatePlaylistInfo } from '@/requests/playlists'
 import { NotifType, useToast } from '@/stores/notification'
 import usePlaylistPage from '@/stores/pages/playlist'
 import usePlaylistsStore from '@/stores/pages/playlists'
-import PlayBtn from '../shared/PlayBtn.vue'
 
 const imguri = paths.images.playlist;
 const props = defineProps<{
   playlist: Playlist;
+  // the cards of the group can be dragged to another position: the drag of the group (see PlaylistCardGroup) and the place of this card
+  reorder?: ReturnType<typeof useReorder>;
+  index?: number;
 }>();
 
 const renaming = ref(false);
@@ -64,6 +67,7 @@ let saving = false;
 
 // the right click: pin, rename and add to queue (the special playlists, like "recently added", have no menu)
 function showMenu(e: MouseEvent) {
+  if (props.reorder?.blocksMenu(e)) return;
   if (!Number.isInteger(props.playlist.id)) return;
 
   e.preventDefault();
@@ -130,7 +134,7 @@ async function saveName() {
   gap: $small;
   user-select: none;
   height: max-content;
-  transition: background-color 0.2s ease-out;
+  @include card-lift;
 
   .image {
     position: relative;
@@ -140,31 +144,6 @@ async function saveName() {
     display: grid;
     grid: repeat(2, 1fr) / repeat(2, 1fr);
     position: relative;
-  }
-
-  &:hover {
-    background-color: $gray4 !important;
-    background-blend-mode: screen;
-  }
-
-  $btnwidth: 4rem;
-
-  .play-btn {
-    opacity: 0;
-    position: absolute;
-    width: 4rem;
-    bottom: $small;
-    left: calc(50% - ($btnwidth / 2));
-    transition: all 0.25s;
-  }
-
-  &:hover {
-    background-color: $gray4;
-
-    .play-btn {
-      opacity: 1;
-      transform: translateY(-0.75rem);
-    }
   }
 
   img {

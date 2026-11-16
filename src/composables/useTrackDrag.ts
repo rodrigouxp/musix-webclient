@@ -188,8 +188,21 @@ export default function useTrackDrag(options: Options) {
         window.addEventListener('keydown', onKey)
     }
 
+    // the click that ends a touch drag (the finger lets go over the row) is thrown away: it would play the track or open a link
+    function guardClick() {
+        const stop = (e: Event) => {
+            e.preventDefault()
+            e.stopPropagation()
+        }
+
+        window.addEventListener('click', stop, { capture: true, once: true })
+        window.setTimeout(() => window.removeEventListener('click', stop, { capture: true }), 400)
+    }
+
     function activate(index: number) {
         const box = options.scroller()?.getBoundingClientRect()
+
+        if (touching) guardClick()
 
         state.left = box?.left ?? 0
         state.width = box?.width ?? 0

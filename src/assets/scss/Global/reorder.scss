@@ -1,0 +1,35 @@
+// Items that can be dragged to another position (composables/useReorder.ts): the pinned playlists of the SidePanel and the
+// cards of the Playlists page. They are links, so the native drag of a link or an image and the selection of their text and
+// image are turned off (a drag of the item would otherwise carry the image and the link with it).
+.reorderable {
+    -webkit-user-select: none;
+    user-select: none;
+    // a long press is not the iOS menu of a link or an image
+    -webkit-touch-callout: none;
+    -webkit-user-drag: none;
+
+    img {
+        pointer-events: none;
+        -webkit-user-drag: none;
+        user-select: none;
+    }
+}
+
+// the item that is being dragged: it follows the pointer, over the rest, and does not take the pointer events
+.reorder-lifted {
+    position: relative;
+    z-index: 30;
+    opacity: 0.9;
+    pointer-events: none;
+    transition: none !important;
+    box-shadow: var(--menu-shadow);
+}
+
+// where the item will go (the box is in the body, so it does not depend on the list)
+.reorder-line {
+    position: fixed;
+    z-index: 1100;
+    border-radius: 2px;
+    background-color: var(--color-neutral-100);
+    pointer-events: none;
+}

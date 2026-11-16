@@ -222,12 +222,6 @@ button {
 
         @include hideScrollbars;
     }
-
-    .album-card {
-        &:hover {
-            background-color: $gray;
-        }
-    }
 }
 
 .rhelp {

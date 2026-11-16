@@ -398,6 +398,7 @@
       "AddToPlaylist": "Add to Playlist",
       "AddToQueue": "Add to queue",
       "OpenInFiles": "Open in files",
+      "Play": "Play",
       "PlayNext": "Play next",
       "RemoveFromCollection": "Remove item",
       "RemoveFromPlaylist": "Remove From {name}",

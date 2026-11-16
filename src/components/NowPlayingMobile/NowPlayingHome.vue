@@ -173,9 +173,10 @@ function showOptions() {
         }
     }
 
+    // the buttons are at the top, level with the first line of the text (the title is 32 high, the buttons 24 + 4 + 4)
     .npm-info {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: space-between;
         flex-shrink: 0;
         gap: var(--nowplaying-gap);

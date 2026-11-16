@@ -38,6 +38,16 @@
   }
 }
 
+// The hover of the cards of artists, albums and playlists: the card goes up by --card-lift, ease in and out. It is the only hover
+// effect they have, and it is the same on the desktop and on the phone.
+@mixin card-lift {
+  transition: transform var(--card-lift-duration) ease-in-out;
+
+  &:hover {
+    transform: translateY(calc(-1 * var(--card-lift)));
+  }
+}
+
 @mixin ximage {
   background-position: center;
   background-size: cover;

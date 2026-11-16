@@ -83,6 +83,13 @@ watch(
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+
+        // the phone (the Home uses this panel on every width): the greeting does not fit in 48px, so it is the section title
+        // size and may use two lines (own decision)
+        @include allPhones {
+            @include text('section-title-28px');
+            white-space: normal;
+        }
     }
 
     .feed-row {

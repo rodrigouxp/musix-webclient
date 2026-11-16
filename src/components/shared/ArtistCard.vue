@@ -12,12 +12,6 @@
     >
         <div class="image circular">
             <img class="artist-image circular" :src="imguri + artist.image" />
-            <div
-                class="overlay circular"
-                :style="{
-                    background: `linear-gradient(to top, ${artist.color} 20%, transparent)`,
-                }"
-            ></div>
         </div>
         <div v-if="artist.help_text" class="rhelp t-center">
             <span class="help" :class="{ keep: !artist.time }">{{ artist.help_text }}</span>
@@ -65,7 +59,7 @@ const showContextMenu = (e: MouseEvent) => {
     font-size: 0.95rem;
     font-weight: 700;
     height: max-content;
-    transition: background-color 0.2s ease-out;
+    @include card-lift;
 
     &.context-menu-open {
         background-color: $gray5;
@@ -73,23 +67,6 @@ const showContextMenu = (e: MouseEvent) => {
 
     .image {
         position: relative;
-
-        .overlay {
-            position: absolute;
-            width: 100%;
-            height: calc(100% - $small + 1px);
-            top: 0;
-            opacity: 0;
-            transition: opacity 0.25s ease;
-        }
-    }
-
-    &:hover {
-        background-color: $gray5;
-
-        .overlay {
-            opacity: 1;
-        }
     }
 
     .artist-image {
