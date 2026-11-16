@@ -225,12 +225,14 @@
             }
 
             .song-duration.help-text {
-                @include text('paragraph-14px');
+                // the same in every list (the playlists too, see SongItem/TrackDuration.vue): action-button-14px, neutral-300, capitals
+                // (Rodrigo, 2026-11-16)
+                @include text('action-button-14px');
                 position: absolute;
                 top: 50%;
                 right: 0;
                 text-align: right;
-                text-transform: none;
+                text-transform: uppercase;
                 white-space: nowrap;
                 color: var(--artist-track-plays-color);
                 opacity: 0;

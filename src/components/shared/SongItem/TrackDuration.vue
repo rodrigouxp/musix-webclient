@@ -100,9 +100,10 @@ defineEmits<{
         position: absolute;
         // INFO: 3 rem is the width of the options icon (2rem) plus the gap of the flex container (1rem)
         right: 3rem;
-        font-size: $medium;
+        // the same as in the rows of the panels (Global/panels.scss): action-button-14px, neutral-300, capitals (Rodrigo, 2026-11-16)
+        @include text('action-button-14px');
         text-transform: uppercase;
-        color: $orange;
+        color: var(--artist-track-plays-color);
         opacity: 0;
         transition: opacity 0.2s ease-out;
 

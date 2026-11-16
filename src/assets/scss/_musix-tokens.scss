@@ -408,7 +408,7 @@
   --artist-scrollbar-thumb: 4px; // a barra de rolagem da página do artista sobrepõe o hero: mesma da grade em painéis (4 px, a 3 da borda)
   --artist-scrollbar-edge: 3px;
   --artist-track-order-color: var(--color-neutral-300); // número de ordem, paragraph-12px (Rodrigo, 2026-11-09)
-  --artist-track-plays-color: var(--color-neutral-300); // quantas vezes tocou, no hover: estilo e cor são decisão minha (paragraph-14px, neutral-300)
+  --artist-track-plays-color: var(--color-neutral-300); // quantas vezes tocou, no hover, em todas as listas de faixas: action-button-14px em maiúsculas, neutral-300 (Rodrigo, 2026-11-16; antes laranja nas playlists e paragraph-14px nas páginas de álbum e artista)
   --artist-track-thumb-size: 48px;
   --artist-track-thumb-radius: 4px;
   --artist-track-name-gap: 12px; // entre a capa e o título
