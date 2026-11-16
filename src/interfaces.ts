@@ -158,6 +158,8 @@ export interface Option {
     singleChild?: boolean
     /** shows the check icon right after the label (the playlist already has the song) */
     checked?: boolean
+    /** the option can not be chosen: no click, no hover (the playlist that already has the song) */
+    disabled?: boolean
 }
 
 export interface PlaylistSettings {

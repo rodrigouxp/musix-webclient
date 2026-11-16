@@ -25,8 +25,9 @@
                     v-for="child in children"
                     :key="child.label"
                     class="context-item"
-                    :class="[{ critical: child.critical, 'has-check': child.checked }, child.type]"
-                    @click="child.action && runChildAction(child.action)"
+                    :class="[{ critical: child.critical, 'has-check': child.checked, disabled: child.disabled }, child.type]"
+                    :aria-disabled="child.disabled || undefined"
+                    @click="onChildClick($event, child)"
                 >
                     <div class="label ellip" :class="{ checked: child.checked }">
                         {{ child.label }}
@@ -227,6 +228,17 @@ function runAction() {
     hideContextMenu()
 }
 
+// a disabled option (the playlist already has the song) does nothing, and the click does not reach the item of the submenu
+// either (it would close it)
+function onChildClick(e: MouseEvent, child: Option) {
+    if (child.disabled) {
+        e.stopPropagation()
+        return
+    }
+
+    if (child.action) runChildAction(child.action)
+}
+
 function runChildAction(action: () => void) {
     action()
     emit('hideContextMenu')
@@ -361,8 +373,13 @@ function runChildAction(action: () => void) {
         }
     }
 
+    // an option that can not be chosen (the playlist that already has the song): it stays as it is, with its check
+    &.disabled {
+        cursor: default;
+    }
+
     // the item under the mouse: the hover background and white text; the icon keeps its grey
-    &:hover {
+    &:not(.disabled):hover {
         background: var(--menu-item-bg-hover);
         color: var(--menu-item-text-selected);
     }

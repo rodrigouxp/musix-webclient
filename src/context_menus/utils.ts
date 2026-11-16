@@ -63,9 +63,13 @@ export async function getAddToPlaylistOptions(
     let playlists = <Option[]>[]
 
     playlists = p.map(playlist => {
+        // a playlist never has the same track twice: the one that already has it (the check) can not be chosen
+        if (playlist.has_track === true) {
+            return <Option>{ label: playlist.name, checked: true, disabled: true }
+        }
+
         return <Option>{
             label: playlist.name,
-            checked: playlist.has_track === true,
             action: () => {
                 addToPlaylist(playlist)
             },
