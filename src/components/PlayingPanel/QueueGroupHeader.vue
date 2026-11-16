@@ -7,6 +7,8 @@
         </div>
         <!-- the buttons act only on the tracks of this group -->
         <div class="qg-functions">
+            <!-- the handle has no icon: it is first, so the empty room it takes is not between the last icon and the border -->
+            <button class="qg-button qg-drag" :aria-label="$t('PlayingPanel.Move')" @pointerdown="$emit('dragstart', $event)"></button>
             <button class="qg-button" :title="$t('BottomBar.Shuffle')" :aria-label="$t('BottomBar.Shuffle')" @click="tracklist.shuffleGroup(group.id)">
                 <ShuffleSvg />
             </button>
@@ -23,7 +25,6 @@
             <button class="qg-button" :title="$t('PlayingPanel.RemoveGroup')" :aria-label="$t('PlayingPanel.RemoveGroup')" @click="tracklist.removeGroup(group.id)">
                 <DeleteSvg />
             </button>
-            <button class="qg-button qg-drag" :aria-label="$t('PlayingPanel.Move')" @pointerdown="$emit('dragstart', $event)"></button>
         </div>
     </div>
 </template>

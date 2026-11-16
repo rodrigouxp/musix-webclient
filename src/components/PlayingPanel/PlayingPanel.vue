@@ -94,6 +94,13 @@ const hasItems = computed(() => tracklist.tracklist.length > 0)
         border-radius: var(--layout-panel-radius);
     }
 
+    // The scrollbar of the queue (4) takes the 4 of the right padding of the panel, so the rows end 4 before the border of the
+    // content and their buttons (4 of padding inside each row) end 9 from the border of the panel: the same distance as the cover
+    // has on the left, and as the delete button of the title (Rodrigo, 2026-11-15)
+    .pp-scroller {
+        margin-right: calc(-1 * var(--playingpanel-scrollbar-width));
+    }
+
     // "Now playing" centered; the delete button (clear the queue) sits at the right end of the same line
     .pp-title {
         position: relative;

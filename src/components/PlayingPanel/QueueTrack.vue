@@ -10,6 +10,13 @@
             <span v-tooltip class="qt-title">{{ track.title }}</span>
         </div>
         <div class="qt-functions">
+            <!-- the handle has no icon: it is first, so the empty room it takes is not between the last icon and the border -->
+            <button
+                class="qt-button qt-drag"
+                :aria-label="$t('PlayingPanel.Move')"
+                @click.stop
+                @pointerdown="$emit('dragstart', $event)"
+            ></button>
             <button
                 class="qt-button"
                 :class="{ on: track.repeat }"
@@ -28,12 +35,6 @@
             >
                 <DeleteSvg />
             </button>
-            <button
-                class="qt-button qt-drag"
-                :aria-label="$t('PlayingPanel.Move')"
-                @click.stop
-                @pointerdown="$emit('dragstart', $event)"
-            ></button>
         </div>
     </div>
 </template>
