@@ -4,8 +4,10 @@
              left by the rest. It stays right under the source name and above the texts; the free room is under all of it -->
         <div class="npm-cover-box">
             <div class="npm-cover">
+                <!-- the cover is as wide as the screen: the biggest thumbnail (up to 1200px, the one of the expanded cover of the album
+                     page), not the 512px one, which looked soft on a phone and on a tablet (Rodrigo, 2026-11-16) -->
                 <ImageLoader
-                    :image="paths.images.thumb.large + queue.currenttrack?.image"
+                    :image="paths.images.thumb.original + queue.currenttrack?.image"
                     :blurhash="queue.currenttrack?.blurhash"
                     :duration="1000"
                 />
