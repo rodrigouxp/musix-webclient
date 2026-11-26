@@ -48,10 +48,17 @@
             </div>
         </div>
 
-        <!-- 2. actions: volume, lyrics, favorite and add -->
+        <!-- 2. actions: volume, lyrics and queue -->
         <div class="pb-actions">
             <Volume />
             <LyricsButton />
+            <button class="queue-button" :title="$t('NowPlayingMobile.Tabs.Queue')" :aria-label="$t('NowPlayingMobile.Tabs.Queue')" @click="openQueue">
+                <QueueSvg />
+            </button>
+        </div>
+
+        <!-- 3. the song: favorite, add, the name and artists (right aligned) and the thumbnail, which opens the NowPlaying -->
+        <div class="pb-track">
             <HeartSvg
                 :title="$t('BottomBar.Favorite')"
                 :state="queue.currenttrack?.is_favorite"
@@ -68,10 +75,6 @@
             >
                 <AddSvg />
             </button>
-        </div>
-
-        <!-- 3. the song: name and artists (right aligned) and the thumbnail, which opens the NowPlaying -->
-        <div class="pb-track">
             <div class="pb-info">
                 <div class="pb-name">
                     <ExplicitIcon
@@ -135,6 +138,7 @@ import NextSvg from '@/assets/icons/figma/play-next.svg'
 import PauseSvg from '@/assets/icons/figma/pause.svg'
 import PlaySvg from '@/assets/icons/figma/play.svg'
 import PrevSvg from '@/assets/icons/figma/play-previous.svg'
+import QueueSvg from '@/assets/icons/figma/queue.svg'
 import RepeatOneSvg from '@/assets/icons/repeat-one.svg'
 import RepeatAllSvg from '@/assets/icons/figma/repeat.svg'
 import ShuffleSvg from '@/assets/icons/figma/shuffle.svg'
@@ -169,6 +173,11 @@ const router = useRouter()
 // (a push, so back comes back to the page)
 function onArtworkClick() {
     router.push({ name: Routes.nowPlaying, params: { tab: 'home' } })
+}
+
+// the queue button (Penpot: the third action) opens the Queue tab of the NowPlaying
+function openQueue() {
+    router.push({ name: Routes.nowPlaying, params: { tab: 'queue' } })
 }
 
 const hasTrack = computed(() => !!queue.currenttrack?.trackhash)
@@ -293,7 +302,7 @@ function showAddMenu() {
         display: flex;
         align-items: center;
         flex: 1 1 0;
-        gap: var(--playerbar-transport-gap);
+        gap: var(--playerbar-controls-gap);
         min-width: min-content;
     }
 
@@ -304,13 +313,19 @@ function showAddMenu() {
         gap: var(--playerbar-transport-gap);
     }
 
-    // play and pause: a circle of 40 with its own fill and its own hover color
+    // play and pause: a circle of 56 with its own fill and its own hover color
     .pb-play {
         width: var(--playerbar-play-size);
         height: var(--playerbar-play-size);
         border-radius: 400px;
 
-        // only the play has a padding on the left (the triangle looks more centered); the pause has none
+        // The flex centering puts the box of the icon in the middle of the circle. Only the play has a padding on the left: it moves
+        // the triangle by half of it to the right (3 px), where its optical center is (Penpot: the vector is at 21.5 to 40.5 of the
+        // 56, center 31); the pause is symmetric and has none
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
         &.is-play {
             padding-left: var(--playerbar-play-pad-left);
         }
@@ -335,7 +350,7 @@ function showAddMenu() {
         }
 
         .player-spinner {
-            height: 16.67px; // 20 at 48, scaled to 40
+            height: var(--playerbar-play-spinner-size);
         }
     }
 
@@ -435,11 +450,7 @@ function showAddMenu() {
         align-items: center;
         justify-content: flex-end;
         flex-shrink: 0;
-        gap: var(--playerbar-group-gap);
-
-        @media only screen and (max-width: 1280px) {
-            gap: var(--playerbar-group-gap-narrow);
-        }
+        gap: var(--playerbar-actions-gap);
 
         // volume: the speaker (28), 8, the bar (94) and the room for the ball at 100%
         .speaker-inline {
@@ -447,9 +458,10 @@ function showAddMenu() {
         }
 
         // the circle of the hover is as big as the one of the other buttons (34); the negative margin keeps the
-        // layout box of the Figma (28 for the speaker and lyrics, 20 for the favorite and add)
+        // layout box of the Penpot (28 for the speaker and lyrics, 24 for the queue)
         button.speaker-icon,
-        button.lyrics {
+        button.lyrics,
+        button.queue-button {
             width: var(--playerbar-control-size);
             height: var(--playerbar-control-size);
             margin: calc((var(--playerbar-side-control-size) - var(--playerbar-control-size)) / 2);
@@ -472,6 +484,23 @@ function showAddMenu() {
             }
         }
 
+        button.queue-button {
+            display: grid;
+            place-items: center;
+            margin: calc((var(--playerbar-queue-size) - var(--playerbar-control-size)) / 2);
+        }
+    }
+
+    // ---- 3. the song ----
+    .pb-track {
+        display: flex;
+        align-items: center;
+        flex: 0 1 auto;
+        gap: var(--playerbar-track-gap);
+        min-width: var(--playerbar-artwork-size);
+
+        // favorite (box of 20) and add (box of 24): the circle of the hover is the one of the other buttons (34) and the
+        // negative margin keeps the layout box of the Penpot
         .heart-button,
         .add-button {
             display: grid;
@@ -500,18 +529,19 @@ function showAddMenu() {
             height: var(--playerbar-icon-size);
         }
 
-        .add-button svg:active {
-            transform: scale(0.6);
-        }
-    }
+        // the add of the Penpot is a vector of 20 x 20: the SVG of 24 at its natural size, in a box of 24
+        .add-button {
+            margin: calc((var(--playerbar-add-icon-size) - var(--playerbar-control-size)) / 2);
 
-    // ---- 3. the song ----
-    .pb-track {
-        display: flex;
-        align-items: center;
-        flex: 0 1 auto;
-        gap: var(--playerbar-track-gap);
-        min-width: var(--playerbar-artwork-size);
+            svg {
+                width: var(--playerbar-add-icon-size);
+                height: var(--playerbar-add-icon-size);
+            }
+
+            &:active svg {
+                transform: scale(0.6);
+            }
+        }
     }
 
     .pb-info {

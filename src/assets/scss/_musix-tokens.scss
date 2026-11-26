@@ -20,14 +20,9 @@
   --layout-scrollbar-inset: 4px; // a barra de rolagem das páginas começa e termina a 4 das bordas do painel
 
   // Faixa de título da página (PageBar): o que sobrou da TopBar, que saiu em 3.35.0 (a busca, o usuário e o Settings foram para o SidePanel).
-  // Guarda só o voltar e avançar e o título da página (decisão minha: o protótipo "Home" do Penpot não mostra isso, mas são funções).
+  // Guarda só o título da página (o voltar e avançar saíram na 3.37.0, a pedido do Rodrigo; a faixa some nas páginas sem título).
   --pagebar-height: 52px; // altura mínima da faixa (era a da TopBar)
   --pagebar-padding: 4px var(--layout-gutter);
-  --pagebar-gap: 64px; // entre os botões e o título da página
-  --pagebar-button-size: 36px; // círculo de voltar e avançar
-  --pagebar-button-gap: 16px;
-  --pagebar-button-border: 1px solid var(--color-neutral-700);
-  --pagebar-button-icon-size: 26.18px; // o `chevron` do Icon desenhado em 1,09x dentro do círculo (glifo de 11,6 x 17,5)
 
   // Fonte do app inteiro: Satoshi Variable (pesos 300 a 900), arquivo do próprio cliente (assets/fonts, sem CDN).
   // Os caracteres que ela não tem (japonês, coreano, emoji) caem na fonte seguinte da lista. O `body`
@@ -192,8 +187,7 @@
   --playerbar-artwork-size: 56px;
   --playerbar-artwork-radius: 4px;
   --playerbar-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
-  --playerbar-track-gap: 14px; // entre a capa e o texto
-  --playerbar-left-gap: 32px; // entre música, favorite e add
+  --playerbar-track-gap: 20px; // dentro do grupo da música: favorite, add, o texto e a capa (Penpot, PlayerBar default; era 14 entre a capa e o texto)
   --playerbar-icon-size: 20px; // caixa do svg (glifo de 20 no viewBox de 24)
   --playerbar-control-size: 34px; // círculo dos cinco controles do centro
   --playerbar-control-gap: 28px;
@@ -217,15 +211,20 @@
   // PlayerBar nova (grade em painéis; Figma default-2 nó 12408:1175 e playing-2 nó 12408:1263). Os --playerbar-* acima
   // que não aparecem aqui (controle de 34, ícone de 20, barra de 4, bolinha de 14, miniatura de 56...) valem para as duas.
   --playerbar-panel-padding: 12px 16px;
-  --playerbar-group-gap: 40px; // entre os controles, as ações e a música (e entre as ações)
+  --playerbar-group-gap: 64px; // entre os controles, as ações e a música (Penpot, PlayerBar default; era 40)
+  --playerbar-actions-gap: 20px; // dentro das ações: volume, lyrics e queue (era o mesmo espaço entre os grupos, 40)
   --playerbar-group-gap-narrow: 24px; // até 1280 px de janela (o Figma só tem a largura de 1857)
-  --playerbar-transport-gap: 20px; // play, anterior e próxima; e depois a linha do tempo
+  --playerbar-transport-gap: 8px; // entre play, anterior e próxima (era 20)
+  --playerbar-controls-gap: 20px; // entre esses três botões e a linha do tempo
   --playerbar-tablet-row-gap: 12px; // entre as duas linhas da PlayerBar do tablet (sem desenho no Figma, decisão minha)
   --playerbar-row-gap: 8px; // tempo, barra, tempo, shuffle e repeat
   --playerbar-timeline-min: 4rem; // a barra encolhe até aqui nas larguras pequenas
-  --playerbar-play-size: 40px; // era 48 (Rodrigo, 2026-11-07); play e pause têm 40 x 40
-  --playerbar-play-icon-size: 23.53px; // caixa do ícone de 20 do Figma desenhada em 40/34 (era 28,24 em 48/34)
-  --playerbar-play-pad-left: 4px; // só o play: o triângulo fica mais centrado; o pause não tem padding (Rodrigo, 2026-11-07)
+  --playerbar-play-size: 56px; // play e pause têm 56 x 56 (Penpot, PlayerBar default, 2026-11-26; era 40)
+  --playerbar-play-icon-size: 25.2px; // o vetor do play no Penpot é de 19 x 21: o SVG de 24 (glifo de 18 x 20) desenhado a 1,05x
+  --playerbar-play-pad-left: 6px; // só o play: o centro do triângulo fica 3 px à direita do centro do botão (um terço da largura do glifo: 18/6 x 1,05 = 3,15); no Penpot o vetor está em x 21,5 a 40,5 dos 56. O pause é simétrico e não tem padding
+  --playerbar-play-spinner-size: 21px; // o spinner no lugar do ícone: a altura do glifo do play (decisão minha)
+  --playerbar-add-icon-size: 24px; // o add do Penpot tem o vetor de 20 x 20: o SVG de 24 em tamanho natural (caixa de 24)
+  --playerbar-queue-size: 24px; // caixa do botão queue (Penpot); o ícone é o `queue` de 20 x 16 desenhado a 20/24: 16,67 x 13,33
   --playerbar-volume-pad-right: 7px; // folga da bolinha do volume (Figma: padding-right do grupo)
   --playerbar-badge-size: 24px; // círculo do chevron sobre a miniatura (hover, nó 12408:1358)
   --playerbar-badge-bg: color-mix(in srgb, var(--color-neutral-300) 25%, transparent); // o círculo é neutral-300 a 25% e o chevron é branco, sem opacidade (Figma, 2026-11-13)
@@ -437,8 +436,11 @@
   --fixedcontrols-bg: var(--color-neutral-900);
   --fixedcontrols-radius: 8px;
 
-  // PlayerBar mobile (type=default-mobile, nó 12535:3645). O play é o da PlayerBar do desktop (--playerbar-play-*)
+  // PlayerBar mobile (type=default-mobile, nó 12535:3645). O play tem os tokens próprios --playerbarmobile-play-* (40 x 40)
   --playerbarmobile-padding: 8px;
+  --playerbarmobile-play-size: 40px; // o play do celular segue com 40 (a PlayerBar do desktop passou a 56)
+  --playerbarmobile-play-icon-size: 23.53px; // caixa do ícone de 20 do Figma desenhada em 40/34
+  --playerbarmobile-play-pad-left: 4px; // só o play: o triângulo fica mais centrado; o pause não tem padding (Rodrigo, 2026-11-07)
   --playerbarmobile-add-size: 20px; // caixa do ícone add (o glifo de 20 no viewBox de 24 fica em 16,7)
   --playerbarmobile-actions-gap: 12px; // entre o play, o favorite e o add (Rodrigo, 2026-11-14)
   --playerbarmobile-track-gap: 14px; // entre o add e o frame da faixa, e entre os textos e a capa (decisão minha: o Figma não dá esse espaço)

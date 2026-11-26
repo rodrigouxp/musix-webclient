@@ -171,19 +171,19 @@ function openNowPlaying() {
         }
     }
 
-    // the same circle of 40 as the desktop bar
+    // the circle of 40 (the desktop bar has 56 now)
     .pbm-play {
         display: grid;
         place-items: center;
-        width: var(--playerbar-play-size);
-        height: var(--playerbar-play-size);
+        width: var(--playerbarmobile-play-size);
+        height: var(--playerbarmobile-play-size);
         border-radius: 400px;
         background-color: var(--pbm-play-bg);
         color: var(--pbm-play-icon);
         transition: background-color var(--playerbar-transition), color var(--playerbar-transition);
 
         &.is-play {
-            padding-left: var(--playerbar-play-pad-left);
+            padding-left: var(--playerbarmobile-play-pad-left);
         }
 
         &:hover {
@@ -194,8 +194,8 @@ function openNowPlaying() {
 
         svg {
             flex-shrink: 0;
-            width: var(--playerbar-play-icon-size);
-            height: var(--playerbar-play-icon-size);
+            width: var(--playerbarmobile-play-icon-size);
+            height: var(--playerbarmobile-play-icon-size);
         }
 
         &:active > svg.pausesvg {
