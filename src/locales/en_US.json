@@ -366,7 +366,8 @@
       "Playlists": "Playlists",
       "Search": "Search",
       "Settings": "Settings"
-    }
+    },
+    "SearchPlaceholder": "Search..."
   },
   "MasterFlag": {
     "MasterAudioBitrate": "Master audio bitrate - {bitrate} Kbps"

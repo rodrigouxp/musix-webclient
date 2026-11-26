@@ -34,7 +34,7 @@ const label = computed(() => t(settings.side_panel_collapsed ? "LeftSidebar.Expa
 </script>
 
 <style lang="scss">
-// The header of the side panel (SidePanel > header): the MUSIX wordmark of the Figma centered, with no
+// The header of the side panel (SidePanel > header of the Penpot): the MUSIX wordmark centered, with no
 // background of its own. The sizes are the tokens --sidepanel-header-* (_musix-tokens.scss).
 .musix-logo,
 .musix-logo.rounded-md {
@@ -60,8 +60,8 @@ const label = computed(() => t(settings.side_panel_collapsed ? "LeftSidebar.Expa
 }
 
 // The header as the toggle (Prototype: click on the header of the open panel -> SidePanel Closed, click on the music
-// icon of the closed one -> Opened). Smart animate: the box goes from the full width to the 36 x 48 of the Figma
-// (padding 8, corners 8, icon 27 x 32) and the two drawings cross-fade, so the DOM is the same in both states.
+// icon of the closed one -> Opened). Smart animate: the box goes from the full width to the 36 x 42 of the Penpot
+// (corners 4, icon 27 x 32) and the two drawings cross-fade, so the DOM is the same in both states.
 .musix-logo.musix-logo-toggle {
   position: relative;
   display: grid;

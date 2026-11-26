@@ -17,15 +17,19 @@
         }"
     >
         <LeftSidebar v-if="settings.is_panel_layout" />
-        <NavBar />
+        <!-- the top bar is only the phone's: above 600px the search, the user and Settings are in the SidePanel -->
+        <NavBar v-if="!settings.is_panel_layout" />
         <div id="acontent" v-element-size="updateContentElemSize">
             <div id="contentresizer" ref="appcontent"></div>
-            <BalancerProvider>
-                <!-- the key: Albums and Artists are the same component, it has to start again when the route changes -->
-                <RouterView v-slot="{ Component, route: current }">
-                    <component :is="Component" :key="String(current.name)" />
-                </RouterView>
-            </BalancerProvider>
+            <PageBar v-if="settings.is_panel_layout" />
+            <div class="page-host">
+                <BalancerProvider>
+                    <!-- the key: Albums and Artists are the same component, it has to start again when the route changes -->
+                    <RouterView v-slot="{ Component, route: current }">
+                        <component :is="Component" :key="String(current.name)" />
+                    </RouterView>
+                </BalancerProvider>
+            </div>
         </div>
         <!-- above 600px: the SidePanel on the left and the PlayingPanel on the right; up to 600px, the phone layout -->
         <PlayingPanel v-if="settings.is_panel_layout" />
@@ -75,6 +79,7 @@ import Notification from '@/components/Notification.vue'
 import BottomBar from '@/components/BottomBar/BottomBar.vue'
 import LeftSidebar from '@/components/LeftSidebar/index.vue'
 import NavBar from '@/components/nav/NavBar.vue'
+import PageBar from '@/components/nav/PageBar.vue'
 import PlayingPanel from '@/components/PlayingPanel/PlayingPanel.vue'
 
 import { getAllSettings } from '@/requests/settings'
@@ -122,6 +127,9 @@ router.afterEach(() => {
 })
 
 onStartTyping(() => {
+    // the search is in the SidePanel: a collapsed panel has no room for the field, so typing opens it
+    if (settings.is_panel_layout && settings.side_panel_collapsed) settings.toggleSidePanel()
+
     const elem = document.getElementById('globalsearch') as HTMLInputElement
     elem.focus()
     elem.value = ''

@@ -95,7 +95,7 @@ watch(
 </script>
 
 <style lang="scss">
-// A pinned playlist (SidePanel > playlists > playlist of the Figma): padding 8 12, corners 4, 8 between the cover
+// A pinned playlist (SidePanel > playlists > playlist of the Penpot): padding 8 (it was 8 12), corners 4, 8 between the cover
 // (28, corners 4) and the name (the text style action-button-14px, white). The hover and the open playlist
 // are neutral/700 (Rodrigo, 2026-11-11).
 .sidepanel-nav .pinned-playlist {
@@ -147,8 +147,8 @@ watch(
   }
 }
 
-// SidePanel Closed (node 12546:5413): 36 x 34 each, padding 8 and only the cover of 18. The tokens
-// --sidepanel-playlist-collapsed-* hold these sizes.
+// SidePanel Closed (Penpot): each playlist is only the cover, 36 x 36 with no padding (the cover was 18 inside a padding of 8).
+// The tokens --sidepanel-playlist-collapsed-* hold these sizes.
 .l-sidebar.collapsed .sidepanel-nav .pinned-playlist {
   padding: var(--sidepanel-playlist-collapsed-padding-y) var(--sidepanel-playlist-collapsed-padding-x);
 

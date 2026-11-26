@@ -41,7 +41,7 @@ const buttons = menus.filter((menu) => !("separator" in menu));
 </script>
 
 <style lang="scss">
-// The navigation of the side panel (SidePanel > top > buttons, divider-1 and playlists of the Figma).
+// The navigation of the side panel (SidePanel > content > buttons, divider-1 and playlists of the Penpot).
 // Every size is a token --sidepanel-*; nothing here has a fixed width.
 .sidepanel-nav {
   display: flex;
@@ -54,6 +54,8 @@ const buttons = menus.filter((menu) => !("separator" in menu));
     display: flex;
     flex-direction: column;
     gap: var(--sidepanel-items-gap);
+    // the Penpot spaces the buttons 8 apart when open and 10 when closed
+    transition: gap var(--panel-toggle-transition);
   }
 
   .sidepanel-playlists {
@@ -83,11 +85,14 @@ const buttons = menus.filter((menu) => !("separator" in menu));
     color: var(--sidepanel-nav-color);
     transition: background-color 0.2s ease-out;
 
-    // the icons of the Figma are 24, drawn with 2 of margin: shown at 20
+    // The icon of the Penpot is a vector of 20 x 20 in a slot of 20. The SVG of the app is 24 with the glyph of 20 inside, so it
+    // is drawn at its natural size and the negative margin gives back the 2 of each side: the row keeps the slot of 20
+    // (before it was shown at 20, which shrank the glyph to 16.7)
     svg {
       flex-shrink: 0;
       width: var(--sidepanel-icon-size);
       height: var(--sidepanel-icon-size);
+      margin: calc((var(--sidepanel-icon-slot) - var(--sidepanel-icon-size)) / 2);
     }
 
     span {
@@ -120,9 +125,13 @@ const buttons = menus.filter((menu) => !("separator" in menu));
   }
 }
 
-// SidePanel Closed (node 12546:5413): the same buttons with only the icon. At 52 of panel the item is already the
-// 36 x 34 of the Figma; the name fades out and the item clips it.
+// SidePanel Closed (Penpot): the same buttons with only the icon. At 52 of panel the item is already the
+// 36 x 36 of the Penpot; the name fades out and the item clips it.
 .l-sidebar.collapsed .sidepanel-nav {
+  .sidepanel-buttons {
+    gap: var(--sidepanel-items-collapsed-gap);
+  }
+
   .nav-item span,
   .pinned-playlist span {
     opacity: 0;

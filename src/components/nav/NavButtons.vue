@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-// the TopBar of the Figma uses the `chevron` Icon
+// the back and forward buttons use the `chevron` Icon
 import ChevronSvg from '@/assets/icons/figma/chevron.svg'
 </script>
 
@@ -55,20 +55,20 @@ import ChevronSvg from '@/assets/icons/figma/chevron.svg'
     }
 }
 
-// The TopBar of the Figma (node 12395:365, page-buttons): two circles of 36, 16 apart, with a border of 1 in
-// neutral/700, no separator and the `chevron` drawn at 26.18 (the glyph of 11.6 x 17.5). Tokens --topbar-*.
+// The back and forward buttons, now in the PageBar (they came from the TopBar of the Figma, page-buttons): two circles of 36, 16 apart,
+// with a border of 1 in neutral/700, no separator and the `chevron` drawn at 26.18 (the glyph of 11.6 x 17.5). Tokens --pagebar-*.
 @media only screen and (min-width: 601px) {
     #app-grid #back-forward {
         display: flex;
-        gap: var(--topbar-button-gap);
+        gap: var(--pagebar-button-gap);
         padding-right: 0;
         border-right: none;
 
         & > * {
             flex-shrink: 0;
-            width: var(--topbar-button-size);
-            height: var(--topbar-button-size);
-            border: var(--topbar-button-border);
+            width: var(--pagebar-button-size);
+            height: var(--pagebar-button-size);
+            border: var(--pagebar-button-border);
             color: var(--color-neutral-white);
 
             // the hover is not in the Figma: the standard one of the app
@@ -79,8 +79,8 @@ import ChevronSvg from '@/assets/icons/figma/chevron.svg'
 
             svg {
                 flex-shrink: 0;
-                width: var(--topbar-button-icon-size);
-                height: var(--topbar-button-icon-size);
+                width: var(--pagebar-button-icon-size);
+                height: var(--pagebar-button-icon-size);
                 transform: none;
             }
 

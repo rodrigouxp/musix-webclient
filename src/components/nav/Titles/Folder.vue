@@ -119,7 +119,7 @@ const current = computed(() => {
         max-width: 100%;
         min-width: 3rem;
         // the path scrolls inside its own strip (the open folder is brought into view);
-        // contain: inline-size keeps a long path from asking the top bar for more room
+        // contain: inline-size keeps a long path from asking the PageBar for more room
         contain: inline-size;
         overflow: auto;
         overflow-y: hidden;

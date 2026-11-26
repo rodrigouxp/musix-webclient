@@ -1,24 +1,16 @@
 <template>
-    <div
-        class="gsearch-input"
-        @click="
-            $route.name !== Routes.search &&
-                $router.push({
-                    name: Routes.search,
-                    params: { page: 'top' },
-                    query: { q: search.query },
-                })
-        "
-    >
+    <!-- In the SidePanel (above 600px) and in the top bar of the phone. A click anywhere in the field goes to the search page;
+         in the collapsed SidePanel, where only the magnifier shows, it opens the panel and puts the cursor in the field. -->
+    <div class="gsearch-input" @click="openSearch">
         <div id="ginner" ref="inputRef" tabindex="0">
-            <!-- only the magnifier: the field is the button (a click anywhere in the search goes to the search page) -->
+            <!-- only the magnifier: the field is the button -->
             <button class="no_bg" :title="$t('SearchInput.GoToSearch')">
                 <SearchSvg class="search-glyph" />
             </button>
             <input
                 id="globalsearch"
                 v-model.trim="search.query"
-                :placeholder="$t('Search.SearchPlaceholder')"
+                :placeholder="settings.is_panel_layout ? $t('LeftSidebar.SearchPlaceholder') : $t('Search.SearchPlaceholder')"
                 type="search"
                 autocomplete="off"
                 spellcheck="false"
@@ -38,13 +30,36 @@
 
 <script setup lang="ts">
 import useSearch from '@/stores/search'
-import { ref } from 'vue'
+import useSettings from '@/stores/settings'
+import { nextTick, ref } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 
 import CancelSvg from '@/assets/icons/figma/close.svg'
 import SearchSvg from '@/assets/icons/figma/search.svg'
 import { Routes } from '@/router'
 
 const search = useSearch()
+const settings = useSettings()
+const router = useRouter()
+const route = useRoute()
+
+// The collapsed SidePanel shows only the magnifier (the field has no room): the click opens the panel and the cursor goes
+// to the field, which is where typing starts. Anywhere else it goes to the search page, as before.
+function openSearch() {
+    if (settings.is_panel_layout && settings.side_panel_collapsed) {
+        settings.toggleSidePanel()
+        nextTick(() => document.getElementById('globalsearch')?.focus())
+        return
+    }
+
+    if (route.name !== Routes.search) {
+        router.push({
+            name: Routes.search,
+            params: { page: 'top' },
+            query: { q: search.query },
+        })
+    }
+}
 
 // HANDLE FOCUS
 const inputRef = ref<HTMLInputElement | null>(null)
@@ -197,49 +212,65 @@ function clearInput() {
     }
 }
 
-// The search of the TopBar of the Figma (SearchBar, node 12394:348): no fill and no stroke (Rodrigo, 2026-11-07),
-// the magnifier (the glyph is 18 x 18, in a slot of 18) and the text (paragraph-16px) 12 apart; it grows to the avatar (500px at most)
-// (NavBar.vue). Only above 600px; the phone keeps its own search.
+// The search of the SidePanel of the Penpot (SearchBar): no fill and no stroke, corners of 4, padding 8, the magnifier (20) and the
+// text (paragraph-16px) 12 apart, 38 high. Closed, only the magnifier is left, in the 36 of the panel: the field loses its width
+// and the text fades with the panel (the motion of the prototype). Only above 600px; the phone keeps its own search.
 @media only screen and (min-width: 601px) {
-    #app-grid .topnav .gsearch-input #ginner {
+    .l-sidebar .gsearch-input #ginner {
         box-sizing: border-box;
-        height: var(--topbar-search-height);
-        padding: var(--topbar-search-padding);
-        gap: var(--topbar-search-gap);
+        height: var(--sidepanel-search-height);
+        padding: var(--sidepanel-search-padding);
+        gap: var(--sidepanel-search-gap);
         border: none;
-        border-radius: 400px;
+        border-radius: var(--sidepanel-item-radius);
         background-color: transparent;
+        overflow: hidden;
 
         button {
-            width: var(--topbar-search-icon-slot);
-            height: var(--topbar-search-icon-slot);
+            width: var(--sidepanel-icon-slot);
+            height: var(--sidepanel-icon-slot);
             margin: 0;
-            color: var(--topbar-search-color);
+            color: var(--sidepanel-search-color);
 
             &:hover {
                 background-color: transparent;
             }
 
+            // the SVG of the icon is 24 with the glyph of 20 (the vector of the Penpot): natural size, the slot gets the 20
             svg.search-glyph {
                 flex-shrink: 0;
-                width: var(--topbar-search-icon-size);
-                height: var(--topbar-search-icon-size);
+                width: var(--sidepanel-icon-size);
+                height: var(--sidepanel-icon-size);
+                margin: calc((var(--sidepanel-icon-slot) - var(--sidepanel-icon-size)) / 2);
             }
         }
 
         input {
             @include text('paragraph-16px');
             min-width: 0;
-            color: var(--topbar-search-text-color);
+            color: var(--sidepanel-search-text-color);
+            transition: opacity var(--panel-toggle-duration) ease-in-out;
 
             &::placeholder {
-                color: var(--topbar-search-color);
+                color: var(--sidepanel-search-color);
                 opacity: 1;
             }
         }
 
         .clear_input {
+            width: var(--sidepanel-icon-slot);
             margin-right: 0;
+        }
+    }
+
+    .l-sidebar.collapsed .gsearch-input #ginner {
+        input {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .clear_input {
+            display: none;
         }
     }
 }

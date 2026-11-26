@@ -13,32 +13,21 @@
   --layout-gutter: 1rem;
 
   // Grade em painéis (acima de 600px, layout padrão; Figma "Home", nó 12384:168): 8 em volta de tudo e
-  // 8 entre os painéis, cantos de 8. Painéis sem fundo (TopBar, FeedPanel, PlayingPanel) têm borda de 1 por dentro.
+  // 8 entre os painéis, cantos de 8. Painéis sem fundo (FeedPanel, PlayingPanel) têm borda de 1 por dentro.
   --layout-panel-gap: 8px;
   --layout-panel-radius: 8px;
   --layout-panel-border: 1px solid var(--color-neutral-700);
   --layout-scrollbar-inset: 4px; // a barra de rolagem das páginas começa e termina a 4 das bordas do painel
 
-  // TopBar (componente TopBar do Figma, nó 12395:365; SearchBar: 12394:348)
-  --topbar-height: 52px; // era 64 (Rodrigo, 2026-11-07)
-  --topbar-padding: 4px var(--layout-gutter);
-  --topbar-gap: 64px; // entre os botões, a busca e o título da página
-  --topbar-button-size: 36px; // círculo de voltar e avançar
-  --topbar-button-gap: 16px;
-  --topbar-button-border: 1px solid var(--color-neutral-700); // o Figma tem 0,82 (36 x 0,0227): arredondado para 1
-  --topbar-button-icon-size: 26.18px; // o `chevron` do Icon desenhado em 1,09x dentro do círculo (glifo de 11,6 x 17,5)
-  // A busca não tem mais fundo nem traço (Rodrigo, 2026-11-07): só a lupa e o texto. Ela cresce até 12 do avatar.
-  --topbar-search-min-width: 14rem; // a busca encolhe até aqui nas larguras pequenas
-  --topbar-search-max-width: 500px; // a busca não passa daqui (Rodrigo, 2026-11-09); o que sobra fica entre ela e o avatar
-  --topbar-search-avatar-gap: 12px; // entre o fim da busca e o avatar
-  --topbar-search-height: 42px; // o que cabe na TopBar de 52 (menos a borda de 1 e o padding de 4, dos dois lados)
-  --topbar-search-padding: 8px 18px;
-  --topbar-search-gap: 12px; // entre a lupa e o texto (era 24; Rodrigo, 2026-11-09)
-  --topbar-search-color: var(--color-neutral-500); // lupa e placeholder (contraste baixo, como no Figma)
-  --topbar-search-text-color: var(--color-neutral-100); // texto digitado: não está no Figma
-  --topbar-search-icon-slot: 18px; // o espaço da lupa no layout: o glifo é de 18 x 18 (era 20; Rodrigo, 2026-11-09), desenhado na caixa do ícone
-  --topbar-search-icon-size: 21.6px; // caixa do ícone: o glifo ocupa 20/24 dela, então 18 x 18 pedem 18 x 24 / 20
-  --topbar-avatar-size: 36px;
+  // Faixa de título da página (PageBar): o que sobrou da TopBar, que saiu em 3.35.0 (a busca, o usuário e o Settings foram para o SidePanel).
+  // Guarda só o voltar e avançar e o título da página (decisão minha: o protótipo "Home" do Penpot não mostra isso, mas são funções).
+  --pagebar-height: 52px; // altura mínima da faixa (era a da TopBar)
+  --pagebar-padding: 4px var(--layout-gutter);
+  --pagebar-gap: 64px; // entre os botões e o título da página
+  --pagebar-button-size: 36px; // círculo de voltar e avançar
+  --pagebar-button-gap: 16px;
+  --pagebar-button-border: 1px solid var(--color-neutral-700);
+  --pagebar-button-icon-size: 26.18px; // o `chevron` do Icon desenhado em 1,09x dentro do círculo (glifo de 11,6 x 17,5)
 
   // Fonte do app inteiro: Satoshi Variable (pesos 300 a 900), arquivo do próprio cliente (assets/fonts, sem CDN).
   // Os caracteres que ela não tem (japonês, coreano, emoji) caem na fonte seguinte da lista. O `body`
@@ -137,42 +126,55 @@
   --panel-toggle-easing: cubic-bezier(0.7, -0.4, 0.4, 1.4);
   --panel-toggle-transition: var(--panel-toggle-duration) var(--panel-toggle-easing);
 
-  // Painel da esquerda (componente SidePanel do Figma, nó 12329:437). Tudo em px, como no desenho. Nada
-  // tem largura fixa dentro do painel: os itens ocupam a largura que ele tiver menos o padding.
-  --sidepanel-width: min(25vw, 224px); // 25% da largura da janela, no máximo 224 (Figma); o que há dentro escala com o painel
-  --sidepanel-collapsed-width: 52px; // SidePanel fechado (nó 12546:5413): 36 de conteúdo + 8 + 8 de padding
+  // Painel da esquerda (componente SidePanel do Penpot, board "SidePanel", variantes Opened e Closed). Tudo em px, como no
+  // desenho. Nada tem largura fixa dentro do painel: os itens ocupam a largura que ele tiver menos o padding.
+  --sidepanel-width: min(25vw, 164px); // era 224: com a busca dentro, o Penpot desenha o painel aberto com 164 (decisão minha: continua 25% da janela até esse máximo)
+  --sidepanel-collapsed-width: 52px; // SidePanel fechado: 36 de conteúdo + 8 + 8 de padding (o Penpot tem 52,83 por conta do conteúdo automático; decisão minha: 52)
   --sidepanel-padding: 8px;
-  --sidepanel-gap: 12px; // entre os blocos (cabeçalho, botões, divisor, playlists, cartão)
+  --sidepanel-gap: 12px; // entre os blocos (cabeçalho, busca, botões, divisor, playlists) e acima do rodapé
   --sidepanel-bg: var(--color-neutral-900);
-  --sidepanel-header-height: 60px; // sem fundo no Figma
+  --sidepanel-header-height: 42px; // era 60: a palavra de 26 com 8 em cima e embaixo
   --sidepanel-header-radius: 4px; // todo botão do SidePanel tem cantos de 4 (Rodrigo, 2026-11-11)
-  --sidepanel-logo-width: 169.091px; // a palavra MUSIX; encolhe se o painel ficar mais estreito
-  --sidepanel-item-height: 34px;
+  --sidepanel-logo-width: 169.091px; // a palavra MUSIX; encolhe se o painel ficar mais estreito (no painel aberto de 164 ocupa os 148 de dentro)
+  --sidepanel-search-height: 38px; // o texto de 22 com padding 8
+  --sidepanel-search-padding: 8px;
+  --sidepanel-search-gap: 12px; // entre a lupa e o texto
+  --sidepanel-search-color: var(--color-neutral-500); // lupa e placeholder (contraste baixo, como no Penpot: #333333)
+  --sidepanel-search-text-color: var(--color-neutral-100); // texto digitado: não está no Penpot
+  --sidepanel-item-height: 36px; // era 34: ícone de 20 com padding 8
   --sidepanel-item-padding: 8px;
   --sidepanel-item-radius: 4px; // era a pílula de 400; todo botão do SidePanel tem cantos de 4 (Rodrigo, 2026-11-11)
   --sidepanel-item-active-bg: var(--color-neutral-700);
   --sidepanel-divider: var(--color-neutral-700);
   --sidepanel-icon-active-color: var(--color-neutral-white); // o vetor cheio (active) do ícone da página aberta é branco; o coração de Favorites é só contorno quando inativo (Rodrigo, 2026-11-14)
   --sidepanel-item-gap: 12px; // entre o ícone e o texto
-  --sidepanel-items-gap: 10px; // entre os botões de navegação
-  --sidepanel-icon-size: 20px;
+  --sidepanel-items-gap: 8px; // entre os botões de navegação (painel aberto)
+  --sidepanel-items-collapsed-gap: 10px; // o mesmo, no painel fechado (o Penpot desenha 10 nele e 8 no aberto)
+  --sidepanel-icon-slot: 20px; // o espaço do ícone na linha: o vetor do Penpot é de 20 x 20 e o SVG tem 24 com 2 de margem, então ele é desenhado em 24 e o excesso vaza
+  --sidepanel-icon-size: 24px; // o SVG do ícone, em tamanho natural (o glifo fica com 20)
   --sidepanel-nav-color: var(--color-neutral-100);
   --sidepanel-playlists-gap: 8px;
-  --sidepanel-playlist-padding-x: 12px;
+  --sidepanel-playlist-padding-x: 8px; // era 12
   --sidepanel-playlist-padding-y: 8px; // a linha fica com 44: a capa de 28 e 8 em cima e embaixo (Rodrigo, 2026-11-11)
   --sidepanel-playlist-gap: 8px; // entre a capa e o nome
   --sidepanel-playlist-cover-size: 28px;
   --sidepanel-playlist-cover-radius: 4px;
-  // SidePanel fechado (nó 12546:5413): cada playlist é 36 x 34 com padding 8 e só a capa de 18
-  --sidepanel-playlist-collapsed-padding-x: 9px; // 36 de largura com a capa de 18 no meio: 9 de cada lado (decisão minha: o Figma diz padding 8; assim a capa fica alinhada com os ícones de cima)
-  --sidepanel-playlist-collapsed-padding-y: 8px;
-  --sidepanel-playlist-collapsed-cover-size: 18px;
-  --sidepanel-header-collapsed-width: 36px; // botão do cabeçalho fechado: 36 de largura, padding 8, cantos de 8
-  --sidepanel-header-collapsed-height: 48px; // o ícone de 32 e o padding de 8 em cima e embaixo (decisão minha: o Figma só dá a largura e o padding)
-  --sidepanel-header-collapsed-radius: 8px;
-  --sidepanel-header-icon-width: 27px; // a nota musical do cabeçalho fechado: 27 x 32
+  // SidePanel fechado: cada playlist é só a capa, sem padding, do tamanho do conteúdo (36 x 36; era 18)
+  --sidepanel-playlist-collapsed-padding-x: 0px;
+  --sidepanel-playlist-collapsed-padding-y: 0px;
+  --sidepanel-playlist-collapsed-cover-size: 36px; // o Penpot desenha 36,83 (o conteúdo de 52,83); decisão minha: 36, a largura de dentro do painel de 52
+  --sidepanel-header-collapsed-width: 36px; // botão do cabeçalho fechado: 36 de largura, cantos de 4
+  --sidepanel-header-collapsed-height: 42px; // era 48
+  --sidepanel-header-collapsed-radius: 4px; // era 8
+  --sidepanel-header-icon-width: 27px; // a nota musical do cabeçalho fechado: 27 x 32 (o vetor é 24 x 29,2)
   --sidepanel-header-icon-height: 32px;
-  --sidepanel-playlist-color: var(--color-neutral-white);
+  --sidepanel-footer-gap: 8px; // entre o Settings e o usuário
+  --sidepanel-footer-item-height: 40px; // Settings aberto e usuário: ícone de 24 com padding 8
+  --sidepanel-footer-settings-collapsed-height: 36px; // o Settings fechado é igual aos botões de navegação
+  --sidepanel-footer-icon-slot: 24px; // o ícone do Settings aberto e a foto do usuário aberto
+  --sidepanel-user-avatar-collapsed-size: 36px; // a foto do usuário fechado (o Penpot desenha 36,83); decisão minha: 36
+  --sidepanel-user-name-color: var(--color-neutral-300); // #707070
+  --sidepanel-user-menu-gap: 8px; // entre o painel e o menu do usuário (que abre ao lado, na altura da linha)
   --sidepanel-art-radius: 10px;
 
   // PlayerBar (barra de baixo acima de 900px; Figma 12355:646)
@@ -344,7 +346,7 @@
   --text-paragraph-18px-size: 18px; // paragraph/paragraph-18px (Medium)
   --text-paragraph-18px-weight: 500;
   --text-paragraph-18px-line-height: normal;
-  --text-paragraph-16px-size: 16px; // paragraph/paragraph-16px (Medium): novo, texto da busca da TopBar (Rodrigo, 2026-11-09)
+  --text-paragraph-16px-size: 16px; // paragraph/paragraph-16px (Medium): novo, texto da busca (era da TopBar, hoje do SidePanel)
   --text-paragraph-16px-weight: 500;
   --text-paragraph-16px-line-height: normal;
   --text-paragraph-14px-size: 14px; // paragraph/paragraph-14px (Medium)
