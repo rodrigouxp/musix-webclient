@@ -87,7 +87,7 @@ import MarqueeText from '@/components/shared/MarqueeText.vue'
 import Spinner from '@/components/shared/Spinner.vue'
 
 // PlayerBar type=default-mobile of the Figma (node 12535:3645): play, favorite and add (12 between them) and the frame of
-// the song, which fills the rest: the title (a long one runs in a loop, like the albums of the PlayingPanel), the artists
+// the song, which fills the rest: the title (a long one runs in a loop), the artists
 // (links, neutral/300) and the artwork, which opens NowPlaying (no chevron over it on the phone). While a song plays the
 // bar takes the dynamic gradient, as the desktop one. Tokens --playerbarmobile-*; the play button and the artwork
 // are the sizes of the desktop bar (--playerbar-*).

@@ -15,8 +15,8 @@
             <button
                 class="qt-button"
                 :class="{ on: track.repeat }"
-                :title="$t('PlayingPanel.RepeatTrack')"
-                :aria-label="$t('PlayingPanel.RepeatTrack')"
+                :title="$t('QueueList.RepeatTrack')"
+                :aria-label="$t('QueueList.RepeatTrack')"
                 :aria-pressed="!!track.repeat"
                 @click.stop="tracklist.toggleTrackRepeat(index)"
             >
@@ -89,11 +89,11 @@ function onContextMenu(e: MouseEvent) {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--playingpanel-track-gap);
+    gap: var(--queue-track-gap);
     box-sizing: border-box;
-    height: var(--playingpanel-track-height);
-    padding: var(--playingpanel-track-padding);
-    border-radius: var(--playingpanel-track-radius);
+    height: var(--queue-track-height);
+    padding: var(--queue-track-padding);
+    border-radius: var(--queue-track-radius);
     cursor: pointer;
     transition: background-color 0.2s ease-out;
     // the text and the cover are not selected or dragged by themselves: the row is dragged as a whole
@@ -111,28 +111,28 @@ function onContextMenu(e: MouseEvent) {
     &.menu-open,
     &.current,
     &.held {
-        background-color: var(--playingpanel-track-current-bg);
+        background-color: var(--queue-track-current-bg);
     }
 
     .qt-name {
         display: flex;
         align-items: center;
-        gap: var(--playingpanel-name-gap);
+        gap: var(--queue-name-gap);
         min-width: 0;
     }
 
     .qt-picture {
         flex-shrink: 0;
-        width: var(--playingpanel-picture-size);
-        height: var(--playingpanel-picture-size);
-        border-radius: var(--playingpanel-picture-radius);
+        width: var(--queue-picture-size);
+        height: var(--queue-picture-size);
+        border-radius: var(--queue-picture-radius);
         object-fit: cover;
     }
 
     .qt-title {
         @include text('paragraph-14px');
         min-width: 0;
-        color: var(--playingpanel-track-color);
+        color: var(--queue-track-color);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -142,7 +142,7 @@ function onContextMenu(e: MouseEvent) {
         display: flex;
         align-items: center;
         flex-shrink: 0;
-        gap: var(--playingpanel-button-gap);
+        gap: var(--queue-button-gap);
     }
 
     // the icon is 12 (the glyph of 10); the click area is 24, with a negative margin that keeps the 12 of layout
@@ -150,28 +150,28 @@ function onContextMenu(e: MouseEvent) {
         flex-shrink: 0;
         display: grid;
         place-items: center;
-        width: var(--playingpanel-button-hit);
-        height: var(--playingpanel-button-hit);
-        margin: calc((var(--playingpanel-button-size) - var(--playingpanel-button-hit)) / 2);
+        width: var(--queue-button-hit);
+        height: var(--queue-button-hit);
+        margin: calc((var(--queue-button-size) - var(--queue-button-hit)) / 2);
         padding: 0;
         border: none;
         background: transparent;
-        color: var(--playingpanel-icon-color);
+        color: var(--queue-icon-color);
         transition: color 0.2s ease-out;
 
         svg {
-            width: var(--playingpanel-button-size);
-            height: var(--playingpanel-button-size);
+            width: var(--queue-button-size);
+            height: var(--queue-button-size);
         }
 
         &:hover:not(:disabled),
         &:focus-visible {
-            color: var(--playingpanel-icon-hover);
+            color: var(--queue-icon-hover);
         }
 
         // a repeat that is on (not in the Figma: the color of the hover)
         &.on {
-            color: var(--playingpanel-icon-on);
+            color: var(--queue-icon-on);
         }
 
         &:disabled {

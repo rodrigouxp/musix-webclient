@@ -5,7 +5,7 @@ import { pluginSetActive, updatePluginSettings } from '@/requests/plugins'
 
 import { updateConfig } from '@/requests/settings'
 import { usePlayer } from '@/stores/player'
-import { isCompactWindow, isMobile } from '../content-width'
+import { isMobile } from '../content-width'
 import useAxios from '@/requests/useAxios'
 import { paths } from '@/config'
 import { router } from '@/router'
@@ -15,9 +15,6 @@ export default defineStore('settings', {
     state: () => ({
         version: '',
         public_key: '',
-        // the PlayingPanel of the desktop (above 600px): open or closed, kept between sessions. The PlayerBar's
-        // thumbnail toggles it.
-        queue_panel_open: false,
         // the SidePanel of the desktop: collapsed to a strip of icons or not, kept between sessions. The header of the panel
         // toggles it.
         side_panel_collapsed: false,
@@ -112,10 +109,6 @@ export default defineStore('settings', {
         },
         toggleHighlightFavoriteTracks() {
             this._highlightFavoriteTracks = !this._highlightFavoriteTracks
-        },
-        // queue panel 👇
-        togglePlayingPanel() {
-            this.queue_panel_open = !this.queue_panel_open
         },
         // side panel 👇
         toggleSidePanel() {
@@ -311,10 +304,6 @@ export default defineStore('settings', {
         // the grid of panels of the Figma: every width above the phone breakpoint (600px, same as the `min-width: 601px`
         // of assets/scss/Global/app-grid.scss). Up to 600px the app keeps the phone layout
         is_panel_layout: () => !isMobile.value,
-        // the PlayingPanel is open: the user opened it, and the window is wide enough (under 1000px the PlayerBar opens the NowPlaying of the phone)
-        playing_panel_open(): boolean {
-            return this.is_panel_layout && !isCompactWindow.value && this.queue_panel_open
-        },
         highlightFavoriteTracks(): boolean {
             return (
                 !router.currentRoute.value.name?.toString().toLowerCase().startsWith('favorite') &&

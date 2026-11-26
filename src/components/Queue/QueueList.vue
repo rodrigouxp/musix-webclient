@@ -88,20 +88,12 @@ import QueueGroupHeader from './QueueGroupHeader.vue'
 import QueueTrack from './QueueTrack.vue'
 
 // The queue as a list, with the tracks of an album or of a playlist that went in whole under a header: the rows, the
-// virtual scroller, the fade at its edges and the drag of tracks and groups. It is the list of the PlayingPanel (desktop)
-// and of the Queue tab of NowPlaying (phone); the second one only changes the --playingpanel-* tokens in its scope.
+// virtual scroller, the fade at its edges and the drag of tracks and groups. It is the list of the Queue tab of NowPlaying;
+// the class `np-queue` sets its --queue-* tokens.
 type Row =
     | { id: string; kind: 'header'; group: QueueGroup; start: number }
     | { id: string; kind: 'track'; index: number; track: Track }
     | { id: string; kind: 'divider' }
-
-const props = withDefaults(
-    defineProps<{
-        // the list is on screen: the PlayingPanel keeps it mounted while it is closed, and measures the list again when it opens
-        shown?: boolean
-    }>(),
-    { shown: true }
-)
 
 const queue = useQueue()
 const tracklist = useTracklist()
@@ -136,8 +128,8 @@ const mouseover = ref(false)
 const fade = ref({ top: false, bottom: false })
 
 const fadeStyle = computed(() => ({
-    '--pp-fade-top': fade.value.top ? 'var(--playingpanel-fade)' : '0px',
-    '--pp-fade-bottom': fade.value.bottom ? 'var(--playingpanel-fade)' : '0px',
+    '--pp-fade-top': fade.value.top ? 'var(--queue-fade)' : '0px',
+    '--pp-fade-bottom': fade.value.bottom ? 'var(--queue-fade)' : '0px',
 }))
 
 function updateFade() {
@@ -169,7 +161,7 @@ function watchScroller() {
     updateFade()
 }
 
-watch([rows, hasItems, () => props.shown], async () => {
+watch([rows, hasItems], async () => {
     await nextTick()
     watchScroller()
 })
@@ -236,7 +228,7 @@ function onGroupDragStart(event: PointerEvent, group: QueueGroup, start: number)
 </script>
 
 <style lang="scss">
-// fills what is left of its column (the title and the cover of the PlayingPanel take the rest)
+// fills what is left of its column
 .queue-list {
     display: flex;
     flex-direction: column;
@@ -268,7 +260,7 @@ function onGroupDragStart(event: PointerEvent, group: QueueGroup, start: number)
         box-sizing: border-box;
         // the scrollbar (4) takes all the right padding: the rows end where the cover does, and the scrollbar is always
         // reserved, so they do not change width when the list starts to scroll
-        padding-right: calc(var(--playingpanel-list-pad-right) - var(--playingpanel-scrollbar-width));
+        padding-right: calc(var(--queue-list-pad-right) - var(--queue-scrollbar-width));
         // not the side margin that the other lists of the app get
         padding-left: 0;
         scrollbar-gutter: stable;
@@ -278,7 +270,7 @@ function onGroupDragStart(event: PointerEvent, group: QueueGroup, start: number)
         overscroll-behavior: contain;
 
         &::-webkit-scrollbar {
-            width: var(--playingpanel-scrollbar-width);
+            width: var(--queue-scrollbar-width);
             background: transparent;
         }
 
@@ -300,16 +292,16 @@ function onGroupDragStart(event: PointerEvent, group: QueueGroup, start: number)
 
     // the rows of the virtual list keep the spaces of the Figma as padding (4 between tracks, 8 under a header)
     .pp-row-track {
-        padding-bottom: var(--playingpanel-item-gap);
+        padding-bottom: var(--queue-item-gap);
     }
 
     .pp-row-header {
-        padding-bottom: var(--playingpanel-group-gap);
+        padding-bottom: var(--queue-group-gap);
     }
 
     .pp-row-divider {
         height: 1px;
-        margin-bottom: var(--playingpanel-item-gap);
+        margin-bottom: var(--queue-item-gap);
         background-color: var(--color-neutral-700);
     }
 }
@@ -320,7 +312,7 @@ function onGroupDragStart(event: PointerEvent, group: QueueGroup, start: number)
     z-index: 30;
     pointer-events: none;
     background: var(--menu-bg);
-    border-radius: var(--playingpanel-track-radius);
+    border-radius: var(--queue-track-radius);
     box-shadow: var(--menu-shadow);
 }
 

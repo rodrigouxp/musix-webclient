@@ -10,8 +10,8 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
-// One line of text. When it does not fit it runs to the left in a loop, like a marquee (the headers of the albums of
-// the PlayingPanel and the title of the PlayerBar on the phone). The font, the color and the width come from the parent.
+// One line of text. When it does not fit it runs to the left in a loop, like a marquee (the title of the PlayerBar on the
+// phone). The font, the color and the width come from the parent.
 const props = defineProps<{
     text: string
     // where the text rests when it fits (the loop always starts at the left)

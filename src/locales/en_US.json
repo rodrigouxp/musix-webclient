@@ -129,7 +129,6 @@
     "Favorite": "Favorite",
     "GoToNowPlaying": "Go to Now Playing",
     "OpenNowPlaying": "Open Now Playing",
-    "HideQueue": "Hide queue",
     "Next": "Next",
     "Pause": "Pause",
     "PlaceholderArtist": "Welcome to MUSIX",
@@ -141,8 +140,7 @@
       "None": "No repeat",
       "One": "Repeat one"
     },
-    "Shuffle": "Shuffle",
-    "ShowQueue": "Show queue"
+    "Shuffle": "Shuffle"
   },
   "Bubbles": {
     "DropHere": "DROP TRACKS HERE"
@@ -342,12 +340,10 @@
     "Title": "Home",
     "title": "Home"
   },
-  "PlayingPanel": {
-    "Clear": "Clear queue",
+  "QueueList": {
     "RemoveGroup": "Remove from queue",
     "RepeatGroup": "Repeat",
-    "RepeatTrack": "Repeat",
-    "Title": "Now playing"
+    "RepeatTrack": "Repeat"
   },
   "ImageLoader": {
     "NextPanel": "Next cover panel",

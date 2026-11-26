@@ -5,10 +5,10 @@
 </template>
 
 <script setup lang="ts">
-import QueueList from '@/components/PlayingPanel/QueueList.vue'
+import QueueList from '@/components/Queue/QueueList.vue'
 
-// NowPlaying:Queue of the Figma (node 12541:4686): the grouped queue at touch size. It is the list of the PlayingPanel
-// (QueueList); the class `np-queue` swaps the --playingpanel-* tokens for the touch sizes (_musix-tokens.scss).
+// NowPlaying:Queue of the Figma (node 12541:4686): the grouped queue at touch size (QueueList). The class `np-queue` sets the
+// touch sizes of the --queue-* tokens (_musix-tokens.scss).
 </script>
 
 <style lang="scss">

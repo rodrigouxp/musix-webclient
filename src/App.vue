@@ -10,8 +10,7 @@
         v-if="!hideUI"
         id="app-grid"
         :class="{
-            'has-playing-panel': settings.is_panel_layout,
-            'queue-open': settings.playing_panel_open,
+            'has-side-panel': settings.is_panel_layout,
             'sidepanel-collapsed': settings.is_panel_layout && settings.side_panel_collapsed,
             'panels-animating': panelsAnimating,
         }"
@@ -31,8 +30,6 @@
                 </BalancerProvider>
             </div>
         </div>
-        <!-- above 600px: the SidePanel on the left and the PlayingPanel on the right; up to 600px, the phone layout -->
-        <PlayingPanel v-if="settings.is_panel_layout" />
         <BottomBar />
         <!-- <BubbleManager /> -->
     </section>
@@ -80,7 +77,6 @@ import BottomBar from '@/components/BottomBar/BottomBar.vue'
 import LeftSidebar from '@/components/LeftSidebar/index.vue'
 import NavBar from '@/components/nav/NavBar.vue'
 import PageBar from '@/components/nav/PageBar.vue'
-import PlayingPanel from '@/components/PlayingPanel/PlayingPanel.vue'
 
 import { getAllSettings } from '@/requests/settings'
 import { getRootDirs } from '@/requests/settings/rootdirs'
@@ -102,13 +98,12 @@ const UIStore = useInterface()
 const { hideUI } = storeToRefs(UIStore)
 useTracker()
 
-// the columns of the SidePanel and of the PlayingPanel only animate while one of them opens, closes, collapses or
-// expands: their widths are a share of the window (vw), and a transition that always runs would make the columns lag
-// behind when the window is resized
+// the column of the SidePanel only animates while it collapses or expands: its width is a share of the window (vw), and a
+// transition that always runs would make the column lag behind when the window is resized
 const panelsAnimating = ref(false)
 let panelsAnimationTimer: ReturnType<typeof setTimeout> | undefined
 watch(
-    () => [settings.queue_panel_open, settings.side_panel_collapsed],
+    () => settings.side_panel_collapsed,
     () => {
         panelsAnimating.value = true
         clearTimeout(panelsAnimationTimer)

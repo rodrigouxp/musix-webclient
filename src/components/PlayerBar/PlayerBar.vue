@@ -70,7 +70,7 @@
             </button>
         </div>
 
-        <!-- 3. the song: name and artists (right aligned) and the thumbnail, which opens and closes the queue -->
+        <!-- 3. the song: name and artists (right aligned) and the thumbnail, which opens the NowPlaying -->
         <div class="pb-track">
             <div class="pb-info">
                 <div class="pb-name">
@@ -100,19 +100,7 @@
                     class="pb-artists"
                 />
             </div>
-            <button
-                class="pb-artwork"
-                :class="{ open: settings.playing_panel_open }"
-                :aria-label="
-                    compactWindow
-                        ? $t('BottomBar.OpenNowPlaying')
-                        : settings.queue_panel_open
-                        ? $t('BottomBar.HideQueue')
-                        : $t('BottomBar.ShowQueue')
-                "
-                :aria-expanded="compactWindow ? undefined : settings.queue_panel_open"
-                @click="onArtworkClick"
-            >
+            <button class="pb-artwork" :aria-label="$t('BottomBar.OpenNowPlaying')" @click="onArtworkClick">
                 <ImageLoader
                     :image="paths.images.thumb.small + queue.currenttrack?.image"
                     :blurhash="queue.currenttrack.blurhash"
@@ -135,7 +123,6 @@ import { showPlayingAddMenu } from '@/helpers/contextMenuHandler'
 import { Routes } from '@/router'
 import { useT } from '@/i18n'
 import { formatSeconds } from '@/utils'
-import { isCompactWindow } from '@/stores/content-width'
 
 import { buffering } from '@/stores/player'
 import useQStore from '@/stores/queue'
@@ -177,16 +164,11 @@ const queue = useQStore()
 const settings = useSettingsStore()
 
 const router = useRouter()
-const compactWindow = isCompactWindow
 
-// the thumbnail opens the PlayingPanel; under 1000px, the NowPlaying of the phone (a push, so back comes back to the page)
+// the thumbnail opens the NowPlaying (the drawer with Home, Lyrics and Queue) at any width (the queue is its Queue tab)
+// (a push, so back comes back to the page)
 function onArtworkClick() {
-    if (compactWindow.value) {
-        router.push({ name: Routes.nowPlaying, params: { tab: 'home' } })
-        return
-    }
-
-    settings.togglePlayingPanel()
+    router.push({ name: Routes.nowPlaying, params: { tab: 'home' } })
 }
 
 const hasTrack = computed(() => !!queue.currenttrack?.trackhash)
@@ -601,7 +583,7 @@ function showAddMenu() {
         }
     }
 
-    // the thumbnail is a button: it opens and closes the PlayingPanel (node 12408:1358: the chevron on a circle of 24)
+    // the thumbnail is a button: it opens the NowPlaying (node 12408:1358: the chevron on a circle of 24)
     .pb-artwork {
         position: relative;
         width: var(--playerbar-artwork-size);
@@ -634,14 +616,9 @@ function showAddMenu() {
             svg {
                 width: var(--playerbar-badge-icon-size);
                 height: var(--playerbar-badge-icon-size);
-                // the chevron points right: up when the queue is closed, down when it is open
+                // the chevron points right: turned up, as the NowPlaying slides up
                 transform: rotate(-90deg);
-                transition: transform var(--playerbar-badge-fade) ease-out;
             }
-        }
-
-        &.open .pb-badge svg {
-            transform: rotate(90deg);
         }
 
         &:hover .pb-badge,

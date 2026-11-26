@@ -13,14 +13,14 @@
             <button
                 class="qg-button"
                 :class="{ on: repeating }"
-                :title="$t('PlayingPanel.RepeatGroup')"
-                :aria-label="$t('PlayingPanel.RepeatGroup')"
+                :title="$t('QueueList.RepeatGroup')"
+                :aria-label="$t('QueueList.RepeatGroup')"
                 :aria-pressed="repeating"
                 @click="tracklist.toggleGroupRepeat(group.id)"
             >
                 <RepeatSvg />
             </button>
-            <button class="qg-button" :title="$t('PlayingPanel.RemoveGroup')" :aria-label="$t('PlayingPanel.RemoveGroup')" @click="tracklist.removeGroup(group.id)">
+            <button class="qg-button" :title="$t('QueueList.RemoveGroup')" :aria-label="$t('QueueList.RemoveGroup')" @click="tracklist.removeGroup(group.id)">
                 <DeleteSvg />
             </button>
         </div>
@@ -60,11 +60,11 @@ const tracklist = useTracklist()
 .queue-group-header {
     display: flex;
     align-items: center;
-    gap: var(--playingpanel-header-gap);
+    gap: var(--queue-header-gap);
     box-sizing: border-box;
-    height: calc(var(--playingpanel-header-height) + var(--playingpanel-header-pad-top));
-    padding: var(--playingpanel-header-pad-top) 4px 0;
-    color: var(--playingpanel-group-color);
+    height: calc(var(--queue-header-height) + var(--queue-header-pad-top));
+    padding: var(--queue-header-pad-top) 4px 0;
+    color: var(--queue-group-color);
     // the whole header is the handle of the drag of the group: its text is not selected
     -webkit-user-select: none;
     user-select: none;
@@ -74,14 +74,14 @@ const tracklist = useTracklist()
         display: flex;
         align-items: center;
         flex: 1 1 0;
-        gap: var(--playingpanel-header-name-gap);
+        gap: var(--queue-header-name-gap);
         min-width: 0;
     }
 
     .qg-icon {
         flex-shrink: 0;
-        width: var(--playingpanel-header-icon-size);
-        height: var(--playingpanel-header-icon-size);
+        width: var(--queue-header-icon-size);
+        height: var(--queue-header-icon-size);
     }
 
     .qg-text {
@@ -94,35 +94,35 @@ const tracklist = useTracklist()
         display: flex;
         align-items: center;
         flex-shrink: 0;
-        gap: var(--playingpanel-button-gap);
+        gap: var(--queue-button-gap);
     }
 
     .qg-button {
         flex-shrink: 0;
         display: grid;
         place-items: center;
-        width: var(--playingpanel-button-hit);
-        height: var(--playingpanel-button-hit);
-        margin: calc((var(--playingpanel-button-size) - var(--playingpanel-button-hit)) / 2);
+        width: var(--queue-button-hit);
+        height: var(--queue-button-hit);
+        margin: calc((var(--queue-button-size) - var(--queue-button-hit)) / 2);
         padding: 0;
         border: none;
         background: transparent;
-        color: var(--playingpanel-icon-color);
+        color: var(--queue-icon-color);
         transition: color 0.2s ease-out;
 
         svg {
-            width: var(--playingpanel-button-size);
-            height: var(--playingpanel-button-size);
+            width: var(--queue-button-size);
+            height: var(--queue-button-size);
         }
 
         &:hover,
         &:focus-visible {
-            color: var(--playingpanel-icon-hover);
+            color: var(--queue-icon-hover);
         }
 
         // a repeat that is on (not in the Figma: the color of the hover)
         &.on {
-            color: var(--playingpanel-icon-on);
+            color: var(--queue-icon-on);
         }
     }
 }
